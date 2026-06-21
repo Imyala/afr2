@@ -2,6 +2,8 @@
 
 **Learn real South African languages for real conversations — offline, with proof that you're actually learning.**
 
+🌐 **Live (GitHub Pages):** https://imyala.github.io/afr2/
+
 MzansiLingo is an offline-first, installable web app (PWA) for learning South
 African languages. It's built for **classrooms and school kids**, so the two
 things that matter most are:
