@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { newItem, review, gradeFor } from '../src/srs.js';
-import { normalize, checkAnswer } from '../src/lessons.js';
+import { normalize, checkAnswer, buildLessonSession, exerciseVocabIds } from '../src/lessons.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let pass = 0, fail = 0;
@@ -55,6 +55,17 @@ for (const c of ['zu', 'xh', 'af']) {
       if (ex.type === 'translate') ok(ex.answer && ex.prompt, `${l.id} translate has answer+prompt`);
       if (ex.type === 'match') ok(ex.pairs.length >= 3, `${l.id} match has >=3 pairs`);
     }
+    // audio-free graded flow: the built session must contain no listen/speak,
+    // and converting/removing audio must not orphan any word that was already
+    // practised (coverage after >= coverage before this change).
+    const session = buildLessonSession(l);
+    ok(session.every((ex) => ex.type !== 'listen' && ex.type !== 'speak'), `${l.id} built session has no audio exercises`);
+    ok(session.length > 0, `${l.id} built session is non-empty`);
+    const coveredBefore = new Set();
+    for (const ex of l.exercises) for (const vid of exerciseVocabIds(ex, l)) coveredBefore.add(vid);
+    const coveredAfter = new Set();
+    for (const ex of session) for (const vid of exerciseVocabIds(ex, l)) coveredAfter.add(vid);
+    for (const vid of coveredBefore) ok(coveredAfter.has(vid), `${l.id} word ${vid} still practised after audio removal`);
   }
   // reading content integrity
   for (const r of (course.reading || [])) {

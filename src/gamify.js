@@ -32,7 +32,6 @@ export const QUEST_POOL = [
   { id: 'q_review', text: 'Finish a review session', goal: 1, event: 'review', gems: 15, icon: '🔁' },
   { id: 'q_perfect', text: 'Get a perfect lesson', goal: 1, event: 'perfect', gems: 15, icon: '🎯' },
   { id: 'q_reading', text: 'Read a story', goal: 1, event: 'reading', gems: 15, icon: '📖' },
-  { id: 'q_speak', text: 'Do a speaking exercise', goal: 1, event: 'speak', gems: 10, icon: '🗣️' },
 ];
 
 export const ACHIEVEMENTS = [

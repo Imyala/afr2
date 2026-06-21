@@ -33,7 +33,7 @@ for the full explanation. In short:
 | Proven method | How MzansiLingo uses it |
 |---|---|
 | **Spaced repetition (SM-2)** | Every word is scheduled for review at the moment you're about to forget it (`src/srs.js`). |
-| **Active recall / production** | Recognition (multiple choice) is the *weakest* signal. A word only becomes **mastered** once you've typed or spoken it correctly *and* it survived a spaced review. |
+| **Active recall / production** | Recognition (multiple choice) is the *weakest* signal. A word only becomes **mastered** once you've typed it correctly *and* it survived a spaced review. |
 | **Mastery-based progress** | The Progress page reports **words mastered**, **retention %**, and **still learning** — honest learning metrics, not just XP. |
 | **Measured outcomes** | A **baseline test** records where you start. After ~1 month of daily practice, a **re-test** shows your exact improvement. This is the "real progress in 1 month" proof. |
 | **Engagement that serves learning** | XP, streaks, hearts and a daily goal keep kids coming back — but they're wrapped around the spaced-repetition core, not a substitute for it. |
@@ -43,12 +43,18 @@ for the full explanation. In short:
 **Learning**
 - 📚 Daily lessons with a unit-based lesson path
 - 🔁 Spaced-repetition **Review** sessions driven by what's actually due
-- 📖 **Reading exercises** — graded stories with tap-to-hear lines and comprehension questions
-- 🗣️ Speaking practice (speech recognition where available, phonetics always)
-- 🎧 Listening practice (text-to-speech where available)
+- 📖 **Reading exercises** — graded stories with comprehension questions
 - ✍️ Translation, multiple choice, match-the-pairs, fill-in-the-blank
+- 🔤 **Phonetics on every word** so pronunciation is learnable offline
 - 🏫 Cultural notes in every lesson
 - 📊 Progress dashboard with real retention metrics + baseline/re-test
+
+> **Audio status:** dedicated *listening* and *speaking* exercises are
+> temporarily disabled. On-device text-to-speech / speech-recognition for
+> Zulu/Xhosa/Afrikaans is unreliable or absent, which left learners with no way
+> to know the answer. Optional "tap to hear" remains where the text is on screen
+> (stories, Word of the Day). Recorded native-speaker audio is the planned fix —
+> see the roadmap.
 
 **Engagement / retention** (gets kids back daily — see [docs/ENGAGEMENT.md](docs/ENGAGEMENT.md))
 - 🔥 Day streaks with ❄️ **streak freezes** to protect them

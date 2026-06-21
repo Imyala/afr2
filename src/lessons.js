@@ -72,11 +72,35 @@ export function checkAnswer(ex, response) {
   }
 }
 
-// Build an ordered exercise queue for a lesson.
+// On-device speech synthesis/recognition for SA languages is unreliable or
+// absent, which made "listen" and "speak" exercises impossible to answer
+// offline. Until we ship recorded native-speaker audio:
+//   - "speak" exercises are dropped from the graded flow, and
+//   - "listen" exercises are converted into a text multiple-choice
+//     ("How do you say X?") so the word is still practised and the answer is
+//     always knowable. (The authored audio items stay in the content files so
+//     they can be re-enabled once real audio exists.)
 export function buildLessonSession(lesson) {
-  // Keep authored order, but ensure a recognition exercise precedes production
-  // for each new word (already the case in our content authoring).
-  return (lesson.exercises || []).map((ex, i) => ({ ...ex, _i: i }));
+  const vById = {};
+  for (const v of (lesson.vocab || [])) vById[v.id] = v;
+  const out = [];
+  for (const ex of (lesson.exercises || [])) {
+    if (ex.type === 'speak') continue;
+    if (ex.type === 'listen') {
+      const v = vById[ex.vocabId];
+      if (!v) continue; // can't reframe without the meaning — skip
+      out.push({
+        type: 'multiple_choice',
+        prompt: `How do you say “${v.translation}”?`,
+        answer: ex.answer,
+        options: ex.options,
+        vocabId: ex.vocabId,
+      });
+      continue;
+    }
+    out.push(ex);
+  }
+  return out.map((ex, i) => ({ ...ex, _i: i }));
 }
 
 // Generate review exercises for a set of due vocab ids, drawing distractors

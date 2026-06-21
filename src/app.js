@@ -1,7 +1,7 @@
 // app.js — MzansiLingo PWA controller (routing, screens, exercise rendering)
 import { store, XP_PER_CORRECT, XP_LESSON_BONUS, MAX_HEARTS } from './store.js';
 import { review as srsReview, gradeFor } from './srs.js';
-import { speak, ttsSupported, srSupported, listenOnce } from './audio.js';
+import { speak } from './audio.js';
 import {
   loadCourse, loadLanguages, allLessons, findLesson, vocabIndex,
   checkAnswer, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
@@ -212,6 +212,15 @@ function wordOfTheDay() {
   return all[s % all.length];
 }
 
+// Optional "tap to hear" — uses on-device TTS where a voice exists, and tells
+// the learner if it doesn't (instead of silently doing nothing). The text is
+// always visible on screen, so this never blocks learning.
+async function tryHear(text, lang) {
+  const ok = await speak(text, lang);
+  if (!ok) flashToast('Audio for this language isn’t available on this device yet.');
+  return ok;
+}
+
 function renderWotd() {
   const w = wordOfTheDay();
   if (!w) return renderHome();
@@ -231,8 +240,8 @@ function renderWotd() {
       <button class="btn btn--primary" id="learn">${already ? 'Learned ✓ — practise again' : 'Add to my reviews (+5 XP)'}</button>
       <button class="btn btn--ghost" id="back">Back</button>
     </div>`);
-  node.querySelector('#hear').addEventListener('click', () => speak(w.term, course.code));
-  setTimeout(() => speak(w.term, course.code), 350);
+  node.querySelector('#hear').addEventListener('click', () => tryHear(w.term, course.code));
+  speak(w.term, course.code); // best-effort autoplay (silent if no voice)
   node.querySelector('#learn').addEventListener('click', () => {
     const it = store.item(w.id);
     srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice'); // introduce into the SRS schedule
@@ -335,7 +344,6 @@ function endSession() {
   if (session.mode === 'lesson') {
     store.completeLesson(session.lesson.id, stars);
     merge(G.track(store, 'lesson', { mistakes: session.mistakes }));
-    if (session.spokeThisSession) merge(G.track(store, 'speak'));
   } else if (session.mode === 'review') {
     store.lang().reviewsDone += session.total;
     merge(G.track(store, 'review'));
@@ -353,7 +361,6 @@ function endSession() {
 function advance(wasCorrect, ex) {
   session.total += 1;
   if (!wasCorrect) session.mistakes += 1;
-  if (ex.type === 'speak') session.spokeThisSession = true;
   if (session.mode === 'baseline' || session.mode === 'retest') {
     if (wasCorrect) session.score += 1;
   } else {
@@ -393,10 +400,8 @@ function renderExercise() {
   switch (ex.type) {
     case 'match': body = renderMatch(ex); break;
     case 'multiple_choice': body = renderChoice(ex, ex.prompt); break;
-    case 'listen': body = renderListen(ex); break;
     case 'fill_blank': body = renderFill(ex); break;
     case 'translate': body = renderTranslate(ex); break;
-    case 'speak': body = renderSpeak(ex); break;
     default: body = '<p>Unknown exercise</p>';
   }
   const node = h(`<div class="screen ex">${progressBar()}<div class="ex__body">${body}</div><div class="ex__foot" id="foot"></div></div>`);
@@ -438,34 +443,11 @@ function renderFill(ex) {
     <div class="opts">${opts}</div>`;
 }
 
-function renderListen(ex) {
-  const opts = shuffle(ex.options).map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('');
-  const warn = ttsSupported() ? '' : '<p class="muted">Audio not available on this device — the words are shown so you can still learn.</p>';
-  return `<h2 class="ex__q">Listen and choose</h2>
-    <button class="play-btn" id="playBtn">🔊 Play</button>
-    ${warn}
-    <div class="opts">${opts}</div>`;
-}
-
 function renderTranslate(ex) {
   return `<h2 class="ex__q">Translate</h2>
     <p class="ex__prompt-big">${esc(ex.prompt)}</p>
     <input class="ex__input" id="answerInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type in ${esc(course.name)}…" />
     <button class="btn btn--primary check" id="checkBtn">Check</button>`;
-}
-
-function renderSpeak(ex) {
-  const canSR = srSupported();
-  return `<h2 class="ex__q">Speaking practice</h2>
-    <p class="ex__prompt-big">${esc(ex.text)}</p>
-    <p class="ex__phon muted">${esc(ex.meaning)}</p>
-    <button class="play-btn" id="hearBtn">🔊 Hear it</button>
-    <div class="speak-controls">
-      ${canSR ? '<button class="btn btn--primary" id="micBtn">🎤 Tap and say it</button>' : ''}
-      <button class="btn btn--ghost" id="saidBtn">I said it ✓</button>
-      <button class="btn btn--ghost" id="skipSpeak">Skip</button>
-    </div>
-    <p class="speak-status muted" id="speakStatus"></p>`;
 }
 
 function renderMatch(ex) {
@@ -477,7 +459,7 @@ function renderMatch(ex) {
 
 // --- wiring per exercise type ---
 function wireExercise(ex, node) {
-  if (ex.type === 'multiple_choice' || ex.type === 'fill_blank' || ex.type === 'listen') {
+  if (ex.type === 'multiple_choice' || ex.type === 'fill_blank') {
     node.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
       const ok = checkAnswer(ex, b.dataset.val);
       node.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
@@ -485,11 +467,6 @@ function wireExercise(ex, node) {
       if (!ok) node.querySelectorAll('.opt').forEach((x) => { if (normalize(x.dataset.val) === normalize(ex.answer)) x.classList.add('opt--ok'); });
       showFeedback(node, ok, ex, ex.answer);
     }));
-    if (ex.type === 'listen') {
-      const play = () => speak(ex.answer, ex.lang || course.code);
-      node.querySelector('#playBtn').addEventListener('click', play);
-      setTimeout(play, 350);
-    }
   }
 
   if (ex.type === 'translate') {
@@ -502,23 +479,6 @@ function wireExercise(ex, node) {
     input.focus();
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
     node.querySelector('#checkBtn').addEventListener('click', submit);
-  }
-
-  if (ex.type === 'speak') {
-    const status = node.querySelector('#speakStatus');
-    node.querySelector('#hearBtn').addEventListener('click', () => speak(ex.text, ex.lang || course.code));
-    setTimeout(() => speak(ex.text, ex.lang || course.code), 350);
-    const mic = node.querySelector('#micBtn');
-    if (mic) mic.addEventListener('click', async () => {
-      status.textContent = '🎤 Listening…';
-      const alts = await listenOnce(ex.lang || course.code);
-      if (alts === null) { status.textContent = "Couldn't hear clearly — tap “I said it” if you spoke it."; return; }
-      const ok = checkAnswer(ex, alts);
-      status.textContent = ok ? `Heard: “${alts[0]}”` : `Heard: “${alts[0] || '…'}” — try again or tap “I said it”.`;
-      if (ok) showFeedback(node, true, ex, ex.text);
-    });
-    node.querySelector('#saidBtn').addEventListener('click', () => showFeedback(node, true, ex, ex.text));
-    node.querySelector('#skipSpeak').addEventListener('click', () => advance(true, ex)); // speaking is practice, never costs a heart
   }
 
   if (ex.type === 'match') {
@@ -789,9 +749,11 @@ function renderReadingIntro(readId) {
       <button class="btn btn--primary" id="quizBtn">I've read it — answer questions</button>
     </div>`);
   node.querySelector('#back').addEventListener('click', renderLibrary);
-  node.querySelectorAll('[data-line]').forEach((b) => b.addEventListener('click', () => speak(r.lines[b.dataset.line].t, course.code)));
+  node.querySelectorAll('[data-line]').forEach((b) => b.addEventListener('click', () => tryHear(r.lines[b.dataset.line].t, course.code)));
   node.querySelector('#playAll').addEventListener('click', async () => {
-    for (const ln of r.lines) { await speak(ln.t, course.code); }
+    let any = false;
+    for (const ln of r.lines) { const ok = await speak(ln.t, course.code); any = any || ok; }
+    if (!any) flashToast('Audio for this language isn’t available on this device yet.');
   });
   node.querySelector('#quizBtn').addEventListener('click', () => {
     session = { mode: 'reading', reading: r, lesson: null, queue: r.questions.map((q, i) => ({ ...q, _i: i })), idx: 0, mistakes: 0, total: 0 };
