@@ -283,7 +283,7 @@ function renderQuests() {
 function startLesson(lessonId) {
   if (store.lang().hearts <= 0) return renderHeartsModal();
   const lesson = findLesson(course, lessonId);
-  session = { mode: 'lesson', lesson, queue: buildLessonSession(lesson), idx: 0, mistakes: 0, total: 0 };
+  session = { mode: 'lesson', lesson, queue: buildLessonSession(lesson, course, store.dueItems()), idx: 0, mistakes: 0, total: 0 };
   renderExercise();
 }
 

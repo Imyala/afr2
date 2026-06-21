@@ -44,9 +44,18 @@ test (see `docs/TESTING.md`) to catch mistakes.
 }
 ```
 
-**Authoring rule:** introduce a word with a *recognition* exercise (match or
-multiple choice) before asking the learner to *produce* it (translate/fill/
-speak). The SRS relies on this ordering.
+**You mostly only need to add vocab.** Lesson sessions are **generated** from
+the `vocab` list (`buildLessonSession` in `src/lessons.js`): every word is
+automatically quizzed with a *recognition* exposure (match / multiple choice)
+and a later *production* exposure (translate), with randomised types, question
+direction, distractors and order — so lessons cover everything, repeat each
+word, and don't feel scripted. Add a word to `vocab` and it's taught.
+
+The `exercises` array is now **optional flavour**. Only `fill_blank` items are
+used (1–2 are mixed in per session for sentence context); authored `match` /
+`multiple_choice` / `translate` items are ignored because generation covers
+them. `listen` / `speak` are never used pending recorded audio. You can still
+author `fill_blank` items for cultural sentences — see below.
 
 ## Exercise types
 

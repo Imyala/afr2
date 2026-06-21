@@ -72,73 +72,97 @@ export function checkAnswer(ex, response) {
   }
 }
 
-// On-device speech synthesis/recognition for SA languages is unreliable or
-// absent, which made "listen" and "speak" exercises impossible to answer
-// offline. Until we ship recorded native-speaker audio:
-//   - "speak" exercises are dropped from the graded flow, and
-//   - "listen" exercises are converted into a text multiple-choice
-//     ("How do you say X?") so the word is still practised and the answer is
-//     always knowable. (The authored audio items stay in the content files so
-//     they can be re-enabled once real audio exists.)
-export function buildLessonSession(lesson) {
-  const vById = {};
-  for (const v of (lesson.vocab || [])) vById[v.id] = v;
+// ---------------------------------------------------------------------------
+// Exercise generation
+//
+// Rather than depending on a fixed, hand-authored list per lesson, sessions are
+// generated from the vocabulary. This guarantees every word is quizzed, builds
+// in repetition (each word gets a recognition AND a production exposure, spaced
+// apart), and keeps things from feeling scripted (types, question direction,
+// distractors and order are randomised every run). Hand-authored contextual
+// fill-in-the-blank items are mixed in as flavour. On-device speech I/O for SA
+// languages is unreliable, so listen/speak items are never generated.
+// ---------------------------------------------------------------------------
+
+const shuffle = (a) => a.map((v) => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
+
+function distractors(target, pool, n, key) {
+  const seen = new Set([normalize(target[key])]);
   const out = [];
-  for (const ex of (lesson.exercises || [])) {
-    if (ex.type === 'speak') continue;
-    if (ex.type === 'listen') {
-      const v = vById[ex.vocabId];
-      if (!v) continue; // can't reframe without the meaning — skip
-      out.push({
-        type: 'multiple_choice',
-        prompt: `How do you say “${v.translation}”?`,
-        answer: ex.answer,
-        options: ex.options,
-        vocabId: ex.vocabId,
-      });
-      continue;
-    }
-    out.push(ex);
+  for (const v of shuffle(pool)) {
+    const k = normalize(v[key]);
+    if (v.id === target.id || seen.has(k)) continue;
+    seen.add(k); out.push(v);
+    if (out.length >= n) break;
   }
-  return out.map((ex, i) => ({ ...ex, _i: i }));
+  return out;
 }
 
-// Generate review exercises for a set of due vocab ids, drawing distractors
-// from the wider course. Mixes recognition and production for honest testing.
+// Recognition: randomly term->meaning or meaning->term multiple choice.
+function genRecognition(v, pool) {
+  if (Math.random() < 0.5) {
+    const opts = shuffle([v.translation, ...distractors(v, pool, 3, 'translation').map((d) => d.translation)]);
+    return { type: 'multiple_choice', prompt: `“${v.term}” means:`, answer: v.translation, options: opts, vocabId: v.id };
+  }
+  const opts = shuffle([v.term, ...distractors(v, pool, 3, 'term').map((d) => d.term)]);
+  return { type: 'multiple_choice', prompt: `How do you say “${v.translation}”?`, answer: v.term, options: opts, vocabId: v.id };
+}
+
+// Production: type the target word from its meaning.
+function genProduction(v) {
+  return { type: 'translate', prompt: v.translation, answer: v.term, accept: [v.term.toLowerCase()], vocabId: v.id };
+}
+
+function genMatch(words) {
+  return { type: 'match', pairs: shuffle(words).map((v) => [v.term, v.translation]) };
+}
+
+// Build a lesson session: covers every word with recognition + production,
+// optionally warmed up with a couple of due words from earlier lessons.
+export function buildLessonSession(lesson, course = null, dueIds = []) {
+  const vocab = lesson.vocab || [];
+  const byId = course ? vocabIndex(course) : Object.fromEntries(vocab.map((v) => [v.id, v]));
+  const pool = Object.values(byId);
+
+  // recognition phase: one intro match over a random subset, MC for the rest
+  const matchWords = shuffle(vocab).slice(0, Math.min(4, vocab.length));
+  const inMatch = new Set(matchWords.map((v) => v.id));
+  const recognition = vocab.length >= 3 ? [genMatch(matchWords)] : [];
+  for (const v of vocab) if (!inMatch.has(v.id)) recognition.push(genRecognition(v, pool));
+
+  // production phase: every word
+  const production = vocab.map((v) => genProduction(v));
+
+  // flavour: 1-2 authored contextual fill-in-the-blanks (kept from content)
+  const authoredFill = (lesson.exercises || []).filter((e) => e.type === 'fill_blank');
+  const flavour = shuffle(authoredFill).slice(0, Math.min(2, authoredFill.length));
+
+  // cross-lesson repetition: up to 2 due words that aren't in this lesson
+  const lessonIds = new Set(vocab.map((v) => v.id));
+  const warmup = (dueIds || [])
+    .map((id) => byId[id])
+    .filter((v) => v && !lessonIds.has(v.id))
+    .slice(0, 2)
+    .map((v) => ({ ...genRecognition(v, pool), _review: true }));
+
+  const queue = [
+    ...warmup,
+    ...shuffle([...recognition, ...flavour]),
+    ...shuffle(production),
+  ];
+  return queue.map((ex, i) => ({ ...ex, _i: i }));
+}
+
+// Build a review session from due vocab ids, with randomised, varied items.
 export function buildReviewSession(course, dueIds, max = 15) {
   const byId = vocabIndex(course);
-  const all = Object.values(byId);
-  const picked = dueIds.map((id) => byId[id]).filter(Boolean).slice(0, max);
-  const exercises = [];
-  picked.forEach((v, idx) => {
-    const distractors = all
-      .filter((o) => o.id !== v.id && o.translation !== v.translation)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 3);
-    if (idx % 2 === 0) {
-      // production: translate English -> target
-      exercises.push({
-        type: 'translate',
-        prompt: v.translation,
-        answer: v.term,
-        accept: [v.term.toLowerCase()],
-        vocabId: v.id,
-        _review: true,
-      });
-    } else {
-      // recognition: choose the meaning
-      const options = [v, ...distractors].map((x) => x.translation).sort(() => Math.random() - 0.5);
-      exercises.push({
-        type: 'multiple_choice',
-        prompt: `"${v.term}" means:`,
-        answer: v.translation,
-        options,
-        vocabId: v.id,
-        _review: true,
-      });
-    }
+  const pool = Object.values(byId);
+  const picked = shuffle(dueIds.map((id) => byId[id]).filter(Boolean)).slice(0, max);
+  // production is the stronger test, so bias towards it but keep variety
+  return picked.map((v) => {
+    const ex = Math.random() < 0.6 ? genProduction(v) : genRecognition(v, pool);
+    return { ...ex, _review: true };
   });
-  return exercises;
 }
 
 // Map exercises to the vocab ids they exercise (for SRS crediting).

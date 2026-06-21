@@ -33,6 +33,7 @@ for the full explanation. In short:
 | Proven method | How MzansiLingo uses it |
 |---|---|
 | **Spaced repetition (SM-2)** | Every word is scheduled for review at the moment you're about to forget it (`src/srs.js`). |
+| **Generated, interleaved practice** | Sessions are generated from the vocab (`buildLessonSession`): every word is quizzed with a recognition *and* a spaced production exposure, plus a short cross-lesson review warm-up. Types/order/distractors are randomised so it reinforces without feeling scripted. |
 | **Active recall / production** | Recognition (multiple choice) is the *weakest* signal. A word only becomes **mastered** once you've typed it correctly *and* it survived a spaced review. |
 | **Mastery-based progress** | The Progress page reports **words mastered**, **retention %**, and **still learning** — honest learning metrics, not just XP. |
 | **Measured outcomes** | A **baseline test** records where you start. After ~1 month of daily practice, a **re-test** shows your exact improvement. This is the "real progress in 1 month" proof. |

@@ -55,17 +55,33 @@ for (const c of ['zu', 'xh', 'af']) {
       if (ex.type === 'translate') ok(ex.answer && ex.prompt, `${l.id} translate has answer+prompt`);
       if (ex.type === 'match') ok(ex.pairs.length >= 3, `${l.id} match has >=3 pairs`);
     }
-    // audio-free graded flow: the built session must contain no listen/speak,
-    // and converting/removing audio must not orphan any word that was already
-    // practised (coverage after >= coverage before this change).
-    const session = buildLessonSession(l);
-    ok(session.every((ex) => ex.type !== 'listen' && ex.type !== 'speak'), `${l.id} built session has no audio exercises`);
-    ok(session.length > 0, `${l.id} built session is non-empty`);
-    const coveredBefore = new Set();
-    for (const ex of l.exercises) for (const vid of exerciseVocabIds(ex, l)) coveredBefore.add(vid);
-    const coveredAfter = new Set();
-    for (const ex of session) for (const vid of exerciseVocabIds(ex, l)) coveredAfter.add(vid);
-    for (const vid of coveredBefore) ok(coveredAfter.has(vid), `${l.id} word ${vid} still practised after audio removal`);
+    // generated sessions (run several times because generation is randomised):
+    // - never contain audio exercises
+    // - quiz EVERY vocab word
+    // - give each word a recognition exposure before its production exposure
+    // - produce valid multiple-choice (answer present, options unique)
+    for (let iter = 0; iter < 25; iter++) {
+      const session = buildLessonSession(l, course);
+      if (session.some((ex) => ex.type === 'listen' || ex.type === 'speak')) { ok(false, `${l.id} generated audio exercise`); break; }
+      const recAt = {}, prodAt = {}, covered = new Set();
+      session.forEach((ex, i) => {
+        for (const vid of exerciseVocabIds(ex, l)) {
+          covered.add(vid);
+          if (ex.type === 'translate') { if (prodAt[vid] === undefined) prodAt[vid] = i; }
+          else if (recAt[vid] === undefined) recAt[vid] = i;
+        }
+        if (ex.type === 'multiple_choice') {
+          if (!ex.options.map(normalize).includes(normalize(ex.answer))) ok(false, `${l.id} generated MC missing answer`);
+          if (new Set(ex.options.map(normalize)).size !== ex.options.length) ok(false, `${l.id} generated MC dup options`);
+        }
+      });
+      for (const v of l.vocab) {
+        if (!covered.has(v.id)) { ok(false, `${l.id} word ${v.id} not quizzed (iter ${iter})`); continue; }
+        if (prodAt[v.id] === undefined) { ok(false, `${l.id} word ${v.id} has no production`); continue; }
+        if (recAt[v.id] === undefined || recAt[v.id] > prodAt[v.id]) ok(false, `${l.id} word ${v.id} production before recognition`);
+      }
+    }
+    ok(true, `${l.id} generated sessions valid across 25 runs`);
   }
   // reading content integrity
   for (const r of (course.reading || [])) {
