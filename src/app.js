@@ -7,6 +7,7 @@ import {
   checkAnswer, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
 } from './lessons.js';
 import * as G from './gamify.js';
+import * as Shop from './shop.js';
 
 let LIBRARY = null;   // library.json
 
@@ -24,6 +25,7 @@ function fmtTime(ms) { const m = Math.ceil(ms / 60000); return `${m} min`; }
 
 // ---------- boot ----------
 async function boot() {
+  Shop.applyTheme(store);
   LANGS = await loadLanguages();
   if (!store.state.activeLang) return renderLanguageSelect(true);
   await openLanguage(store.state.activeLang);
@@ -118,6 +120,10 @@ function renderHome() {
   const target = G.leagueTarget(lg.tier);
   const lgPct = Math.min(100, Math.round((lg.weeklyXp / target) * 100));
   const hasReading = (course.reading || []).length > 0;
+  const mascot = Shop.equippedMascot(store);
+  const wotd = wordOfTheDay();
+  const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
+  const boostN = Shop.inventory(store).boosts.double_xp || 0;
 
   const node = h(`
     <div class="screen">
@@ -135,10 +141,21 @@ function renderHome() {
           <span>${L.xpToday}/${goal}</span>
         </div>
         <div class="goal__text">
-          <strong>Daily goal</strong>
+          <strong>${mascot.icon} ${pct >= 100 ? 'Sharp sharp!' : 'Daily goal'}</strong>
           <p class="muted">${pct >= 100 ? 'Done for today — well played! 🎉' : `${goal - L.xpToday} XP to keep your streak`}</p>
+          ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
         </div>
       </section>
+
+      ${wotd ? `<button class="card wotd-card" id="wotdBtn">
+        <span class="wotd__icon">🗓️</span>
+        <div class="wotd__body">
+          <span class="wotd__label">Word of the day${wotdLearned ? ' · learned ✓' : ''}</span>
+          <strong class="wotd__term">${esc(wotd.term)}</strong>
+          <span class="muted">${esc(wotd.translation)}</span>
+        </div>
+        <span class="wotd__play">🔊</span>
+      </button>` : ''}
 
       <div class="actions">
         <button class="btn btn--review" id="reviewBtn" ${due ? '' : 'disabled'}>
@@ -166,9 +183,9 @@ function renderHome() {
       <nav class="bottombar">
         <button class="navbtn navbtn--active">🏠 Home</button>
         <button class="navbtn" id="storiesNav" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
+        <button class="navbtn" id="shopNav">🛒 Shop</button>
         <button class="navbtn" id="achBtn">🏅 Badges</button>
         <button class="navbtn" id="progressBtn2">📊 Progress</button>
-        <button class="navbtn" id="premiumBtn">⭐ Premium</button>
       </nav>
     </div>`);
 
@@ -178,13 +195,57 @@ function renderHome() {
   node.querySelector('#reviewBtn').addEventListener('click', startReview);
   node.querySelector('#storiesBtn').addEventListener('click', renderLibrary);
   node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
+  node.querySelector('#shopNav').addEventListener('click', renderShop);
   node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
   node.querySelector('#achBtn').addEventListener('click', renderAchievements);
   node.querySelector('#progressBtn2').addEventListener('click', renderProgress);
-  node.querySelector('#premiumBtn').addEventListener('click', renderPremium);
-  node.querySelector('#gemsBtn').addEventListener('click', renderLeague);
+  node.querySelector('#gemsBtn').addEventListener('click', renderShop);
   node.querySelector('#streakBtn').addEventListener('click', renderLeague);
   node.querySelector('#heartsBtn').addEventListener('click', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
+  const wb = node.querySelector('#wotdBtn'); if (wb) wb.addEventListener('click', renderWotd);
+  mount(node);
+}
+
+// ---------- word of the day (offline, from the active course vocab) ----------
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+function wordOfTheDay() {
+  const all = Object.values(vocabIndex(course));
+  if (!all.length) return null;
+  const tk = todayStr();
+  let s = 0; for (let i = 0; i < tk.length; i++) s = (s * 31 + tk.charCodeAt(i)) >>> 0;
+  return all[s % all.length];
+}
+
+function renderWotd() {
+  const w = wordOfTheDay();
+  if (!w) return renderHome();
+  const L = store.lang();
+  const already = L.wotd && L.wotd.day === todayStr() && L.wotd.learned;
+  const node = h(`
+    <div class="screen screen--center">
+      <div class="result__emoji">🗓️</div>
+      <h1>Word of the Day</h1>
+      <div class="wotd-big">
+        <strong>${esc(w.term)}</strong>
+        <span class="wotd-big__phon muted">${esc(w.phonetic || '')}</span>
+        <span class="wotd-big__tr">${esc(w.translation)}</span>
+        ${w.note ? `<span class="muted">(${esc(w.note)})</span>` : ''}
+      </div>
+      <button class="play-btn" id="hear">🔊 Hear it</button>
+      <button class="btn btn--primary" id="learn">${already ? 'Learned ✓ — practise again' : 'Add to my reviews (+5 XP)'}</button>
+      <button class="btn btn--ghost" id="back">Back</button>
+    </div>`);
+  node.querySelector('#hear').addEventListener('click', () => speak(w.term, course.code));
+  setTimeout(() => speak(w.term, course.code), 350);
+  node.querySelector('#learn').addEventListener('click', () => {
+    const it = store.item(w.id);
+    srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice'); // introduce into the SRS schedule
+    if (!already) { store.addXp(5); store.lang().wotd = { day: todayStr(), learned: true }; }
+    store.save();
+    flashToast('Added to your reviews! 🎉');
+    setTimeout(renderHome, 700);
+  });
+  node.querySelector('#back').addEventListener('click', renderHome);
   mount(node);
 }
 
@@ -235,11 +296,20 @@ function endSession() {
   if (session.mistakes >= 3) stars = 1;
 
   // award XP once at the end (keeps league/quest tracking clean)
-  const earned = XP_PER_CORRECT * Math.max(1, correct) + (session.mode === 'lesson' ? XP_LESSON_BONUS : 0);
+  const baseXp = XP_PER_CORRECT * Math.max(1, correct) + (session.mode === 'lesson' ? XP_LESSON_BONUS : 0);
+  const boost = Shop.applyXpBoost(store, baseXp);
+  const earned = boost.amount;
+  session.xpBoosted = boost.boosted;
   store.addXp(earned);
+
+  // small gem trickle for finishing, so the shop is reachable through play
+  const GEM_REWARD = { lesson: 5, review: 3, reading: 5 };
+  const baseGems = GEM_REWARD[session.mode] || 0;
+  if (baseGems) store.state.gems = (store.state.gems || 0) + baseGems;
 
   // gamification events
   let rewards = G.track(store, 'xp', { amount: earned });
+  rewards.gems += baseGems;
   const merge = (r) => { rewards.quests.push(...r.quests); rewards.achievements.push(...r.achievements); rewards.gems += r.gems; };
   if (session.mode === 'lesson') {
     store.completeLesson(session.lesson.id, stars);
@@ -469,10 +539,11 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
       <div class="result__emoji">🎉</div>
       <h1>${title}</h1>
       <div class="result__stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
+      ${session.xpBoosted ? '<div class="boost-badge">⚡ Double XP applied!</div>' : ''}
       <div class="result__row">
         <div class="kpi"><span class="kpi__v">${correct}/${total}</span><span class="kpi__k">Correct</span></div>
-        <div class="kpi"><span class="kpi__v">${acc}%</span><span class="kpi__k">Accuracy</span></div>
         <div class="kpi"><span class="kpi__v">+${session.earned || 0}</span><span class="kpi__k">XP</span></div>
+        <div class="kpi"><span class="kpi__v">+💎${rewards.gems || 0}</span><span class="kpi__k">Gems</span></div>
       </div>
       ${questHtml}
       ${achHtml}
@@ -772,6 +843,70 @@ function flashToast(msg) {
   const t = h(`<div class="toast">${esc(msg)}</div>`);
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 1600);
+}
+
+// ---------- rewards shop ----------
+function renderShop() {
+  const inv = Shop.inventory(store);
+  const gems = G.gems(store);
+
+  const powerCard = (p) => `
+    <div class="shop-item">
+      <span class="shop-item__icon">${p.icon}</span>
+      <div class="shop-item__body"><strong>${esc(p.name)}</strong><span class="muted">${esc(p.desc)}</span></div>
+      <button class="shop-buy ${gems < p.cost ? 'shop-buy--off' : ''}" data-buy="${p.id}">💎${p.cost}</button>
+    </div>`;
+
+  const cosmeticCard = (c, kind) => {
+    const owned = inv.owned[c.id];
+    const equipped = inv.equipped[kind] === c.id;
+    const action = equipped
+      ? '<span class="shop-eq">Equipped</span>'
+      : owned
+        ? `<button class="shop-buy shop-buy--equip" data-equip="${c.id}">Equip</button>`
+        : `<button class="shop-buy ${gems < c.cost ? 'shop-buy--off' : ''}" data-buy="${c.id}">💎${c.cost}</button>`;
+    return `<div class="shop-item ${equipped ? 'shop-item--eq' : ''}">
+      <span class="shop-item__icon">${c.icon}</span>
+      <div class="shop-item__body"><strong>${esc(c.name)}</strong><span class="muted">${esc(c.desc || '')}</span></div>
+      ${action}
+    </div>`;
+  };
+
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Shop</strong><span class="stat stat--gems">💎 ${gems}</span></header>
+      <p class="muted">Earn 💎 gems from quests, badges, daily logins and finishing lessons — then spend them here.</p>
+
+      <h3 class="sec">⚡ Power-ups</h3>
+      <div class="shop-list">${Shop.POWERUPS.map(powerCard).join('')}</div>
+
+      <h3 class="sec">🐾 Buddies</h3>
+      <div class="shop-list">${Shop.MASCOTS.map((m) => cosmeticCard(m, 'mascot')).join('')}</div>
+
+      <h3 class="sec">🎨 Themes</h3>
+      <div class="shop-list">${Shop.THEMES.map((t) => cosmeticCard(t, 'theme')).join('')}</div>
+
+      <h3 class="sec">⭐ Premium</h3>
+      <button class="card" id="premiumBanner" style="text-align:left">
+        <strong>Unlock everything with Premium</strong>
+        <span class="muted">All languages, unlimited hearts, offline book packs and more.</span>
+      </button>
+    </div>`);
+
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#premiumBanner').addEventListener('click', renderPremium);
+  node.querySelectorAll('[data-buy]').forEach((b) => b.addEventListener('click', () => {
+    const res = Shop.buy(store, b.dataset.buy);
+    if (res.ok) { Shop.applyTheme(store); flashToast(`Got ${res.item.name}! 🎉`); renderShop(); }
+    else flashToast(res.reason);
+  }));
+  node.querySelectorAll('[data-equip]').forEach((b) => b.addEventListener('click', () => {
+    Shop.equip(store, b.dataset.equip);
+    Shop.applyTheme(store);
+    flashToast('Equipped!');
+    renderShop();
+  }));
+  mount(node);
 }
 
 // ---------- service worker ----------

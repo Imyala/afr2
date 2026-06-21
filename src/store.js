@@ -35,6 +35,7 @@ function freshLang() {
     perfectLessons: 0,
     readingsCompleted: 0,
     completedReadings: [],
+    wotd: null,              // { day, learned } — word-of-the-day state
   };
 }
 
@@ -50,6 +51,11 @@ function freshState() {
     achievements: {},       // achievementId -> unlock date
     dailyReward: { lastClaim: null, streak: 0 },
     studiedLangs: [],       // codes the learner has opened (for the Polyglot badge)
+    inventory: {            // shop purchases (cosmetics + power-ups)
+      owned: { zebra: true, savanna: true },
+      equipped: { mascot: 'zebra', theme: 'savanna' },
+      boosts: { double_xp: 0 },
+    },
   };
 }
 

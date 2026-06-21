@@ -266,6 +266,34 @@ button { font-family: inherit; cursor: pointer; }
 
 .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 700; z-index: 50; box-shadow: var(--shadow); }
 
+/* word of the day */
+.wotd-card { display: flex; align-items: center; gap: 14px; }
+.wotd__icon { font-size: 26px; }
+.wotd__body { flex: 1; display: grid; gap: 1px; }
+.wotd__label { font-size: 11px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: .5px; }
+.wotd__term { font-size: 19px; color: var(--green); }
+.wotd__play { font-size: 22px; }
+.wotd-big { display: grid; gap: 4px; justify-items: center; background: var(--card); border-radius: var(--radius); padding: 22px 28px; box-shadow: var(--shadow); }
+.wotd-big strong { font-size: 30px; color: var(--green); }
+.wotd-big__tr { font-size: 18px; font-weight: 700; }
+
+/* xp boost */
+.boost-badge { background: #fff0d4; color: #8a5a00; font-weight: 800; padding: 8px 14px; border-radius: 999px; }
+.boost-chip { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 800; color: #8a5a00; background: #fff0d4; padding: 3px 8px; border-radius: 999px; }
+
+/* shop */
+.shop-list { display: grid; gap: 10px; }
+.shop-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius); background: var(--card); border: 2px solid var(--line); box-shadow: var(--shadow); }
+.shop-item--eq { border-color: var(--green); }
+.shop-item__icon { font-size: 30px; flex: 0 0 auto; }
+.shop-item__body { flex: 1; display: grid; gap: 1px; }
+.shop-item__body .muted { font-size: 13px; }
+.shop-buy { border: none; border-radius: 12px; padding: 10px 14px; font-weight: 800; background: var(--gold); color: #3a2c00; box-shadow: 0 3px 0 #c79412; white-space: nowrap; }
+.shop-buy:active { transform: translateY(2px); box-shadow: 0 1px 0 #c79412; }
+.shop-buy--equip { background: var(--green); color: #fff; box-shadow: 0 3px 0 var(--green-dark); }
+.shop-buy--off { opacity: .5; }
+.shop-eq { font-weight: 800; color: var(--green); font-size: 13px; white-space: nowrap; }
+
 @media (prefers-color-scheme: dark) {
   :root { --bg: #0f1d17; --card: #16271f; --ink: #e9f1ec; --muted: #9fb2a8; --line: #243a30; }
   .opt { box-shadow: none; }

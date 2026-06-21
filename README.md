@@ -54,7 +54,8 @@ for the full explanation. In short:
 - 🏅 **Achievement badges** (12 milestones)
 - 🏆 **Weekly leagues** (Bronze → Diamond) you climb with XP
 - 🎁 **Daily login reward** that grows with consecutive days
-- ⭐ XP, hearts/lives, daily goal ring, gem shop
+- 🗓️ **Word of the Day** (Pod101-inspired) — one tap to add it to your reviews
+- 🛒 **Rewards shop**: spend earned gems on power-ups (⚡ Double XP, ❄️ Streak Freeze, ❤️ Heart Refill) and cosmetics (🐾 SA-animal buddies, 🎨 colour themes)
 
 **Platform**
 - 📶 **Full offline use** via service worker — install to home screen
