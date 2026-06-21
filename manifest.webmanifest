@@ -1,0 +1,18 @@
+{
+  "name": "MzansiLingo — Learn South African Languages",
+  "short_name": "MzansiLingo",
+  "description": "Learn real South African languages offline, with spaced repetition for real, measurable progress.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1d17",
+  "theme_color": "#1b7a43",
+  "lang": "en-ZA",
+  "categories": ["education"],
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "assets/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

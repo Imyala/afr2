@@ -1,0 +1,137 @@
+{
+  "code": "af",
+  "name": "Afrikaans",
+  "englishName": "Afrikaans",
+  "units": [
+    {
+      "id": "af-u1",
+      "title": "Unit 1: Basics",
+      "level": "Beginner",
+      "lessons": [
+        {
+          "id": "af-u1-l1",
+          "title": "Greetings",
+          "culturalNote": "Afrikaans greetings change with the time of day: \"Goeie môre\" (good morning), \"Goeie middag\" (good afternoon), \"Goeie naand\" (good evening). \"Hoe gaan dit?\" literally means \"How goes it?\".",
+          "vocab": [
+            {"id": "af-hallo", "term": "Hallo", "translation": "Hello", "phonetic": "HAH-loh"},
+            {"id": "af-goeiemore", "term": "Goeie môre", "translation": "Good morning", "phonetic": "KHOO-yuh MAW-ruh"},
+            {"id": "af-hoegaandit", "term": "Hoe gaan dit?", "translation": "How are you?", "phonetic": "hoo khaan dit"},
+            {"id": "af-goeddankie", "term": "Goed dankie", "translation": "Good, thank you", "phonetic": "khoot DAHN-kee"},
+            {"id": "af-enmetjou", "term": "En met jou?", "translation": "And with you?", "phonetic": "en met yoh"},
+            {"id": "af-totsiens", "term": "Totsiens", "translation": "Goodbye", "phonetic": "tot-SEENS"}
+          ],
+          "exercises": [
+            {"type": "match", "pairs": [["Hallo", "Hello"], ["Hoe gaan dit?", "How are you?"], ["Goed dankie", "Good, thank you"], ["Totsiens", "Goodbye"]]},
+            {"type": "multiple_choice", "prompt": "\"Goeie môre\" means:", "answer": "Good morning", "options": ["Good night", "Good morning", "Goodbye", "Thank you"], "vocabId": "af-goeiemore"},
+            {"type": "translate", "prompt": "Good, thank you", "answer": "Goed dankie", "accept": ["goed dankie"], "vocabId": "af-goeddankie"},
+            {"type": "fill_blank", "sentence": "____ gaan dit?", "answer": "Hoe", "options": ["Hoe", "Goed", "Hallo", "Met"], "meaning": "How are you?", "vocabId": "af-hoegaandit"},
+            {"type": "listen", "prompt": "Tap what you hear", "answer": "Totsiens", "options": ["Totsiens", "Hallo", "Dankie", "Goed"], "lang": "af", "vocabId": "af-totsiens"},
+            {"type": "speak", "text": "Goed dankie, en met jou?", "meaning": "Good thanks, and with you?", "lang": "af"}
+          ]
+        },
+        {
+          "id": "af-u1-l2",
+          "title": "Yes, No & Politeness",
+          "culturalNote": "\"Asseblief\" (please) and \"dankie\" (thank you) are used everywhere. \"Jammer\" means \"sorry\". Adding \"asseblief\" to any request makes it polite.",
+          "vocab": [
+            {"id": "af-ja", "term": "Ja", "translation": "Yes", "phonetic": "yah"},
+            {"id": "af-nee", "term": "Nee", "translation": "No", "phonetic": "neeh"},
+            {"id": "af-asseblief", "term": "Asseblief", "translation": "Please", "phonetic": "ah-suh-BLEEF"},
+            {"id": "af-dankie", "term": "Dankie", "translation": "Thank you", "phonetic": "DAHN-kee"},
+            {"id": "af-jammer", "term": "Jammer", "translation": "Sorry", "phonetic": "YAH-mer"}
+          ],
+          "exercises": [
+            {"type": "match", "pairs": [["Ja", "Yes"], ["Nee", "No"], ["Asseblief", "Please"], ["Dankie", "Thank you"]]},
+            {"type": "multiple_choice", "prompt": "How do you say \"please\"?", "answer": "Asseblief", "options": ["Dankie", "Asseblief", "Jammer", "Nee"], "vocabId": "af-asseblief"},
+            {"type": "translate", "prompt": "Thank you", "answer": "Dankie", "accept": ["dankie"], "vocabId": "af-dankie"},
+            {"type": "fill_blank", "sentence": "Water ____, asseblief.", "answer": "Ja", "options": ["Ja", "Nee", "Jammer", "Dankie"], "meaning": "Yes water, please.", "vocabId": "af-ja"},
+            {"type": "speak", "text": "Dankie, jammer", "meaning": "Thank you, sorry", "lang": "af"}
+          ]
+        },
+        {
+          "id": "af-u1-l3",
+          "title": "Family",
+          "culturalNote": "Afrikaans family words are warm and short. Children often call their parents \"Ma\" and \"Pa\". Grandparents are \"Ouma\" and \"Oupa\".",
+          "vocab": [
+            {"id": "af-ma", "term": "ma", "translation": "mother", "phonetic": "mah"},
+            {"id": "af-pa", "term": "pa", "translation": "father", "phonetic": "pah"},
+            {"id": "af-suster", "term": "suster", "translation": "sister", "phonetic": "SUS-ter"},
+            {"id": "af-broer", "term": "broer", "translation": "brother", "phonetic": "broor"},
+            {"id": "af-ouma", "term": "ouma", "translation": "grandmother", "phonetic": "OH-mah"},
+            {"id": "af-oupa", "term": "oupa", "translation": "grandfather", "phonetic": "OH-pah"},
+            {"id": "af-kind", "term": "kind", "translation": "child", "phonetic": "kint"}
+          ],
+          "exercises": [
+            {"type": "match", "pairs": [["ma", "mother"], ["pa", "father"], ["ouma", "grandmother"], ["kind", "child"]]},
+            {"type": "multiple_choice", "prompt": "\"broer\" means:", "answer": "brother", "options": ["sister", "brother", "father", "child"], "vocabId": "af-broer"},
+            {"type": "translate", "prompt": "grandfather", "answer": "oupa", "accept": ["oupa"], "vocabId": "af-oupa"},
+            {"type": "fill_blank", "sentence": "My ____ is vyf jaar oud.", "answer": "kind", "options": ["kind", "ouma", "pa", "suster"], "meaning": "My child is five years old.", "vocabId": "af-kind"},
+            {"type": "listen", "prompt": "Tap what you hear", "answer": "suster", "options": ["suster", "broer", "ouma", "oupa"], "lang": "af", "vocabId": "af-suster"}
+          ]
+        },
+        {
+          "id": "af-u1-l4",
+          "title": "Numbers 1–10",
+          "culturalNote": "Afrikaans numbers are close to Dutch and German. Notice \"sewe\" (seven) and \"agt\" (eight).",
+          "vocab": [
+            {"id": "af-een", "term": "een", "translation": "one", "phonetic": "eeyn"},
+            {"id": "af-twee", "term": "twee", "translation": "two", "phonetic": "tveeh"},
+            {"id": "af-drie", "term": "drie", "translation": "three", "phonetic": "dree"},
+            {"id": "af-vier", "term": "vier", "translation": "four", "phonetic": "feer"},
+            {"id": "af-vyf", "term": "vyf", "translation": "five", "phonetic": "fayf"},
+            {"id": "af-ses", "term": "ses", "translation": "six", "phonetic": "ses"},
+            {"id": "af-sewe", "term": "sewe", "translation": "seven", "phonetic": "SEH-vuh"},
+            {"id": "af-tien", "term": "tien", "translation": "ten", "phonetic": "teen"}
+          ],
+          "exercises": [
+            {"type": "match", "pairs": [["een", "one"], ["twee", "two"], ["drie", "three"], ["vyf", "five"]]},
+            {"type": "multiple_choice", "prompt": "How do you say \"seven\"?", "answer": "sewe", "options": ["ses", "sewe", "vyf", "tien"], "vocabId": "af-sewe"},
+            {"type": "translate", "prompt": "four", "answer": "vier", "accept": ["vier"], "vocabId": "af-vier"},
+            {"type": "fill_blank", "sentence": "Ek wil ____ brode hê.", "answer": "twee", "options": ["twee", "een", "tien", "vyf"], "meaning": "I want two breads.", "vocabId": "af-twee"},
+            {"type": "listen", "prompt": "Tap the number you hear", "answer": "tien", "options": ["tien", "een", "drie", "ses"], "lang": "af", "vocabId": "af-tien"}
+          ]
+        },
+        {
+          "id": "af-u1-l5",
+          "title": "Food & Drink",
+          "culturalNote": "South African food culture is rich in Afrikaans words: \"braai\" (barbecue), \"biltong\" (dried meat), and \"koeksister\" (a sweet treat). Here are the basics.",
+          "vocab": [
+            {"id": "af-kos", "term": "kos", "translation": "food", "phonetic": "kos"},
+            {"id": "af-water", "term": "water", "translation": "water", "phonetic": "VAH-ter"},
+            {"id": "af-brood", "term": "brood", "translation": "bread", "phonetic": "broht"},
+            {"id": "af-melk", "term": "melk", "translation": "milk", "phonetic": "melk"},
+            {"id": "af-tee", "term": "tee", "translation": "tea", "phonetic": "teeh"},
+            {"id": "af-vleis", "term": "vleis", "translation": "meat", "phonetic": "flayss"}
+          ],
+          "exercises": [
+            {"type": "match", "pairs": [["water", "water"], ["brood", "bread"], ["melk", "milk"], ["vleis", "meat"]]},
+            {"type": "multiple_choice", "prompt": "\"kos\" means:", "answer": "food", "options": ["food", "drink", "bread", "meat"], "vocabId": "af-kos"},
+            {"type": "translate", "prompt": "water", "answer": "water", "accept": ["water"], "vocabId": "af-water"},
+            {"type": "fill_blank", "sentence": "Ek wil ____ en brood hê.", "answer": "tee", "options": ["tee", "vleis", "kind", "ses"], "meaning": "I want tea and bread.", "vocabId": "af-tee"},
+            {"type": "speak", "text": "Water asseblief", "meaning": "Water please", "lang": "af"}
+          ]
+        },
+        {
+          "id": "af-u1-l6",
+          "title": "Directions",
+          "culturalNote": "Start a request for directions with \"Verskoon my\" (excuse me). \"Regs\" is right and \"links\" is left — easy to remember as left = links.",
+          "vocab": [
+            {"id": "af-vorentoe", "term": "vorentoe", "translation": "forward", "phonetic": "FOH-ren-too"},
+            {"id": "af-agtertoe", "term": "agtertoe", "translation": "backward", "phonetic": "AKH-ter-too"},
+            {"id": "af-regs", "term": "regs", "translation": "right", "phonetic": "rekhs"},
+            {"id": "af-links", "term": "links", "translation": "left", "phonetic": "links"},
+            {"id": "af-hier", "term": "hier", "translation": "here", "phonetic": "heer"},
+            {"id": "af-naby", "term": "naby", "translation": "near", "phonetic": "NAH-bay"},
+            {"id": "af-ver", "term": "ver", "translation": "far", "phonetic": "fer"}
+          ],
+          "exercises": [
+            {"type": "match", "pairs": [["regs", "right"], ["links", "left"], ["naby", "near"], ["ver", "far"]]},
+            {"type": "multiple_choice", "prompt": "How do you say \"turn left\"? (left =)", "answer": "links", "options": ["regs", "links", "vorentoe", "hier"], "vocabId": "af-links"},
+            {"type": "translate", "prompt": "here", "answer": "hier", "accept": ["hier"], "vocabId": "af-hier"},
+            {"type": "fill_blank", "sentence": "Die winkel is baie ____.", "answer": "ver", "options": ["ver", "naby", "hier", "regs"], "meaning": "The shop is very far.", "vocabId": "af-ver"}
+          ]
+        }
+      ]
+    }
+  ]
+}

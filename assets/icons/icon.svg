@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#1b7a43"/>
+  <path d="M0 96 L200 256 L0 416 Z" fill="#0f5e33" opacity="0.55"/>
+  <circle cx="300" cy="200" r="120" fill="#f0b323"/>
+  <path d="M300 110 a90 90 0 1 0 0.1 0 Z M300 140 a60 60 0 1 1 -0.1 0 Z" fill="#1b7a43"/>
+  <text x="256" y="430" font-family="system-ui, sans-serif" font-size="120" font-weight="800" fill="#ffffff" text-anchor="middle">M</text>
+</svg>

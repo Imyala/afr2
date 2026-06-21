@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "languages": [
+    {
+      "code": "zu",
+      "name": "isiZulu",
+      "englishName": "Zulu",
+      "speakers": "12 million+",
+      "region": "KwaZulu-Natal, Gauteng",
+      "free": true,
+      "blurb": "South Africa's most widely spoken home language.",
+      "ttsLocale": "zu-ZA"
+    },
+    {
+      "code": "xh",
+      "name": "isiXhosa",
+      "englishName": "Xhosa",
+      "speakers": "8 million+",
+      "region": "Eastern Cape, Western Cape",
+      "free": true,
+      "blurb": "Famous for its click consonants. The language of Nelson Mandela.",
+      "ttsLocale": "xh-ZA"
+    },
+    {
+      "code": "af",
+      "name": "Afrikaans",
+      "englishName": "Afrikaans",
+      "speakers": "7 million+",
+      "region": "Western Cape, Northern Cape, Gauteng",
+      "free": true,
+      "blurb": "A West Germanic language that grew in South Africa.",
+      "ttsLocale": "af-ZA"
+    }
+  ],
+  "comingSoon": ["Sesotho", "Setswana", "Sepedi", "Tshivenda", "Xitsonga", "isiNdebele", "siSwati"],
+  "levels": ["Beginner", "Basic Conversation", "Travel", "Work", "Family"]
+}
