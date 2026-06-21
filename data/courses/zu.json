@@ -223,5 +223,43 @@
         }
       ]
     }
+  ],
+  "reading": [
+    {
+      "id": "zu-r1",
+      "title": "Sawubona, Thabo!",
+      "level": "Beginner",
+      "intro": "A short greeting between two friends. Tap any line to hear it.",
+      "lines": [
+        {"t": "Sawubona, igama lami nguThabo.", "en": "Hello, my name is Thabo."},
+        {"t": "Sawubona Thabo. Igama lami nguNandi.", "en": "Hello Thabo. My name is Nandi."},
+        {"t": "Unjani, Nandi?", "en": "How are you, Nandi?"},
+        {"t": "Ngiyaphila, ngiyabonga. Wena?", "en": "I am well, thank you. And you?"},
+        {"t": "Nami ngiyaphila. Hamba kahle!", "en": "I am also well. Go well!"}
+      ],
+      "questions": [
+        {"type": "multiple_choice", "prompt": "What is the boy's name?", "answer": "Thabo", "options": ["Thabo", "Nandi", "Sipho", "Mama"]},
+        {"type": "multiple_choice", "prompt": "How does Nandi feel?", "answer": "Well", "options": ["Well", "Tired", "Hungry", "Lost"]},
+        {"type": "multiple_choice", "prompt": "\"Hamba kahle\" means:", "answer": "Go well", "options": ["Go well", "Hello", "Thank you", "How are you?"]}
+      ]
+    },
+    {
+      "id": "zu-r2",
+      "title": "Esitolo (At the Shop)",
+      "level": "Basic Conversation",
+      "intro": "Sipho buys bread and water at the spaza shop.",
+      "lines": [
+        {"t": "Sawubona, ngicela isinkwa.", "en": "Hello, I would like bread."},
+        {"t": "Yebo. Ufuna namanzi?", "en": "Yes. Do you also want water?"},
+        {"t": "Yebo, ngicela amanzi. Yimalini?", "en": "Yes, I would like water. How much is it?"},
+        {"t": "Kubiza amarandi alishumi.", "en": "It costs ten rand."},
+        {"t": "Nakhu imali. Ngiyabonga!", "en": "Here is the money. Thank you!"}
+      ],
+      "questions": [
+        {"type": "multiple_choice", "prompt": "What does Sipho buy first?", "answer": "Bread", "options": ["Bread", "Milk", "Meat", "Tea"], "vocabId": "zu-isinkwa"},
+        {"type": "multiple_choice", "prompt": "How much does it cost?", "answer": "Ten rand", "options": ["Ten rand", "Five rand", "Two rand", "One rand"]},
+        {"type": "translate", "prompt": "How much is it?", "answer": "Yimalini", "accept": ["yimalini", "yimalini?"], "vocabId": "zu-yimalini"}
+      ]
+    }
   ]
 }

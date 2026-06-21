@@ -6,6 +6,9 @@ import {
   loadCourse, loadLanguages, allLessons, findLesson, vocabIndex,
   checkAnswer, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
 } from './lessons.js';
+import * as G from './gamify.js';
+
+let LIBRARY = null;   // library.json
 
 const app = document.getElementById('app');
 let LANGS = null;     // languages.json
@@ -31,6 +34,11 @@ async function openLanguage(code) {
   store.rollover(code);
   store.refreshHearts(code);
   course = await loadCourse(code);
+  G.ensureDaily(store);
+  G.ensureWeek(store);
+  G.checkAchievements(store);
+  const dr = G.dailyRewardStatus(store);
+  if (dr.canClaim) return renderDailyReward();
   renderHome();
 }
 
@@ -91,14 +99,34 @@ function renderHome() {
       </button>`;
   }).join('');
 
+  // gamification widgets
+  const quests = G.questDefs(store);
+  const questsDone = quests.filter((q) => q.claimed).length;
+  const questHtml = quests.map((q) => {
+    const pc = Math.min(100, Math.round((q.progress / q.goal) * 100));
+    return `<div class="quest ${q.claimed ? 'quest--done' : ''}">
+        <span class="quest__icon">${q.claimed ? '✅' : q.icon}</span>
+        <div class="quest__body">
+          <span class="quest__text">${esc(q.text)}</span>
+          <div class="qbar"><div style="width:${pc}%"></div></div>
+        </div>
+        <span class="quest__reward">${q.claimed ? 'done' : `💎${q.gems}`}</span>
+      </div>`;
+  }).join('');
+
+  const lg = L.league;
+  const target = G.leagueTarget(lg.tier);
+  const lgPct = Math.min(100, Math.round((lg.weeklyXp / target) * 100));
+  const hasReading = (course.reading || []).length > 0;
+
   const node = h(`
     <div class="screen">
       <header class="topbar">
         <button class="topbar__lang" id="switchLang">${esc(meta.name)} ▾</button>
         <div class="topbar__stats">
-          <span class="stat stat--streak" title="Day streak">🔥 ${L.streak}</span>
-          <span class="stat stat--xp" title="Total XP">⭐ ${m.xp}</span>
-          <span class="stat stat--hearts" id="heartsBtn" title="Hearts">${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}</span>
+          <span class="stat stat--streak" id="streakBtn" title="Day streak">🔥 ${L.streak}</span>
+          <span class="stat stat--gems" id="gemsBtn" title="Gems">💎 ${G.gems(store)}</span>
+          <span class="stat stat--hearts" id="heartsBtn" title="Hearts">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
         </div>
       </header>
 
@@ -116,12 +144,29 @@ function renderHome() {
         <button class="btn btn--review" id="reviewBtn" ${due ? '' : 'disabled'}>
           🔁 Review ${due ? `<span class="badge">${due} due</span>` : '<span class="muted">none due</span>'}
         </button>
-        <button class="btn btn--ghost" id="progressBtn">📊 Progress</button>
+        <button class="btn btn--ghost" id="storiesBtn" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
       </div>
+
+      <section class="card quests-card">
+        <div class="card__head"><strong>Daily Quests</strong><span class="muted">${questsDone}/${quests.length} done</span></div>
+        ${questHtml}
+      </section>
+
+      <button class="card league-card" id="leagueBtn">
+        <span class="league-card__icon">${G.leagueIcon(G.LEAGUES[lg.tier])}</span>
+        <div class="league-card__body">
+          <strong>${esc(G.LEAGUES[lg.tier])} League</strong>
+          <div class="qbar qbar--gold"><div style="width:${lgPct}%"></div></div>
+          <span class="muted">${lg.weeklyXp}/${target} XP this week to advance</span>
+        </div>
+        <span class="league-card__chev">›</span>
+      </button>
 
       <div class="path">${path}</div>
       <nav class="bottombar">
         <button class="navbtn navbtn--active">🏠 Home</button>
+        <button class="navbtn" id="storiesNav" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
+        <button class="navbtn" id="achBtn">🏅 Badges</button>
         <button class="navbtn" id="progressBtn2">📊 Progress</button>
         <button class="navbtn" id="premiumBtn">⭐ Premium</button>
       </nav>
@@ -131,9 +176,14 @@ function renderHome() {
     b.addEventListener('click', () => startLesson(b.dataset.lesson)));
   node.querySelector('#switchLang').addEventListener('click', () => renderLanguageSelect(false));
   node.querySelector('#reviewBtn').addEventListener('click', startReview);
-  node.querySelector('#progressBtn').addEventListener('click', renderProgress);
+  node.querySelector('#storiesBtn').addEventListener('click', renderLibrary);
+  node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
+  node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
+  node.querySelector('#achBtn').addEventListener('click', renderAchievements);
   node.querySelector('#progressBtn2').addEventListener('click', renderProgress);
   node.querySelector('#premiumBtn').addEventListener('click', renderPremium);
+  node.querySelector('#gemsBtn').addEventListener('click', renderLeague);
+  node.querySelector('#streakBtn').addEventListener('click', renderLeague);
   node.querySelector('#heartsBtn').addEventListener('click', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
   mount(node);
 }
@@ -169,6 +219,8 @@ function startBaseline(isRetest) {
   renderExercise();
 }
 
+const HEART_MODES = ['lesson', 'review'];
+
 function endSession() {
   const isTest = session.mode === 'baseline' || session.mode === 'retest';
   if (isTest) {
@@ -177,24 +229,40 @@ function endSession() {
     store.save();
     return renderTestResult(result);
   }
-  // lesson / review completion
   const correct = session.total - session.mistakes;
   let stars = 3;
   if (session.mistakes >= 1) stars = 2;
   if (session.mistakes >= 3) stars = 1;
-  store.addXp(XP_PER_CORRECT * Math.max(1, correct));
+
+  // award XP once at the end (keeps league/quest tracking clean)
+  const earned = XP_PER_CORRECT * Math.max(1, correct) + (session.mode === 'lesson' ? XP_LESSON_BONUS : 0);
+  store.addXp(earned);
+
+  // gamification events
+  let rewards = G.track(store, 'xp', { amount: earned });
+  const merge = (r) => { rewards.quests.push(...r.quests); rewards.achievements.push(...r.achievements); rewards.gems += r.gems; };
   if (session.mode === 'lesson') {
-    store.addXp(XP_LESSON_BONUS);
     store.completeLesson(session.lesson.id, stars);
+    merge(G.track(store, 'lesson', { mistakes: session.mistakes }));
+    if (session.spokeThisSession) merge(G.track(store, 'speak'));
+  } else if (session.mode === 'review') {
+    store.lang().reviewsDone += session.total;
+    merge(G.track(store, 'review'));
+  } else if (session.mode === 'reading') {
+    const r = session.reading;
+    if (r && !store.lang().completedReadings.includes(r.id)) store.lang().completedReadings.push(r.id);
+    merge(G.track(store, 'reading'));
   }
-  store.lang().reviewsDone += session.total;
+  merge({ quests: [], achievements: G.checkAchievements(store), gems: 0 });
   store.save();
-  renderSessionComplete(stars, correct, session.total);
+  session.earned = earned;
+  renderSessionComplete(stars, correct, session.total, rewards);
 }
 
 function advance(wasCorrect, ex) {
   session.total += 1;
   if (!wasCorrect) session.mistakes += 1;
+  if (ex.type === 'speak') session.spokeThisSession = true;
   if (session.mode === 'baseline' || session.mode === 'retest') {
     if (wasCorrect) session.score += 1;
   } else {
@@ -203,13 +271,10 @@ function advance(wasCorrect, ex) {
       const it = store.item(vid);
       srsReview(it, gradeFor(wasCorrect, ex.type), ex.type);
     }
-    if (wasCorrect) {
-      // small XP per correct handled in batch at end for lessons; review gives immediate XP
-      if (session.mode === 'review') store.addXp(XP_PER_CORRECT);
-    } else {
+    if (!wasCorrect && HEART_MODES.includes(session.mode)) {
       store.loseHeart();
       session.queue.push({ ...ex }); // requeue missed item to the end
-      if (store.lang().hearts <= 0 && session.mode !== 'baseline') return renderOutOfHearts();
+      if (store.lang().hearts <= 0) return renderOutOfHearts();
     }
     store.save();
   }
@@ -222,8 +287,8 @@ function advance(wasCorrect, ex) {
 function progressBar() {
   const pct = Math.round((session.idx / session.queue.length) * 100);
   const L = store.lang();
-  const hearts = (session.mode === 'baseline' || session.mode === 'retest')
-    ? '' : `<span class="ex__hearts">${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}</span>`;
+  const hearts = HEART_MODES.includes(session.mode)
+    ? `<span class="ex__hearts">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>` : '';
   return `<header class="ex__top">
       <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
       <div class="ex__bar"><div class="ex__bar-fill" style="width:${pct}%"></div></div>
@@ -392,18 +457,25 @@ function wireExercise(ex, node) {
 }
 
 // ---------- completion screens ----------
-function renderSessionComplete(stars, correct, total) {
+function renderSessionComplete(stars, correct, total, rewards = { quests: [], achievements: [], gems: 0 }) {
   const acc = Math.round((correct / Math.max(1, total)) * 100);
+  const title = session.mode === 'review' ? 'Review complete!' : session.mode === 'reading' ? 'Story complete!' : 'Lesson complete!';
+  const questHtml = rewards.quests.length
+    ? `<div class="reward-list"><strong>Quests completed</strong>${rewards.quests.map((q) => `<div class="reward-row">${q.icon} ${esc(q.text)} <span>+💎${q.gems}</span></div>`).join('')}</div>` : '';
+  const achHtml = rewards.achievements.length
+    ? `<div class="reward-list reward-list--ach"><strong>New badges! 🏅</strong>${rewards.achievements.map((a) => `<div class="reward-row">${a.icon} ${esc(a.name)} <span>+💎20</span></div>`).join('')}</div>` : '';
   const node = h(`
     <div class="screen screen--center result">
       <div class="result__emoji">🎉</div>
-      <h1>${session.mode === 'review' ? 'Review complete!' : 'Lesson complete!'}</h1>
+      <h1>${title}</h1>
       <div class="result__stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
       <div class="result__row">
         <div class="kpi"><span class="kpi__v">${correct}/${total}</span><span class="kpi__k">Correct</span></div>
         <div class="kpi"><span class="kpi__v">${acc}%</span><span class="kpi__k">Accuracy</span></div>
-        <div class="kpi"><span class="kpi__v">+${XP_PER_CORRECT * Math.max(1, correct) + (session.mode === 'lesson' ? XP_LESSON_BONUS : 0)}</span><span class="kpi__k">XP</span></div>
+        <div class="kpi"><span class="kpi__v">+${session.earned || 0}</span><span class="kpi__k">XP</span></div>
       </div>
+      ${questHtml}
+      ${achHtml}
       <p class="muted">Words you missed are scheduled for review so they actually stick.</p>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
@@ -553,6 +625,153 @@ function renderPremium() {
   if (node.querySelector('#monthBtn')) node.querySelector('#monthBtn').addEventListener('click', () => setP(true));
   if (node.querySelector('#cancel')) node.querySelector('#cancel').addEventListener('click', () => setP(false));
   mount(node);
+}
+
+// ---------- daily login reward ----------
+function renderDailyReward() {
+  const st = G.dailyRewardStatus(store);
+  const node = h(`
+    <div class="screen screen--center">
+      <div class="result__emoji">🎁</div>
+      <h1>Daily reward</h1>
+      <p class="muted">Come back every day to keep the rewards growing.</p>
+      <div class="chest" id="chest">💎 +${st.nextGems}</div>
+      <p class="muted">Day ${st.streak + 1} of your login streak</p>
+      <button class="btn btn--primary" id="claim">Claim ${st.nextGems} gems</button>
+    </div>`);
+  node.querySelector('#claim').addEventListener('click', () => {
+    const r = G.claimDailyReward(store);
+    node.querySelector('#claim').textContent = r ? `+${r.gems} gems! 🎉` : 'Claimed';
+    setTimeout(renderHome, 600);
+  });
+  mount(node);
+}
+
+// ---------- stories / reading library ----------
+async function renderLibrary() {
+  if (!LIBRARY) { try { LIBRARY = await (await fetch('data/library.json')).json(); } catch (e) { LIBRARY = { sources: [] }; } }
+  const readings = course.reading || [];
+  const L = store.lang();
+  const cards = readings.map((r) => {
+    const done = (L.completedReadings || []).includes(r.id);
+    return `<button class="story ${done ? 'story--done' : ''}" data-read="${r.id}">
+        <span class="story__icon">${done ? '✅' : '📖'}</span>
+        <div class="story__body"><strong>${esc(r.title)}</strong><span class="muted">${esc(r.level)} · ${r.lines.length} lines</span></div>
+      </button>`;
+  }).join('');
+  const books = (LIBRARY.sources || []).filter((s) => s.langs.includes(course.code)).map((s) => `
+    <a class="book" href="${esc(s.url)}" target="_blank" rel="noopener">
+      <strong>${esc(s.name)}</strong>
+      <span class="muted">${esc(s.blurb)}</span>
+      <span class="book__lic">${esc(s.by)} · ${esc(s.license)}</span>
+    </a>`).join('');
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Stories</strong><span></span></header>
+      <h3 class="sec">Read in ${esc(course.name)}</h3>
+      <p class="muted">Read the story, tap a line to hear it, then answer a few questions. Reading builds real comprehension.</p>
+      <div class="stories">${cards || '<p class="muted">Stories coming soon for this language.</p>'}</div>
+      <h3 class="sec">Free book libraries</h3>
+      <p class="muted">Thousands more children's books in ${esc(course.name)} — all free and openly licensed. Best with internet.</p>
+      <div class="books">${books}</div>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelectorAll('[data-read]').forEach((b) => b.addEventListener('click', () => renderReadingIntro(b.dataset.read)));
+  mount(node);
+}
+
+function renderReadingIntro(readId) {
+  const r = (course.reading || []).find((x) => x.id === readId);
+  if (!r) return renderLibrary();
+  const lines = r.lines.map((ln, i) => `
+    <button class="rline" data-line="${i}">
+      <span class="rline__t">${esc(ln.t)}</span>
+      <span class="rline__en muted">${esc(ln.en)}</span>
+    </button>`).join('');
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Stories</button><strong>${esc(r.title)}</strong><span></span></header>
+      <p class="muted">${esc(r.intro || '')}</p>
+      <div class="reading">${lines}</div>
+      <button class="play-btn" id="playAll">🔊 Play the whole story</button>
+      <button class="btn btn--primary" id="quizBtn">I've read it — answer questions</button>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderLibrary);
+  node.querySelectorAll('[data-line]').forEach((b) => b.addEventListener('click', () => speak(r.lines[b.dataset.line].t, course.code)));
+  node.querySelector('#playAll').addEventListener('click', async () => {
+    for (const ln of r.lines) { await speak(ln.t, course.code); }
+  });
+  node.querySelector('#quizBtn').addEventListener('click', () => {
+    session = { mode: 'reading', reading: r, lesson: null, queue: r.questions.map((q, i) => ({ ...q, _i: i })), idx: 0, mistakes: 0, total: 0 };
+    renderExercise();
+  });
+  mount(node);
+}
+
+// ---------- achievements / badges ----------
+function renderAchievements() {
+  G.checkAchievements(store);
+  const unlocked = store.state.achievements || {};
+  const grid = G.ACHIEVEMENTS.map((a) => {
+    const got = unlocked[a.id];
+    return `<div class="badge-card ${got ? '' : 'badge-card--locked'}">
+        <span class="badge-card__icon">${got ? a.icon : '🔒'}</span>
+        <strong>${esc(a.name)}</strong>
+        <span class="muted">${esc(a.desc)}</span>
+        ${got ? `<span class="badge-card__date">${esc(got)}</span>` : ''}
+      </div>`;
+  }).join('');
+  const count = Object.keys(unlocked).length;
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Badges</strong><span>${count}/${G.ACHIEVEMENTS.length}</span></header>
+      <div class="badge-grid">${grid}</div>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
+}
+
+// ---------- weekly league + gem shop ----------
+function renderLeague() {
+  G.ensureWeek(store);
+  const L = store.lang();
+  const lg = L.league;
+  const tiers = G.LEAGUES.map((name, i) => `
+    <div class="tier ${i === lg.tier ? 'tier--cur' : ''} ${i < lg.tier ? 'tier--past' : ''}">
+      <span>${G.leagueIcon(name)}</span><span>${esc(name)}</span>${i === lg.tier ? '<span class="muted">you are here</span>' : ''}
+    </div>`).join('');
+  const target = G.leagueTarget(lg.tier);
+  const pct = Math.min(100, Math.round((lg.weeklyXp / target) * 100));
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>League</strong><span class="stat">💎 ${G.gems(store)}</span></header>
+      <section class="card">
+        <div class="card__head"><strong>${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} League</strong></div>
+        <div class="qbar qbar--gold"><div style="width:${pct}%"></div></div>
+        <p class="muted">${lg.weeklyXp}/${target} XP this week. Earn XP daily to climb the leagues!</p>
+      </section>
+      <div class="tiers">${tiers}</div>
+      <h3 class="sec">Streak protection</h3>
+      <section class="card">
+        <p>🔥 Current streak: <strong>${L.streak}</strong> · ❄️ Streak freezes: <strong>${L.streakFreezes || 0}</strong></p>
+        <p class="muted">A streak freeze saves your streak if you miss a day. Buy one with gems.</p>
+        <button class="btn btn--ghost" id="buyFreeze">Buy streak freeze (💎50)</button>
+      </section>
+      <h3 class="sec">Gem shop</h3>
+      <section class="card">
+        <button class="btn btn--ghost" id="buyHearts">Refill hearts (💎30)</button>
+      </section>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#buyFreeze').addEventListener('click', () => { if (G.buyStreakFreeze(store)) renderLeague(); else flashToast('Not enough gems'); });
+  node.querySelector('#buyHearts').addEventListener('click', () => { if (G.buyHeartsRefill(store)) { flashToast('Hearts refilled!'); renderLeague(); } else flashToast('Not enough gems'); });
+  mount(node);
+}
+
+function flashToast(msg) {
+  const t = h(`<div class="toast">${esc(msg)}</div>`);
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 1600);
 }
 
 // ---------- service worker ----------

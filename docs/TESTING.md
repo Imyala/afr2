@@ -7,10 +7,11 @@ integrity (every exercise answer reachable, every vocab reference resolves,
 every word has phonetics for the offline fallback).
 
 ```bash
-node tests/run.mjs
+node tests/run.mjs       # SRS, answer grading, lesson + reading content integrity
+node tests/gamify.mjs    # quests, achievements, leagues, streak freeze, daily reward
 ```
 
-Run this after editing any `data/courses/*.json` file — it will fail loudly if
+Run `tests/run.mjs` after editing any `data/courses/*.json` file — it will fail loudly if
 an exercise's correct answer isn't among its options, if a `vocabId` is a typo,
 or if a word is missing phonetics.
 

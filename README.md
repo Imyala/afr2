@@ -38,16 +38,28 @@ for the full explanation. In short:
 
 ## Features
 
+**Learning**
 - 📚 Daily lessons with a unit-based lesson path
 - 🔁 Spaced-repetition **Review** sessions driven by what's actually due
+- 📖 **Reading exercises** — graded stories with tap-to-hear lines and comprehension questions
 - 🗣️ Speaking practice (speech recognition where available, phonetics always)
 - 🎧 Listening practice (text-to-speech where available)
 - ✍️ Translation, multiple choice, match-the-pairs, fill-in-the-blank
 - 🏫 Cultural notes in every lesson
-- 🔥 XP, day streaks, hearts/lives, daily goal ring
 - 📊 Progress dashboard with real retention metrics + baseline/re-test
-- 💳 Premium tier (demo): all languages, unlimited hearts, no ads
+
+**Engagement / retention** (gets kids back daily — see [docs/ENGAGEMENT.md](docs/ENGAGEMENT.md))
+- 🔥 Day streaks with ❄️ **streak freezes** to protect them
+- 🎯 **Daily quests** with 💎 gem rewards
+- 🏅 **Achievement badges** (12 milestones)
+- 🏆 **Weekly leagues** (Bronze → Diamond) you climb with XP
+- 🎁 **Daily login reward** that grows with consecutive days
+- ⭐ XP, hearts/lives, daily goal ring, gem shop
+
+**Platform**
 - 📶 **Full offline use** via service worker — install to home screen
+- 💳 Premium tier (demo): all languages, unlimited hearts, no ads
+- 📚 In-app **Library** linking to free, openly-licensed book collections (see below)
 
 ## Run it
 
@@ -91,11 +103,27 @@ docs/
   TESTING.md            How to run the tests
 ```
 
+## Reading & free book libraries
+
+MzansiLingo ships **original graded reading passages** (no licensing concerns,
+and they reuse taught vocabulary so they feed the spaced-repetition engine).
+The in-app **Library** also links to large collections of **free, openly
+Creative-Commons-licensed** children's books in SA languages, credited in
+`data/library.json`:
+
+- [African Storybook](https://www.africanstorybook.org/) (Saide) — CC BY / CC BY-NC
+- [Book Dash](https://bookdash.org/books/) — CC BY 4.0, ~500 SA-language titles
+- [Nal'ibali](https://nalibali.org/) — national reading-for-enjoyment campaign
+- [Global Digital Library](https://digitallibrary.io/) — open early-grade readers
+
+Because these are CC BY, specific titles can later be **bundled into the app
+for offline reading with attribution** — a roadmap item.
+
 ## Adding content
 
-Courses are plain JSON. To add a lesson or a language, follow
+Courses are plain JSON. To add a lesson, reading passage, or a language, follow
 [docs/CONTENT_GUIDE.md](docs/CONTENT_GUIDE.md). No code changes are needed for
-new lessons — just edit the JSON and add the file to the service-worker cache
+new content — just edit the JSON and add the file to the service-worker cache
 list in `sw.js`.
 
 ## Roadmap

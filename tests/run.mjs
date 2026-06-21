@@ -56,6 +56,20 @@ for (const c of ['zu', 'xh', 'af']) {
       if (ex.type === 'match') ok(ex.pairs.length >= 3, `${l.id} match has >=3 pairs`);
     }
   }
+  // reading content integrity
+  for (const r of (course.reading || [])) {
+    ok(r.id && r.title, `${c} reading has id+title`);
+    ok(Array.isArray(r.lines) && r.lines.length >= 2, `${r.id} has lines`);
+    for (const ln of r.lines) ok(ln.t && ln.en, `${r.id} line has target + english`);
+    ok(Array.isArray(r.questions) && r.questions.length >= 1, `${r.id} has questions`);
+    for (const q of r.questions) {
+      if (['multiple_choice', 'fill_blank'].includes(q.type)) {
+        ok(q.options.map(normalize).includes(normalize(q.answer)), `${r.id} question answer in options`);
+      }
+      if (q.type === 'translate') ok(q.answer, `${r.id} translate question has answer`);
+      if (q.vocabId) ok(vocabIds.has(q.vocabId), `${r.id} question vocabId ${q.vocabId} resolves`);
+    }
+  }
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

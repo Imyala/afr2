@@ -205,6 +205,67 @@ button { font-family: inherit; cursor: pointer; }
 .plan small { color: var(--muted); }
 .plan--best { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(240,179,35,.25); }
 
+/* ---------- gamification ---------- */
+.stat--gems { color: #7c3aed; }
+.card { background: var(--card); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); display: grid; gap: 10px; text-align: left; width: 100%; border: none; }
+.card__head { display: flex; justify-content: space-between; align-items: baseline; }
+.sec { margin: 6px 4px -4px; }
+
+.quests-card { gap: 12px; }
+.quest { display: flex; align-items: center; gap: 12px; }
+.quest__icon { font-size: 22px; flex: 0 0 auto; }
+.quest__body { flex: 1; display: grid; gap: 6px; }
+.quest__text { font-size: 14px; font-weight: 600; }
+.quest__reward { font-weight: 800; font-size: 13px; color: #7c3aed; white-space: nowrap; }
+.quest--done { opacity: .6; }
+.qbar { height: 9px; background: #e3e9e4; border-radius: 999px; overflow: hidden; }
+.qbar > div { height: 100%; background: var(--green); border-radius: 999px; transition: width .3s; }
+.qbar--gold > div { background: var(--gold); }
+
+.league-card { display: flex; align-items: center; gap: 14px; }
+.league-card__icon { font-size: 34px; flex: 0 0 auto; }
+.league-card__body { flex: 1; display: grid; gap: 6px; }
+.league-card__chev { font-size: 26px; color: var(--muted); }
+
+.reward-list { background: #f3eefe; border-radius: 12px; padding: 12px; display: grid; gap: 6px; width: 100%; }
+.reward-list--ach { background: #fff6e0; }
+.reward-row { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; }
+.reward-row span { color: #7c3aed; }
+.chest { font-size: 44px; font-weight: 800; color: #7c3aed; background: #f3eefe; border-radius: var(--radius); padding: 24px 40px; }
+
+/* stories / reading */
+.stories, .books { display: grid; gap: 10px; }
+.story { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--radius); background: var(--card); border: 2px solid var(--line); box-shadow: var(--shadow); text-align: left; }
+.story__icon { font-size: 24px; }
+.story__body { display: grid; }
+.story--done { opacity: .7; }
+.book { display: grid; gap: 4px; padding: 14px; border-radius: var(--radius); background: var(--card); border: 2px solid var(--line); box-shadow: var(--shadow); text-decoration: none; color: var(--ink); }
+.book__lic { font-size: 11px; color: var(--blue); }
+.reading { display: grid; gap: 8px; }
+.rline { display: grid; gap: 2px; text-align: left; padding: 12px 14px; border-radius: 12px; background: var(--card); border: 2px solid var(--line); box-shadow: 0 2px 0 rgba(0,0,0,.04); }
+.rline:active { border-color: var(--blue); }
+.rline__t { font-size: 17px; font-weight: 700; }
+.rline__en { font-size: 13px; }
+
+/* badges */
+.badge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.badge-card { background: var(--card); border-radius: var(--radius); padding: 16px 12px; box-shadow: var(--shadow); display: grid; gap: 4px; text-align: center; justify-items: center; }
+.badge-card__icon { font-size: 34px; }
+.badge-card strong { font-size: 14px; }
+.badge-card .muted { font-size: 12px; }
+.badge-card--locked { opacity: .55; filter: grayscale(.5); }
+.badge-card__date { font-size: 10px; color: var(--blue); }
+
+/* league tiers */
+.tiers { display: grid; gap: 8px; }
+.tier { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--card); box-shadow: var(--shadow); font-weight: 700; }
+.tier span:first-child { font-size: 22px; }
+.tier--cur { border: 2px solid var(--gold); }
+.tier--past { opacity: .6; }
+.tier .muted { margin-left: auto; font-weight: 600; font-size: 12px; }
+
+.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 700; z-index: 50; box-shadow: var(--shadow); }
+
 @media (prefers-color-scheme: dark) {
   :root { --bg: #0f1d17; --card: #16271f; --ink: #e9f1ec; --muted: #9fb2a8; --line: #243a30; }
   .opt { box-shadow: none; }

@@ -88,6 +88,36 @@ speak). The SRS relies on this ordering.
 - `match` needs at least 3 pairs.
 - Every lesson must have at least one vocab item.
 
+## Reading passages
+
+A course may include a top-level `reading` array (sibling of `units`). Each
+passage is graded text plus comprehension questions:
+
+```jsonc
+"reading": [
+  {
+    "id": "zu-r1",                  // globally unique
+    "title": "Sawubona, Thabo!",
+    "level": "Beginner",
+    "intro": "A short greeting between two friends.",
+    "lines": [
+      { "t": "Sawubona, igama lami nguThabo.", "en": "Hello, my name is Thabo." }
+    ],
+    "questions": [
+      // same exercise objects as lessons; multiple_choice / translate / fill_blank
+      { "type": "multiple_choice", "prompt": "What is the boy's name?",
+        "answer": "Thabo", "options": ["Thabo","Nandi","Sipho","Mama"] }
+    ]
+  }
+]
+```
+
+Guidelines: keep lines short and reuse vocabulary the learner has already met;
+questions can carry a `vocabId` to feed the spaced-repetition engine. The
+integrity test checks that each passage has lines (`t` + `en`) and at least one
+answerable question. A passage automatically powers the "Read a story" quest
+and the reading badges — no code changes needed.
+
 ## Adding a whole new language
 
 1. Add an entry to `data/languages.json` (`code`, `name`, `englishName`,

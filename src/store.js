@@ -28,6 +28,13 @@ function freshLang() {
     reviewsDone: 0,
     baseline: null,          // { score, total, date }
     retest: null,
+    // gamification (per language)
+    quests: null,            // { dayKey, items:[{id,progress,claimed}] }
+    league: null,            // { weekKey, weeklyXp, tier }
+    streakFreezes: 0,
+    perfectLessons: 0,
+    readingsCompleted: 0,
+    completedReadings: [],
   };
 }
 
@@ -38,6 +45,11 @@ function freshState() {
     premium: false,
     settings: { dailyGoalXP: 30, soundOn: true },
     langs: {},
+    // account-wide gamification
+    gems: 0,
+    achievements: {},       // achievementId -> unlock date
+    dailyReward: { lastClaim: null, streak: 0 },
+    studiedLangs: [],       // codes the learner has opened (for the Polyglot badge)
   };
 }
 
@@ -67,6 +79,8 @@ class Store {
   setActiveLang(code) {
     if (!this.state.langs[code]) this.state.langs[code] = freshLang();
     this.state.activeLang = code;
+    if (!this.state.studiedLangs) this.state.studiedLangs = [];
+    if (!this.state.studiedLangs.includes(code)) this.state.studiedLangs.push(code);
     this.save();
   }
 
@@ -139,8 +153,17 @@ class Store {
     const tk = todayKey();
     if (L.lastStudyDay === tk) return;
     const yesterday = todayKey(new Date(Date.now() - 86400000));
-    if (L.lastStudyDay === yesterday) L.streak += 1;
-    else L.streak = 1;
+    const dayBefore = todayKey(new Date(Date.now() - 2 * 86400000));
+    if (L.lastStudyDay === yesterday) {
+      L.streak += 1;
+    } else if (L.lastStudyDay === dayBefore && (L.streakFreezes || 0) > 0) {
+      // a streak freeze covers the single missed day
+      L.streakFreezes -= 1;
+      L.streak += 1;
+      L.freezeUsedOn = tk;
+    } else {
+      L.streak = 1;
+    }
     L.lastStudyDay = tk;
     L.bestStreak = Math.max(L.bestStreak || 0, L.streak);
   }

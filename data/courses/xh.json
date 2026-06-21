@@ -137,5 +137,25 @@
         }
       ]
     }
+  ],
+  "reading": [
+    {
+      "id": "xh-r1",
+      "title": "Molo, Lindiwe!",
+      "level": "Beginner",
+      "intro": "Two friends greet each other. Tap any line to hear it.",
+      "lines": [
+        {"t": "Molo, igama lam nguLindiwe.", "en": "Hello, my name is Lindiwe."},
+        {"t": "Molo Lindiwe. Igama lam nguAyanda.", "en": "Hello Lindiwe. My name is Ayanda."},
+        {"t": "Unjani namhlanje?", "en": "How are you today?"},
+        {"t": "Ndiphilile, enkosi. Wena?", "en": "I am well, thank you. And you?"},
+        {"t": "Nam ndiphilile. Hamba kakuhle!", "en": "I am also well. Go well!"}
+      ],
+      "questions": [
+        {"type": "multiple_choice", "prompt": "What is the girl's name?", "answer": "Lindiwe", "options": ["Lindiwe", "Ayanda", "Nandi", "Mama"]},
+        {"type": "multiple_choice", "prompt": "How does Ayanda feel?", "answer": "Well", "options": ["Well", "Tired", "Sad", "Lost"]},
+        {"type": "translate", "prompt": "Thank you", "answer": "Enkosi", "accept": ["enkosi"], "vocabId": "xh-enkosi"}
+      ]
+    }
   ]
 }

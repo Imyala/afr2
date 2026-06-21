@@ -133,5 +133,25 @@
         }
       ]
     }
+  ],
+  "reading": [
+    {
+      "id": "af-r1",
+      "title": "Hallo, Pieter!",
+      "level": "Beginner",
+      "intro": "Two friends say hello. Tap any line to hear it.",
+      "lines": [
+        {"t": "Hallo, my naam is Pieter.", "en": "Hello, my name is Pieter."},
+        {"t": "Hallo Pieter. My naam is Anja.", "en": "Hello Pieter. My name is Anja."},
+        {"t": "Hoe gaan dit met jou?", "en": "How are you?"},
+        {"t": "Goed dankie. En met jou?", "en": "Good, thank you. And with you?"},
+        {"t": "Ook goed. Totsiens!", "en": "Also good. Goodbye!"}
+      ],
+      "questions": [
+        {"type": "multiple_choice", "prompt": "What is the boy's name?", "answer": "Pieter", "options": ["Pieter", "Anja", "Jan", "Ma"]},
+        {"type": "multiple_choice", "prompt": "\"Totsiens\" means:", "answer": "Goodbye", "options": ["Goodbye", "Hello", "Please", "Thank you"], "vocabId": "af-totsiens"},
+        {"type": "translate", "prompt": "Good, thank you", "answer": "Goed dankie", "accept": ["goed dankie"], "vocabId": "af-goeddankie"}
+      ]
+    }
   ]
 }

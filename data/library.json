@@ -1,0 +1,37 @@
+{
+  "note": "Free, openly-licensed children's book libraries in South African languages. All are Creative Commons licensed (mostly CC BY), so titles may be imported into MzansiLingo with attribution. Until specific titles are bundled for offline use, these open in the browser.",
+  "sources": [
+    {
+      "name": "African Storybook",
+      "by": "Saide (non-profit)",
+      "license": "CC BY / CC BY-NC",
+      "blurb": "Thousands of openly-licensed picture storybooks in all SA languages. Read online, download, or print.",
+      "url": "https://www.africanstorybook.org/",
+      "langs": ["zu", "xh", "af"]
+    },
+    {
+      "name": "Book Dash",
+      "by": "Book Dash (non-profit)",
+      "license": "CC BY 4.0",
+      "blurb": "~500 beautiful children's books across 11 SA languages, free to read, translate and share.",
+      "url": "https://bookdash.org/books/",
+      "langs": ["zu", "xh", "af"]
+    },
+    {
+      "name": "Nal'ibali",
+      "by": "Nal'ibali reading campaign",
+      "license": "CC / free to use",
+      "blurb": "South Africa's national reading-for-enjoyment campaign. Stories in all official languages.",
+      "url": "https://nalibali.org/story-library",
+      "langs": ["zu", "xh", "af"]
+    },
+    {
+      "name": "Global Digital Library",
+      "by": "Digital Public Goods Alliance",
+      "license": "Open (CC)",
+      "blurb": "Openly-licensed early-grade reading resources in many languages, including SA languages.",
+      "url": "https://digitallibrary.io/",
+      "langs": ["zu", "xh", "af"]
+    }
+  ]
+}
