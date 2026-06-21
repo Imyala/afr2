@@ -45,23 +45,32 @@ async function openLanguage(code) {
 }
 
 // ---------- language select / onboarding ----------
+const LANG_ACCENT = { zu: '#1b7a43', xh: '#1d6fb8', af: '#e2711d', default: '#7c3aed' };
+
 function renderLanguageSelect(first = false) {
-  const cards = LANGS.languages.map((l) => `
-    <button class="lang-card" data-code="${l.code}">
-      <div class="lang-card__name">${esc(l.name)}</div>
-      <div class="lang-card__en">${esc(l.englishName)} · ${esc(l.speakers)}</div>
-      <div class="lang-card__blurb">${esc(l.blurb)}</div>
-      <div class="lang-card__region">${esc(l.region)}</div>
-    </button>`).join('');
+  const cards = LANGS.languages.map((l) => {
+    const accent = LANG_ACCENT[l.code] || LANG_ACCENT.default;
+    const mono = l.englishName.slice(0, 2);
+    return `
+    <button class="lang-card" data-code="${l.code}" style="--accent:${accent}">
+      <span class="lang-card__avatar">${esc(mono)}</span>
+      <span class="lang-card__main">
+        <span class="lang-card__name">${esc(l.name)}</span>
+        <span class="lang-card__en">${esc(l.englishName)} · ${esc(l.speakers)} speakers</span>
+        <span class="lang-card__blurb">${esc(l.blurb)}</span>
+      </span>
+      <span class="lang-card__go">›</span>
+    </button>`;
+  }).join('');
   const soon = LANGS.comingSoon.map((s) => `<span class="chip chip--soon">${esc(s)}</span>`).join('');
   const node = h(`
-    <div class="screen screen--center">
+    <div class="screen">
       <header class="brand">
         <div class="brand__logo">🇿🇦</div>
         <h1 class="brand__name">MzansiLingo</h1>
         <p class="brand__tag">Learn real South African languages for real conversations.</p>
       </header>
-      ${first ? '<p class="muted">Free tier: pick one language to begin. You can switch any time.</p>' : ''}
+      <p class="muted lang-intro">${first ? 'Pick a language to begin — it\'s free. You can switch any time.' : 'Choose a language to learn.'}</p>
       <div class="lang-grid">${cards}</div>
       <h3 class="soon-title">Coming soon</h3>
       <div class="chips">${soon}</div>
@@ -147,37 +156,24 @@ function renderHome() {
         </div>
       </section>
 
-      ${wotd ? `<button class="card wotd-card" id="wotdBtn">
-        <span class="wotd__icon">🗓️</span>
-        <div class="wotd__body">
-          <span class="wotd__label">Word of the day${wotdLearned ? ' · learned ✓' : ''}</span>
-          <strong class="wotd__term">${esc(wotd.term)}</strong>
-          <span class="muted">${esc(wotd.translation)}</span>
-        </div>
-        <span class="wotd__play">🔊</span>
-      </button>` : ''}
+      <button class="btn btn--review" id="reviewBtn" ${due ? '' : 'disabled'}>
+        🔁 Review ${due ? `<span class="badge">${due} due</span>` : '<span class="muted">none due</span>'}
+      </button>
 
-      <div class="actions">
-        <button class="btn btn--review" id="reviewBtn" ${due ? '' : 'disabled'}>
-          🔁 Review ${due ? `<span class="badge">${due} due</span>` : '<span class="muted">none due</span>'}
+      <div class="mini-row">
+        <button class="mini" id="questsBtn">
+          <span class="mini__top">🎯 Quests <b>${questsDone}/${quests.length}</b></span>
+          <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
         </button>
-        <button class="btn btn--ghost" id="storiesBtn" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
+        <button class="mini" id="leagueBtn">
+          <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])}</span>
+          <span class="qbar qbar--gold"><span style="width:${lgPct}%"></span></span>
+        </button>
       </div>
 
-      <section class="card quests-card">
-        <div class="card__head"><strong>Daily Quests</strong><span class="muted">${questsDone}/${quests.length} done</span></div>
-        ${questHtml}
-      </section>
-
-      <button class="card league-card" id="leagueBtn">
-        <span class="league-card__icon">${G.leagueIcon(G.LEAGUES[lg.tier])}</span>
-        <div class="league-card__body">
-          <strong>${esc(G.LEAGUES[lg.tier])} League</strong>
-          <div class="qbar qbar--gold"><div style="width:${lgPct}%"></div></div>
-          <span class="muted">${lg.weeklyXp}/${target} XP this week to advance</span>
-        </div>
-        <span class="league-card__chev">›</span>
-      </button>
+      ${wotd ? `<button class="wotd-strip" id="wotdBtn">
+        🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
+      </button>` : ''}
 
       <div class="path">${path}</div>
       <nav class="bottombar">
@@ -193,9 +189,9 @@ function renderHome() {
     b.addEventListener('click', () => startLesson(b.dataset.lesson)));
   node.querySelector('#switchLang').addEventListener('click', () => renderLanguageSelect(false));
   node.querySelector('#reviewBtn').addEventListener('click', startReview);
-  node.querySelector('#storiesBtn').addEventListener('click', renderLibrary);
   node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
   node.querySelector('#shopNav').addEventListener('click', renderShop);
+  node.querySelector('#questsBtn').addEventListener('click', renderQuests);
   node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
   node.querySelector('#achBtn').addEventListener('click', renderAchievements);
   node.querySelector('#progressBtn2').addEventListener('click', renderProgress);
@@ -245,6 +241,31 @@ function renderWotd() {
     flashToast('Added to your reviews! 🎉');
     setTimeout(renderHome, 700);
   });
+  node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
+}
+
+// ---------- daily quests screen ----------
+function renderQuests() {
+  const quests = G.questDefs(store);
+  const list = quests.map((q) => {
+    const pc = Math.min(100, Math.round((q.progress / q.goal) * 100));
+    return `<div class="quest ${q.claimed ? 'quest--done' : ''}">
+        <span class="quest__icon">${q.claimed ? '✅' : q.icon}</span>
+        <div class="quest__body">
+          <span class="quest__text">${esc(q.text)}</span>
+          <div class="qbar"><div style="width:${pc}%"></div></div>
+          <span class="muted quest__prog">${Math.min(q.progress, q.goal)}/${q.goal}</span>
+        </div>
+        <span class="quest__reward">${q.claimed ? 'done' : `💎${q.gems}`}</span>
+      </div>`;
+  }).join('');
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Daily Quests</strong><span class="stat stat--gems">💎 ${G.gems(store)}</span></header>
+      <p class="muted">Fresh quests every day. Finish them to earn gems for the shop.</p>
+      <div class="card quests-card">${list}</div>
+    </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
   mount(node);
 }

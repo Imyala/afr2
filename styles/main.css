@@ -34,7 +34,7 @@ body {
 .footnote { color: var(--muted); font-size: 13px; text-align: center; margin-top: 8px; }
 h1 { font-size: 26px; margin: 0; }
 h2 { margin: 0; }
-button { font-family: inherit; cursor: pointer; }
+button { font-family: inherit; cursor: pointer; color: inherit; }
 
 /* ---------- buttons ---------- */
 .btn {
@@ -53,17 +53,25 @@ button { font-family: inherit; cursor: pointer; }
 .brand__logo { font-size: 56px; }
 .brand__name { font-size: 34px; margin: 4px 0; color: var(--green); letter-spacing: -.5px; }
 .brand__tag { color: var(--muted); margin: 0 0 8px; }
+.lang-intro { text-align: center; margin: 0; }
 .lang-grid { display: grid; gap: 12px; width: 100%; }
 .lang-card {
-  text-align: left; background: var(--card); border: 2px solid var(--line); border-radius: var(--radius);
-  padding: 16px; box-shadow: var(--shadow); transition: border-color .15s;
+  display: flex; align-items: center; gap: 14px; text-align: left;
+  background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent);
+  border-radius: var(--radius); padding: 14px 14px 14px 12px; box-shadow: var(--shadow);
+  transition: transform .12s, box-shadow .12s;
 }
-.lang-card:active { border-color: var(--green); }
-.lang-card__name { font-size: 20px; font-weight: 800; color: var(--green); }
-.lang-card__en { font-size: 13px; color: var(--muted); margin-top: 2px; }
-.lang-card__blurb { margin-top: 8px; font-size: 14px; }
-.lang-card__region { margin-top: 6px; font-size: 12px; color: var(--blue); }
-.soon-title { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.lang-card:active { transform: scale(.99); }
+.lang-card__avatar {
+  width: 52px; height: 52px; flex: 0 0 auto; border-radius: 14px; background: var(--accent); color: #fff;
+  display: grid; place-items: center; font-weight: 800; font-size: 19px; letter-spacing: -.5px;
+}
+.lang-card__main { flex: 1; display: grid; gap: 2px; min-width: 0; }
+.lang-card__name { font-size: 19px; font-weight: 800; color: var(--ink); }
+.lang-card__en { font-size: 12px; color: var(--muted); }
+.lang-card__blurb { margin-top: 4px; font-size: 13px; color: var(--muted); line-height: 1.35; }
+.lang-card__go { font-size: 26px; color: var(--accent); font-weight: 700; }
+.soon-title { margin: 8px 0 0; font-size: 14px; color: var(--muted); text-align: center; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .chip { background: #eef3ef; border-radius: 999px; padding: 6px 12px; font-size: 13px; color: var(--muted); }
 
@@ -75,18 +83,28 @@ button { font-family: inherit; cursor: pointer; }
 .stat--hearts { letter-spacing: -2px; }
 
 /* ---------- daily goal ---------- */
-.goal { display: flex; align-items: center; gap: 16px; background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+.goal { display: flex; align-items: center; gap: 14px; background: var(--card); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); }
 .goal__ring {
-  --pct: 0; width: 76px; height: 76px; border-radius: 50%; flex: 0 0 auto;
-  background: conic-gradient(var(--gold) calc(var(--pct) * 1%), #eceee9 0);
+  --pct: 0; width: 60px; height: 60px; border-radius: 50%; flex: 0 0 auto;
+  background: conic-gradient(var(--gold) calc(var(--pct) * 1%), var(--line) 0);
   display: grid; place-items: center; position: relative;
 }
-.goal__ring::after { content: ""; position: absolute; inset: 8px; background: var(--card); border-radius: 50%; }
-.goal__ring span { position: relative; z-index: 1; font-weight: 800; font-size: 13px; }
+.goal__ring::after { content: ""; position: absolute; inset: 7px; background: var(--card); border-radius: 50%; }
+.goal__ring span { position: relative; z-index: 1; font-weight: 800; font-size: 12px; }
 .goal__text strong { font-size: 16px; }
-.goal__text p { margin: 4px 0 0; font-size: 14px; }
+.goal__text p { margin: 2px 0 0; font-size: 13px; }
 
-.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+/* compact "today" mini cards (quests + league) */
+.mini-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mini { display: grid; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); text-align: left; }
+.mini__top { font-weight: 700; font-size: 14px; }
+.mini__top b { color: var(--green); }
+
+/* slim word-of-the-day strip */
+.wotd-strip { width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; box-shadow: var(--shadow); font-size: 14px; }
+.wotd-strip b { color: var(--green); }
+
+.quest__prog { font-size: 11px; }
 
 /* ---------- lesson path ---------- */
 .path { display: flex; flex-direction: column; gap: 10px; padding-bottom: 80px; }
@@ -218,9 +236,9 @@ button { font-family: inherit; cursor: pointer; }
 .quest__text { font-size: 14px; font-weight: 600; }
 .quest__reward { font-weight: 800; font-size: 13px; color: #7c3aed; white-space: nowrap; }
 .quest--done { opacity: .6; }
-.qbar { height: 9px; background: #e3e9e4; border-radius: 999px; overflow: hidden; }
-.qbar > div { height: 100%; background: var(--green); border-radius: 999px; transition: width .3s; }
-.qbar--gold > div { background: var(--gold); }
+.qbar { display: block; height: 9px; background: var(--line); border-radius: 999px; overflow: hidden; }
+.qbar > div, .qbar > span { display: block; height: 100%; background: var(--green); border-radius: 999px; transition: width .3s; }
+.qbar--gold > div, .qbar--gold > span { background: var(--gold); }
 
 .league-card { display: flex; align-items: center; gap: 14px; }
 .league-card__icon { font-size: 34px; flex: 0 0 auto; }
@@ -295,6 +313,20 @@ button { font-family: inherit; cursor: pointer; }
 .shop-eq { font-weight: 800; color: var(--green); font-size: 13px; white-space: nowrap; }
 
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #0f1d17; --card: #16271f; --ink: #e9f1ec; --muted: #9fb2a8; --line: #243a30; }
-  .opt { box-shadow: none; }
+  :root {
+    --bg: #0e1611;
+    --card: #1c2a22;        /* clearly lighter than bg so cards separate */
+    --ink: #f1f7f3;         /* near-white body text */
+    --muted: #a9bfb3;       /* legible secondary text */
+    --line: #2e4035;
+    --green: #38c46e;       /* bright green: readable as text AND as button fill */
+    --green-dark: #1f8048;
+    --gold: #f5c33b;
+    --blue: #5cabec;        /* bright blue for links/regions */
+  }
+  .opt { box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+  .lang-card, .node, .card, .story, .book, .shop-item, .tier, .kpi, .dcard, .rline { box-shadow: 0 1px 0 rgba(0,0,0,.3); }
+  .btn--ghost { border-color: var(--line); color: var(--green); }
+  .chip { background: #243a30; }
 }
+
