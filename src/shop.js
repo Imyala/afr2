@@ -20,11 +20,22 @@ export const MASCOTS = [
 ];
 
 // Colour themes — buy once, then equip. Overrides the accent palette.
+// `vars` are tuned for light backgrounds; `darkVars` are brightened so the
+// same accents stay readable on the dark theme (the app reads one or the
+// other based on the OS colour scheme — see applyTheme).
 export const THEMES = [
-  { id: 'savanna', name: 'Savanna', icon: '🌳', cost: 0, vars: { '--green': '#1b7a43', '--green-dark': '#0f5e33', '--gold': '#f0b323', '--blue': '#1d6fb8' } },
-  { id: 'ocean', name: 'Two Oceans', icon: '🌊', cost: 120, vars: { '--green': '#1d6fb8', '--green-dark': '#155a96', '--gold': '#00a3a3', '--blue': '#1b7a43' } },
-  { id: 'sunset', name: 'Kalahari Sunset', icon: '🌅', cost: 150, vars: { '--green': '#e2711d', '--green-dark': '#b85a14', '--gold': '#f0b323', '--blue': '#d64545' } },
-  { id: 'protea', name: 'Protea Pink', icon: '🌸', cost: 150, vars: { '--green': '#c0397b', '--green-dark': '#97275f', '--gold': '#f0b323', '--blue': '#1d6fb8' } },
+  { id: 'savanna', name: 'Savanna', icon: '🌳', cost: 0,
+    vars: { '--green': '#1b7a43', '--green-dark': '#0f5e33', '--gold': '#f0b323', '--blue': '#1d6fb8' },
+    darkVars: { '--green': '#38c46e', '--green-dark': '#1f8048', '--gold': '#f5c33b', '--blue': '#5cabec' } },
+  { id: 'ocean', name: 'Two Oceans', icon: '🌊', cost: 120,
+    vars: { '--green': '#1d6fb8', '--green-dark': '#155a96', '--gold': '#00a3a3', '--blue': '#1b7a43' },
+    darkVars: { '--green': '#5cabec', '--green-dark': '#2f7fc4', '--gold': '#2bd4d4', '--blue': '#38c46e' } },
+  { id: 'sunset', name: 'Kalahari Sunset', icon: '🌅', cost: 150,
+    vars: { '--green': '#e2711d', '--green-dark': '#b85a14', '--gold': '#f0b323', '--blue': '#d64545' },
+    darkVars: { '--green': '#f6953f', '--green-dark': '#d4742a', '--gold': '#f5c33b', '--blue': '#f07a7a' } },
+  { id: 'protea', name: 'Protea Pink', icon: '🌸', cost: 150,
+    vars: { '--green': '#c0397b', '--green-dark': '#97275f', '--gold': '#f0b323', '--blue': '#1d6fb8' },
+    darkVars: { '--green': '#e86aa6', '--green-dark': '#c2548a', '--gold': '#f5c33b', '--blue': '#5cabec' } },
 ];
 
 export function findItem(id) {
@@ -92,12 +103,17 @@ export function equippedMascot(store) {
   return MASCOTS.find((m) => m.id === inv.equipped.mascot) || MASCOTS[0];
 }
 
-// Apply the equipped colour theme to the document.
+// Apply the equipped colour theme to the document. Picks the brightened
+// `darkVars` when the OS is in dark mode so accents (headings, links, the
+// "Beginner" level tag, region names…) keep enough contrast to stay legible.
 export function applyTheme(store, doc = (typeof document !== 'undefined' ? document : null)) {
   if (!doc) return;
   const inv = inventory(store);
   const theme = THEMES.find((t) => t.id === inv.equipped.theme) || THEMES[0];
-  for (const [k, v] of Object.entries(theme.vars)) doc.documentElement.style.setProperty(k, v);
+  const mq = doc.defaultView && doc.defaultView.matchMedia
+    && doc.defaultView.matchMedia('(prefers-color-scheme: dark)');
+  const vars = (mq && mq.matches && theme.darkVars) ? theme.darkVars : theme.vars;
+  for (const [k, v] of Object.entries(vars)) doc.documentElement.style.setProperty(k, v);
 }
 
 // Consume one Double XP boost if active. Returns the (possibly doubled) amount

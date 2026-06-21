@@ -26,6 +26,12 @@ function fmtTime(ms) { const m = Math.ceil(ms / 60000); return `${m} min`; }
 // ---------- boot ----------
 async function boot() {
   Shop.applyTheme(store);
+  // Re-apply the palette if the OS flips between light/dark so themed accents
+  // always use the variant tuned for the current background.
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', () => Shop.applyTheme(store));
+  }
   LANGS = await loadLanguages();
   if (!store.state.activeLang) return renderLanguageSelect(true);
   await openLanguage(store.state.activeLang);
@@ -94,19 +100,25 @@ function renderHome() {
 
   const lessons = allLessons(course);
   let lastUnit = null;
+  let activeMarked = false;
   const path = lessons.map((l, i) => {
     const done = store.isLessonComplete(l.id);
     const stars = L.lessonStars[l.id] || 0;
     const prevDone = i === 0 || store.isLessonComplete(lessons[i - 1].id);
     const locked = !done && !prevDone;
+    // The first available, not-yet-finished lesson is the learner's clear
+    // next step — highlight it so the eye lands on what to do now.
+    const active = !done && !locked && !activeMarked;
+    if (active) activeMarked = true;
     const unitHeader = l.unitTitle !== lastUnit ? `<div class="unit-head"><span>${esc(l.unitTitle)}</span><small>${esc(l.level)}</small></div>` : '';
     lastUnit = l.unitTitle;
     const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
+    const cta = active ? '<span class="node__cta">START</span>' : '';
     return `${unitHeader}
-      <button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''}>
+      <button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''}>
         <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
         <span class="node__title">${esc(l.title)}</span>
-        ${starHtml}
+        ${active ? cta : starHtml}
       </button>`;
   }).join('');
 

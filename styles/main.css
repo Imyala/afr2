@@ -28,7 +28,10 @@ body {
   width: 100%; max-width: var(--maxw);
   padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
   margin: 0 auto; display: flex; flex-direction: column; gap: 16px;
+  animation: screenIn .28s cubic-bezier(.2, .7, .3, 1) both;
 }
+@keyframes screenIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .screen { animation: none; } }
 .screen--center { min-height: 100dvh; justify-content: center; align-items: center; text-align: center; }
 .muted { color: var(--muted); }
 .footnote { color: var(--muted); font-size: 13px; text-align: center; margin-top: 8px; }
@@ -49,9 +52,20 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .badge { background: rgba(0,0,0,.18); border-radius: 999px; padding: 2px 8px; font-size: 13px; }
 
 /* ---------- brand / onboarding ---------- */
-.brand { text-align: center; }
-.brand__logo { font-size: 56px; }
-.brand__name { font-size: 34px; margin: 4px 0; color: var(--green); letter-spacing: -.5px; }
+.brand { text-align: center; padding-top: 8px; }
+.brand__logo {
+  font-size: 52px; line-height: 1; display: inline-grid; place-items: center;
+  width: 92px; height: 92px; margin: 0 auto 4px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--green) 26%, transparent), transparent 70%);
+  animation: brandFloat 4s ease-in-out infinite;
+}
+@keyframes brandFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@media (prefers-reduced-motion: reduce) { .brand__logo { animation: none; } }
+.brand__name {
+  font-size: 36px; margin: 2px 0; letter-spacing: -.5px; font-weight: 800;
+  background: linear-gradient(95deg, var(--green), var(--gold));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
 .brand__tag { color: var(--muted); margin: 0 0 8px; }
 .lang-intro { text-align: center; margin: 0; }
 .lang-grid { display: grid; gap: 12px; width: 100%; }
@@ -108,21 +122,46 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 
 /* ---------- lesson path ---------- */
 .path { display: flex; flex-direction: column; gap: 10px; padding-bottom: 80px; }
-.unit-head { display: flex; justify-content: space-between; align-items: baseline; margin: 14px 4px 2px; }
-.unit-head span { font-weight: 800; color: var(--ink); }
-.unit-head small { color: var(--blue); font-weight: 700; }
+.unit-head { display: flex; justify-content: space-between; align-items: center; margin: 16px 4px 4px; }
+.unit-head span { font-weight: 800; color: var(--ink); font-size: 16px; }
+.unit-head small {
+  color: var(--blue); font-weight: 800; font-size: 12px; padding: 3px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--blue) 16%, transparent);
+}
 .node {
   display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: var(--radius);
   background: var(--card); border: 2px solid var(--line); box-shadow: var(--shadow); text-align: left; width: 100%;
+  transition: transform .12s, box-shadow .12s;
 }
+.node:active { transform: scale(.99); }
 .node__icon {
   width: 40px; height: 40px; flex: 0 0 auto; border-radius: 50%; background: var(--green); color: #fff;
   display: grid; place-items: center; font-weight: 800; box-shadow: 0 3px 0 var(--green-dark);
 }
-.node__title { flex: 1; font-weight: 700; }
+.node__title { flex: 1; font-weight: 700; color: var(--ink); }
 .node--done .node__icon { background: var(--gold); color: #3a2c00; box-shadow: 0 3px 0 #c79412; }
-.node--locked { opacity: .6; }
-.node--locked .node__icon { background: #c4ccc6; box-shadow: none; }
+
+/* the learner's next step — the one thing we want the eye to catch */
+.node--active {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 22%, transparent), var(--shadow);
+  animation: nodePulse 2.2s ease-in-out infinite;
+}
+.node--active .node__icon { box-shadow: 0 3px 0 var(--green-dark); transform: scale(1.06); }
+.node__cta {
+  font-size: 12px; font-weight: 800; letter-spacing: .6px; color: #fff; background: var(--green);
+  padding: 5px 12px; border-radius: 999px; box-shadow: 0 3px 0 var(--green-dark);
+}
+@keyframes nodePulse {
+  0%, 100% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 20%, transparent), var(--shadow); }
+  50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--green) 8%, transparent), var(--shadow); }
+}
+@media (prefers-reduced-motion: reduce) { .node--active { animation: none; } }
+
+/* locked = clearly secondary, but the title still reads */
+.node--locked { background: transparent; border-style: dashed; box-shadow: none; }
+.node--locked .node__title { color: var(--muted); font-weight: 600; }
+.node--locked .node__icon { background: var(--line); color: var(--muted); box-shadow: none; }
 .stars { color: var(--gold); letter-spacing: 2px; }
 
 /* ---------- bottom nav ---------- */
@@ -317,16 +356,25 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
     --bg: #0e1611;
     --card: #1c2a22;        /* clearly lighter than bg so cards separate */
     --ink: #f1f7f3;         /* near-white body text */
-    --muted: #a9bfb3;       /* legible secondary text */
+    --muted: #b4c8bc;       /* legible secondary text */
     --line: #2e4035;
     --green: #38c46e;       /* bright green: readable as text AND as button fill */
     --green-dark: #1f8048;
     --gold: #f5c33b;
     --blue: #5cabec;        /* bright blue for links/regions */
+    --purple: #b794f6;      /* bright purple for gems/rewards on dark */
   }
   .opt { box-shadow: 0 2px 0 rgba(0,0,0,.3); }
   .lang-card, .node, .card, .story, .book, .shop-item, .tier, .kpi, .dcard, .rline { box-shadow: 0 1px 0 rgba(0,0,0,.3); }
   .btn--ghost { border-color: var(--line); color: var(--green); }
-  .chip { background: #243a30; }
+  .chip { background: #243a30; border: 1px solid var(--line); color: var(--muted); }
+  /* light accent pills/blocks would glare on dark — tint them to the theme */
+  .navbtn--active { background: color-mix(in srgb, var(--green) 18%, transparent); }
+  .stat--gems, .quest__reward, .reward-row span, .chest { color: var(--purple); }
+  .reward-list { background: color-mix(in srgb, var(--purple) 14%, transparent); }
+  .reward-list--ach { background: color-mix(in srgb, var(--gold) 14%, transparent); }
+  .chest { background: color-mix(in srgb, var(--purple) 14%, transparent); }
+  .boost-badge, .boost-chip { background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--gold); }
+  .plan--best { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
 }
 
