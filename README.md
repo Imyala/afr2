@@ -20,10 +20,11 @@ things that matter most are:
 **Available now (MVP):** isiZulu, isiXhosa, Afrikaans
 **Coming soon:** Sesotho, Setswana, Sepedi, Tshivenda, Xitsonga, isiNdebele, siSwati
 
-The Zulu course ships with 10 lessons across two units; Xhosa and Afrikaans
-ship with 6 beginner lessons each. All content is real, culturally grounded
-vocabulary with phonetics and cultural notes (respect terms, taxi phrases,
-click sounds, formal vs casual speech).
+The Zulu course ships with 15 lessons across three units (~90 words); Xhosa and
+Afrikaans ship with 10 lessons across two units (~60 words each). All content is
+real, culturally grounded vocabulary with phonetics and cultural notes (respect
+terms, taxi phrases, click sounds, days, colours, feelings, formal vs casual
+speech).
 
 ## Why this isn't "just Duolingo for SA"
 
@@ -58,6 +59,10 @@ for the full explanation. In short:
 > see the roadmap.
 
 **Engagement / retention** (gets kids back daily — see [docs/ENGAGEMENT.md](docs/ENGAGEMENT.md))
+- 🦫 **Themba the meerkat** — a friendly SVG mascot who reacts to your answers, cheers your wins and greets you each day
+- ✨ **Juicy feedback** — generated sound effects, confetti, count-up score animations and haptic buzzes (all offline, zero asset downloads)
+- 👋 **Warm onboarding** — a short welcome and a guaranteed "you just learned 3 words" first win before any commitment
+- 🔔 **Daily streak reminders** — opt-in local notifications (via periodic background sync on installed PWAs) so learners come back
 - 🔥 Day streaks with ❄️ **streak freezes** to protect them
 - 🎯 **Daily quests** with 💎 gem rewards
 - 🏅 **Achievement badges** (12 milestones)
@@ -68,6 +73,7 @@ for the full explanation. In short:
 
 **Platform**
 - 📶 **Full offline use** via service worker — install to home screen
+- ⚙️ **Settings** — toggle sound, daily reminders and your daily XP goal
 - 💳 Premium tier (demo): all languages, unlimited hearts, no ads
 - 📚 In-app **Library** linking to free, openly-licensed book collections (see below)
 
@@ -99,11 +105,14 @@ manifest.webmanifest    PWA manifest (installable)
 sw.js                   Service worker (offline caching)
 styles/main.css         Mobile-first styles
 src/
-  app.js                Screens, routing, exercise rendering
+  app.js                Screens, routing, exercise rendering, onboarding
   store.js              Progress, hearts, XP, streaks (localStorage)
   srs.js                Spaced-repetition engine (SM-2 + learning steps)
   lessons.js            Course loading, grading, session building
   audio.js              TTS (listening) + speech recognition (speaking)
+  fx.js                 Sound (Web Audio), haptics, confetti, count-up — no assets
+  mascot.js             Themba, the inline-SVG brand mascot + reactions
+  notify.js             Opt-in daily streak reminders (offline, no server)
 data/
   languages.json        Language catalogue
   courses/{zu,xh,af}.json   Course content

@@ -8,6 +8,9 @@ import {
 } from './lessons.js';
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
+import { sound, haptic, confetti, countUp, pop, setSoundEnabled } from './fx.js';
+import { mascotSvg, mascotLine } from './mascot.js';
+import * as Notify from './notify.js';
 
 let LIBRARY = null;   // library.json
 
@@ -26,6 +29,7 @@ function fmtTime(ms) { const m = Math.ceil(ms / 60000); return `${m} min`; }
 // ---------- boot ----------
 async function boot() {
   Shop.applyTheme(store);
+  setSoundEnabled(store.state.settings.soundOn !== false);
   // Re-apply the palette if the OS flips between light/dark so themed accents
   // always use the variant tuned for the current background.
   if (window.matchMedia) {
@@ -33,6 +37,14 @@ async function boot() {
       .addEventListener('change', () => Shop.applyTheme(store));
   }
   LANGS = await loadLanguages();
+  // Migration: anyone with an existing language has already used the app —
+  // don't show them onboarding or the first-win taster.
+  if (store.state.activeLang && !store.state.settings.onboarded) {
+    store.state.settings.onboarded = true;
+    store.save();
+  }
+  // First-ever run: warm welcome + value before asking for any commitment.
+  if (!store.state.settings.onboarded && !store.state.activeLang) return renderOnboarding();
   if (!store.state.activeLang) return renderLanguageSelect(true);
   await openLanguage(store.state.activeLang);
 }
@@ -45,6 +57,9 @@ async function openLanguage(code) {
   G.ensureDaily(store);
   G.ensureWeek(store);
   G.checkAchievements(store);
+  // First run: give an instant, guaranteed "I just learned something" win
+  // before dropping the learner into the full home screen.
+  if (!store.state.settings.onboarded) return renderFirstWin();
   const dr = G.dailyRewardStatus(store);
   if (dr.canClaim) return renderDailyReward();
   renderHome();
@@ -83,8 +98,138 @@ function renderLanguageSelect(first = false) {
       <p class="footnote">Works offline · Built for South African classrooms</p>
     </div>`);
   node.querySelectorAll('.lang-card').forEach((b) =>
-    b.addEventListener('click', () => openLanguage(b.dataset.code)));
+    b.addEventListener('click', () => { sound.tap(); openLanguage(b.dataset.code); }));
   mount(node);
+}
+
+// ---------- onboarding (first run only) ----------
+const ONB_SLIDES = [
+  { mood: 'wave', title: 'Sawubona! I\'m Themba 👋',
+    body: 'I\'ll help you learn a real South African language — one you can actually speak with people around you.' },
+  { mood: 'happy', title: 'Real progress, proven',
+    body: 'No empty taps. Spaced repetition reviews each word right before you\'d forget it, so it truly sticks — and we measure it.' },
+  { mood: 'cheer', title: 'Works offline, free to start',
+    body: 'Learn anywhere with no data — on the taxi, at school, at home. Add it to your home screen and go.' },
+];
+function renderOnboarding(i = 0) {
+  const s = ONB_SLIDES[i];
+  const last = i === ONB_SLIDES.length - 1;
+  const dots = ONB_SLIDES.map((_, k) => `<span class="onb__dot ${k === i ? 'onb__dot--on' : ''}"></span>`).join('');
+  const node = h(`
+    <div class="screen onb">
+      <div class="onb__art">${mascotSvg(s.mood, { size: 150 })}</div>
+      <h1 class="onb__title">${esc(s.title)}</h1>
+      <p class="onb__body">${esc(s.body)}</p>
+      <div class="onb__dots">${dots}</div>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="next">${last ? 'Choose your language' : 'Next'}</button>
+        ${last ? '' : '<button class="btn btn--ghost" id="skip">Skip</button>'}
+      </div>
+    </div>`);
+  node.querySelector('#next').addEventListener('click', () => {
+    sound.tap();
+    if (last) renderLanguageSelect(true);
+    else renderOnboarding(i + 1);
+  });
+  const sk = node.querySelector('#skip');
+  if (sk) sk.addEventListener('click', () => renderLanguageSelect(true));
+  mount(node);
+}
+
+// ---------- first-win taster ----------
+// A guaranteed quick success: meet 3 words, then get one right. The dopamine
+// hit before the full app appears is what turns a visitor into a learner.
+function renderFirstWin(step = 0, picks = null) {
+  if (!picks) {
+    const first = allLessons(course)[0];
+    picks = (first.vocab || []).slice(0, 3);
+    if (picks.length < 3) { finishOnboarding(); return; }
+  }
+  // steps 0..2 = flashcard intros, step 3 = a recognition check, step 4 = celebrate
+  if (step <= 2) {
+    const w = picks[step];
+    const node = h(`
+      <div class="screen onb">
+        <p class="muted">Your first words · ${step + 1} of 3</p>
+        <div class="onb__art">${mascotSvg('happy', { size: 96 })}</div>
+        <div class="wotd-big">
+          <strong>${esc(w.term)}</strong>
+          <span class="wotd-big__phon muted">${esc(w.phonetic || '')}</span>
+          <span class="wotd-big__tr">${esc(w.translation)}</span>
+        </div>
+        <button class="play-btn" id="hear">🔊 Hear it</button>
+        <div class="onb__actions"><button class="btn btn--primary" id="next">${step === 2 ? 'Try it out' : 'Next word'}</button></div>
+      </div>`);
+    node.querySelector('#hear').addEventListener('click', () => tryHear(w.term, course.code));
+    speak(w.term, course.code);
+    node.querySelector('#next').addEventListener('click', () => { sound.tap(); renderFirstWin(step + 1, picks); });
+    mount(node);
+    return;
+  }
+  if (step === 3) {
+    const w = picks[0];
+    const others = picks.slice(1).map((p) => p.translation);
+    const options = shuffle([w.translation, ...others]);
+    const node = h(`
+      <div class="screen onb">
+        <div class="onb__art">${mascotSvg('think', { size: 96 })}</div>
+        <h2 class="ex__q">What does “${esc(w.term)}” mean?</h2>
+        <div class="opts">${options.map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+      </div>`);
+    node.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
+      const ok = normalize(b.dataset.val) === normalize(w.translation);
+      node.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
+      b.classList.add(ok ? 'opt--ok' : 'opt--bad');
+      if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic([10, 40, 10]); }
+      // introduce the 3 words into the real SRS schedule so this counts
+      picks.forEach((p) => { srsReview(store.item(p.id), gradeFor(true, 'multiple_choice'), 'multiple_choice'); });
+      store.save();
+      setTimeout(() => renderFirstWin(4, picks), 800);
+    }));
+    mount(node);
+    return;
+  }
+  // celebrate
+  confetti();
+  sound.complete();
+  haptic([15, 30, 15]);
+  const chips = picks.map((p) => `<span class="win-word">${esc(p.term)}</span>`).join('');
+  const node = h(`
+    <div class="screen onb">
+      <div class="onb__art">${mascotSvg('cheer', { size: 150 })}</div>
+      <h1 class="onb__title">You just learned 3 words! 🎉</h1>
+      <div class="win-words">${chips}</div>
+      <p class="onb__body">That's how it works — short, real, and it sticks. Ready for your first full lesson?</p>
+      <div class="onb__actions"><button class="btn btn--primary" id="go">Start learning</button></div>
+    </div>`);
+  node.querySelector('#go').addEventListener('click', () => { sound.tap(); promptReminders(); });
+  mount(node);
+}
+
+// Offer daily reminders once, right after the first win (peak motivation).
+function promptReminders() {
+  if (!Notify.supported() || Notify.permission() !== 'default') return finishOnboarding();
+  const node = h(`
+    <div class="screen onb">
+      <div class="onb__art">${mascotSvg('wave', { size: 130 })}</div>
+      <h1 class="onb__title">Want a daily nudge? 🔥</h1>
+      <p class="onb__body">A gentle reminder helps you keep your streak and actually learn. No spam — just once a day if you haven't practised.</p>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="yes">Yes, remind me</button>
+        <button class="btn btn--ghost" id="no">Not now</button>
+      </div>
+    </div>`);
+  node.querySelector('#yes').addEventListener('click', async () => { await Notify.enable(store); finishOnboarding(); });
+  node.querySelector('#no').addEventListener('click', finishOnboarding);
+  mount(node);
+}
+
+function finishOnboarding() {
+  store.state.settings.onboarded = true;
+  store.save();
+  const dr = G.dailyRewardStatus(store);
+  if (dr.canClaim) return renderDailyReward();
+  renderHome();
 }
 
 // ---------- home / lesson path ----------
@@ -154,8 +299,14 @@ function renderHome() {
           <span class="stat stat--streak" id="streakBtn" title="Day streak">🔥 ${L.streak}</span>
           <span class="stat stat--gems" id="gemsBtn" title="Gems">💎 ${G.gems(store)}</span>
           <span class="stat stat--hearts" id="heartsBtn" title="Hearts">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
+          <button class="stat" id="settingsBtn" title="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
         </div>
       </header>
+
+      <div class="mascot-row">
+        <span class="goal__mascot">${mascotSvg(pct >= 100 ? 'cheer' : 'idle', { size: 64 })}</span>
+        <div class="speech">${pct >= 100 ? mascotLine('cheer', L.streak) : esc(homeGreeting(L, due))}</div>
+      </div>
 
       <section class="goal">
         <div class="goal__ring" style="--pct:${pct}">
@@ -210,8 +361,20 @@ function renderHome() {
   node.querySelector('#gemsBtn').addEventListener('click', renderShop);
   node.querySelector('#streakBtn').addEventListener('click', renderLeague);
   node.querySelector('#heartsBtn').addEventListener('click', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
+  node.querySelector('#settingsBtn').addEventListener('click', renderSettings);
   const wb = node.querySelector('#wotdBtn'); if (wb) wb.addEventListener('click', renderWotd);
   mount(node);
+  // keep the reminder state fresh for the service worker, and arm a same-session
+  // nudge in case the learner leaves the tab open without practising
+  Notify.syncState(store);
+  Notify.armSessionFallback(store);
+}
+
+// A friendly, situation-aware line for the home mascot.
+function homeGreeting(L, due) {
+  if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review — let's lock them in!`;
+  if ((L.streak || 0) >= 3) return `${L.streak}-day streak! Keep it burning. 🔥`;
+  return mascotLine('idle', (L.xp || 0) + (L.streak || 0));
 }
 
 // ---------- word of the day (offline, from the active course vocab) ----------
@@ -425,17 +588,22 @@ function renderExercise() {
 function footFor(node) { return node.querySelector('#foot'); }
 
 function showFeedback(node, ok, ex, correctText) {
+  // sound + haptics first so they land with the visual
+  if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic([10, 50, 10]); }
   const foot = footFor(node);
   foot.className = `ex__foot ${ok ? 'ex__foot--ok' : 'ex__foot--bad'}`;
   const note = ex.meaning ? `<div class="fb__meaning">${esc(ex.meaning)}</div>` : '';
   foot.innerHTML = `
     <div class="fb">
-      <div class="fb__title">${ok ? '✓ Correct!' : '✗ Not quite'}</div>
-      ${ok ? '' : `<div class="fb__answer">Answer: <strong>${esc(correctText)}</strong></div>`}
-      ${note}
+      <span class="fb__mascot">${mascotSvg(ok ? 'cheer' : 'sad', { size: 52 })}</span>
+      <div class="fb__text">
+        <div class="fb__title">${ok ? mascotLine('cheer', session.total) : '✗ Not quite'}</div>
+        ${ok ? '' : `<div class="fb__answer">Answer: <strong>${esc(correctText)}</strong></div>`}
+        ${note}
+      </div>
     </div>
     <button class="btn btn--primary" id="continueBtn">Continue</button>`;
-  foot.querySelector('#continueBtn').addEventListener('click', () => advance(ok, ex));
+  foot.querySelector('#continueBtn').addEventListener('click', () => { sound.tap(); advance(ok, ex); });
   // lock inputs
   node.querySelectorAll('.opt, .ex__input, .check').forEach((e) => { e.disabled = true; });
 }
@@ -529,22 +697,29 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
     ? `<div class="reward-list reward-list--ach"><strong>New badges! 🏅</strong>${rewards.achievements.map((a) => `<div class="reward-row">${a.icon} ${esc(a.name)} <span>+💎20</span></div>`).join('')}</div>` : '';
   const node = h(`
     <div class="screen screen--center result">
-      <div class="result__emoji">🎉</div>
+      <div class="onb__art">${mascotSvg('cheer', { size: 120 })}</div>
       <h1>${title}</h1>
       <div class="result__stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
       ${session.xpBoosted ? '<div class="boost-badge">⚡ Double XP applied!</div>' : ''}
       <div class="result__row">
         <div class="kpi"><span class="kpi__v">${correct}/${total}</span><span class="kpi__k">Correct</span></div>
-        <div class="kpi"><span class="kpi__v">+${session.earned || 0}</span><span class="kpi__k">XP</span></div>
-        <div class="kpi"><span class="kpi__v">+💎${rewards.gems || 0}</span><span class="kpi__k">Gems</span></div>
+        <div class="kpi"><span class="kpi__v" id="xpKpi">+0</span><span class="kpi__k">XP</span></div>
+        <div class="kpi"><span class="kpi__v" id="gemKpi">+💎0</span><span class="kpi__k">Gems</span></div>
       </div>
       ${questHtml}
       ${achHtml}
       <p class="muted">Words you missed are scheduled for review so they actually stick.</p>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
-  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  node.querySelector('#doneBtn').addEventListener('click', () => { sound.tap(); renderHome(); });
   mount(node);
+  // celebrate: a perfect run gets the big confetti; any finish gets a chime
+  sound.complete();
+  haptic([15, 30, 15]);
+  if (stars === 3) confetti({ count: 120 });
+  else confetti({ count: 60, duration: 1100 });
+  countUp(node.querySelector('#xpKpi'), session.earned || 0, { prefix: '+' });
+  countUp(node.querySelector('#gemKpi'), rewards.gems || 0, { prefix: '+💎' });
 }
 
 function renderOutOfHearts() {
@@ -706,8 +881,62 @@ function renderDailyReward() {
   node.querySelector('#claim').addEventListener('click', () => {
     const r = G.claimDailyReward(store);
     node.querySelector('#claim').textContent = r ? `+${r.gems} gems! 🎉` : 'Claimed';
-    setTimeout(renderHome, 600);
+    sound.reward(); haptic(20); confetti({ count: 70, duration: 1200 });
+    setTimeout(renderHome, 700);
   });
+  mount(node);
+}
+
+// ---------- settings ----------
+function renderSettings() {
+  const soundOn = store.state.settings.soundOn !== false;
+  const remOn = Notify.isEnabled(store);
+  const remSupported = Notify.supported();
+  const remDenied = Notify.permission() === 'denied';
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Settings</strong><span></span></header>
+      <div class="set-list">
+        <div class="set-row">
+          <div class="set-row__label"><b>Sound effects</b><small>Chimes on correct answers and lessons</small></div>
+          <label class="switch"><input type="checkbox" id="soundTgl" ${soundOn ? 'checked' : ''}><span class="switch__track"></span></label>
+        </div>
+        <div class="set-row">
+          <div class="set-row__label"><b>Daily reminders</b><small>${remSupported ? (remDenied ? 'Blocked in your browser settings' : 'A gentle nudge to keep your streak') : 'Not supported on this device'}</small></div>
+          <label class="switch"><input type="checkbox" id="remTgl" ${remOn ? 'checked' : ''} ${remSupported && !remDenied ? '' : 'disabled'}><span class="switch__track"></span></label>
+        </div>
+        <div class="set-row">
+          <div class="set-row__label"><b>Daily goal</b><small>XP target per day</small></div>
+          <select id="goalSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[20, 30, 50, 80].map((g) => `<option value="${g}" ${store.state.settings.dailyGoalXP === g ? 'selected' : ''}>${g} XP</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <h3 class="sec">Premium</h3>
+      <button class="card" id="prem" style="text-align:left"><strong>⭐ MzansiLingo Premium</strong><span class="muted">Unlimited hearts, all languages, no ads.</span></button>
+      <p class="footnote">MzansiLingo v1 · Works offline · Made for South Africa 🇿🇦</p>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#soundTgl').addEventListener('change', (e) => {
+    store.state.settings.soundOn = e.target.checked;
+    setSoundEnabled(e.target.checked);
+    store.save();
+    if (e.target.checked) sound.correct();
+  });
+  node.querySelector('#remTgl').addEventListener('change', async (e) => {
+    if (e.target.checked) {
+      const res = await Notify.enable(store);
+      if (res !== 'granted') { e.target.checked = false; flashToast('Enable notifications in your browser to use reminders.'); }
+      else flashToast('Daily reminders on 🔔');
+    } else {
+      await Notify.disable(store);
+    }
+  });
+  node.querySelector('#goalSel').addEventListener('change', (e) => {
+    store.state.settings.dailyGoalXP = Number(e.target.value);
+    store.save();
+  });
+  node.querySelector('#prem').addEventListener('click', renderPremium);
   mount(node);
 }
 

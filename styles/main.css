@@ -18,11 +18,19 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Rounded system stack: SF Pro Rounded on Apple (big SA iPhone share),
+     graceful sans fallback elsewhere — friendlier than plain system-ui, and
+     needs no font download so the offline cache stays lean. */
+  font-family: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN",
+    "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
+  background-image:
+    radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--green) 10%, transparent), transparent 60%);
+  background-attachment: fixed;
   color: var(--ink);
   -webkit-tap-highlight-color: transparent;
 }
+h1, h2, h3, .brand__name, .node__title, .dcard__v, .kpi__v { letter-spacing: -.3px; }
 .app { min-height: 100dvh; display: flex; justify-content: center; }
 .screen {
   width: 100%; max-width: var(--maxw);
@@ -376,5 +384,68 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   .chest { background: color-mix(in srgb, var(--purple) 14%, transparent); }
   .boost-badge, .boost-chip { background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--gold); }
   .plan--best { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
+  body { background-image: radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--green) 14%, transparent), transparent 60%); }
 }
+
+/* ---------- mascot (Themba) ---------- */
+.mascot { display: block; --accent: var(--green); overflow: visible; }
+.mascot--idle { animation: mascotBob 3.4s ease-in-out infinite; }
+.mascot--cheer { animation: mascotCheer .6s cubic-bezier(.2,.7,.3,1) both; }
+.mascot--wave .mascot-wave-arm { transform-origin: 90px 78px; animation: mascotWave 1.1s ease-in-out infinite; }
+@keyframes mascotBob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+@keyframes mascotCheer { 0% { transform: scale(.8) translateY(6px) } 60% { transform: scale(1.06) translateY(-4px) } 100% { transform: none } }
+@keyframes mascotWave { 0%,100% { transform: rotate(0) } 50% { transform: rotate(-22deg) } }
+@media (prefers-reduced-motion: reduce) { .mascot, .mascot * { animation: none !important; } }
+
+/* mascot tucked into the daily-goal card */
+.goal__mascot { flex: 0 0 auto; }
+
+/* speech bubble next to the mascot */
+.mascot-row { display: flex; align-items: center; gap: 12px; }
+.speech {
+  position: relative; background: var(--card); border: 2px solid var(--line); border-radius: 14px;
+  padding: 10px 14px; font-weight: 700; font-size: 15px; box-shadow: var(--shadow); flex: 1;
+}
+.speech::before {
+  content: ""; position: absolute; left: -9px; top: 50%; transform: translateY(-50%);
+  border: 8px solid transparent; border-right-color: var(--card);
+}
+
+/* feedback footer mascot */
+.fb { display: flex; align-items: center; gap: 12px; }
+.fb__mascot { flex: 0 0 auto; }
+.fb__text { flex: 1; }
+
+/* ---------- onboarding ---------- */
+.onb { min-height: 100dvh; justify-content: center; align-items: center; text-align: center; gap: 20px; }
+.onb__art { display: grid; place-items: center; }
+.onb__title { font-size: 28px; font-weight: 800; margin: 0; }
+.onb__body { color: var(--muted); font-size: 16px; max-width: 320px; margin: 0 auto; line-height: 1.45; }
+.onb__dots { display: flex; gap: 8px; justify-content: center; }
+.onb__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .2s; }
+.onb__dot--on { background: var(--green); width: 22px; border-radius: 999px; }
+.onb__actions { display: grid; gap: 10px; width: 100%; max-width: 340px; }
+.onb__feature { display: flex; align-items: center; gap: 12px; text-align: left; background: var(--card); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); width: 100%; max-width: 340px; }
+.onb__feature span:first-child { font-size: 26px; }
+.onb__feature b { display: block; font-size: 15px; }
+.onb__feature small { color: var(--muted); }
+.onb__feats { display: grid; gap: 10px; }
+
+/* first-win celebration chips */
+.win-words { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.win-word { background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green-dark); border-radius: 999px; padding: 8px 14px; font-weight: 800; font-size: 15px; }
+
+/* ---------- settings ---------- */
+.set-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: var(--card); border-radius: 14px; box-shadow: var(--shadow); }
+.set-row__label b { display: block; }
+.set-row__label small { color: var(--muted); font-size: 13px; }
+.switch { position: relative; width: 52px; height: 30px; flex: 0 0 auto; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch__track { position: absolute; inset: 0; background: var(--line); border-radius: 999px; transition: background .2s; }
+.switch__track::before { content: ""; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+.switch input:checked + .switch__track { background: var(--green); }
+.switch input:checked + .switch__track::before { transform: translateX(22px); }
+
+/* settings nav button reuse */
+.set-list { display: grid; gap: 10px; }
 
