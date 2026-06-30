@@ -489,6 +489,9 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .cando--done .cando__text { color: var(--green-dark); }
 @media (prefers-color-scheme: dark) { .cando--done .cando__text { color: var(--green); } }
 
+.lst-reveal { text-align: center; font-size: 18px; font-weight: 700; }
+.lst-reveal strong { color: var(--green); }
+
 /* ---------- speaking practice ---------- */
 .spk-rec { display: grid; gap: 10px; }
 .spk-recording { background: var(--red) !important; color: #fff !important; border-color: var(--red) !important; animation: spkPulse 1s ease-in-out infinite; }

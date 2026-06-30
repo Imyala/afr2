@@ -378,6 +378,10 @@ function renderHome() {
         🎤 <span class="muted">Speaking —</span> <b>say your words out loud</b> →
       </button>
 
+      <button class="wotd-strip" id="listenBtn">
+        👂 <span class="muted">Listening —</span> <b>understand it by ear</b> →
+      </button>
+
       <div class="path">${path}</div>
       <nav class="bottombar" aria-label="Main">
         <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
@@ -395,6 +399,7 @@ function renderHome() {
   node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
   node.querySelector('#glossaryBtn').addEventListener('click', () => renderGlossary());
   node.querySelector('#speakBtn').addEventListener('click', startSpeaking);
+  node.querySelector('#listenBtn').addEventListener('click', startListening);
   node.querySelector('#shopNav').addEventListener('click', renderShop);
   node.querySelector('#questsBtn').addEventListener('click', renderQuests);
   node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
@@ -687,6 +692,100 @@ function renderSpeakingDone() {
   mount(node);
 }
 
+// ---------- listening practice (comprehension from audio) ----------
+// Hear it, then pick the meaning. Audio-first (the text is hidden until you
+// answer or tap "Show text"), so it trains listening — but never blocks: where
+// no voice exists, "Show text" turns it into reading comprehension.
+function listeningItems() {
+  const idx = vocabIndex(course);
+  const pool = Object.values(idx);
+  const items = [];
+  const allEns = [];
+  for (const l of allLessons(course)) for (const p of (l.phrases || [])) allEns.push(p.en);
+  for (const l of allLessons(course)) for (const p of (l.phrases || [])) {
+    const distract = shuffle(allEns.filter((e) => normalize(e) !== normalize(p.en))).filter((e, i, a) => a.indexOf(e) === i).slice(0, 3);
+    if (distract.length < 2) continue;
+    items.push({ text: p.t, phonetic: '', answer: p.en, options: shuffle([p.en, ...distract]), ids: exerciseVocabIds({ type: 'word_bank', answer: p.t }, l) });
+  }
+  const L = store.lang();
+  const pick = [...new Set([...store.dueItems(), ...shuffle(Object.keys(L.items).filter((id) => L.items[id].seen > 0))])].slice(0, 8);
+  const base = pick.length ? pick : Object.keys(idx).slice(0, 8);
+  for (const id of base) {
+    const v = idx[id]; if (!v) continue;
+    const distract = shuffle(pool.filter((o) => normalize(o.translation) !== normalize(v.translation))).slice(0, 3).map((o) => o.translation);
+    items.push({ text: v.term, phonetic: v.phonetic || '', answer: v.translation, options: shuffle([v.translation, ...distract]), ids: [id] });
+  }
+  return shuffle(items).slice(0, 10);
+}
+
+let listenSession = null;
+function startListening() {
+  listenSession = { items: listeningItems(), idx: 0, done: 0 };
+  if (!listenSession.items.length) return renderHome();
+  renderListening();
+}
+
+function renderListening() {
+  const s = listenSession;
+  if (s.idx >= s.items.length) return renderListeningDone();
+  const it = s.items[s.idx];
+  const node = h(`
+    <div class="screen ex">
+      <header class="ex__top">
+        <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
+        <div class="ex__bar"><div class="ex__bar-fill" style="width:${Math.round((s.idx / s.items.length) * 100)}%"></div></div>
+        <span class="muted">${s.idx + 1}/${s.items.length}</span>
+      </header>
+      <div class="ex__body">
+        <h2 class="ex__q">👂 What did you hear?</h2>
+        <button class="play-btn" id="playBtn">🔊 Play again</button>
+        <div class="lst-reveal" id="reveal" hidden>
+          <strong>${esc(it.text)}</strong> ${it.phonetic ? `<span class="muted">${esc(it.phonetic)}</span>` : ''}
+        </div>
+        <div class="opts">${it.options.map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+        <button class="btn btn--ghost" id="showText">Can't hear it? Show text</button>
+      </div>
+      <div class="ex__foot" id="foot"></div>
+    </div>`);
+  node.querySelector('#quitBtn').addEventListener('click', () => { listenSession = null; renderHome(); });
+  const reveal = node.querySelector('#reveal');
+  node.querySelector('#playBtn').addEventListener('click', () => tryHear(it.text, course.code));
+  node.querySelector('#showText').addEventListener('click', () => { reveal.hidden = false; });
+  speak(it.text, course.code);
+  node.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
+    const ok = normalize(b.dataset.val) === normalize(it.answer);
+    node.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
+    b.classList.add(ok ? 'opt--ok' : 'opt--bad');
+    if (!ok) node.querySelectorAll('.opt').forEach((x) => { if (normalize(x.dataset.val) === normalize(it.answer)) x.classList.add('opt--ok'); });
+    reveal.hidden = false;
+    if (ok) { sound.correct(); haptic(12); } else { sound.wrong(); haptic([10, 40, 10]); }
+    announce(ok ? 'Correct!' : `Not quite. It was ${it.text}, meaning ${it.answer}`);
+    for (const id of it.ids) srsReview(store.item(id), gradeFor(ok, 'multiple_choice'), 'multiple_choice');
+    if (ok) { store.addXp(5); s.done += 1; }
+    store.save();
+    const foot = node.querySelector('#foot');
+    foot.innerHTML = '<button class="btn btn--primary" id="next">Continue</button>';
+    foot.querySelector('#next').addEventListener('click', () => { sound.tap(); s.idx += 1; renderListening(); });
+    foot.querySelector('#next').focus();
+  }));
+  mount(node);
+}
+
+function renderListeningDone() {
+  const done = listenSession ? listenSession.done : 0;
+  listenSession = null;
+  confetti({ count: 60, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
+  const node = h(`
+    <div class="screen screen--center result">
+      <div class="onb__art">${mascotSvg('cheer', { size: 110 })}</div>
+      <h1>Listening practice done!</h1>
+      <p class="muted">You understood ${done} from sound. Training your ear is how real comprehension grows.</p>
+      <button class="btn btn--primary" id="doneBtn">Continue</button>
+    </div>`);
+  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  mount(node);
+}
+
 // ---------- session engine ----------
 function startLesson(lessonId) {
   if (store.lang().hearts <= 0) return renderHeartsModal();
@@ -758,6 +857,22 @@ function endSession() {
   } else if (session.mode === 'reading') {
     const r = session.reading;
     if (r && !store.lang().completedReadings.includes(r.id)) store.lang().completedReadings.push(r.id);
+    // input-first: words encountered in the story enter the review schedule, so
+    // reading itself feeds spaced repetition (comprehensible input → retention)
+    if (r) {
+      const idx = vocabIndex(course);
+      const byTerm = {};
+      for (const v of Object.values(idx)) byTerm[normalize(v.term)] = v.id;
+      const text = normalize(r.lines.map((ln) => ln.t).join(' '));
+      const seeded = new Set();
+      for (const [term, id] of Object.entries(byTerm)) {
+        if (term && !seeded.has(id) && (text === term || text.includes(` ${term} `) || text.startsWith(`${term} `) || text.endsWith(` ${term}`))) {
+          seeded.add(id);
+          const it = store.item(id);
+          if (!it.seen) srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice');
+        }
+      }
+    }
     merge(G.track(store, 'reading'));
   }
   merge({ quests: [], achievements: G.checkAchievements(store), gems: 0 });
