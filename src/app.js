@@ -1032,6 +1032,29 @@ function renderProgress() {
   const masteredPct = totalVocab ? Math.round((m.mastered / totalVocab) * 100) : 0;
   const retPct = Math.round(m.retention * 100);
 
+  // CEFR-style "can-do" goals, one per unit, achieved when its lessons are done
+  let unitsDone = 0;
+  const canDoRows = course.units.map((u) => {
+    const ls = u.lessons || [];
+    const done = ls.filter((l) => store.isLessonComplete(l.id)).length;
+    const pct = ls.length ? Math.round((done / ls.length) * 100) : 0;
+    const achieved = ls.length > 0 && done === ls.length;
+    if (achieved) unitsDone += 1;
+    if (!u.canDo) return '';
+    return `<div class="cando ${achieved ? 'cando--done' : ''}">
+        <span class="cando__icon">${achieved ? '✅' : '🎯'}</span>
+        <div class="cando__body">
+          <span class="cando__text">${esc(u.canDo)}</span>
+          <div class="qbar"><div style="width:${pct}%"></div></div>
+        </div>
+      </div>`;
+  }).join('');
+  const level = unitsDone === 0 ? { tag: 'Starter', sub: 'just getting going' }
+    : unitsDone <= 2 ? { tag: 'A1 · Beginner', sub: 'basic words & phrases' }
+      : unitsDone <= 4 ? { tag: 'A1+ · Beginner', sub: 'simple everyday topics' }
+        : unitsDone <= 6 ? { tag: 'A2 · Elementary', sub: 'familiar situations' }
+          : { tag: 'A2+ · Elementary', sub: 'getting conversational' };
+
   const baseline = L.baseline;
   const retest = L.retest;
   let compare = '';
@@ -1065,6 +1088,11 @@ function renderProgress() {
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Progress</strong><span></span></header>
 
+      <div class="level-card">
+        <span class="level-card__tag">${esc(level.tag)}</span>
+        <span class="level-card__sub">Your level · ${esc(level.sub)} · ${unitsDone}/${course.units.length} units mastered</span>
+      </div>
+
       <div class="dash">
         <div class="dcard"><span class="dcard__v">${m.mastered}</span><span class="dcard__k">Words mastered</span><div class="dcard__sub">of ${totalVocab} (${masteredPct}%)</div></div>
         <div class="dcard"><span class="dcard__v">${m.learning}</span><span class="dcard__k">Still learning</span></div>
@@ -1078,6 +1106,10 @@ function renderProgress() {
         <div class="mastery-bar__fill" style="width:${masteredPct}%"></div>
         <span>${m.mastered} / ${totalVocab} words mastered</span>
       </div>
+
+      <h3 class="sec">What you can do</h3>
+      <p class="muted" style="margin:0 4px">Real-world "can-do" goals — complete a unit's lessons to unlock each.</p>
+      <div class="cando-list">${canDoRows}</div>
 
       ${compare}
 

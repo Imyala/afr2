@@ -810,7 +810,8 @@
             }
           ]
         }
-      ]
+      ],
+      "canDo": "I can greet people and use basic courtesies (hello, please, thank you, yes/no)."
     },
     {
       "id": "zu-u2",
@@ -1248,7 +1249,8 @@
             }
           ]
         }
-      ]
+      ],
+      "canDo": "I can introduce myself, say where I'm from, shop, and ask for help."
     },
     {
       "id": "zu-u3",
@@ -1770,7 +1772,8 @@
             }
           ]
         }
-      ]
+      ],
+      "canDo": "I can talk about days, colours, weather, feelings and the body."
     },
     {
       "id": "zu-u4",
@@ -2186,7 +2189,8 @@
             }
           ]
         }
-      ]
+      ],
+      "canDo": "I can talk about time, animals, places in town, and getting help."
     },
     {
       "id": "zu-u5",
@@ -2595,7 +2599,8 @@
             }
           ]
         }
-      ]
+      ],
+      "canDo": "I can talk about school, jobs, telling the time, and use common verbs."
     },
     {
       "id": "zu-u6",
@@ -2999,7 +3004,8 @@
             }
           ]
         }
-      ]
+      ],
+      "canDo": "I can describe my home, clothing and surroundings, and ask questions."
     },
     {
       "id": "zu-u7",
@@ -3402,7 +3408,8 @@
             }
           ]
         }
-      ]
+      ],
+      "canDo": "I can use action verbs, name food and kitchen items, and count higher."
     },
     {
       "id": "zu-u8",
@@ -3806,7 +3813,8 @@
             }
           ]
         }
-      ]
+      ],
+      "canDo": "I can talk about transport, people and sport, and use helpful phrases."
     }
   ],
   "reading": [

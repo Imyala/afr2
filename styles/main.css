@@ -473,6 +473,22 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .wb-tok--used { opacity: 0; pointer-events: none; }
 .wb-tok--in { border-color: var(--green); background: color-mix(in srgb, var(--green) 10%, var(--card)); }
 
+/* ---------- CEFR level + can-do goals ---------- */
+.level-card {
+  display: grid; gap: 2px; padding: 14px 16px; border-radius: var(--radius);
+  background: linear-gradient(95deg, var(--green), var(--blue)); color: #fff; box-shadow: var(--shadow);
+}
+.level-card__tag { font-size: 22px; font-weight: 800; letter-spacing: -.3px; }
+.level-card__sub { font-size: 13px; opacity: .92; }
+.cando-list { display: grid; gap: 8px; }
+.cando { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.cando__icon { font-size: 22px; flex: 0 0 auto; }
+.cando__body { flex: 1; display: grid; gap: 6px; }
+.cando__text { font-size: 14px; font-weight: 600; }
+.cando--done { border-color: var(--green); }
+.cando--done .cando__text { color: var(--green-dark); }
+@media (prefers-color-scheme: dark) { .cando--done .cando__text { color: var(--green); } }
+
 /* ---------- speaking practice ---------- */
 .spk-rec { display: grid; gap: 10px; }
 .spk-recording { background: var(--red) !important; color: #fff !important; border-color: var(--red) !important; animation: spkPulse 1s ease-in-out infinite; }
