@@ -865,7 +865,7 @@
               "phonetic": "ee-veh-NKEE-leh"
             },
             {
-              "id": "xh-ndicela",
+              "id": "xh-ndicela-u2",
               "term": "Ndicela...",
               "translation": "Please / I request",
               "phonetic": "ndee-CEH-lah"
@@ -934,7 +934,7 @@
           "culturalNote": "Xhosa numbers, like Zulu, change with what you count. These are common forms heard when counting items.",
           "vocab": [
             {
-              "id": "xh-inye",
+              "id": "xh-inye-u2",
               "term": "inye",
               "translation": "one",
               "phonetic": "EE-nyeh"
@@ -1002,7 +1002,7 @@
                 "three",
                 "four"
               ],
-              "vocabId": "xh-inye"
+              "vocabId": "xh-inye-u2"
             },
             {
               "type": "multiple_choice",
@@ -1033,37 +1033,37 @@
           "culturalNote": "Respect for elders is central. Address an older woman as 'mama' and an older man as 'tata', even if they are not your parents.",
           "vocab": [
             {
-              "id": "xh-umama",
+              "id": "xh-umama-u2",
               "term": "umama",
               "translation": "mother",
               "phonetic": "oo-MAH-mah"
             },
             {
-              "id": "xh-utata",
+              "id": "xh-utata-u2",
               "term": "utata",
               "translation": "father",
               "phonetic": "oo-TAH-tah"
             },
             {
-              "id": "xh-usisi",
+              "id": "xh-usisi-u2",
               "term": "usisi",
               "translation": "sister",
               "phonetic": "oo-SEE-see"
             },
             {
-              "id": "xh-ubhuti",
+              "id": "xh-ubhuti-u2",
               "term": "ubhuti",
               "translation": "brother",
               "phonetic": "oo-BOO-tee"
             },
             {
-              "id": "xh-umntwana",
+              "id": "xh-umntwana-u2",
               "term": "umntwana",
               "translation": "child",
               "phonetic": "oom-TWAH-nah"
             },
             {
-              "id": "xh-umakhulu",
+              "id": "xh-umakhulu-u2",
               "term": "umakhulu",
               "translation": "grandmother",
               "phonetic": "oo-mah-KOO-loo"
@@ -1101,7 +1101,7 @@
                 "sister",
                 "brother"
               ],
-              "vocabId": "xh-umama"
+              "vocabId": "xh-umama-u2"
             },
             {
               "type": "multiple_choice",
@@ -1113,7 +1113,7 @@
                 "usisi",
                 "ubhuti"
               ],
-              "vocabId": "xh-utata"
+              "vocabId": "xh-utata-u2"
             },
             {
               "type": "translate",
@@ -1122,7 +1122,7 @@
               "accept": [
                 "usisi"
               ],
-              "vocabId": "xh-usisi"
+              "vocabId": "xh-usisi-u2"
             }
           ]
         }
@@ -1848,7 +1848,7 @@
           "culturalNote": "Higher numbers in Xhosa get longer: 'isithandathu' (six), 'isixhenxe' (seven). The 'x' in isixhenxe is a lateral click.",
           "vocab": [
             {
-              "id": "xh-isithandathu",
+              "id": "xh-isithandathu-u4",
               "term": "isithandathu",
               "translation": "six",
               "phonetic": "ee-see-tahn-DAH-too"
@@ -1917,7 +1917,7 @@
                 "eight",
                 "nine"
               ],
-              "vocabId": "xh-isithandathu"
+              "vocabId": "xh-isithandathu-u4"
             },
             {
               "type": "multiple_choice",
@@ -2253,7 +2253,7 @@
           "culturalNote": "Ask away: 'Ngubani?' (Who?), 'Yintoni?' (What?), 'Phi?' (Where?). These open up real conversation.",
           "vocab": [
             {
-              "id": "xh-ngubani",
+              "id": "xh-ngubani-u5",
               "term": "ngubani",
               "translation": "who",
               "phonetic": "ngoo-BAH-nee"
@@ -2321,7 +2321,7 @@
                 "where",
                 "when"
               ],
-              "vocabId": "xh-ngubani"
+              "vocabId": "xh-ngubani-u5"
             },
             {
               "type": "multiple_choice",
@@ -2658,7 +2658,7 @@
           "culturalNote": "Beyond ten: 'amashumi amabini' (twenty), 'ikhulu' (hundred), 'iwaka' (thousand).",
           "vocab": [
             {
-              "id": "xh-ishumi",
+              "id": "xh-ishumi-u6",
               "term": "ishumi",
               "translation": "ten",
               "phonetic": "ee-SHOO-mee"
@@ -2726,7 +2726,7 @@
                 "hundred",
                 "thousand"
               ],
-              "vocabId": "xh-ishumi"
+              "vocabId": "xh-ishumi-u6"
             },
             {
               "type": "multiple_choice",
@@ -2748,6 +2748,411 @@
                 "ikhulu"
               ],
               "vocabId": "xh-ikhulu"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u7",
+      "title": "Unit 7: Getting Around & People",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u7-l1",
+          "title": "Transport",
+          "culturalNote": "On the move: 'imoto' (car), 'ibhasi' (bus), 'uloliwe' (train). 'Inqwelomoya' (airplane) has the 'nq' click.",
+          "vocab": [
+            {
+              "id": "xh-imoto",
+              "term": "imoto",
+              "translation": "car",
+              "phonetic": "ee-MOH-toh"
+            },
+            {
+              "id": "xh-ibhasi",
+              "term": "ibhasi",
+              "translation": "bus",
+              "phonetic": "ee-BAH-see"
+            },
+            {
+              "id": "xh-uloliwe",
+              "term": "uloliwe",
+              "translation": "train",
+              "phonetic": "oo-loh-LEE-weh"
+            },
+            {
+              "id": "xh-ibhayisekile",
+              "term": "ibhayisekile",
+              "translation": "bicycle",
+              "phonetic": "ee-bah-yee-seh-KEE-leh"
+            },
+            {
+              "id": "xh-inqwelomoya",
+              "term": "inqwelomoya",
+              "translation": "airplane",
+              "phonetic": "een-qweh-loh-MOH-yah",
+              "note": "nq is a click consonant"
+            },
+            {
+              "id": "xh-isikhephe",
+              "term": "isikhephe",
+              "translation": "boat",
+              "phonetic": "ee-see-KEH-peh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "imoto",
+                  "car"
+                ],
+                [
+                  "ibhasi",
+                  "bus"
+                ],
+                [
+                  "uloliwe",
+                  "train"
+                ],
+                [
+                  "ibhayisekile",
+                  "bicycle"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“imoto” means:",
+              "answer": "car",
+              "options": [
+                "car",
+                "bus",
+                "train",
+                "bicycle"
+              ],
+              "vocabId": "xh-imoto"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “bus”?",
+              "answer": "ibhasi",
+              "options": [
+                "ibhasi",
+                "imoto",
+                "uloliwe",
+                "ibhayisekile"
+              ],
+              "vocabId": "xh-ibhasi"
+            },
+            {
+              "type": "translate",
+              "prompt": "train",
+              "answer": "uloliwe",
+              "accept": [
+                "uloliwe"
+              ],
+              "vocabId": "xh-uloliwe"
+            }
+          ]
+        },
+        {
+          "id": "xh-u7-l2",
+          "title": "People & Family",
+          "culturalNote": "The wider family: 'umhlobo' (friend), 'umalume' (uncle), 'umzala' (cousin). 'Umyeni' is husband; 'inkosikazi' is wife.",
+          "vocab": [
+            {
+              "id": "xh-umhlobo",
+              "term": "umhlobo",
+              "translation": "friend",
+              "phonetic": "oom-HLOH-boh"
+            },
+            {
+              "id": "xh-usana",
+              "term": "usana",
+              "translation": "baby",
+              "phonetic": "oo-SAH-nah"
+            },
+            {
+              "id": "xh-umyeni",
+              "term": "umyeni",
+              "translation": "husband",
+              "phonetic": "oom-YEH-nee"
+            },
+            {
+              "id": "xh-inkosikazi",
+              "term": "inkosikazi",
+              "translation": "wife",
+              "phonetic": "een-koh-see-KAH-zee"
+            },
+            {
+              "id": "xh-umalume",
+              "term": "umalume",
+              "translation": "uncle",
+              "phonetic": "oo-mah-LOO-meh"
+            },
+            {
+              "id": "xh-umzala",
+              "term": "umzala",
+              "translation": "cousin",
+              "phonetic": "oom-ZAH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "umhlobo",
+                  "friend"
+                ],
+                [
+                  "usana",
+                  "baby"
+                ],
+                [
+                  "umyeni",
+                  "husband"
+                ],
+                [
+                  "inkosikazi",
+                  "wife"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“umhlobo” means:",
+              "answer": "friend",
+              "options": [
+                "friend",
+                "baby",
+                "husband",
+                "wife"
+              ],
+              "vocabId": "xh-umhlobo"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “baby”?",
+              "answer": "usana",
+              "options": [
+                "usana",
+                "umhlobo",
+                "umyeni",
+                "inkosikazi"
+              ],
+              "vocabId": "xh-usana"
+            },
+            {
+              "type": "translate",
+              "prompt": "husband",
+              "answer": "umyeni",
+              "accept": [
+                "umyeni"
+              ],
+              "vocabId": "xh-umyeni"
+            }
+          ]
+        },
+        {
+          "id": "xh-u7-l3",
+          "title": "Sports & Fun",
+          "culturalNote": "'Ibhola' (soccer/ball) and 'umculo' (music) are loved across the Eastern Cape. 'Ukudlala' is to play; 'ukucula' is to sing.",
+          "vocab": [
+            {
+              "id": "xh-ibhola",
+              "term": "ibhola",
+              "translation": "ball / soccer",
+              "phonetic": "ee-BOH-lah"
+            },
+            {
+              "id": "xh-ukudlala",
+              "term": "ukudlala",
+              "translation": "to play",
+              "phonetic": "oo-koo-DLAH-lah"
+            },
+            {
+              "id": "xh-ukubaleka",
+              "term": "ukubaleka",
+              "translation": "to run",
+              "phonetic": "oo-koo-bah-LEH-kah"
+            },
+            {
+              "id": "xh-ukucula",
+              "term": "ukucula",
+              "translation": "to sing",
+              "phonetic": "oo-koo-COO-lah"
+            },
+            {
+              "id": "xh-ukudanisa",
+              "term": "ukudanisa",
+              "translation": "to dance",
+              "phonetic": "oo-koo-dah-NEE-sah"
+            },
+            {
+              "id": "xh-umculo",
+              "term": "umculo",
+              "translation": "music",
+              "phonetic": "oom-COO-loh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ibhola",
+                  "ball / soccer"
+                ],
+                [
+                  "ukudlala",
+                  "to play"
+                ],
+                [
+                  "ukubaleka",
+                  "to run"
+                ],
+                [
+                  "ukucula",
+                  "to sing"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ibhola” means:",
+              "answer": "ball / soccer",
+              "options": [
+                "ball / soccer",
+                "to play",
+                "to run",
+                "to sing"
+              ],
+              "vocabId": "xh-ibhola"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to play”?",
+              "answer": "ukudlala",
+              "options": [
+                "ukudlala",
+                "ibhola",
+                "ukubaleka",
+                "ukucula"
+              ],
+              "vocabId": "xh-ukudlala"
+            },
+            {
+              "type": "translate",
+              "prompt": "to run",
+              "answer": "ukubaleka",
+              "accept": [
+                "ukubaleka"
+              ],
+              "vocabId": "xh-ukubaleka"
+            }
+          ]
+        },
+        {
+          "id": "xh-u7-l4",
+          "title": "Helpful Phrases",
+          "culturalNote": "Smooth any moment: 'Andiqondi' (I don't understand), 'Ndiyaxolisa' (I'm sorry), 'Ndicela uncede' (Please help me).",
+          "vocab": [
+            {
+              "id": "xh-ndiyaxolisa",
+              "term": "ndiyaxolisa",
+              "translation": "I'm sorry",
+              "phonetic": "ndee-yah-koh-LEE-sah"
+            },
+            {
+              "id": "xh-akukhongxaki",
+              "term": "akukho ngxaki",
+              "translation": "no problem",
+              "phonetic": "ah-koo-koh NGXAH-kee",
+              "note": "ngx is a click consonant"
+            },
+            {
+              "id": "xh-andiqondi",
+              "term": "andiqondi",
+              "translation": "I don't understand",
+              "phonetic": "ahn-dee-QOHN-dee"
+            },
+            {
+              "id": "xh-kancinci",
+              "term": "kancinci",
+              "translation": "slowly / a little",
+              "phonetic": "kahn-CEEN-cee"
+            },
+            {
+              "id": "xh-ndicelauncede",
+              "term": "ndicela uncede",
+              "translation": "please help me",
+              "phonetic": "ndee-CEH-lah oon-CEH-deh"
+            },
+            {
+              "id": "xh-uthethaisingesi",
+              "term": "uthetha isiNgesi?",
+              "translation": "do you speak English?",
+              "phonetic": "oo-TEH-tah ee-see-NGEH-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ndiyaxolisa",
+                  "I'm sorry"
+                ],
+                [
+                  "akukho ngxaki",
+                  "no problem"
+                ],
+                [
+                  "andiqondi",
+                  "I don't understand"
+                ],
+                [
+                  "kancinci",
+                  "slowly / a little"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ndiyaxolisa” means:",
+              "answer": "I'm sorry",
+              "options": [
+                "I'm sorry",
+                "no problem",
+                "I don't understand",
+                "slowly / a little"
+              ],
+              "vocabId": "xh-ndiyaxolisa"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “no problem”?",
+              "answer": "akukho ngxaki",
+              "options": [
+                "akukho ngxaki",
+                "ndiyaxolisa",
+                "andiqondi",
+                "kancinci"
+              ],
+              "vocabId": "xh-akukhongxaki"
+            },
+            {
+              "type": "translate",
+              "prompt": "I don't understand",
+              "answer": "andiqondi",
+              "accept": [
+                "andiqondi"
+              ],
+              "vocabId": "xh-andiqondi"
             }
           ]
         }

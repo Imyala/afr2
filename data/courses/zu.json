@@ -3321,6 +3321,410 @@
           ]
         }
       ]
+    },
+    {
+      "id": "zu-u8",
+      "title": "Unit 8: Getting Around & People",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "zu-u8-l1",
+          "title": "Transport",
+          "culturalNote": "Getting around: 'imoto' (car), 'ibhasi' (bus), 'isitimela' (train). The minibus 'itekisi' you already know is still king of the road.",
+          "vocab": [
+            {
+              "id": "zu-imoto",
+              "term": "imoto",
+              "translation": "car",
+              "phonetic": "ee-MOH-toh"
+            },
+            {
+              "id": "zu-ibhasi",
+              "term": "ibhasi",
+              "translation": "bus",
+              "phonetic": "ee-BAH-see"
+            },
+            {
+              "id": "zu-isitimela",
+              "term": "isitimela",
+              "translation": "train",
+              "phonetic": "ee-see-tee-MEH-lah"
+            },
+            {
+              "id": "zu-ibhayisikili",
+              "term": "ibhayisikili",
+              "translation": "bicycle",
+              "phonetic": "ee-bah-yee-see-KEE-lee"
+            },
+            {
+              "id": "zu-indiza",
+              "term": "indiza",
+              "translation": "airplane",
+              "phonetic": "een-DEE-zah"
+            },
+            {
+              "id": "zu-umkhumbi",
+              "term": "umkhumbi",
+              "translation": "ship / boat",
+              "phonetic": "oom-KOOM-bee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "imoto",
+                  "car"
+                ],
+                [
+                  "ibhasi",
+                  "bus"
+                ],
+                [
+                  "isitimela",
+                  "train"
+                ],
+                [
+                  "ibhayisikili",
+                  "bicycle"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“imoto” means:",
+              "answer": "car",
+              "options": [
+                "car",
+                "bus",
+                "train",
+                "bicycle"
+              ],
+              "vocabId": "zu-imoto"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “bus”?",
+              "answer": "ibhasi",
+              "options": [
+                "ibhasi",
+                "imoto",
+                "isitimela",
+                "ibhayisikili"
+              ],
+              "vocabId": "zu-ibhasi"
+            },
+            {
+              "type": "translate",
+              "prompt": "train",
+              "answer": "isitimela",
+              "accept": [
+                "isitimela"
+              ],
+              "vocabId": "zu-isitimela"
+            }
+          ]
+        },
+        {
+          "id": "zu-u8-l2",
+          "title": "People & Family",
+          "culturalNote": "Beyond the close family: 'umngane' (friend), 'umalume' (uncle), 'umzala' (cousin). 'Umyeni' is husband; 'inkosikazi' is wife.",
+          "vocab": [
+            {
+              "id": "zu-umngane",
+              "term": "umngane",
+              "translation": "friend",
+              "phonetic": "oom-NGAH-neh"
+            },
+            {
+              "id": "zu-usana",
+              "term": "usana",
+              "translation": "baby",
+              "phonetic": "oo-SAH-nah"
+            },
+            {
+              "id": "zu-umyeni",
+              "term": "umyeni",
+              "translation": "husband",
+              "phonetic": "oom-YEH-nee"
+            },
+            {
+              "id": "zu-inkosikazi",
+              "term": "inkosikazi",
+              "translation": "wife",
+              "phonetic": "een-koh-see-KAH-zee"
+            },
+            {
+              "id": "zu-umalume",
+              "term": "umalume",
+              "translation": "uncle",
+              "phonetic": "oo-mah-LOO-meh"
+            },
+            {
+              "id": "zu-umzala",
+              "term": "umzala",
+              "translation": "cousin",
+              "phonetic": "oom-ZAH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "umngane",
+                  "friend"
+                ],
+                [
+                  "usana",
+                  "baby"
+                ],
+                [
+                  "umyeni",
+                  "husband"
+                ],
+                [
+                  "inkosikazi",
+                  "wife"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“umngane” means:",
+              "answer": "friend",
+              "options": [
+                "friend",
+                "baby",
+                "husband",
+                "wife"
+              ],
+              "vocabId": "zu-umngane"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “baby”?",
+              "answer": "usana",
+              "options": [
+                "usana",
+                "umngane",
+                "umyeni",
+                "inkosikazi"
+              ],
+              "vocabId": "zu-usana"
+            },
+            {
+              "type": "translate",
+              "prompt": "husband",
+              "answer": "umyeni",
+              "accept": [
+                "umyeni"
+              ],
+              "vocabId": "zu-umyeni"
+            }
+          ]
+        },
+        {
+          "id": "zu-u8-l3",
+          "title": "Sports & Fun",
+          "culturalNote": "Play and music bring people together. 'Ibhola' (soccer) is a national passion; 'ukudlala' means to play; 'umculo' is music.",
+          "vocab": [
+            {
+              "id": "zu-ibhola",
+              "term": "ibhola",
+              "translation": "ball / soccer",
+              "phonetic": "ee-BOH-lah"
+            },
+            {
+              "id": "zu-ukudlala",
+              "term": "ukudlala",
+              "translation": "to play",
+              "phonetic": "oo-koo-DLAH-lah"
+            },
+            {
+              "id": "zu-ukugijima",
+              "term": "ukugijima",
+              "translation": "to run",
+              "phonetic": "oo-koo-gee-JEE-mah"
+            },
+            {
+              "id": "zu-ukucula",
+              "term": "ukucula",
+              "translation": "to sing",
+              "phonetic": "oo-koo-COO-lah"
+            },
+            {
+              "id": "zu-ukudansa",
+              "term": "ukudansa",
+              "translation": "to dance",
+              "phonetic": "oo-koo-DAHN-sah"
+            },
+            {
+              "id": "zu-umculo",
+              "term": "umculo",
+              "translation": "music",
+              "phonetic": "oom-COO-loh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ibhola",
+                  "ball / soccer"
+                ],
+                [
+                  "ukudlala",
+                  "to play"
+                ],
+                [
+                  "ukugijima",
+                  "to run"
+                ],
+                [
+                  "ukucula",
+                  "to sing"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ibhola” means:",
+              "answer": "ball / soccer",
+              "options": [
+                "ball / soccer",
+                "to play",
+                "to run",
+                "to sing"
+              ],
+              "vocabId": "zu-ibhola"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to play”?",
+              "answer": "ukudlala",
+              "options": [
+                "ukudlala",
+                "ibhola",
+                "ukugijima",
+                "ukucula"
+              ],
+              "vocabId": "zu-ukudlala"
+            },
+            {
+              "type": "translate",
+              "prompt": "to run",
+              "answer": "ukugijima",
+              "accept": [
+                "ukugijima"
+              ],
+              "vocabId": "zu-ukugijima"
+            }
+          ]
+        },
+        {
+          "id": "zu-u8-l4",
+          "title": "Helpful Phrases",
+          "culturalNote": "Phrases that save the day: 'Angiqondi' (I don't understand), 'Ngiyaxolisa' (I'm sorry), 'Ukhuluma isiNgisi?' (Do you speak English?).",
+          "vocab": [
+            {
+              "id": "zu-ngiyaxolisa",
+              "term": "ngiyaxolisa",
+              "translation": "I'm sorry",
+              "phonetic": "ngee-yah-koh-LEE-sah"
+            },
+            {
+              "id": "zu-akunandaba",
+              "term": "akunandaba",
+              "translation": "no problem",
+              "phonetic": "ah-koo-nahn-DAH-bah"
+            },
+            {
+              "id": "zu-angiqondi",
+              "term": "angiqondi",
+              "translation": "I don't understand",
+              "phonetic": "ahn-gee-QOHN-dee",
+              "note": "q is a click consonant"
+            },
+            {
+              "id": "zu-kahlekahle",
+              "term": "kahle kahle",
+              "translation": "slowly / carefully",
+              "phonetic": "KAH-shleh KAH-shleh"
+            },
+            {
+              "id": "zu-ngicelaukubuza",
+              "term": "ngicela ukubuza",
+              "translation": "may I ask",
+              "phonetic": "ngee-CEH-lah oo-koo-BOO-zah"
+            },
+            {
+              "id": "zu-ukhulumaisingisi",
+              "term": "ukhuluma isiNgisi?",
+              "translation": "do you speak English?",
+              "phonetic": "oo-koo-LOO-mah ee-see-NGEE-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ngiyaxolisa",
+                  "I'm sorry"
+                ],
+                [
+                  "akunandaba",
+                  "no problem"
+                ],
+                [
+                  "angiqondi",
+                  "I don't understand"
+                ],
+                [
+                  "kahle kahle",
+                  "slowly / carefully"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ngiyaxolisa” means:",
+              "answer": "I'm sorry",
+              "options": [
+                "I'm sorry",
+                "no problem",
+                "I don't understand",
+                "slowly / carefully"
+              ],
+              "vocabId": "zu-ngiyaxolisa"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “no problem”?",
+              "answer": "akunandaba",
+              "options": [
+                "akunandaba",
+                "ngiyaxolisa",
+                "angiqondi",
+                "kahle kahle"
+              ],
+              "vocabId": "zu-akunandaba"
+            },
+            {
+              "type": "translate",
+              "prompt": "I don't understand",
+              "answer": "angiqondi",
+              "accept": [
+                "angiqondi"
+              ],
+              "vocabId": "zu-angiqondi"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

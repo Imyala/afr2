@@ -42,7 +42,11 @@ ok(normalize('Wéna?') === 'wena', 'normalize strips accents + punctuation');
 for (const c of ['zu', 'xh', 'af']) {
   const course = JSON.parse(fs.readFileSync(path.join(root, `data/courses/${c}.json`), 'utf8'));
   const vocabIds = new Set();
-  for (const u of course.units) for (const l of u.lessons) for (const v of (l.vocab || [])) vocabIds.add(v.id);
+  const allIds = [];
+  for (const u of course.units) for (const l of u.lessons) for (const v of (l.vocab || [])) { vocabIds.add(v.id); allIds.push(v.id); }
+  // every vocab id must be unique across the whole course — a duplicate id would
+  // silently merge two words' SRS state and skew the "words mastered" count.
+  ok(allIds.length === vocabIds.size, `${c} has no duplicate vocab ids (${allIds.length - vocabIds.size} dup)`);
   for (const u of course.units) for (const l of u.lessons) {
     ok(l.vocab && l.vocab.length > 0, `${l.id} has vocab`);
     for (const v of l.vocab) ok(v.phonetic, `${v.id} has phonetics (offline fallback)`);

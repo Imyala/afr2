@@ -813,7 +813,7 @@
               "phonetic": "VIN-kel"
             },
             {
-              "id": "af-asseblief",
+              "id": "af-asseblief-u2",
               "term": "Asseblief",
               "translation": "Please",
               "phonetic": "ah-seh-BLEEF"
@@ -882,37 +882,37 @@
           "culturalNote": "Afrikaans numbers are close to Dutch and English roots — 'twee' (two), 'drie' (three), 'tien' (ten).",
           "vocab": [
             {
-              "id": "af-een",
+              "id": "af-een-u2",
               "term": "een",
               "translation": "one",
               "phonetic": "eyn"
             },
             {
-              "id": "af-twee",
+              "id": "af-twee-u2",
               "term": "twee",
               "translation": "two",
               "phonetic": "tvey"
             },
             {
-              "id": "af-drie",
+              "id": "af-drie-u2",
               "term": "drie",
               "translation": "three",
               "phonetic": "dree"
             },
             {
-              "id": "af-vier",
+              "id": "af-vier-u2",
               "term": "vier",
               "translation": "four",
               "phonetic": "feer"
             },
             {
-              "id": "af-vyf",
+              "id": "af-vyf-u2",
               "term": "vyf",
               "translation": "five",
               "phonetic": "fayf"
             },
             {
-              "id": "af-tien",
+              "id": "af-tien-u2",
               "term": "tien",
               "translation": "ten",
               "phonetic": "teen"
@@ -950,7 +950,7 @@
                 "three",
                 "four"
               ],
-              "vocabId": "af-een"
+              "vocabId": "af-een-u2"
             },
             {
               "type": "multiple_choice",
@@ -962,7 +962,7 @@
                 "drie",
                 "vier"
               ],
-              "vocabId": "af-twee"
+              "vocabId": "af-twee-u2"
             },
             {
               "type": "translate",
@@ -971,7 +971,7 @@
               "accept": [
                 "drie"
               ],
-              "vocabId": "af-drie"
+              "vocabId": "af-drie-u2"
             }
           ]
         },
@@ -981,25 +981,25 @@
           "culturalNote": "Food brings people together. Offer a guest 'koffie' (coffee) and 'brood' (bread) — it's a sign of hospitality.",
           "vocab": [
             {
-              "id": "af-brood",
+              "id": "af-brood-u2",
               "term": "brood",
               "translation": "bread",
               "phonetic": "broht"
             },
             {
-              "id": "af-water",
+              "id": "af-water-u2",
               "term": "water",
               "translation": "water",
               "phonetic": "VAH-ter"
             },
             {
-              "id": "af-melk",
+              "id": "af-melk-u2",
               "term": "melk",
               "translation": "milk",
               "phonetic": "melk"
             },
             {
-              "id": "af-vleis",
+              "id": "af-vleis-u2",
               "term": "vleis",
               "translation": "meat",
               "phonetic": "flays"
@@ -1049,7 +1049,7 @@
                 "milk",
                 "meat"
               ],
-              "vocabId": "af-brood"
+              "vocabId": "af-brood-u2"
             },
             {
               "type": "multiple_choice",
@@ -1061,7 +1061,7 @@
                 "melk",
                 "vleis"
               ],
-              "vocabId": "af-water"
+              "vocabId": "af-water-u2"
             },
             {
               "type": "translate",
@@ -1070,7 +1070,7 @@
               "accept": [
                 "melk"
               ],
-              "vocabId": "af-melk"
+              "vocabId": "af-melk-u2"
             }
           ]
         }
@@ -2689,6 +2689,409 @@
                 "honderd"
               ],
               "vocabId": "af-honderd"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u7",
+      "title": "Unit 7: Getting Around & People",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u7-l1",
+          "title": "Transport",
+          "culturalNote": "Ways to travel: 'motor' (car), 'bus' (bus), 'trein' (train), 'fiets' (bicycle).",
+          "vocab": [
+            {
+              "id": "af-motor",
+              "term": "motor",
+              "translation": "car",
+              "phonetic": "MOH-tor"
+            },
+            {
+              "id": "af-bus",
+              "term": "bus",
+              "translation": "bus",
+              "phonetic": "bis"
+            },
+            {
+              "id": "af-trein",
+              "term": "trein",
+              "translation": "train",
+              "phonetic": "trayn"
+            },
+            {
+              "id": "af-fiets",
+              "term": "fiets",
+              "translation": "bicycle",
+              "phonetic": "feets"
+            },
+            {
+              "id": "af-vliegtuig",
+              "term": "vliegtuig",
+              "translation": "airplane",
+              "phonetic": "FLEEKH-toykh"
+            },
+            {
+              "id": "af-boot",
+              "term": "boot",
+              "translation": "boat",
+              "phonetic": "boot"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "motor",
+                  "car"
+                ],
+                [
+                  "bus",
+                  "bus"
+                ],
+                [
+                  "trein",
+                  "train"
+                ],
+                [
+                  "fiets",
+                  "bicycle"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“motor” means:",
+              "answer": "car",
+              "options": [
+                "car",
+                "bus",
+                "train",
+                "bicycle"
+              ],
+              "vocabId": "af-motor"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “bus”?",
+              "answer": "bus",
+              "options": [
+                "bus",
+                "motor",
+                "trein",
+                "fiets"
+              ],
+              "vocabId": "af-bus"
+            },
+            {
+              "type": "translate",
+              "prompt": "train",
+              "answer": "trein",
+              "accept": [
+                "trein"
+              ],
+              "vocabId": "af-trein"
+            }
+          ]
+        },
+        {
+          "id": "af-u7-l2",
+          "title": "People & Family",
+          "culturalNote": "The wider family: 'vriend' (friend), 'oom' (uncle), 'tante' (aunt). 'Man' is husband/man; 'vrou' is wife/woman.",
+          "vocab": [
+            {
+              "id": "af-vriend",
+              "term": "vriend",
+              "translation": "friend",
+              "phonetic": "freent"
+            },
+            {
+              "id": "af-baba",
+              "term": "baba",
+              "translation": "baby",
+              "phonetic": "BAH-bah"
+            },
+            {
+              "id": "af-man",
+              "term": "man",
+              "translation": "husband / man",
+              "phonetic": "mun"
+            },
+            {
+              "id": "af-vrou",
+              "term": "vrou",
+              "translation": "wife / woman",
+              "phonetic": "froh"
+            },
+            {
+              "id": "af-oom",
+              "term": "oom",
+              "translation": "uncle",
+              "phonetic": "oom"
+            },
+            {
+              "id": "af-tante",
+              "term": "tante",
+              "translation": "aunt",
+              "phonetic": "TUN-teh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "vriend",
+                  "friend"
+                ],
+                [
+                  "baba",
+                  "baby"
+                ],
+                [
+                  "man",
+                  "husband / man"
+                ],
+                [
+                  "vrou",
+                  "wife / woman"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“vriend” means:",
+              "answer": "friend",
+              "options": [
+                "friend",
+                "baby",
+                "husband / man",
+                "wife / woman"
+              ],
+              "vocabId": "af-vriend"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “baby”?",
+              "answer": "baba",
+              "options": [
+                "baba",
+                "vriend",
+                "man",
+                "vrou"
+              ],
+              "vocabId": "af-baba"
+            },
+            {
+              "type": "translate",
+              "prompt": "husband / man",
+              "answer": "man",
+              "accept": [
+                "man"
+              ],
+              "vocabId": "af-man"
+            }
+          ]
+        },
+        {
+          "id": "af-u7-l3",
+          "title": "Sports & Fun",
+          "culturalNote": "Time to play: 'bal' (ball), 'speel' (to play), 'sing' (to sing), 'dans' (to dance), 'musiek' (music).",
+          "vocab": [
+            {
+              "id": "af-bal",
+              "term": "bal",
+              "translation": "ball",
+              "phonetic": "bul"
+            },
+            {
+              "id": "af-speel",
+              "term": "speel",
+              "translation": "to play",
+              "phonetic": "speyl"
+            },
+            {
+              "id": "af-hardloop",
+              "term": "hardloop",
+              "translation": "to run",
+              "phonetic": "HUT-loop"
+            },
+            {
+              "id": "af-sing",
+              "term": "sing",
+              "translation": "to sing",
+              "phonetic": "sing"
+            },
+            {
+              "id": "af-dans",
+              "term": "dans",
+              "translation": "to dance",
+              "phonetic": "duns"
+            },
+            {
+              "id": "af-musiek",
+              "term": "musiek",
+              "translation": "music",
+              "phonetic": "moo-SEEK"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bal",
+                  "ball"
+                ],
+                [
+                  "speel",
+                  "to play"
+                ],
+                [
+                  "hardloop",
+                  "to run"
+                ],
+                [
+                  "sing",
+                  "to sing"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“bal” means:",
+              "answer": "ball",
+              "options": [
+                "ball",
+                "to play",
+                "to run",
+                "to sing"
+              ],
+              "vocabId": "af-bal"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to play”?",
+              "answer": "speel",
+              "options": [
+                "speel",
+                "bal",
+                "hardloop",
+                "sing"
+              ],
+              "vocabId": "af-speel"
+            },
+            {
+              "type": "translate",
+              "prompt": "to run",
+              "answer": "hardloop",
+              "accept": [
+                "hardloop"
+              ],
+              "vocabId": "af-hardloop"
+            }
+          ]
+        },
+        {
+          "id": "af-u7-l4",
+          "title": "Helpful Phrases",
+          "culturalNote": "Handy phrases: 'Jammer' (sorry), 'Ek verstaan nie' (I don't understand), 'Praat jy Engels?' (Do you speak English?).",
+          "vocab": [
+            {
+              "id": "af-jammer-u7",
+              "term": "jammer",
+              "translation": "sorry",
+              "phonetic": "YUM-mer"
+            },
+            {
+              "id": "af-geenprobleem",
+              "term": "geen probleem",
+              "translation": "no problem",
+              "phonetic": "kheyn proh-BLEEM"
+            },
+            {
+              "id": "af-stadig",
+              "term": "stadig",
+              "translation": "slowly",
+              "phonetic": "STAH-dikh"
+            },
+            {
+              "id": "af-ekverstaannie",
+              "term": "ek verstaan nie",
+              "translation": "I don't understand",
+              "phonetic": "ek fer-STAAN nee"
+            },
+            {
+              "id": "af-praatjyengels",
+              "term": "praat jy Engels?",
+              "translation": "do you speak English?",
+              "phonetic": "praat yay EHNG-els"
+            },
+            {
+              "id": "af-helpmyasseblief",
+              "term": "help my asseblief",
+              "translation": "please help me",
+              "phonetic": "help may ah-seh-BLEEF"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "jammer",
+                  "sorry"
+                ],
+                [
+                  "geen probleem",
+                  "no problem"
+                ],
+                [
+                  "stadig",
+                  "slowly"
+                ],
+                [
+                  "ek verstaan nie",
+                  "I don't understand"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“jammer” means:",
+              "answer": "sorry",
+              "options": [
+                "sorry",
+                "no problem",
+                "slowly",
+                "I don't understand"
+              ],
+              "vocabId": "af-jammer-u7"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “no problem”?",
+              "answer": "geen probleem",
+              "options": [
+                "geen probleem",
+                "jammer",
+                "stadig",
+                "ek verstaan nie"
+              ],
+              "vocabId": "af-geenprobleem"
+            },
+            {
+              "type": "translate",
+              "prompt": "slowly",
+              "answer": "stadig",
+              "accept": [
+                "stadig"
+              ],
+              "vocabId": "af-stadig"
             }
           ]
         }
