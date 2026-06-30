@@ -2347,6 +2347,411 @@
           ]
         }
       ]
+    },
+    {
+      "id": "xh-u6",
+      "title": "Unit 6: Saying More",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u6-l1",
+          "title": "Action Verbs",
+          "culturalNote": "Useful 'uku-' verbs. 'Ukunceda' (to help) has a click — the 'nc'. Pair verbs with 'ndi-' to say what you do.",
+          "vocab": [
+            {
+              "id": "xh-ukuthanda",
+              "term": "ukuthanda",
+              "translation": "to love / like",
+              "phonetic": "oo-koo-TAHN-dah"
+            },
+            {
+              "id": "xh-ukufuna",
+              "term": "ukufuna",
+              "translation": "to want",
+              "phonetic": "oo-koo-FOO-nah"
+            },
+            {
+              "id": "xh-ukwazi",
+              "term": "ukwazi",
+              "translation": "to know",
+              "phonetic": "oo-KWAH-zee"
+            },
+            {
+              "id": "xh-ukunika",
+              "term": "ukunika",
+              "translation": "to give",
+              "phonetic": "oo-koo-NEE-kah"
+            },
+            {
+              "id": "xh-ukuthenga",
+              "term": "ukuthenga",
+              "translation": "to buy",
+              "phonetic": "oo-koo-TEHN-gah"
+            },
+            {
+              "id": "xh-ukunceda",
+              "term": "ukunceda",
+              "translation": "to help",
+              "phonetic": "oo-koo-NCEH-dah",
+              "note": "nc is a click consonant"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ukuthanda",
+                  "to love / like"
+                ],
+                [
+                  "ukufuna",
+                  "to want"
+                ],
+                [
+                  "ukwazi",
+                  "to know"
+                ],
+                [
+                  "ukunika",
+                  "to give"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ukuthanda” means:",
+              "answer": "to love / like",
+              "options": [
+                "to love / like",
+                "to want",
+                "to know",
+                "to give"
+              ],
+              "vocabId": "xh-ukuthanda"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to want”?",
+              "answer": "ukufuna",
+              "options": [
+                "ukufuna",
+                "ukuthanda",
+                "ukwazi",
+                "ukunika"
+              ],
+              "vocabId": "xh-ukufuna"
+            },
+            {
+              "type": "translate",
+              "prompt": "to know",
+              "answer": "ukwazi",
+              "accept": [
+                "ukwazi"
+              ],
+              "vocabId": "xh-ukwazi"
+            }
+          ]
+        },
+        {
+          "id": "xh-u6-l2",
+          "title": "Fruit & Veg",
+          "culturalNote": "Market staples: 'iapile' (apple), 'ibhanana' (banana), 'iorenji' (orange). 'Imifuno' means vegetables.",
+          "vocab": [
+            {
+              "id": "xh-iapile",
+              "term": "iapile",
+              "translation": "apple",
+              "phonetic": "ee-AH-pee-leh"
+            },
+            {
+              "id": "xh-ibhanana",
+              "term": "ibhanana",
+              "translation": "banana",
+              "phonetic": "ee-BAH-nah-nah"
+            },
+            {
+              "id": "xh-iorenji",
+              "term": "iorenji",
+              "translation": "orange",
+              "phonetic": "ee-oh-REN-jee"
+            },
+            {
+              "id": "xh-itapile",
+              "term": "itapile",
+              "translation": "potato",
+              "phonetic": "ee-tah-PEE-leh"
+            },
+            {
+              "id": "xh-itswele",
+              "term": "itswele",
+              "translation": "onion",
+              "phonetic": "ee-TSWEH-leh"
+            },
+            {
+              "id": "xh-imifuno",
+              "term": "imifuno",
+              "translation": "vegetables",
+              "phonetic": "ee-mee-FOO-noh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "iapile",
+                  "apple"
+                ],
+                [
+                  "ibhanana",
+                  "banana"
+                ],
+                [
+                  "iorenji",
+                  "orange"
+                ],
+                [
+                  "itapile",
+                  "potato"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“iapile” means:",
+              "answer": "apple",
+              "options": [
+                "apple",
+                "banana",
+                "orange",
+                "potato"
+              ],
+              "vocabId": "xh-iapile"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “banana”?",
+              "answer": "ibhanana",
+              "options": [
+                "ibhanana",
+                "iapile",
+                "iorenji",
+                "itapile"
+              ],
+              "vocabId": "xh-ibhanana"
+            },
+            {
+              "type": "translate",
+              "prompt": "orange",
+              "answer": "iorenji",
+              "accept": [
+                "iorenji"
+              ],
+              "vocabId": "xh-iorenji"
+            }
+          ]
+        },
+        {
+          "id": "xh-u6-l3",
+          "title": "In the Kitchen",
+          "culturalNote": "Table words: 'ipleyiti' (plate), 'ikomityi' (cup), 'icephe' (spoon — the 'c' is a click). 'Ityuwa' is salt; 'iswekile' is sugar.",
+          "vocab": [
+            {
+              "id": "xh-ipleyiti",
+              "term": "ipleyiti",
+              "translation": "plate",
+              "phonetic": "ee-PLEH-yee-tee"
+            },
+            {
+              "id": "xh-ikomityi",
+              "term": "ikomityi",
+              "translation": "cup",
+              "phonetic": "ee-koh-MEE-tyee"
+            },
+            {
+              "id": "xh-imela",
+              "term": "imela",
+              "translation": "knife",
+              "phonetic": "ee-MEH-lah"
+            },
+            {
+              "id": "xh-icephe",
+              "term": "icephe",
+              "translation": "spoon",
+              "phonetic": "ee-CEH-peh",
+              "note": "c is a click consonant"
+            },
+            {
+              "id": "xh-ityuwa",
+              "term": "ityuwa",
+              "translation": "salt",
+              "phonetic": "ee-TYOO-wah"
+            },
+            {
+              "id": "xh-iswekile",
+              "term": "iswekile",
+              "translation": "sugar",
+              "phonetic": "ee-sweh-KEE-leh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ipleyiti",
+                  "plate"
+                ],
+                [
+                  "ikomityi",
+                  "cup"
+                ],
+                [
+                  "imela",
+                  "knife"
+                ],
+                [
+                  "icephe",
+                  "spoon"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ipleyiti” means:",
+              "answer": "plate",
+              "options": [
+                "plate",
+                "cup",
+                "knife",
+                "spoon"
+              ],
+              "vocabId": "xh-ipleyiti"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cup”?",
+              "answer": "ikomityi",
+              "options": [
+                "ikomityi",
+                "ipleyiti",
+                "imela",
+                "icephe"
+              ],
+              "vocabId": "xh-ikomityi"
+            },
+            {
+              "type": "translate",
+              "prompt": "knife",
+              "answer": "imela",
+              "accept": [
+                "imela"
+              ],
+              "vocabId": "xh-imela"
+            }
+          ]
+        },
+        {
+          "id": "xh-u6-l4",
+          "title": "Bigger Numbers",
+          "culturalNote": "Beyond ten: 'amashumi amabini' (twenty), 'ikhulu' (hundred), 'iwaka' (thousand).",
+          "vocab": [
+            {
+              "id": "xh-ishumi",
+              "term": "ishumi",
+              "translation": "ten",
+              "phonetic": "ee-SHOO-mee"
+            },
+            {
+              "id": "xh-amashumiamabini",
+              "term": "amashumi amabini",
+              "translation": "twenty",
+              "phonetic": "ah-MAH-shoo-mee ah-mah-BEE-nee"
+            },
+            {
+              "id": "xh-ikhulu",
+              "term": "ikhulu",
+              "translation": "hundred",
+              "phonetic": "ee-KOO-loo"
+            },
+            {
+              "id": "xh-iwaka",
+              "term": "iwaka",
+              "translation": "thousand",
+              "phonetic": "ee-WAH-kah"
+            },
+            {
+              "id": "xh-ininzi",
+              "term": "ininzi",
+              "translation": "many",
+              "phonetic": "ee-NEEN-zee"
+            },
+            {
+              "id": "xh-amashumiamathathu",
+              "term": "amashumi amathathu",
+              "translation": "thirty",
+              "phonetic": "ah-MAH-shoo-mee ah-mah-TAH-too"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ishumi",
+                  "ten"
+                ],
+                [
+                  "amashumi amabini",
+                  "twenty"
+                ],
+                [
+                  "ikhulu",
+                  "hundred"
+                ],
+                [
+                  "iwaka",
+                  "thousand"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ishumi” means:",
+              "answer": "ten",
+              "options": [
+                "ten",
+                "twenty",
+                "hundred",
+                "thousand"
+              ],
+              "vocabId": "xh-ishumi"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “twenty”?",
+              "answer": "amashumi amabini",
+              "options": [
+                "amashumi amabini",
+                "ishumi",
+                "ikhulu",
+                "iwaka"
+              ],
+              "vocabId": "xh-amashumiamabini"
+            },
+            {
+              "type": "translate",
+              "prompt": "hundred",
+              "answer": "ikhulu",
+              "accept": [
+                "ikhulu"
+              ],
+              "vocabId": "xh-ikhulu"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

@@ -2918,6 +2918,409 @@
           ]
         }
       ]
+    },
+    {
+      "id": "zu-u7",
+      "title": "Unit 7: Saying More",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "zu-u7-l1",
+          "title": "Action Verbs",
+          "culturalNote": "More 'uku-' verbs to build sentences. 'Ngiyakuthanda' (I love/like you) comes from 'ukuthanda'; 'ngicela ukusiza' uses 'ukusiza' (to help).",
+          "vocab": [
+            {
+              "id": "zu-ukuthanda",
+              "term": "ukuthanda",
+              "translation": "to love / like",
+              "phonetic": "oo-koo-TAHN-dah"
+            },
+            {
+              "id": "zu-ukufuna-v",
+              "term": "ukufuna",
+              "translation": "to want",
+              "phonetic": "oo-koo-FOO-nah"
+            },
+            {
+              "id": "zu-ukwazi",
+              "term": "ukwazi",
+              "translation": "to know",
+              "phonetic": "oo-KWAH-zee"
+            },
+            {
+              "id": "zu-ukunika",
+              "term": "ukunika",
+              "translation": "to give",
+              "phonetic": "oo-koo-NEE-kah"
+            },
+            {
+              "id": "zu-ukuthenga",
+              "term": "ukuthenga",
+              "translation": "to buy",
+              "phonetic": "oo-koo-TEHN-gah"
+            },
+            {
+              "id": "zu-ukusiza",
+              "term": "ukusiza",
+              "translation": "to help",
+              "phonetic": "oo-koo-SEE-zah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ukuthanda",
+                  "to love / like"
+                ],
+                [
+                  "ukufuna",
+                  "to want"
+                ],
+                [
+                  "ukwazi",
+                  "to know"
+                ],
+                [
+                  "ukunika",
+                  "to give"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ukuthanda” means:",
+              "answer": "to love / like",
+              "options": [
+                "to love / like",
+                "to want",
+                "to know",
+                "to give"
+              ],
+              "vocabId": "zu-ukuthanda"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to want”?",
+              "answer": "ukufuna",
+              "options": [
+                "ukufuna",
+                "ukuthanda",
+                "ukwazi",
+                "ukunika"
+              ],
+              "vocabId": "zu-ukufuna-v"
+            },
+            {
+              "type": "translate",
+              "prompt": "to know",
+              "answer": "ukwazi",
+              "accept": [
+                "ukwazi"
+              ],
+              "vocabId": "zu-ukwazi"
+            }
+          ]
+        },
+        {
+          "id": "zu-u7-l2",
+          "title": "Fruit & Veg",
+          "culturalNote": "Market words you'll use often. Many are borrowed and easy: 'ihhabhula' (apple), 'ubhanana' (banana), 'iwolintshi' (orange).",
+          "vocab": [
+            {
+              "id": "zu-ihhabhula",
+              "term": "ihhabhula",
+              "translation": "apple",
+              "phonetic": "ee-HAH-boo-lah"
+            },
+            {
+              "id": "zu-ubhanana",
+              "term": "ubhanana",
+              "translation": "banana",
+              "phonetic": "oo-BAH-nah-nah"
+            },
+            {
+              "id": "zu-iwolintshi",
+              "term": "iwolintshi",
+              "translation": "orange",
+              "phonetic": "ee-woh-LEEN-tshee"
+            },
+            {
+              "id": "zu-izambane",
+              "term": "izambane",
+              "translation": "potato",
+              "phonetic": "ee-zahm-BAH-neh"
+            },
+            {
+              "id": "zu-uanyanisi",
+              "term": "uanyanisi",
+              "translation": "onion",
+              "phonetic": "oo-ah-NYAH-nee-see"
+            },
+            {
+              "id": "zu-imifino",
+              "term": "imifino",
+              "translation": "greens / vegetables",
+              "phonetic": "ee-mee-FEE-noh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ihhabhula",
+                  "apple"
+                ],
+                [
+                  "ubhanana",
+                  "banana"
+                ],
+                [
+                  "iwolintshi",
+                  "orange"
+                ],
+                [
+                  "izambane",
+                  "potato"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ihhabhula” means:",
+              "answer": "apple",
+              "options": [
+                "apple",
+                "banana",
+                "orange",
+                "potato"
+              ],
+              "vocabId": "zu-ihhabhula"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “banana”?",
+              "answer": "ubhanana",
+              "options": [
+                "ubhanana",
+                "ihhabhula",
+                "iwolintshi",
+                "izambane"
+              ],
+              "vocabId": "zu-ubhanana"
+            },
+            {
+              "type": "translate",
+              "prompt": "orange",
+              "answer": "iwolintshi",
+              "accept": [
+                "iwolintshi"
+              ],
+              "vocabId": "zu-iwolintshi"
+            }
+          ]
+        },
+        {
+          "id": "zu-u7-l3",
+          "title": "In the Kitchen",
+          "culturalNote": "Setting the table: 'ipuleti' (plate), 'inkomishi' (cup), 'isipunu' (spoon). 'Usawoti' (salt) and 'ushukela' (sugar) season the meal.",
+          "vocab": [
+            {
+              "id": "zu-ipuleti",
+              "term": "ipuleti",
+              "translation": "plate",
+              "phonetic": "ee-poo-LEH-tee"
+            },
+            {
+              "id": "zu-inkomishi",
+              "term": "inkomishi",
+              "translation": "cup",
+              "phonetic": "een-koh-MEE-shee"
+            },
+            {
+              "id": "zu-imela",
+              "term": "imela",
+              "translation": "knife",
+              "phonetic": "ee-MEH-lah"
+            },
+            {
+              "id": "zu-isipunu",
+              "term": "isipunu",
+              "translation": "spoon",
+              "phonetic": "ee-see-POO-noo"
+            },
+            {
+              "id": "zu-usawoti",
+              "term": "usawoti",
+              "translation": "salt",
+              "phonetic": "oo-sah-WOH-tee"
+            },
+            {
+              "id": "zu-ushukela",
+              "term": "ushukela",
+              "translation": "sugar",
+              "phonetic": "oo-shoo-KEH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ipuleti",
+                  "plate"
+                ],
+                [
+                  "inkomishi",
+                  "cup"
+                ],
+                [
+                  "imela",
+                  "knife"
+                ],
+                [
+                  "isipunu",
+                  "spoon"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ipuleti” means:",
+              "answer": "plate",
+              "options": [
+                "plate",
+                "cup",
+                "knife",
+                "spoon"
+              ],
+              "vocabId": "zu-ipuleti"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cup”?",
+              "answer": "inkomishi",
+              "options": [
+                "inkomishi",
+                "ipuleti",
+                "imela",
+                "isipunu"
+              ],
+              "vocabId": "zu-inkomishi"
+            },
+            {
+              "type": "translate",
+              "prompt": "knife",
+              "answer": "imela",
+              "accept": [
+                "imela"
+              ],
+              "vocabId": "zu-imela"
+            }
+          ]
+        },
+        {
+          "id": "zu-u7-l4",
+          "title": "Bigger Numbers",
+          "culturalNote": "Past ten, Zulu builds numbers up: 'ishumi nanye' (eleven), 'amashumi amabili' (twenty), 'ikhulu' (hundred).",
+          "vocab": [
+            {
+              "id": "zu-ishuminanye",
+              "term": "ishumi nanye",
+              "translation": "eleven",
+              "phonetic": "ee-SHOO-mee NAH-nyeh"
+            },
+            {
+              "id": "zu-amashumiamabili",
+              "term": "amashumi amabili",
+              "translation": "twenty",
+              "phonetic": "ah-MAH-shoo-mee ah-mah-BEE-lee"
+            },
+            {
+              "id": "zu-ikhulu",
+              "term": "ikhulu",
+              "translation": "hundred",
+              "phonetic": "ee-KOO-loo"
+            },
+            {
+              "id": "zu-iningi",
+              "term": "iningi",
+              "translation": "many / a lot",
+              "phonetic": "ee-NEEN-gee"
+            },
+            {
+              "id": "zu-amashumiamahlanu",
+              "term": "amashumi amahlanu",
+              "translation": "fifty",
+              "phonetic": "ah-MAH-shoo-mee ah-mah-HLAH-noo"
+            },
+            {
+              "id": "zu-ukubala",
+              "term": "ukubala",
+              "translation": "to count",
+              "phonetic": "oo-koo-BAH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ishumi nanye",
+                  "eleven"
+                ],
+                [
+                  "amashumi amabili",
+                  "twenty"
+                ],
+                [
+                  "ikhulu",
+                  "hundred"
+                ],
+                [
+                  "iningi",
+                  "many / a lot"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ishumi nanye” means:",
+              "answer": "eleven",
+              "options": [
+                "eleven",
+                "twenty",
+                "hundred",
+                "many / a lot"
+              ],
+              "vocabId": "zu-ishuminanye"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “twenty”?",
+              "answer": "amashumi amabili",
+              "options": [
+                "amashumi amabili",
+                "ishumi nanye",
+                "ikhulu",
+                "iningi"
+              ],
+              "vocabId": "zu-amashumiamabili"
+            },
+            {
+              "type": "translate",
+              "prompt": "hundred",
+              "answer": "ikhulu",
+              "accept": [
+                "ikhulu"
+              ],
+              "vocabId": "zu-ikhulu"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

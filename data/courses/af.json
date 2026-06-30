@@ -2290,6 +2290,409 @@
           ]
         }
       ]
+    },
+    {
+      "id": "af-u6",
+      "title": "Unit 6: Saying More",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u6-l1",
+          "title": "Action Verbs",
+          "culturalNote": "Core verbs unlock sentences: 'Ek hou van...' (I like...), 'Ek wil...' (I want...), 'Ek weet' (I know).",
+          "vocab": [
+            {
+              "id": "af-houvan",
+              "term": "hou van",
+              "translation": "to like",
+              "phonetic": "hoh fun"
+            },
+            {
+              "id": "af-wil",
+              "term": "wil",
+              "translation": "to want",
+              "phonetic": "vil"
+            },
+            {
+              "id": "af-weet",
+              "term": "weet",
+              "translation": "to know",
+              "phonetic": "veyt"
+            },
+            {
+              "id": "af-gee",
+              "term": "gee",
+              "translation": "to give",
+              "phonetic": "kheh"
+            },
+            {
+              "id": "af-koop",
+              "term": "koop",
+              "translation": "to buy",
+              "phonetic": "kwoop"
+            },
+            {
+              "id": "af-help",
+              "term": "help",
+              "translation": "to help",
+              "phonetic": "help"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "hou van",
+                  "to like"
+                ],
+                [
+                  "wil",
+                  "to want"
+                ],
+                [
+                  "weet",
+                  "to know"
+                ],
+                [
+                  "gee",
+                  "to give"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“hou van” means:",
+              "answer": "to like",
+              "options": [
+                "to like",
+                "to want",
+                "to know",
+                "to give"
+              ],
+              "vocabId": "af-houvan"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to want”?",
+              "answer": "wil",
+              "options": [
+                "wil",
+                "hou van",
+                "weet",
+                "gee"
+              ],
+              "vocabId": "af-wil"
+            },
+            {
+              "type": "translate",
+              "prompt": "to know",
+              "answer": "weet",
+              "accept": [
+                "weet"
+              ],
+              "vocabId": "af-weet"
+            }
+          ]
+        },
+        {
+          "id": "af-u6-l2",
+          "title": "Fruit & Veg",
+          "culturalNote": "Fresh from the mark: 'piesang' (banana), 'lemoen' (orange), 'aartappel' (potato).",
+          "vocab": [
+            {
+              "id": "af-piesang",
+              "term": "piesang",
+              "translation": "banana",
+              "phonetic": "pee-SUNG"
+            },
+            {
+              "id": "af-lemoen",
+              "term": "lemoen",
+              "translation": "orange",
+              "phonetic": "leh-MOON"
+            },
+            {
+              "id": "af-aartappel",
+              "term": "aartappel",
+              "translation": "potato",
+              "phonetic": "AART-up-el"
+            },
+            {
+              "id": "af-ui",
+              "term": "ui",
+              "translation": "onion",
+              "phonetic": "oey"
+            },
+            {
+              "id": "af-wortel",
+              "term": "wortel",
+              "translation": "carrot",
+              "phonetic": "VOR-tel"
+            },
+            {
+              "id": "af-groente",
+              "term": "groente",
+              "translation": "vegetables",
+              "phonetic": "KHROON-teh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "piesang",
+                  "banana"
+                ],
+                [
+                  "lemoen",
+                  "orange"
+                ],
+                [
+                  "aartappel",
+                  "potato"
+                ],
+                [
+                  "ui",
+                  "onion"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“piesang” means:",
+              "answer": "banana",
+              "options": [
+                "banana",
+                "orange",
+                "potato",
+                "onion"
+              ],
+              "vocabId": "af-piesang"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “orange”?",
+              "answer": "lemoen",
+              "options": [
+                "lemoen",
+                "piesang",
+                "aartappel",
+                "ui"
+              ],
+              "vocabId": "af-lemoen"
+            },
+            {
+              "type": "translate",
+              "prompt": "potato",
+              "answer": "aartappel",
+              "accept": [
+                "aartappel"
+              ],
+              "vocabId": "af-aartappel"
+            }
+          ]
+        },
+        {
+          "id": "af-u6-l3",
+          "title": "In the Kitchen",
+          "culturalNote": "Set the table: 'bord' (plate), 'koppie' (cup), 'mes' (knife), 'vurk' (fork), 'lepel' (spoon).",
+          "vocab": [
+            {
+              "id": "af-bord",
+              "term": "bord",
+              "translation": "plate",
+              "phonetic": "bort"
+            },
+            {
+              "id": "af-koppie",
+              "term": "koppie",
+              "translation": "cup",
+              "phonetic": "KOP-pee"
+            },
+            {
+              "id": "af-mes",
+              "term": "mes",
+              "translation": "knife",
+              "phonetic": "mes"
+            },
+            {
+              "id": "af-vurk",
+              "term": "vurk",
+              "translation": "fork",
+              "phonetic": "feerk"
+            },
+            {
+              "id": "af-lepel",
+              "term": "lepel",
+              "translation": "spoon",
+              "phonetic": "LEH-pel"
+            },
+            {
+              "id": "af-sout",
+              "term": "sout",
+              "translation": "salt",
+              "phonetic": "soht"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bord",
+                  "plate"
+                ],
+                [
+                  "koppie",
+                  "cup"
+                ],
+                [
+                  "mes",
+                  "knife"
+                ],
+                [
+                  "vurk",
+                  "fork"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“bord” means:",
+              "answer": "plate",
+              "options": [
+                "plate",
+                "cup",
+                "knife",
+                "fork"
+              ],
+              "vocabId": "af-bord"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cup”?",
+              "answer": "koppie",
+              "options": [
+                "koppie",
+                "bord",
+                "mes",
+                "vurk"
+              ],
+              "vocabId": "af-koppie"
+            },
+            {
+              "type": "translate",
+              "prompt": "knife",
+              "answer": "mes",
+              "accept": [
+                "mes"
+              ],
+              "vocabId": "af-mes"
+            }
+          ]
+        },
+        {
+          "id": "af-u6-l4",
+          "title": "Bigger Numbers",
+          "culturalNote": "Counting higher: 'elf' (eleven), 'twintig' (twenty), 'honderd' (hundred), 'duisend' (thousand).",
+          "vocab": [
+            {
+              "id": "af-elf",
+              "term": "elf",
+              "translation": "eleven",
+              "phonetic": "elf"
+            },
+            {
+              "id": "af-twintig",
+              "term": "twintig",
+              "translation": "twenty",
+              "phonetic": "TVIN-takh"
+            },
+            {
+              "id": "af-honderd",
+              "term": "honderd",
+              "translation": "hundred",
+              "phonetic": "HON-dert"
+            },
+            {
+              "id": "af-duisend",
+              "term": "duisend",
+              "translation": "thousand",
+              "phonetic": "DOEY-sent"
+            },
+            {
+              "id": "af-baie",
+              "term": "baie",
+              "translation": "many / very",
+              "phonetic": "BUY-eh"
+            },
+            {
+              "id": "af-vyftig",
+              "term": "vyftig",
+              "translation": "fifty",
+              "phonetic": "FAYF-takh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "elf",
+                  "eleven"
+                ],
+                [
+                  "twintig",
+                  "twenty"
+                ],
+                [
+                  "honderd",
+                  "hundred"
+                ],
+                [
+                  "duisend",
+                  "thousand"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“elf” means:",
+              "answer": "eleven",
+              "options": [
+                "eleven",
+                "twenty",
+                "hundred",
+                "thousand"
+              ],
+              "vocabId": "af-elf"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “twenty”?",
+              "answer": "twintig",
+              "options": [
+                "twintig",
+                "elf",
+                "honderd",
+                "duisend"
+              ],
+              "vocabId": "af-twintig"
+            },
+            {
+              "type": "translate",
+              "prompt": "hundred",
+              "answer": "honderd",
+              "accept": [
+                "honderd"
+              ],
+              "vocabId": "af-honderd"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
