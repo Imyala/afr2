@@ -48,8 +48,9 @@ for the full explanation. In short:
 - 📚 Daily lessons with a unit-based lesson path
 - 🔁 Spaced-repetition **Review** sessions driven by what's actually due
 - 📖 **Reading exercises** — graded stories with comprehension questions
-- ✍️ Translation, multiple choice, match-the-pairs, fill-in-the-blank, and
-  **"build the sentence"** word-bank exercises for real sentence practice
+- ✍️ Translation, multiple choice, match-the-pairs, fill-in-the-blank, plus
+  three **sentence-level** exercises — "build the sentence" (word bank),
+  "what does it mean?" (sentence comprehension), and sentence fill-in-the-blank
 - 🙂 **Typo-tolerant typed answers** — a near-miss is accepted with a gentle
   spelling nudge instead of costing a heart (short minimal pairs stay strict)
 - 📒 **Searchable glossary** — browse every word with phonetics and mastery

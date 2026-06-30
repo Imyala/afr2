@@ -181,6 +181,46 @@ function genWordBank(phrase, pool) {
   return { type: 'word_bank', prompt: phrase.en, answer: phrase.t, tokens: shuffle([...words, ...distract]) };
 }
 
+// Sentence comprehension: "what does this sentence mean?" — recognition at the
+// sentence level. Distractor meanings come from other authored phrases.
+function genPhraseChoice(phrase, enPool) {
+  const distract = [];
+  for (const e of shuffle(enPool)) {
+    if (normalize(e) === normalize(phrase.en) || distract.some((d) => normalize(d) === normalize(e))) continue;
+    distract.push(e);
+    if (distract.length >= 3) break;
+  }
+  return { type: 'multiple_choice', prompt: `What does “${phrase.t}” mean?`, answer: phrase.en, options: shuffle([phrase.en, ...distract]) };
+}
+
+// Sentence fill-in-the-blank: drop one known word from the sentence and pick it
+// from options. In-context practice of which word fits — a step toward grammar.
+function genPhraseBlank(phrase, pool, byTerm) {
+  const words = phrase.t.split(/\s+/).filter(Boolean);
+  const known = words.filter((w) => byTerm[normalize(w)]);
+  const pick = (known.length ? known : words)[Math.floor(Math.random() * (known.length || words.length))];
+  let done = false;
+  const sentence = words.map((w) => (!done && w === pick ? (done = true, '____') : w)).join(' ');
+  const seen = new Set([normalize(pick)]);
+  const opts = [pick];
+  for (const v of shuffle(pool)) {
+    if (/\s/.test(v.term)) continue;            // single-word distractors only
+    const n = normalize(v.term);
+    if (!n || seen.has(n)) continue;
+    seen.add(n); opts.push(v.term);
+    if (opts.length >= 4) break;
+  }
+  const vid = byTerm[normalize(pick)];
+  return { type: 'fill_blank', sentence, answer: pick, options: shuffle(opts), meaning: phrase.en, ...(vid ? { vocabId: vid } : {}) };
+}
+
+// All authored phrase meanings in a course (distractor pool for sentence MCs).
+function allPhraseEns(course) {
+  const out = [];
+  for (const u of course.units) for (const l of u.lessons) for (const p of (l.phrases || [])) out.push(p.en);
+  return out;
+}
+
 // Build a lesson session: covers every word with recognition + production,
 // optionally warmed up with a couple of due words from earlier lessons.
 export function buildLessonSession(lesson, course = null, dueIds = []) {
@@ -201,11 +241,20 @@ export function buildLessonSession(lesson, course = null, dueIds = []) {
   const authoredFill = (lesson.exercises || []).filter((e) => e.type === 'fill_blank');
   const flavour = shuffle(authoredFill).slice(0, Math.min(2, authoredFill.length));
 
-  // sentence practice: 1-2 word-bank items from any authored phrases. Kept in
-  // the pre-production block so every word still gets a recognition exposure
+  // sentence practice: 1-2 items from any authored phrases, varied across three
+  // shapes (build-the-sentence, sentence meaning, sentence fill-the-blank). Kept
+  // in the pre-production block so every word still gets a recognition exposure
   // before it must be produced.
   const phrases = (lesson.phrases || []).filter((p) => p && p.t && p.en);
-  const wordbanks = shuffle(phrases).slice(0, Math.min(2, phrases.length)).map((p) => genWordBank(p, pool));
+  const enPool = course ? allPhraseEns(course) : phrases.map((p) => p.en);
+  const byTerm = {};
+  for (const v of pool) if (!/\s/.test(v.term)) byTerm[normalize(v.term)] = v.id;
+  const wordbanks = shuffle(phrases).slice(0, Math.min(2, phrases.length)).map((p) => {
+    const r = Math.random();
+    if (r < 0.34) return genWordBank(p, pool);
+    if (r < 0.67 && enPool.length >= 2) return genPhraseChoice(p, enPool);
+    return genPhraseBlank(p, pool, byTerm);
+  });
 
   // cross-lesson repetition: up to 2 due words that aren't in this lesson
   const lessonIds = new Set(vocab.map((v) => v.id));

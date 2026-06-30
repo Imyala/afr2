@@ -786,6 +786,10 @@
             {
               "t": "My naam is Pieter",
               "en": "My name is Pieter"
+            },
+            {
+              "t": "Ek kom van Kaapstad",
+              "en": "I come from Cape Town"
             }
           ]
         },
@@ -1207,6 +1211,10 @@
             {
               "t": "Vandag is Maandag",
               "en": "Today is Monday"
+            },
+            {
+              "t": "Vandag is Vrydag",
+              "en": "Today is Friday"
             }
           ]
         },
@@ -2223,6 +2231,12 @@
                 "see"
               ],
               "vocabId": "af-see"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Die see is blou",
+              "en": "The sea is blue"
             }
           ]
         },

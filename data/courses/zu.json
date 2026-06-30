@@ -685,6 +685,10 @@
             {
               "t": "Ngicela ubisi",
               "en": "Please, milk"
+            },
+            {
+              "t": "Ngifuna inyama",
+              "en": "I want meat"
             }
           ]
         },
@@ -1356,6 +1360,12 @@
               ],
               "vocabId": "zu-ulwesithathu"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ilanga liyashisa",
+              "en": "The sun is hot"
+            }
           ]
         },
         {
@@ -1869,6 +1879,12 @@
                 "kusasa"
               ],
               "vocabId": "zu-kusasa"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngifika kusasa",
+              "en": "I arrive tomorrow"
             }
           ]
         },

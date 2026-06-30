@@ -323,6 +323,7 @@ function renderHome() {
 
   const node = h(`
     <div class="screen">
+      <h1 class="sr-only">MzansiLingo — ${esc(meta.name)} home</h1>
       <header class="topbar">
         <button class="topbar__lang" id="switchLang">${esc(meta.name)} ▾</button>
         <div class="topbar__stats">

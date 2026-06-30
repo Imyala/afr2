@@ -838,6 +838,10 @@
             {
               "t": "Igama lam nguThandi",
               "en": "My name is Thandi"
+            },
+            {
+              "t": "Ndivela eKapa",
+              "en": "I am from Cape Town"
             }
           ]
         },
@@ -1663,6 +1667,12 @@
                 "ngomso"
               ],
               "vocabId": "xh-ngomso"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndifika ngomso",
+              "en": "I arrive tomorrow"
             }
           ]
         },
