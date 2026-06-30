@@ -11,22 +11,33 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let pass = 0, fail = 0;
 const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗', m); } };
 
-// --- SRS engine ---
+// --- SRS engine (FSRS-style target-retention scheduler) ---
 let it = newItem();
-review(it, gradeFor(true, 'translate'), 'translate'); // learning step
-review(it, gradeFor(true, 'translate'), 'translate'); // graduate
-review(it, gradeFor(true, 'translate'), 'translate'); // reps 2, interval 6
-ok(it.mastered === true, 'masters after 3 production corrects');
-ok(it.intervalDays >= 6, 'interval grows to >= 6 days');
+let prevInterval = 0, monotonic = true;
+for (let i = 0; i < 6; i++) {
+  review(it, gradeFor(true, 'translate'), 'translate');
+  if (it.learning === null) { if (it.intervalDays < prevInterval) monotonic = false; prevInterval = it.intervalDays; }
+}
+ok(it.mastered === true, 'masters after enough production corrects');
+ok(it.stability >= 7, 'stability grows past the mastery threshold');
+ok(monotonic, 'intervals grow monotonically across successful reviews');
+ok(it.intervalDays >= 6, 'interval grows to several days');
 
 let it2 = newItem();
-for (let i = 0; i < 3; i++) review(it2, gradeFor(true, 'multiple_choice'), 'multiple_choice');
+for (let i = 0; i < 8; i++) review(it2, gradeFor(true, 'multiple_choice'), 'multiple_choice');
 ok(it2.mastered === false, 'recognition-only does NOT master (needs production)');
 
-let it3 = newItem(); it3.learning = null; it3.reps = 3; it3.intervalDays = 20; it3.ease = 2.5;
+// higher desired retention => shorter interval for the same stability
+let itA = newItem(); for (let i = 0; i < 5; i++) review(itA, gradeFor(true, 'translate'), 'translate', Date.now(), 0.85);
+let itB = newItem(); for (let i = 0; i < 5; i++) review(itB, gradeFor(true, 'translate'), 'translate', Date.now(), 0.95);
+ok(itB.intervalDays < itA.intervalDays, 'higher desired retention schedules sooner');
+
+let it3 = newItem(); it3.learning = null; it3.reps = 3; it3.stability = 20; it3.difficulty = 4; it3.intervalDays = 20;
 review(it3, gradeFor(false, 'translate'), 'translate');
-ok(it3.intervalDays === 0 && it3.reps === 0, 'lapse resets interval and reps');
-ok(it3.ease < 2.5, 'lapse lowers ease factor');
+ok(it3.reps === 0 && it3.intervalDays === 0, 'lapse resets reps and interval');
+ok(it3.stability < 20, 'lapse shrinks stability');
+ok(it3.difficulty > 4, 'lapse raises difficulty');
+ok(it3.mastered === false, 'lapse clears mastery');
 
 // --- answer checking ---
 ok(checkAnswer({ type: 'translate', answer: 'Ngiyaphila', accept: ['ngiyaphila'] }, '  ngiyaphila '), 'translate trims/normalizes');

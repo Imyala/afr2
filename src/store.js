@@ -52,7 +52,7 @@ function freshState() {
     version: 1,
     activeLang: null,
     premium: false,
-    settings: { dailyGoalXP: 30, soundOn: true, onboarded: false, remindersOn: false },
+    settings: { dailyGoalXP: 30, soundOn: true, onboarded: false, remindersOn: false, desiredRetention: 0.9 },
     langs: {},
     // account-wide gamification
     gems: 0,

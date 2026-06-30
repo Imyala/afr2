@@ -1,6 +1,6 @@
 // app.js — MzansiLingo PWA controller (routing, screens, exercise rendering)
 import { store, XP_PER_CORRECT, XP_LESSON_BONUS, MAX_HEARTS } from './store.js';
-import { review as srsReview, gradeFor } from './srs.js';
+import { review as srsReview, gradeFor, setDesiredRetention } from './srs.js';
 import { speak, recordSupported, startRecording } from './audio.js';
 import {
   loadCourse, loadLanguages, allLessons, findLesson, vocabIndex,
@@ -61,6 +61,7 @@ function weekDaysLeft(now = Date.now()) {
 async function boot() {
   Shop.applyTheme(store);
   setSoundEnabled(store.state.settings.soundOn !== false);
+  setDesiredRetention(store.state.settings.desiredRetention || 0.9);
   // Re-apply the palette if the OS flips between light/dark so themed accents
   // always use the variant tuned for the current background.
   if (window.matchMedia) {
@@ -1191,6 +1192,7 @@ function renderDailyReward() {
 async function restart() {
   Shop.applyTheme(store);
   setSoundEnabled(store.state.settings.soundOn !== false);
+  setDesiredRetention(store.state.settings.desiredRetention || 0.9);
   if (!store.state.settings.onboarded && !store.state.activeLang) return renderOnboarding();
   if (!store.state.activeLang) return renderLanguageSelect(true);
   await openLanguage(store.state.activeLang);
@@ -1280,6 +1282,12 @@ function renderSettings() {
             ${[20, 30, 50, 80].map((g) => `<option value="${g}" ${store.state.settings.dailyGoalXP === g ? 'selected' : ''}>${g} XP</option>`).join('')}
           </select>
         </div>
+        <div class="set-row">
+          <div class="set-row__label"><b>Review intensity</b><small>How often words come back for review</small></div>
+          <select id="retSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[['0.85', 'Relaxed'], ['0.9', 'Standard'], ['0.95', 'Intense']].map(([v, label]) => `<option value="${v}" ${Math.abs((store.state.settings.desiredRetention || 0.9) - Number(v)) < 0.001 ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
       </div>
       <h3 class="sec">Premium</h3>
       <button class="card" id="prem" style="text-align:left"><strong>⭐ MzansiLingo Premium</strong><span class="muted">Unlimited hearts, all languages, no ads.</span></button>
@@ -1304,6 +1312,13 @@ function renderSettings() {
   node.querySelector('#goalSel').addEventListener('change', (e) => {
     store.state.settings.dailyGoalXP = Number(e.target.value);
     store.save();
+  });
+  node.querySelector('#retSel').addEventListener('change', (e) => {
+    const r = Number(e.target.value);
+    store.state.settings.desiredRetention = r;
+    setDesiredRetention(r);
+    store.save();
+    flashToast(r >= 0.95 ? 'More frequent reviews 🔁' : r <= 0.85 ? 'Fewer reviews — lighter load' : 'Standard review schedule');
   });
   node.querySelector('#prem').addEventListener('click', renderPremium);
   node.querySelector('#profBtn').addEventListener('click', renderProfiles);
