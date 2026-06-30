@@ -1695,6 +1695,416 @@
           ]
         }
       ]
+    },
+    {
+      "id": "zu-u4",
+      "title": "Unit 4: Out & About",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "zu-u4-l1",
+          "title": "Time & Routine",
+          "culturalNote": "Zulu marks the day in broad parts: 'ekuseni' (morning), 'ntambama' (afternoon) and 'ebusuku' (night). 'Manje' (now) and 'kamuva' (later) help you make plans.",
+          "vocab": [
+            {
+              "id": "zu-namuhla",
+              "term": "namuhla",
+              "translation": "today",
+              "phonetic": "nah-MOO-hlah"
+            },
+            {
+              "id": "zu-izolo",
+              "term": "izolo",
+              "translation": "yesterday",
+              "phonetic": "ee-ZOH-loh"
+            },
+            {
+              "id": "zu-kusasa",
+              "term": "kusasa",
+              "translation": "tomorrow",
+              "phonetic": "koo-SAH-sah"
+            },
+            {
+              "id": "zu-manje",
+              "term": "manje",
+              "translation": "now",
+              "phonetic": "MAHN-jeh"
+            },
+            {
+              "id": "zu-ekuseni",
+              "term": "ekuseni",
+              "translation": "in the morning",
+              "phonetic": "eh-koo-SEH-nee"
+            },
+            {
+              "id": "zu-ntambama",
+              "term": "ntambama",
+              "translation": "in the afternoon",
+              "phonetic": "ntahm-BAH-mah"
+            },
+            {
+              "id": "zu-ebusuku",
+              "term": "ebusuku",
+              "translation": "at night",
+              "phonetic": "eh-boo-SOO-koo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "namuhla",
+                  "today"
+                ],
+                [
+                  "izolo",
+                  "yesterday"
+                ],
+                [
+                  "kusasa",
+                  "tomorrow"
+                ],
+                [
+                  "manje",
+                  "now"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“namuhla” means:",
+              "answer": "today",
+              "options": [
+                "today",
+                "yesterday",
+                "tomorrow",
+                "now"
+              ],
+              "vocabId": "zu-namuhla"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “yesterday”?",
+              "answer": "izolo",
+              "options": [
+                "izolo",
+                "namuhla",
+                "kusasa",
+                "manje"
+              ],
+              "vocabId": "zu-izolo"
+            },
+            {
+              "type": "translate",
+              "prompt": "tomorrow",
+              "answer": "kusasa",
+              "accept": [
+                "kusasa"
+              ],
+              "vocabId": "zu-kusasa"
+            }
+          ]
+        },
+        {
+          "id": "zu-u4-l2",
+          "title": "Animals",
+          "culturalNote": "Animals appear in many Zulu idioms and clan praises (izithakazelo). 'Inkomo' (cattle) holds deep cultural value — it features in lobola and ceremonies.",
+          "vocab": [
+            {
+              "id": "zu-inja",
+              "term": "inja",
+              "translation": "dog",
+              "phonetic": "EEN-jah"
+            },
+            {
+              "id": "zu-ikati",
+              "term": "ikati",
+              "translation": "cat",
+              "phonetic": "ee-KAH-tee"
+            },
+            {
+              "id": "zu-inkomo",
+              "term": "inkomo",
+              "translation": "cow",
+              "phonetic": "een-KOH-moh"
+            },
+            {
+              "id": "zu-ihhashi",
+              "term": "ihhashi",
+              "translation": "horse",
+              "phonetic": "ee-HAH-shee"
+            },
+            {
+              "id": "zu-inkukhu",
+              "term": "inkukhu",
+              "translation": "chicken",
+              "phonetic": "een-KOO-khoo"
+            },
+            {
+              "id": "zu-inyoni",
+              "term": "inyoni",
+              "translation": "bird",
+              "phonetic": "een-YOH-nee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "inja",
+                  "dog"
+                ],
+                [
+                  "ikati",
+                  "cat"
+                ],
+                [
+                  "inkomo",
+                  "cow"
+                ],
+                [
+                  "ihhashi",
+                  "horse"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“inja” means:",
+              "answer": "dog",
+              "options": [
+                "dog",
+                "cat",
+                "cow",
+                "horse"
+              ],
+              "vocabId": "zu-inja"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cat”?",
+              "answer": "ikati",
+              "options": [
+                "ikati",
+                "inja",
+                "inkomo",
+                "ihhashi"
+              ],
+              "vocabId": "zu-ikati"
+            },
+            {
+              "type": "translate",
+              "prompt": "cow",
+              "answer": "inkomo",
+              "accept": [
+                "inkomo"
+              ],
+              "vocabId": "zu-inkomo"
+            }
+          ]
+        },
+        {
+          "id": "zu-u4-l3",
+          "title": "Around Town",
+          "culturalNote": "Knowing key places helps you get around. Start a question with 'Iphi...?' (Where is...?) — e.g. 'Iphi isikole?' (Where is the school?).",
+          "vocab": [
+            {
+              "id": "zu-isikole",
+              "term": "isikole",
+              "translation": "school",
+              "phonetic": "ee-see-KOH-leh"
+            },
+            {
+              "id": "zu-isibhedlela",
+              "term": "isibhedlela",
+              "translation": "hospital",
+              "phonetic": "ee-see-bheh-DLEH-lah"
+            },
+            {
+              "id": "zu-ibhange",
+              "term": "ibhange",
+              "translation": "bank",
+              "phonetic": "ee-BAHN-geh"
+            },
+            {
+              "id": "zu-isiteshi",
+              "term": "isiteshi",
+              "translation": "station",
+              "phonetic": "ee-see-TEH-shee"
+            },
+            {
+              "id": "zu-indlu",
+              "term": "indlu",
+              "translation": "house",
+              "phonetic": "EEN-dloo"
+            },
+            {
+              "id": "zu-umgwaqo",
+              "term": "umgwaqo",
+              "translation": "road",
+              "phonetic": "oom-GWAH-qoh",
+              "note": "q is a click consonant"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "isikole",
+                  "school"
+                ],
+                [
+                  "isibhedlela",
+                  "hospital"
+                ],
+                [
+                  "ibhange",
+                  "bank"
+                ],
+                [
+                  "isiteshi",
+                  "station"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“isikole” means:",
+              "answer": "school",
+              "options": [
+                "school",
+                "hospital",
+                "bank",
+                "station"
+              ],
+              "vocabId": "zu-isikole"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hospital”?",
+              "answer": "isibhedlela",
+              "options": [
+                "isibhedlela",
+                "isikole",
+                "ibhange",
+                "isiteshi"
+              ],
+              "vocabId": "zu-isibhedlela"
+            },
+            {
+              "type": "translate",
+              "prompt": "bank",
+              "answer": "ibhange",
+              "accept": [
+                "ibhange"
+              ],
+              "vocabId": "zu-ibhange"
+            }
+          ]
+        },
+        {
+          "id": "zu-u4-l4",
+          "title": "Health & Help",
+          "culturalNote": "If you're unwell, 'Ngiyagula' (I am sick) and 'Ngicela usizo' (I need help) are vital. 'Umuthi' means medicine — it can also refer to traditional remedies.",
+          "vocab": [
+            {
+              "id": "zu-ngiyagula",
+              "term": "ngiyagula",
+              "translation": "I am sick",
+              "phonetic": "ngee-yah-GOO-lah"
+            },
+            {
+              "id": "zu-udokotela",
+              "term": "udokotela",
+              "translation": "doctor",
+              "phonetic": "oo-doh-koh-TEH-lah"
+            },
+            {
+              "id": "zu-umuthi",
+              "term": "umuthi",
+              "translation": "medicine",
+              "phonetic": "oo-MOO-tee"
+            },
+            {
+              "id": "zu-ubuhlungu",
+              "term": "ubuhlungu",
+              "translation": "pain / sore",
+              "phonetic": "oo-boo-HLOON-goo"
+            },
+            {
+              "id": "zu-usizo",
+              "term": "usizo",
+              "translation": "help",
+              "phonetic": "oo-SEE-zoh"
+            },
+            {
+              "id": "zu-iambulensi",
+              "term": "iambulensi",
+              "translation": "ambulance",
+              "phonetic": "ee-am-boo-LEN-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ngiyagula",
+                  "I am sick"
+                ],
+                [
+                  "udokotela",
+                  "doctor"
+                ],
+                [
+                  "umuthi",
+                  "medicine"
+                ],
+                [
+                  "ubuhlungu",
+                  "pain / sore"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ngiyagula” means:",
+              "answer": "I am sick",
+              "options": [
+                "I am sick",
+                "doctor",
+                "medicine",
+                "pain / sore"
+              ],
+              "vocabId": "zu-ngiyagula"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “doctor”?",
+              "answer": "udokotela",
+              "options": [
+                "udokotela",
+                "ngiyagula",
+                "umuthi",
+                "ubuhlungu"
+              ],
+              "vocabId": "zu-udokotela"
+            },
+            {
+              "type": "translate",
+              "prompt": "medicine",
+              "answer": "umuthi",
+              "accept": [
+                "umuthi"
+              ],
+              "vocabId": "zu-umuthi"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

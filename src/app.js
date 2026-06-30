@@ -25,6 +25,14 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 const shuffle = (a) => a.map((v) => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
 function mount(node) { app.innerHTML = ''; app.appendChild(node); window.scrollTo(0, 0); }
 function fmtTime(ms) { const m = Math.ceil(ms / 60000); return `${m} min`; }
+// Time until the weekly league resets (next Monday 00:00).
+function weekDaysLeft(now = Date.now()) {
+  const d = new Date(now);
+  const dayNum = (d.getDay() + 6) % 7;            // Mon = 0
+  const nextMon = new Date(d.getFullYear(), d.getMonth(), d.getDate() - dayNum + 7, 0, 0, 0, 0);
+  const days = Math.ceil((nextMon.getTime() - now) / 86400000);
+  return days <= 1 ? '1 day' : `${days} days`;
+}
 
 // ---------- boot ----------
 async function boot() {
@@ -283,8 +291,7 @@ function renderHome() {
   }).join('');
 
   const lg = L.league;
-  const target = G.leagueTarget(lg.tier);
-  const lgPct = Math.min(100, Math.round((lg.weeklyXp / target) * 100));
+  const lgRank = G.leagueRank(store);
   const hasReading = (course.reading || []).length > 0;
   const mascot = Shop.equippedMascot(store);
   const wotd = wordOfTheDay();
@@ -329,8 +336,8 @@ function renderHome() {
           <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
         </button>
         <button class="mini" id="leagueBtn">
-          <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])}</span>
-          <span class="qbar qbar--gold"><span style="width:${lgPct}%"></span></span>
+          <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} <b>#${lgRank.rank}</b></span>
+          <span class="qbar qbar--gold"><span style="width:${Math.round(((G.LEAGUE_SIZE - lgRank.rank + 1) / G.LEAGUE_SIZE) * 100)}%"></span></span>
         </button>
       </div>
 
@@ -1031,21 +1038,49 @@ function renderLeague() {
   G.ensureWeek(store);
   const L = store.lang();
   const lg = L.league;
-  const tiers = G.LEAGUES.map((name, i) => `
-    <div class="tier ${i === lg.tier ? 'tier--cur' : ''} ${i < lg.tier ? 'tier--past' : ''}">
-      <span>${G.leagueIcon(name)}</span><span>${esc(name)}</span>${i === lg.tier ? '<span class="muted">you are here</span>' : ''}
-    </div>`).join('');
-  const target = G.leagueTarget(lg.tier);
-  const pct = Math.min(100, Math.round((lg.weeklyXp / target) * 100));
+  const standings = G.leagueStandings(store);
+  const me = standings.find((r) => r.you);
+  const nextLeague = G.LEAGUES[Math.min(G.LEAGUES.length - 1, lg.tier + 1)];
+  const N = standings.length;
+
+  const rows = standings.map((r, i) => {
+    let divider = '';
+    if (i === G.PROMOTE_ZONE) divider = `<div class="lb-line lb-line--up"><span>Promotion to ${esc(nextLeague)} ▲</span></div>`;
+    if (i === N - G.DEMOTE_ZONE) divider = `<div class="lb-line lb-line--down"><span>▼ Demotion zone</span></div>`;
+    const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : r.rank;
+    return `${divider}
+      <div class="lb-row ${r.you ? 'lb-row--you' : ''} lb-row--${r.zone}">
+        <span class="lb-rank">${medal}</span>
+        <span class="lb-name">${r.you ? '<b>You</b>' : esc(r.name)}</span>
+        <span class="lb-xp">${r.xp} XP</span>
+      </div>`;
+  }).join('');
+
+  // last week's result, if we just settled one
+  const settled = (lg.lastRank && lg.lastTier !== undefined)
+    ? (lg.tier > lg.lastTier
+        ? `<div class="lb-banner lb-banner--up">⬆ Promoted! You finished #${lg.lastRank} last week.</div>`
+        : lg.tier < lg.lastTier
+          ? `<div class="lb-banner lb-banner--down">You finished #${lg.lastRank} and dropped a league. Climb back!</div>`
+          : `<div class="lb-banner">You finished #${lg.lastRank} last week — held your league.</div>`)
+    : '';
+
+  const zoneMsg = me.zone === 'up'
+    ? `🔥 You're in the promotion zone at #${me.rank}! Keep it up to reach ${esc(nextLeague)}.`
+    : me.zone === 'down'
+      ? `⚠️ You're in the demotion zone at #${me.rank}. Earn XP to climb out!`
+      : `You're #${me.rank} of ${N}. Earn XP to break into the top ${G.PROMOTE_ZONE}.`;
+
   const node = h(`
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>League</strong><span class="stat">💎 ${G.gems(store)}</span></header>
       <section class="card">
-        <div class="card__head"><strong>${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} League</strong></div>
-        <div class="qbar qbar--gold"><div style="width:${pct}%"></div></div>
-        <p class="muted">${lg.weeklyXp}/${target} XP this week. Earn XP daily to climb the leagues!</p>
+        <div class="card__head"><strong>${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} League</strong><span class="muted">${esc(weekDaysLeft())} left</span></div>
+        ${settled}
+        <p class="muted">${zoneMsg}</p>
       </section>
-      <div class="tiers">${tiers}</div>
+      <div class="leaderboard">${rows}</div>
+      <p class="footnote">Top ${G.PROMOTE_ZONE} advance · bottom ${G.DEMOTE_ZONE} drop a league · resets every Monday.</p>
       <h3 class="sec">Streak protection</h3>
       <section class="card">
         <p>🔥 Current streak: <strong>${L.streak}</strong> · ❄️ Streak freezes: <strong>${L.streakFreezes || 0}</strong></p>

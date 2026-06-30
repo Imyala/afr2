@@ -1127,6 +1127,418 @@
           ]
         }
       ]
+    },
+    {
+      "id": "xh-u3",
+      "title": "Unit 3: Everyday Life",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "xh-u3-l1",
+          "title": "Days of the Week",
+          "culturalNote": "The Xhosa week starts with uMvulo (Monday) and ends with iCawa (Sunday, which also means 'church'). Several names build on counting, like Zulu.",
+          "vocab": [
+            {
+              "id": "xh-umvulo",
+              "term": "uMvulo",
+              "translation": "Monday",
+              "phonetic": "oom-VOO-loh"
+            },
+            {
+              "id": "xh-ulwesibini",
+              "term": "uLwesibini",
+              "translation": "Tuesday",
+              "phonetic": "oo-lweh-see-BEE-nee"
+            },
+            {
+              "id": "xh-ulwesithathu",
+              "term": "uLwesithathu",
+              "translation": "Wednesday",
+              "phonetic": "oo-lweh-see-TAH-too"
+            },
+            {
+              "id": "xh-ulwesine",
+              "term": "uLwesine",
+              "translation": "Thursday",
+              "phonetic": "oo-lweh-SEE-neh"
+            },
+            {
+              "id": "xh-ulwesihlanu",
+              "term": "uLwesihlanu",
+              "translation": "Friday",
+              "phonetic": "oo-lweh-see-SHLAH-noo"
+            },
+            {
+              "id": "xh-umgqibelo",
+              "term": "uMgqibelo",
+              "translation": "Saturday",
+              "phonetic": "oom-gee-BEH-loh",
+              "note": "gq is a click consonant"
+            },
+            {
+              "id": "xh-icawa",
+              "term": "iCawa",
+              "translation": "Sunday",
+              "phonetic": "ee-CAH-wah",
+              "note": "also means 'church'"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "uMvulo",
+                  "Monday"
+                ],
+                [
+                  "uLwesibini",
+                  "Tuesday"
+                ],
+                [
+                  "uLwesithathu",
+                  "Wednesday"
+                ],
+                [
+                  "uLwesine",
+                  "Thursday"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“uMvulo” means:",
+              "answer": "Monday",
+              "options": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday"
+              ],
+              "vocabId": "xh-umvulo"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “Tuesday”?",
+              "answer": "uLwesibini",
+              "options": [
+                "uLwesibini",
+                "uMvulo",
+                "uLwesithathu",
+                "uLwesine"
+              ],
+              "vocabId": "xh-ulwesibini"
+            },
+            {
+              "type": "translate",
+              "prompt": "Wednesday",
+              "answer": "uLwesithathu",
+              "accept": [
+                "ulwesithathu"
+              ],
+              "vocabId": "xh-ulwesithathu"
+            }
+          ]
+        },
+        {
+          "id": "xh-u3-l2",
+          "title": "Colours",
+          "culturalNote": "Colour words agree with the noun in Xhosa. 'Luhlaza' covers green and blue; add 'okwengca' (like grass) for green or 'okwesibhakabhaka' (like sky) for blue.",
+          "vocab": [
+            {
+              "id": "xh-bomvu",
+              "term": "bomvu",
+              "translation": "red",
+              "phonetic": "BOM-voo"
+            },
+            {
+              "id": "xh-mhlophe",
+              "term": "mhlophe",
+              "translation": "white",
+              "phonetic": "MSHLOH-peh"
+            },
+            {
+              "id": "xh-mnyama",
+              "term": "mnyama",
+              "translation": "black",
+              "phonetic": "mm-NYAH-mah"
+            },
+            {
+              "id": "xh-luhlaza",
+              "term": "luhlaza",
+              "translation": "green / blue",
+              "phonetic": "loo-SHLAH-zah"
+            },
+            {
+              "id": "xh-mthubi",
+              "term": "mthubi",
+              "translation": "yellow",
+              "phonetic": "mm-TOO-bee"
+            },
+            {
+              "id": "xh-umbala",
+              "term": "umbala",
+              "translation": "colour",
+              "phonetic": "oom-BAH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bomvu",
+                  "red"
+                ],
+                [
+                  "mhlophe",
+                  "white"
+                ],
+                [
+                  "mnyama",
+                  "black"
+                ],
+                [
+                  "luhlaza",
+                  "green / blue"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“bomvu” means:",
+              "answer": "red",
+              "options": [
+                "red",
+                "white",
+                "black",
+                "green / blue"
+              ],
+              "vocabId": "xh-bomvu"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “white”?",
+              "answer": "mhlophe",
+              "options": [
+                "mhlophe",
+                "bomvu",
+                "mnyama",
+                "luhlaza"
+              ],
+              "vocabId": "xh-mhlophe"
+            },
+            {
+              "type": "translate",
+              "prompt": "black",
+              "answer": "mnyama",
+              "accept": [
+                "mnyama"
+              ],
+              "vocabId": "xh-mnyama"
+            }
+          ]
+        },
+        {
+          "id": "xh-u3-l3",
+          "title": "Feelings",
+          "culturalNote": "Say how you feel with 'ndi-' (I). 'Ndilambile' (I'm hungry) and 'ndinxaniwe' (I'm thirsty) are everyday phrases — the 'nx' in nxaniwe is a click.",
+          "vocab": [
+            {
+              "id": "xh-ndonwabile",
+              "term": "ndonwabile",
+              "translation": "I am happy",
+              "phonetic": "ndoh-nwah-BEE-leh"
+            },
+            {
+              "id": "xh-ndidiniwe",
+              "term": "ndidiniwe",
+              "translation": "I am tired",
+              "phonetic": "ndee-dee-NEE-weh"
+            },
+            {
+              "id": "xh-ndilambile",
+              "term": "ndilambile",
+              "translation": "I am hungry",
+              "phonetic": "ndee-lahm-BEE-leh"
+            },
+            {
+              "id": "xh-ndinxaniwe",
+              "term": "ndinxaniwe",
+              "translation": "I am thirsty",
+              "phonetic": "ndee-nxah-NEE-weh",
+              "note": "nx is a click consonant"
+            },
+            {
+              "id": "xh-ndiyabulela",
+              "term": "ndiyabulela",
+              "translation": "I am grateful",
+              "phonetic": "ndee-yah-boo-LEH-lah"
+            },
+            {
+              "id": "xh-ndicaphukile",
+              "term": "ndicaphukile",
+              "translation": "I am angry",
+              "phonetic": "ndee-cah-poo-KEE-leh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ndonwabile",
+                  "I am happy"
+                ],
+                [
+                  "ndidiniwe",
+                  "I am tired"
+                ],
+                [
+                  "ndilambile",
+                  "I am hungry"
+                ],
+                [
+                  "ndinxaniwe",
+                  "I am thirsty"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ndonwabile” means:",
+              "answer": "I am happy",
+              "options": [
+                "I am happy",
+                "I am tired",
+                "I am hungry",
+                "I am thirsty"
+              ],
+              "vocabId": "xh-ndonwabile"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “I am tired”?",
+              "answer": "ndidiniwe",
+              "options": [
+                "ndidiniwe",
+                "ndonwabile",
+                "ndilambile",
+                "ndinxaniwe"
+              ],
+              "vocabId": "xh-ndidiniwe"
+            },
+            {
+              "type": "translate",
+              "prompt": "I am hungry",
+              "answer": "ndilambile",
+              "accept": [
+                "ndilambile"
+              ],
+              "vocabId": "xh-ndilambile"
+            }
+          ]
+        },
+        {
+          "id": "xh-u3-l4",
+          "title": "The Body",
+          "culturalNote": "Body words show up in greetings about health. Note the classes: 'intloko' (head) and 'isandla' (hand) take different plural forms.",
+          "vocab": [
+            {
+              "id": "xh-intloko",
+              "term": "intloko",
+              "translation": "head",
+              "phonetic": "een-TLOH-koh"
+            },
+            {
+              "id": "xh-isandla",
+              "term": "isandla",
+              "translation": "hand",
+              "phonetic": "ee-SAHN-dlah"
+            },
+            {
+              "id": "xh-unyawo",
+              "term": "unyawo",
+              "translation": "foot",
+              "phonetic": "oon-YAH-woh"
+            },
+            {
+              "id": "xh-amehlo",
+              "term": "amehlo",
+              "translation": "eyes",
+              "phonetic": "ah-MEH-shloh"
+            },
+            {
+              "id": "xh-indlebe",
+              "term": "indlebe",
+              "translation": "ear",
+              "phonetic": "een-DLEH-beh"
+            },
+            {
+              "id": "xh-umlomo",
+              "term": "umlomo",
+              "translation": "mouth",
+              "phonetic": "oom-LOH-moh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "intloko",
+                  "head"
+                ],
+                [
+                  "isandla",
+                  "hand"
+                ],
+                [
+                  "unyawo",
+                  "foot"
+                ],
+                [
+                  "amehlo",
+                  "eyes"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“intloko” means:",
+              "answer": "head",
+              "options": [
+                "head",
+                "hand",
+                "foot",
+                "eyes"
+              ],
+              "vocabId": "xh-intloko"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hand”?",
+              "answer": "isandla",
+              "options": [
+                "isandla",
+                "intloko",
+                "unyawo",
+                "amehlo"
+              ],
+              "vocabId": "xh-isandla"
+            },
+            {
+              "type": "translate",
+              "prompt": "foot",
+              "answer": "unyawo",
+              "accept": [
+                "unyawo"
+              ],
+              "vocabId": "xh-unyawo"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

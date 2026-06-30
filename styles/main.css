@@ -449,3 +449,25 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 /* settings nav button reuse */
 .set-list { display: grid; gap: 10px; }
 
+/* ---------- weekly leaderboard ---------- */
+.leaderboard { display: grid; gap: 6px; }
+.lb-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 12px; background: var(--card); box-shadow: var(--shadow); }
+.lb-rank { width: 28px; text-align: center; font-weight: 800; font-size: 15px; color: var(--muted); flex: 0 0 auto; }
+.lb-name { flex: 1; font-weight: 700; }
+.lb-xp { font-weight: 800; color: var(--green); font-size: 14px; white-space: nowrap; }
+.lb-row--you { border: 2px solid var(--green); background: color-mix(in srgb, var(--green) 10%, var(--card)); }
+.lb-row--up .lb-rank { color: var(--green); }
+.lb-row--down .lb-rank { color: var(--red); }
+.lb-line { display: flex; align-items: center; justify-content: center; margin: 6px 0 2px; }
+.lb-line span { font-size: 11px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; padding: 3px 12px; border-radius: 999px; }
+.lb-line--up span { color: var(--green-dark); background: color-mix(in srgb, var(--green) 18%, transparent); }
+.lb-line--down span { color: var(--red); background: color-mix(in srgb, var(--red) 16%, transparent); }
+.lb-banner { font-weight: 800; font-size: 14px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--gold) 18%, transparent); color: #8a5a00; }
+.lb-banner--up { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green-dark); }
+.lb-banner--down { background: color-mix(in srgb, var(--red) 14%, transparent); color: var(--red); }
+@media (prefers-color-scheme: dark) {
+  .lb-banner { color: var(--gold); }
+  .lb-banner--up { color: var(--green); }
+  .lb-banner--down { color: var(--red); }
+}
+

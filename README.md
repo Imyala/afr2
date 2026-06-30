@@ -20,11 +20,11 @@ things that matter most are:
 **Available now (MVP):** isiZulu, isiXhosa, Afrikaans
 **Coming soon:** Sesotho, Setswana, Sepedi, Tshivenda, Xitsonga, isiNdebele, siSwati
 
-The Zulu course ships with 15 lessons across three units (~90 words); Xhosa and
-Afrikaans ship with 10 lessons across two units (~60 words each). All content is
-real, culturally grounded vocabulary with phonetics and cultural notes (respect
-terms, taxi phrases, click sounds, days, colours, feelings, formal vs casual
-speech).
+The Zulu course ships with 19 lessons across four units (~115 words); Xhosa and
+Afrikaans ship with 14 lessons across three units (~86 words each). All content
+is real, culturally grounded vocabulary with phonetics and cultural notes
+(respect terms, taxi phrases, click sounds, days, colours, feelings, body,
+animals, health, formal vs casual speech).
 
 ## Why this isn't "just Duolingo for SA"
 
@@ -66,7 +66,7 @@ for the full explanation. In short:
 - 🔥 Day streaks with ❄️ **streak freezes** to protect them
 - 🎯 **Daily quests** with 💎 gem rewards
 - 🏅 **Achievement badges** (12 milestones)
-- 🏆 **Weekly leagues** (Bronze → Diamond) you climb with XP
+- 🏆 **Living weekly leaderboard** — a cohort of 15 with named rivals whose XP climbs through the week; top 5 promote, bottom 5 demote (Bronze → Diamond). Fully offline and deterministic, so the race feels alive with no server.
 - 🎁 **Daily login reward** that grows with consecutive days
 - 🗓️ **Word of the Day** (Pod101-inspired) — one tap to add it to your reviews
 - 🛒 **Rewards shop**: spend earned gems on power-ups (⚡ Double XP, ❄️ Streak Freeze, ❤️ Heart Refill) and cosmetics (🐾 SA-animal buddies, 🎨 colour themes)

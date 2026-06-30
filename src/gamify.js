@@ -58,6 +58,75 @@ const DAILY_REWARD = [5, 5, 10, 10, 15, 20, 30]; // gems by consecutive-claim da
 export function leagueIcon(name) { return LEAGUE_ICON[name] || '🥉'; }
 export function leagueTarget(tierIndex) { return LEAGUE_TARGET[Math.min(tierIndex, LEAGUE_TARGET.length - 1)]; }
 
+// ---------- living weekly leaderboard ----------
+// The league used to be a solo XP bar, which feels hollow. Instead we put the
+// learner in a cohort of 15 with named rivals whose XP grows realistically
+// through the week. It's fully deterministic (seeded by week + tier), so the
+// standings are stable across reloads but climb with real time — no server,
+// works offline. Top 5 promote, bottom 5 demote, just like the big apps.
+export const LEAGUE_SIZE = 15;
+export const PROMOTE_ZONE = 5;
+export const DEMOTE_ZONE = 5;
+
+const RIVAL_NAMES = [
+  'Thabo', 'Nandi', 'Sipho', 'Lerato', 'Bongani', 'Zanele', 'Ayanda', 'Kgosi',
+  'Naledi', 'Lindiwe', 'Sibusiso', 'Palesa', 'Mandla', 'Nomvula', 'Kabelo',
+  'Refilwe', 'Tshepo', 'Anele', 'Busisiwe', 'Katlego', 'Dumisani', 'Zinhle',
+  'Lwazi', 'Mpho', 'Nosipho', 'Siyabonga', 'Khanya', 'Olwethu',
+];
+
+function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; }
+function mulberry(seed) {
+  return () => {
+    seed = (seed + 0x6D2B79F5) >>> 0;
+    let t = seed;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Fraction of the current week elapsed, 0..7 (Monday is the start of the week).
+function weekElapsedDays(now = Date.now()) {
+  const d = new Date(now);
+  const dayNum = (d.getDay() + 6) % 7; // Monday = 0
+  const monday = new Date(d.getFullYear(), d.getMonth(), d.getDate() - dayNum, 0, 0, 0, 0);
+  return Math.max(0, Math.min(7, (now - monday.getTime()) / 86400000));
+}
+
+// A rival's full-week XP — stable for a given week/tier/slot, scaled so the
+// promotion line sits around the middle of the pack at higher tiers.
+function rivalFullWeek(weekKey, tier, i) {
+  const rng = mulberry(hashStr(`${weekKey}|${tier}|${i}`));
+  return Math.round(leagueTarget(tier) * (0.45 + rng() * 1.55)); // 0.45x .. 2.0x
+}
+
+// Ranked standings: rivals at their current pace + the learner's real XP.
+function standingsFor(weekKey, tier, userXp, elapsed) {
+  const names = seededPick(RIVAL_NAMES, LEAGUE_SIZE - 1, `${weekKey}|${tier}|names`);
+  const rows = names.map((name, i) => ({
+    name, you: false,
+    xp: Math.round(rivalFullWeek(weekKey, tier, i) * (elapsed / 7)),
+  }));
+  rows.push({ name: 'You', you: true, xp: Math.max(0, Math.round(userXp || 0)) });
+  rows.sort((a, b) => (b.xp - a.xp) || (a.you ? 1 : b.you ? -1 : 0));
+  return rows.map((r, idx) => ({
+    ...r, rank: idx + 1,
+    zone: idx < PROMOTE_ZONE ? 'up' : idx >= LEAGUE_SIZE - DEMOTE_ZONE ? 'down' : 'mid',
+  }));
+}
+
+export function leagueStandings(store, now = Date.now()) {
+  ensureWeek(store);
+  const lg = store.lang().league;
+  return standingsFor(lg.weekKey, lg.tier, lg.weeklyXp, weekElapsedDays(now));
+}
+
+export function leagueRank(store, now = Date.now()) {
+  const me = leagueStandings(store, now).find((r) => r.you);
+  return { rank: me.rank, size: LEAGUE_SIZE, zone: me.zone, xp: me.xp };
+}
+
 // ---------- daily / weekly rollover ----------
 export function ensureDaily(store) {
   const L = store.lang();
@@ -74,11 +143,14 @@ export function ensureWeek(store) {
   const wk = weekKey();
   if (!L.league) { L.league = { weekKey: wk, weeklyXp: 0, tier: 0 }; store.save(); return; }
   if (L.league.weekKey !== wk) {
-    // settle previous week: promote if target met, otherwise gentle demote
-    const target = leagueTarget(L.league.tier);
-    if (L.league.weeklyXp >= target) L.league.tier = Math.min(LEAGUES.length - 1, L.league.tier + 1);
-    else if (L.league.weeklyXp < target * 0.4) L.league.tier = Math.max(0, L.league.tier - 1);
-    L.league = { weekKey: wk, weeklyXp: 0, tier: L.league.tier };
+    // settle the finished week by final leaderboard position (full week elapsed):
+    // top 5 promote, bottom 5 demote — same shape players expect from leagues.
+    const prev = L.league;
+    const me = standingsFor(prev.weekKey, prev.tier, prev.weeklyXp, 7).find((r) => r.you);
+    let tier = prev.tier;
+    if (me.rank <= PROMOTE_ZONE) tier = Math.min(LEAGUES.length - 1, tier + 1);
+    else if (me.rank > LEAGUE_SIZE - DEMOTE_ZONE) tier = Math.max(0, tier - 1);
+    L.league = { weekKey: wk, weeklyXp: 0, tier, lastRank: me.rank, lastTier: prev.tier };
     store.save();
   }
 }

@@ -1075,6 +1075,415 @@
           ]
         }
       ]
+    },
+    {
+      "id": "af-u3",
+      "title": "Unit 3: Everyday Life",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u3-l1",
+          "title": "Days of the Week",
+          "culturalNote": "Afrikaans day names are close to Dutch and German. The week runs Maandag (Monday) to Sondag (Sunday).",
+          "vocab": [
+            {
+              "id": "af-maandag",
+              "term": "Maandag",
+              "translation": "Monday",
+              "phonetic": "MAAN-dakh"
+            },
+            {
+              "id": "af-dinsdag",
+              "term": "Dinsdag",
+              "translation": "Tuesday",
+              "phonetic": "DINS-dakh"
+            },
+            {
+              "id": "af-woensdag",
+              "term": "Woensdag",
+              "translation": "Wednesday",
+              "phonetic": "VOONS-dakh"
+            },
+            {
+              "id": "af-donderdag",
+              "term": "Donderdag",
+              "translation": "Thursday",
+              "phonetic": "DON-der-dakh"
+            },
+            {
+              "id": "af-vrydag",
+              "term": "Vrydag",
+              "translation": "Friday",
+              "phonetic": "FRAY-dakh"
+            },
+            {
+              "id": "af-saterdag",
+              "term": "Saterdag",
+              "translation": "Saturday",
+              "phonetic": "SAH-ter-dakh"
+            },
+            {
+              "id": "af-sondag",
+              "term": "Sondag",
+              "translation": "Sunday",
+              "phonetic": "SON-dakh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Maandag",
+                  "Monday"
+                ],
+                [
+                  "Dinsdag",
+                  "Tuesday"
+                ],
+                [
+                  "Woensdag",
+                  "Wednesday"
+                ],
+                [
+                  "Donderdag",
+                  "Thursday"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“Maandag” means:",
+              "answer": "Monday",
+              "options": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday"
+              ],
+              "vocabId": "af-maandag"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “Tuesday”?",
+              "answer": "Dinsdag",
+              "options": [
+                "Dinsdag",
+                "Maandag",
+                "Woensdag",
+                "Donderdag"
+              ],
+              "vocabId": "af-dinsdag"
+            },
+            {
+              "type": "translate",
+              "prompt": "Wednesday",
+              "answer": "Woensdag",
+              "accept": [
+                "woensdag"
+              ],
+              "vocabId": "af-woensdag"
+            }
+          ]
+        },
+        {
+          "id": "af-u3-l2",
+          "title": "Colours",
+          "culturalNote": "Colours in Afrikaans are short and handy: 'rooi' (red), 'blou' (blue), 'groen' (green). They come before the noun, like English.",
+          "vocab": [
+            {
+              "id": "af-rooi",
+              "term": "rooi",
+              "translation": "red",
+              "phonetic": "roy"
+            },
+            {
+              "id": "af-wit",
+              "term": "wit",
+              "translation": "white",
+              "phonetic": "vit"
+            },
+            {
+              "id": "af-swart",
+              "term": "swart",
+              "translation": "black",
+              "phonetic": "svart"
+            },
+            {
+              "id": "af-groen",
+              "term": "groen",
+              "translation": "green",
+              "phonetic": "khroon"
+            },
+            {
+              "id": "af-blou",
+              "term": "blou",
+              "translation": "blue",
+              "phonetic": "bloh"
+            },
+            {
+              "id": "af-geel",
+              "term": "geel",
+              "translation": "yellow",
+              "phonetic": "kheyl"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "rooi",
+                  "red"
+                ],
+                [
+                  "wit",
+                  "white"
+                ],
+                [
+                  "swart",
+                  "black"
+                ],
+                [
+                  "groen",
+                  "green"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“rooi” means:",
+              "answer": "red",
+              "options": [
+                "red",
+                "white",
+                "black",
+                "green"
+              ],
+              "vocabId": "af-rooi"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “white”?",
+              "answer": "wit",
+              "options": [
+                "wit",
+                "rooi",
+                "swart",
+                "groen"
+              ],
+              "vocabId": "af-wit"
+            },
+            {
+              "type": "translate",
+              "prompt": "black",
+              "answer": "swart",
+              "accept": [
+                "swart"
+              ],
+              "vocabId": "af-swart"
+            }
+          ]
+        },
+        {
+          "id": "af-u3-l3",
+          "title": "Feelings",
+          "culturalNote": "Tell people how you feel: 'Ek is bly' (I'm happy), 'Ek is moeg' (I'm tired), 'Ek is honger' (I'm hungry).",
+          "vocab": [
+            {
+              "id": "af-bly",
+              "term": "bly",
+              "translation": "happy",
+              "phonetic": "blay"
+            },
+            {
+              "id": "af-moeg",
+              "term": "moeg",
+              "translation": "tired",
+              "phonetic": "mookh"
+            },
+            {
+              "id": "af-honger",
+              "term": "honger",
+              "translation": "hungry",
+              "phonetic": "HON-ger"
+            },
+            {
+              "id": "af-dors",
+              "term": "dors",
+              "translation": "thirsty",
+              "phonetic": "dors"
+            },
+            {
+              "id": "af-dankbaar",
+              "term": "dankbaar",
+              "translation": "grateful",
+              "phonetic": "DUNK-baar"
+            },
+            {
+              "id": "af-kwaad",
+              "term": "kwaad",
+              "translation": "angry",
+              "phonetic": "kvaat"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bly",
+                  "happy"
+                ],
+                [
+                  "moeg",
+                  "tired"
+                ],
+                [
+                  "honger",
+                  "hungry"
+                ],
+                [
+                  "dors",
+                  "thirsty"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“bly” means:",
+              "answer": "happy",
+              "options": [
+                "happy",
+                "tired",
+                "hungry",
+                "thirsty"
+              ],
+              "vocabId": "af-bly"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “tired”?",
+              "answer": "moeg",
+              "options": [
+                "moeg",
+                "bly",
+                "honger",
+                "dors"
+              ],
+              "vocabId": "af-moeg"
+            },
+            {
+              "type": "translate",
+              "prompt": "hungry",
+              "answer": "honger",
+              "accept": [
+                "honger"
+              ],
+              "vocabId": "af-honger"
+            }
+          ]
+        },
+        {
+          "id": "af-u3-l4",
+          "title": "The Body",
+          "culturalNote": "Body words are useful at the doctor: 'My kop is seer' (My head is sore). 'Oë' (eyes) and 'oor' (ear) are common ones to know.",
+          "vocab": [
+            {
+              "id": "af-kop",
+              "term": "kop",
+              "translation": "head",
+              "phonetic": "kop"
+            },
+            {
+              "id": "af-hand",
+              "term": "hand",
+              "translation": "hand",
+              "phonetic": "hunt"
+            },
+            {
+              "id": "af-voet",
+              "term": "voet",
+              "translation": "foot",
+              "phonetic": "foot"
+            },
+            {
+              "id": "af-oe",
+              "term": "oë",
+              "translation": "eyes",
+              "phonetic": "OO-uh"
+            },
+            {
+              "id": "af-oor",
+              "term": "oor",
+              "translation": "ear",
+              "phonetic": "oor"
+            },
+            {
+              "id": "af-mond",
+              "term": "mond",
+              "translation": "mouth",
+              "phonetic": "mont"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kop",
+                  "head"
+                ],
+                [
+                  "hand",
+                  "hand"
+                ],
+                [
+                  "voet",
+                  "foot"
+                ],
+                [
+                  "oë",
+                  "eyes"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kop” means:",
+              "answer": "head",
+              "options": [
+                "head",
+                "hand",
+                "foot",
+                "eyes"
+              ],
+              "vocabId": "af-kop"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hand”?",
+              "answer": "hand",
+              "options": [
+                "hand",
+                "kop",
+                "voet",
+                "oë"
+              ],
+              "vocabId": "af-hand"
+            },
+            {
+              "type": "translate",
+              "prompt": "foot",
+              "answer": "voet",
+              "accept": [
+                "voet"
+              ],
+              "vocabId": "af-voet"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
