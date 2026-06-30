@@ -282,6 +282,10 @@
             {
               "t": "Ngiyabonga kakhulu",
               "en": "Thank you very much"
+            },
+            {
+              "t": "Ngicela uxolo",
+              "en": "Excuse me, sorry"
             }
           ]
         },
@@ -414,6 +418,12 @@
               ],
               "lang": "zu",
               "vocabId": "zu-ubaba"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngiyabonga mama",
+              "en": "Thank you, mother"
             }
           ]
         },
@@ -669,6 +679,12 @@
               "text": "Ngicela amanzi",
               "meaning": "Please may I have water",
               "lang": "zu"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngicela ubisi",
+              "en": "Please, milk"
             }
           ]
         },
@@ -991,6 +1007,12 @@
               "meaning": "I live in Durban",
               "lang": "zu"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ngivela eThekwini",
+              "en": "I am from Durban"
+            }
           ]
         },
         {
@@ -1096,6 +1118,10 @@
             {
               "t": "Ngifuna isinkwa",
               "en": "I want bread"
+            },
+            {
+              "t": "Ngifuna imali",
+              "en": "I want money"
             }
           ]
         },
@@ -1209,6 +1235,12 @@
               "text": "Ngicela usizo, ngilahlekile",
               "meaning": "I need help, I am lost",
               "lang": "zu"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Iphi itekisi",
+              "en": "Where is the taxi?"
             }
           ]
         }

@@ -7,7 +7,10 @@
 // costs nothing to cache offline. Moods swap the eyes/mouth/arms only.
 
 // mood: 'idle' | 'happy' | 'cheer' | 'sad' | 'wave' | 'think'
-export function mascotSvg(mood = 'idle', { size = 96, className = '' } = {}) {
+// Pass decorative:true for mascots that only accompany text (home, answer
+// feedback) so screen readers skip them instead of announcing the character.
+export function mascotSvg(mood = 'idle', { size = 96, className = '', decorative = false } = {}) {
+  const a11y = decorative ? 'aria-hidden="true" focusable="false"' : 'role="img" aria-label="Themba the meerkat"';
   const eyes = {
     idle:  '<circle cx="40" cy="58" r="6.5" fill="#16241d"/><circle cx="72" cy="58" r="6.5" fill="#16241d"/><circle cx="42" cy="56" r="2" fill="#fff"/><circle cx="74" cy="56" r="2" fill="#fff"/>',
     happy: '<path d="M33 58q7 -8 14 0" stroke="#16241d" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M65 58q7 -8 14 0" stroke="#16241d" stroke-width="4" fill="none" stroke-linecap="round"/>',
@@ -33,7 +36,7 @@ export function mascotSvg(mood = 'idle', { size = 96, className = '' } = {}) {
     sad:   '<path d="M22 80q-6 6 -6 14" stroke="var(--accent,#1b7a43)" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M90 80q6 6 6 14" stroke="var(--accent,#1b7a43)" stroke-width="9" fill="none" stroke-linecap="round"/>',
   }[mood] || '<path d="M24 80q-4 8 -2 16" stroke="var(--accent,#1b7a43)" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M88 80q4 8 2 16" stroke="var(--accent,#1b7a43)" stroke-width="9" fill="none" stroke-linecap="round"/>';
 
-  return `<svg class="mascot mascot--${mood} ${className}" width="${size}" height="${size}" viewBox="0 0 112 112" role="img" aria-label="Themba the meerkat" xmlns="http://www.w3.org/2000/svg">
+  return `<svg class="mascot mascot--${mood} ${className}" width="${size}" height="${size}" viewBox="0 0 112 112" ${a11y} xmlns="http://www.w3.org/2000/svg">
     ${arms}
     <!-- ears -->
     <ellipse cx="34" cy="30" rx="11" ry="13" fill="#a9692f"/>

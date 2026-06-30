@@ -937,6 +937,10 @@
             {
               "t": "Ndifuna imali",
               "en": "I want money"
+            },
+            {
+              "t": "Ndicela imali",
+              "en": "Please, money"
             }
           ]
         },
@@ -1448,6 +1452,12 @@
                 "ndilambile"
               ],
               "vocabId": "xh-ndilambile"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndilambile kakhulu",
+              "en": "I am very hungry"
             }
           ]
         },

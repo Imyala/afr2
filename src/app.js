@@ -23,7 +23,30 @@ let session = null;   // active lesson/review session
 const h = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const shuffle = (a) => a.map((v) => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
-function mount(node) { app.innerHTML = ''; app.appendChild(node); window.scrollTo(0, 0); }
+function mount(node) {
+  app.innerHTML = '';
+  app.appendChild(node);
+  window.scrollTo(0, 0);
+  // a11y: move focus to the new screen's heading so a screen reader announces
+  // where we are. Programmatic focus (tabindex -1) is suppressed visually.
+  const head = node.querySelector('h1, h2, .ex__q, .topbar strong, .onb__title');
+  if (head) { head.setAttribute('tabindex', '-1'); head.focus({ preventScroll: true }); }
+}
+
+// Announce a transient message (answer result, etc.) to assistive tech.
+function announce(msg) {
+  const el = document.getElementById('srLive');
+  if (!el) return;
+  el.textContent = '';
+  requestAnimationFrame(() => { el.textContent = msg; });
+}
+
+// Make non-button clickable elements (role="button") keyboard-operable.
+function wireKeyActivation(root) {
+  root.querySelectorAll('[role="button"]').forEach((b) => b.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); b.click(); }
+  }));
+}
 function fmtTime(ms) { const m = Math.ceil(ms / 60000); return `${m} min`; }
 // Time until the weekly league resets (next Monday 00:00).
 function weekDaysLeft(now = Date.now()) {
@@ -303,15 +326,15 @@ function renderHome() {
       <header class="topbar">
         <button class="topbar__lang" id="switchLang">${esc(meta.name)} ▾</button>
         <div class="topbar__stats">
-          <span class="stat stat--streak" id="streakBtn" title="Day streak">🔥 ${L.streak}</span>
-          <span class="stat stat--gems" id="gemsBtn" title="Gems">💎 ${G.gems(store)}</span>
-          <span class="stat stat--hearts" id="heartsBtn" title="Hearts">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
-          <button class="stat" id="settingsBtn" title="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
+          <span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
+          <span class="stat stat--gems" id="gemsBtn" role="button" tabindex="0" aria-label="${G.gems(store)} gems. Open shop.">💎 ${G.gems(store)}</span>
+          <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
+          <button class="stat" id="settingsBtn" aria-label="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
         </div>
       </header>
 
       <div class="mascot-row">
-        <span class="goal__mascot">${mascotSvg(pct >= 100 ? 'cheer' : 'idle', { size: 64 })}</span>
+        <span class="goal__mascot">${mascotSvg(pct >= 100 ? 'cheer' : 'idle', { size: 64, decorative: true })}</span>
         <div class="speech">${pct >= 100 ? mascotLine('cheer', L.streak) : esc(homeGreeting(L, due))}</div>
       </div>
 
@@ -350,8 +373,8 @@ function renderHome() {
       </button>
 
       <div class="path">${path}</div>
-      <nav class="bottombar">
-        <button class="navbtn navbtn--active">🏠 Home</button>
+      <nav class="bottombar" aria-label="Main">
+        <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
         <button class="navbtn" id="storiesNav" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
         <button class="navbtn" id="shopNav">🛒 Shop</button>
         <button class="navbtn" id="achBtn">🏅 Badges</button>
@@ -375,6 +398,7 @@ function renderHome() {
   node.querySelector('#heartsBtn').addEventListener('click', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
   node.querySelector('#settingsBtn').addEventListener('click', renderSettings);
   const wb = node.querySelector('#wotdBtn'); if (wb) wb.addEventListener('click', renderWotd);
+  wireKeyActivation(node);
   mount(node);
   // keep the reminder state fresh for the service worker, and arm a same-session
   // nudge in case the learner leaves the tab open without practising
@@ -699,7 +723,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   const title = ok ? (typoNote ? 'Almost perfect!' : mascotLine('cheer', session.total)) : '✗ Not quite';
   foot.innerHTML = `
     <div class="fb">
-      <span class="fb__mascot">${mascotSvg(ok ? 'cheer' : 'sad', { size: 52 })}</span>
+      <span class="fb__mascot">${mascotSvg(ok ? 'cheer' : 'sad', { size: 52, decorative: true })}</span>
       <div class="fb__text">
         <div class="fb__title">${title}</div>
         ${ok ? '' : `<div class="fb__answer">Answer: <strong>${esc(correctText)}</strong></div>`}
@@ -708,9 +732,13 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
       </div>
     </div>
     <button class="btn btn--primary" id="continueBtn">Continue</button>`;
-  foot.querySelector('#continueBtn').addEventListener('click', () => { sound.tap(); advance(ok, ex); });
+  const cont = foot.querySelector('#continueBtn');
+  cont.addEventListener('click', () => { sound.tap(); advance(ok, ex); });
   // lock inputs
   node.querySelectorAll('.opt, .ex__input, .check, .wb-tok').forEach((e) => { e.disabled = true; });
+  // a11y: announce the result, then put focus on Continue so it's one keypress away
+  announce(ok ? (typoNote ? `Correct, but ${typoNote}` : 'Correct!') : `Not quite. Answer: ${correctText}`);
+  cont.focus();
 }
 
 // --- multiple choice / fill / listen share an option grid ---

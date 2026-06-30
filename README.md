@@ -80,6 +80,9 @@ for the full explanation. In short:
 
 **Platform**
 - 📶 **Full offline use** via service worker — install to home screen
+- ♿ **Accessibility** — screen-reader announcements for screen changes and
+  answer feedback (ARIA live region), focus moved to each screen's heading,
+  keyboard-operable controls with labels, and visible focus rings
 - 👥 **Multiple learner profiles** — a shared classroom tablet can hold many
   learners, each with their own streak, words and progress (no accounts needed)
 - ⚙️ **Settings** — toggle sound, daily reminders and your daily XP goal

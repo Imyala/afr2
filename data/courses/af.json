@@ -1084,6 +1084,12 @@
               ],
               "vocabId": "af-melk-u2"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ek wil water hê",
+              "en": "I want water"
+            }
           ]
         }
       ]
@@ -1400,6 +1406,12 @@
               ],
               "vocabId": "af-honger"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ek is bly",
+              "en": "I am happy"
+            }
           ]
         },
         {
@@ -1604,6 +1616,12 @@
                 "môre"
               ],
               "vocabId": "af-more"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Môre is Saterdag",
+              "en": "Tomorrow is Saturday"
             }
           ]
         },
@@ -3011,6 +3029,12 @@
                 "hardloop"
               ],
               "vocabId": "af-hardloop"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek hou van musiek",
+              "en": "I like music"
             }
           ]
         },
