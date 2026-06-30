@@ -1943,6 +1943,410 @@
           ]
         }
       ]
+    },
+    {
+      "id": "xh-u5",
+      "title": "Unit 5: Home & Community",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u5-l1",
+          "title": "In the Home",
+          "culturalNote": "'Ikhaya' (home) means family and belonging in Xhosa culture. Learn the rooms and furniture to talk about daily life.",
+          "vocab": [
+            {
+              "id": "xh-ikhaya",
+              "term": "ikhaya",
+              "translation": "home",
+              "phonetic": "ee-KAH-yah"
+            },
+            {
+              "id": "xh-umnyango",
+              "term": "umnyango",
+              "translation": "door",
+              "phonetic": "oom-NYAH-ngoh"
+            },
+            {
+              "id": "xh-ifestile",
+              "term": "ifestile",
+              "translation": "window",
+              "phonetic": "ee-feh-STEE-leh"
+            },
+            {
+              "id": "xh-umbhede",
+              "term": "umbhede",
+              "translation": "bed",
+              "phonetic": "oom-BEH-deh"
+            },
+            {
+              "id": "xh-itafile",
+              "term": "itafile",
+              "translation": "table",
+              "phonetic": "ee-tah-FEE-leh"
+            },
+            {
+              "id": "xh-isitulo",
+              "term": "isitulo",
+              "translation": "chair",
+              "phonetic": "ee-see-TOO-loh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ikhaya",
+                  "home"
+                ],
+                [
+                  "umnyango",
+                  "door"
+                ],
+                [
+                  "ifestile",
+                  "window"
+                ],
+                [
+                  "umbhede",
+                  "bed"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ikhaya” means:",
+              "answer": "home",
+              "options": [
+                "home",
+                "door",
+                "window",
+                "bed"
+              ],
+              "vocabId": "xh-ikhaya"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “door”?",
+              "answer": "umnyango",
+              "options": [
+                "umnyango",
+                "ikhaya",
+                "ifestile",
+                "umbhede"
+              ],
+              "vocabId": "xh-umnyango"
+            },
+            {
+              "type": "translate",
+              "prompt": "window",
+              "answer": "ifestile",
+              "accept": [
+                "ifestile"
+              ],
+              "vocabId": "xh-ifestile"
+            }
+          ]
+        },
+        {
+          "id": "xh-u5-l2",
+          "title": "Clothing",
+          "culturalNote": "Everyday clothes: 'ihempe' (shirt), 'izihlangu' (shoes). 'Umnqwazi' (hat) has a click — the 'nq'.",
+          "vocab": [
+            {
+              "id": "xh-ihempe",
+              "term": "ihempe",
+              "translation": "shirt",
+              "phonetic": "ee-HEM-peh"
+            },
+            {
+              "id": "xh-ibhulukhwe",
+              "term": "ibhulukhwe",
+              "translation": "trousers",
+              "phonetic": "ee-boo-LOO-khweh"
+            },
+            {
+              "id": "xh-izihlangu",
+              "term": "izihlangu",
+              "translation": "shoes",
+              "phonetic": "ee-zee-HLAHN-goo"
+            },
+            {
+              "id": "xh-umnqwazi",
+              "term": "umnqwazi",
+              "translation": "hat",
+              "phonetic": "oom-NQWAH-zee",
+              "note": "nq is a click consonant"
+            },
+            {
+              "id": "xh-ilokhwe",
+              "term": "ilokhwe",
+              "translation": "dress",
+              "phonetic": "ee-LOH-khweh"
+            },
+            {
+              "id": "xh-idyasi",
+              "term": "idyasi",
+              "translation": "jacket",
+              "phonetic": "ee-DYAH-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ihempe",
+                  "shirt"
+                ],
+                [
+                  "ibhulukhwe",
+                  "trousers"
+                ],
+                [
+                  "izihlangu",
+                  "shoes"
+                ],
+                [
+                  "umnqwazi",
+                  "hat"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ihempe” means:",
+              "answer": "shirt",
+              "options": [
+                "shirt",
+                "trousers",
+                "shoes",
+                "hat"
+              ],
+              "vocabId": "xh-ihempe"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “trousers”?",
+              "answer": "ibhulukhwe",
+              "options": [
+                "ibhulukhwe",
+                "ihempe",
+                "izihlangu",
+                "umnqwazi"
+              ],
+              "vocabId": "xh-ibhulukhwe"
+            },
+            {
+              "type": "translate",
+              "prompt": "shoes",
+              "answer": "izihlangu",
+              "accept": [
+                "izihlangu"
+              ],
+              "vocabId": "xh-izihlangu"
+            }
+          ]
+        },
+        {
+          "id": "xh-u5-l3",
+          "title": "Nature & Places",
+          "culturalNote": "From 'intaba' (mountain) to 'ulwandle' (sea), the Eastern Cape is full of natural beauty. 'Idolophu' (town) and 'ifama' (farm) name where people live.",
+          "vocab": [
+            {
+              "id": "xh-intaba",
+              "term": "intaba",
+              "translation": "mountain",
+              "phonetic": "een-TAH-bah"
+            },
+            {
+              "id": "xh-umlambo",
+              "term": "umlambo",
+              "translation": "river",
+              "phonetic": "oom-LAHM-boh"
+            },
+            {
+              "id": "xh-ulwandle",
+              "term": "ulwandle",
+              "translation": "sea",
+              "phonetic": "ool-WAHN-dleh"
+            },
+            {
+              "id": "xh-umthi",
+              "term": "umthi",
+              "translation": "tree",
+              "phonetic": "oom-TEE"
+            },
+            {
+              "id": "xh-idolophu",
+              "term": "idolophu",
+              "translation": "town",
+              "phonetic": "ee-doh-LOH-poo"
+            },
+            {
+              "id": "xh-ifama",
+              "term": "ifama",
+              "translation": "farm",
+              "phonetic": "ee-FAH-mah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "intaba",
+                  "mountain"
+                ],
+                [
+                  "umlambo",
+                  "river"
+                ],
+                [
+                  "ulwandle",
+                  "sea"
+                ],
+                [
+                  "umthi",
+                  "tree"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“intaba” means:",
+              "answer": "mountain",
+              "options": [
+                "mountain",
+                "river",
+                "sea",
+                "tree"
+              ],
+              "vocabId": "xh-intaba"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “river”?",
+              "answer": "umlambo",
+              "options": [
+                "umlambo",
+                "intaba",
+                "ulwandle",
+                "umthi"
+              ],
+              "vocabId": "xh-umlambo"
+            },
+            {
+              "type": "translate",
+              "prompt": "sea",
+              "answer": "ulwandle",
+              "accept": [
+                "ulwandle"
+              ],
+              "vocabId": "xh-ulwandle"
+            }
+          ]
+        },
+        {
+          "id": "xh-u5-l4",
+          "title": "Question Words",
+          "culturalNote": "Ask away: 'Ngubani?' (Who?), 'Yintoni?' (What?), 'Phi?' (Where?). These open up real conversation.",
+          "vocab": [
+            {
+              "id": "xh-ngubani",
+              "term": "ngubani",
+              "translation": "who",
+              "phonetic": "ngoo-BAH-nee"
+            },
+            {
+              "id": "xh-yintoni",
+              "term": "yintoni",
+              "translation": "what",
+              "phonetic": "yeen-TOH-nee"
+            },
+            {
+              "id": "xh-phi",
+              "term": "phi",
+              "translation": "where",
+              "phonetic": "pee"
+            },
+            {
+              "id": "xh-nini",
+              "term": "nini",
+              "translation": "when",
+              "phonetic": "NEE-nee"
+            },
+            {
+              "id": "xh-kutheni",
+              "term": "kutheni",
+              "translation": "why",
+              "phonetic": "koo-TEH-nee"
+            },
+            {
+              "id": "xh-njani",
+              "term": "njani",
+              "translation": "how",
+              "phonetic": "NJAH-nee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ngubani",
+                  "who"
+                ],
+                [
+                  "yintoni",
+                  "what"
+                ],
+                [
+                  "phi",
+                  "where"
+                ],
+                [
+                  "nini",
+                  "when"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ngubani” means:",
+              "answer": "who",
+              "options": [
+                "who",
+                "what",
+                "where",
+                "when"
+              ],
+              "vocabId": "xh-ngubani"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “what”?",
+              "answer": "yintoni",
+              "options": [
+                "yintoni",
+                "ngubani",
+                "phi",
+                "nini"
+              ],
+              "vocabId": "xh-yintoni"
+            },
+            {
+              "type": "translate",
+              "prompt": "where",
+              "answer": "phi",
+              "accept": [
+                "phi"
+              ],
+              "vocabId": "xh-phi"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

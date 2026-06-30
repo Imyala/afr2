@@ -1887,6 +1887,409 @@
           ]
         }
       ]
+    },
+    {
+      "id": "af-u5",
+      "title": "Unit 5: Home & Community",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u5-l1",
+          "title": "In the Home",
+          "culturalNote": "Name the rooms and furniture: 'deur' (door), 'venster' (window), 'kombuis' (kitchen). Handy for describing where things are.",
+          "vocab": [
+            {
+              "id": "af-deur",
+              "term": "deur",
+              "translation": "door",
+              "phonetic": "deer"
+            },
+            {
+              "id": "af-venster",
+              "term": "venster",
+              "translation": "window",
+              "phonetic": "FEN-ster"
+            },
+            {
+              "id": "af-kombuis",
+              "term": "kombuis",
+              "translation": "kitchen",
+              "phonetic": "kom-BOEYS"
+            },
+            {
+              "id": "af-stoel",
+              "term": "stoel",
+              "translation": "chair",
+              "phonetic": "stool"
+            },
+            {
+              "id": "af-tafel",
+              "term": "tafel",
+              "translation": "table",
+              "phonetic": "TAH-fel"
+            },
+            {
+              "id": "af-bed",
+              "term": "bed",
+              "translation": "bed",
+              "phonetic": "bet"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "deur",
+                  "door"
+                ],
+                [
+                  "venster",
+                  "window"
+                ],
+                [
+                  "kombuis",
+                  "kitchen"
+                ],
+                [
+                  "stoel",
+                  "chair"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“deur” means:",
+              "answer": "door",
+              "options": [
+                "door",
+                "window",
+                "kitchen",
+                "chair"
+              ],
+              "vocabId": "af-deur"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “window”?",
+              "answer": "venster",
+              "options": [
+                "venster",
+                "deur",
+                "kombuis",
+                "stoel"
+              ],
+              "vocabId": "af-venster"
+            },
+            {
+              "type": "translate",
+              "prompt": "kitchen",
+              "answer": "kombuis",
+              "accept": [
+                "kombuis"
+              ],
+              "vocabId": "af-kombuis"
+            }
+          ]
+        },
+        {
+          "id": "af-u5-l2",
+          "title": "Clothing",
+          "culturalNote": "Clothes are short and handy in Afrikaans: 'hemp' (shirt), 'broek' (trousers), 'skoene' (shoes).",
+          "vocab": [
+            {
+              "id": "af-hemp",
+              "term": "hemp",
+              "translation": "shirt",
+              "phonetic": "hemp"
+            },
+            {
+              "id": "af-broek",
+              "term": "broek",
+              "translation": "trousers",
+              "phonetic": "brook"
+            },
+            {
+              "id": "af-skoene",
+              "term": "skoene",
+              "translation": "shoes",
+              "phonetic": "SKOO-neh"
+            },
+            {
+              "id": "af-hoed",
+              "term": "hoed",
+              "translation": "hat",
+              "phonetic": "hoot"
+            },
+            {
+              "id": "af-rok",
+              "term": "rok",
+              "translation": "dress",
+              "phonetic": "rok"
+            },
+            {
+              "id": "af-baadjie",
+              "term": "baadjie",
+              "translation": "jacket",
+              "phonetic": "BAA-kee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "hemp",
+                  "shirt"
+                ],
+                [
+                  "broek",
+                  "trousers"
+                ],
+                [
+                  "skoene",
+                  "shoes"
+                ],
+                [
+                  "hoed",
+                  "hat"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“hemp” means:",
+              "answer": "shirt",
+              "options": [
+                "shirt",
+                "trousers",
+                "shoes",
+                "hat"
+              ],
+              "vocabId": "af-hemp"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “trousers”?",
+              "answer": "broek",
+              "options": [
+                "broek",
+                "hemp",
+                "skoene",
+                "hoed"
+              ],
+              "vocabId": "af-broek"
+            },
+            {
+              "type": "translate",
+              "prompt": "shoes",
+              "answer": "skoene",
+              "accept": [
+                "skoene"
+              ],
+              "vocabId": "af-skoene"
+            }
+          ]
+        },
+        {
+          "id": "af-u5-l3",
+          "title": "Nature & Places",
+          "culturalNote": "The Cape has it all: 'berg' (mountain), 'see' (sea), 'rivier' (river). 'Dorp' (town) and 'plaas' (farm) describe where people live.",
+          "vocab": [
+            {
+              "id": "af-berg",
+              "term": "berg",
+              "translation": "mountain",
+              "phonetic": "berkh"
+            },
+            {
+              "id": "af-rivier",
+              "term": "rivier",
+              "translation": "river",
+              "phonetic": "ree-FEER"
+            },
+            {
+              "id": "af-see",
+              "term": "see",
+              "translation": "sea",
+              "phonetic": "sey"
+            },
+            {
+              "id": "af-boom",
+              "term": "boom",
+              "translation": "tree",
+              "phonetic": "boom"
+            },
+            {
+              "id": "af-dorp",
+              "term": "dorp",
+              "translation": "town",
+              "phonetic": "dorp"
+            },
+            {
+              "id": "af-plaas",
+              "term": "plaas",
+              "translation": "farm",
+              "phonetic": "plaas"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "berg",
+                  "mountain"
+                ],
+                [
+                  "rivier",
+                  "river"
+                ],
+                [
+                  "see",
+                  "sea"
+                ],
+                [
+                  "boom",
+                  "tree"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“berg” means:",
+              "answer": "mountain",
+              "options": [
+                "mountain",
+                "river",
+                "sea",
+                "tree"
+              ],
+              "vocabId": "af-berg"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “river”?",
+              "answer": "rivier",
+              "options": [
+                "rivier",
+                "berg",
+                "see",
+                "boom"
+              ],
+              "vocabId": "af-rivier"
+            },
+            {
+              "type": "translate",
+              "prompt": "sea",
+              "answer": "see",
+              "accept": [
+                "see"
+              ],
+              "vocabId": "af-see"
+            }
+          ]
+        },
+        {
+          "id": "af-u5-l4",
+          "title": "Question Words",
+          "culturalNote": "The question words: 'wie' (who), 'wat' (what), 'waar' (where), 'hoekom' (why). Pair them with verbs to ask anything.",
+          "vocab": [
+            {
+              "id": "af-wie",
+              "term": "wie",
+              "translation": "who",
+              "phonetic": "vee"
+            },
+            {
+              "id": "af-wat",
+              "term": "wat",
+              "translation": "what",
+              "phonetic": "vut"
+            },
+            {
+              "id": "af-waar",
+              "term": "waar",
+              "translation": "where",
+              "phonetic": "vaar"
+            },
+            {
+              "id": "af-wanneer",
+              "term": "wanneer",
+              "translation": "when",
+              "phonetic": "vun-NEER"
+            },
+            {
+              "id": "af-hoekom",
+              "term": "hoekom",
+              "translation": "why",
+              "phonetic": "HOO-kom"
+            },
+            {
+              "id": "af-hoe",
+              "term": "hoe",
+              "translation": "how",
+              "phonetic": "hoo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "wie",
+                  "who"
+                ],
+                [
+                  "wat",
+                  "what"
+                ],
+                [
+                  "waar",
+                  "where"
+                ],
+                [
+                  "wanneer",
+                  "when"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“wie” means:",
+              "answer": "who",
+              "options": [
+                "who",
+                "what",
+                "where",
+                "when"
+              ],
+              "vocabId": "af-wie"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “what”?",
+              "answer": "wat",
+              "options": [
+                "wat",
+                "wie",
+                "waar",
+                "wanneer"
+              ],
+              "vocabId": "af-wat"
+            },
+            {
+              "type": "translate",
+              "prompt": "where",
+              "answer": "waar",
+              "accept": [
+                "waar"
+              ],
+              "vocabId": "af-waar"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

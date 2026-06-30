@@ -2514,6 +2514,410 @@
           ]
         }
       ]
+    },
+    {
+      "id": "zu-u6",
+      "title": "Unit 6: Home & Community",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "zu-u6-l1",
+          "title": "In the Home",
+          "culturalNote": "'Ikhaya' (home) is more than a house in Zulu culture — it's family and belonging. Knowing the rooms and furniture helps you feel at home anywhere.",
+          "vocab": [
+            {
+              "id": "zu-ikhaya",
+              "term": "ikhaya",
+              "translation": "home",
+              "phonetic": "ee-KAH-yah"
+            },
+            {
+              "id": "zu-umnyango",
+              "term": "umnyango",
+              "translation": "door",
+              "phonetic": "oom-NYAH-ngoh"
+            },
+            {
+              "id": "zu-ifasitela",
+              "term": "ifasitela",
+              "translation": "window",
+              "phonetic": "ee-fah-see-TEH-lah"
+            },
+            {
+              "id": "zu-umbhede",
+              "term": "umbhede",
+              "translation": "bed",
+              "phonetic": "oom-BEH-deh"
+            },
+            {
+              "id": "zu-itafula",
+              "term": "itafula",
+              "translation": "table",
+              "phonetic": "ee-tah-FOO-lah"
+            },
+            {
+              "id": "zu-isitulo",
+              "term": "isitulo",
+              "translation": "chair",
+              "phonetic": "ee-see-TOO-loh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ikhaya",
+                  "home"
+                ],
+                [
+                  "umnyango",
+                  "door"
+                ],
+                [
+                  "ifasitela",
+                  "window"
+                ],
+                [
+                  "umbhede",
+                  "bed"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ikhaya” means:",
+              "answer": "home",
+              "options": [
+                "home",
+                "door",
+                "window",
+                "bed"
+              ],
+              "vocabId": "zu-ikhaya"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “door”?",
+              "answer": "umnyango",
+              "options": [
+                "umnyango",
+                "ikhaya",
+                "ifasitela",
+                "umbhede"
+              ],
+              "vocabId": "zu-umnyango"
+            },
+            {
+              "type": "translate",
+              "prompt": "window",
+              "answer": "ifasitela",
+              "accept": [
+                "ifasitela"
+              ],
+              "vocabId": "zu-ifasitela"
+            }
+          ]
+        },
+        {
+          "id": "zu-u6-l2",
+          "title": "Clothing",
+          "culturalNote": "Clothes can carry meaning — 'ingubo' can mean a dress, clothing or a blanket given with respect. Everyday items like 'izicathulo' (shoes) are good to know.",
+          "vocab": [
+            {
+              "id": "zu-ihembe",
+              "term": "ihembe",
+              "translation": "shirt",
+              "phonetic": "ee-HEM-beh"
+            },
+            {
+              "id": "zu-ibhulukwe",
+              "term": "ibhulukwe",
+              "translation": "trousers",
+              "phonetic": "ee-boo-LOO-kweh"
+            },
+            {
+              "id": "zu-izicathulo",
+              "term": "izicathulo",
+              "translation": "shoes",
+              "phonetic": "ee-zee-cah-TOO-loh"
+            },
+            {
+              "id": "zu-isigqoko",
+              "term": "isigqoko",
+              "translation": "hat",
+              "phonetic": "ee-see-GQOH-koh",
+              "note": "gq is a click consonant"
+            },
+            {
+              "id": "zu-ingubo",
+              "term": "ingubo",
+              "translation": "dress / blanket",
+              "phonetic": "een-GOO-boh"
+            },
+            {
+              "id": "zu-ijazi",
+              "term": "ijazi",
+              "translation": "jacket",
+              "phonetic": "ee-JAH-zee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ihembe",
+                  "shirt"
+                ],
+                [
+                  "ibhulukwe",
+                  "trousers"
+                ],
+                [
+                  "izicathulo",
+                  "shoes"
+                ],
+                [
+                  "isigqoko",
+                  "hat"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ihembe” means:",
+              "answer": "shirt",
+              "options": [
+                "shirt",
+                "trousers",
+                "shoes",
+                "hat"
+              ],
+              "vocabId": "zu-ihembe"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “trousers”?",
+              "answer": "ibhulukwe",
+              "options": [
+                "ibhulukwe",
+                "ihembe",
+                "izicathulo",
+                "isigqoko"
+              ],
+              "vocabId": "zu-ibhulukwe"
+            },
+            {
+              "type": "translate",
+              "prompt": "shoes",
+              "answer": "izicathulo",
+              "accept": [
+                "izicathulo"
+              ],
+              "vocabId": "zu-izicathulo"
+            }
+          ]
+        },
+        {
+          "id": "zu-u6-l3",
+          "title": "Nature & Places",
+          "culturalNote": "South Africa's landscapes run from 'intaba' (mountains) to 'ulwandle' (the sea). 'Idolobha' (town) and 'ipulazi' (farm) describe where people live.",
+          "vocab": [
+            {
+              "id": "zu-intaba",
+              "term": "intaba",
+              "translation": "mountain",
+              "phonetic": "een-TAH-bah"
+            },
+            {
+              "id": "zu-umfula",
+              "term": "umfula",
+              "translation": "river",
+              "phonetic": "oom-FOO-lah"
+            },
+            {
+              "id": "zu-ulwandle",
+              "term": "ulwandle",
+              "translation": "sea",
+              "phonetic": "ool-WAHN-dleh"
+            },
+            {
+              "id": "zu-isihlahla",
+              "term": "isihlahla",
+              "translation": "tree",
+              "phonetic": "ee-see-HLAH-hlah"
+            },
+            {
+              "id": "zu-idolobha",
+              "term": "idolobha",
+              "translation": "town",
+              "phonetic": "ee-doh-LOH-bah"
+            },
+            {
+              "id": "zu-ipulazi",
+              "term": "ipulazi",
+              "translation": "farm",
+              "phonetic": "ee-poo-LAH-zee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "intaba",
+                  "mountain"
+                ],
+                [
+                  "umfula",
+                  "river"
+                ],
+                [
+                  "ulwandle",
+                  "sea"
+                ],
+                [
+                  "isihlahla",
+                  "tree"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“intaba” means:",
+              "answer": "mountain",
+              "options": [
+                "mountain",
+                "river",
+                "sea",
+                "tree"
+              ],
+              "vocabId": "zu-intaba"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “river”?",
+              "answer": "umfula",
+              "options": [
+                "umfula",
+                "intaba",
+                "ulwandle",
+                "isihlahla"
+              ],
+              "vocabId": "zu-umfula"
+            },
+            {
+              "type": "translate",
+              "prompt": "sea",
+              "answer": "ulwandle",
+              "accept": [
+                "ulwandle"
+              ],
+              "vocabId": "zu-ulwandle"
+            }
+          ]
+        },
+        {
+          "id": "zu-u6-l4",
+          "title": "Question Words",
+          "culturalNote": "Questions unlock conversation. Pair them with what you know: 'Ubani igama lakho?' (Who/what is your name?), 'Kuphi?' (Where?).",
+          "vocab": [
+            {
+              "id": "zu-ubani",
+              "term": "ubani",
+              "translation": "who",
+              "phonetic": "oo-BAH-nee"
+            },
+            {
+              "id": "zu-ini",
+              "term": "ini",
+              "translation": "what",
+              "phonetic": "EE-nee"
+            },
+            {
+              "id": "zu-kuphi",
+              "term": "kuphi",
+              "translation": "where",
+              "phonetic": "KOO-pee"
+            },
+            {
+              "id": "zu-nini",
+              "term": "nini",
+              "translation": "when",
+              "phonetic": "NEE-nee"
+            },
+            {
+              "id": "zu-kungani",
+              "term": "kungani",
+              "translation": "why",
+              "phonetic": "koon-GAH-nee"
+            },
+            {
+              "id": "zu-kanjani",
+              "term": "kanjani",
+              "translation": "how",
+              "phonetic": "kahn-JAH-nee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ubani",
+                  "who"
+                ],
+                [
+                  "ini",
+                  "what"
+                ],
+                [
+                  "kuphi",
+                  "where"
+                ],
+                [
+                  "nini",
+                  "when"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ubani” means:",
+              "answer": "who",
+              "options": [
+                "who",
+                "what",
+                "where",
+                "when"
+              ],
+              "vocabId": "zu-ubani"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “what”?",
+              "answer": "ini",
+              "options": [
+                "ini",
+                "ubani",
+                "kuphi",
+                "nini"
+              ],
+              "vocabId": "zu-ini"
+            },
+            {
+              "type": "translate",
+              "prompt": "where",
+              "answer": "kuphi",
+              "accept": [
+                "kuphi"
+              ],
+              "vocabId": "zu-kuphi"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
