@@ -84,5 +84,20 @@ store.lang().league.weeklyXp = 0;
 const r2 = G.leagueRank(store);
 ok(r2.rank >= 1 && r2.rank <= G.LEAGUE_SIZE, 'rank stays within the cohort with zero XP');
 
+// --- learner profiles (shared device) ---
+store.reset();
+store.setActiveLang('zu');
+store.lang().xp = 123;
+store.save();
+ok(store.activeProfile().id === 'default', 'default profile is active to start');
+const newId = store.createProfile('Lerato', '🦁');
+ok(store.activeProfile().id === newId && store.activeProfile().name === 'Lerato', 'new learner becomes active');
+ok(store.state.activeLang === null && store.lang('zu').xp === 0, 'new learner starts with a clean slate');
+ok(store.profiles().length === 2, 'both learners are listed');
+store.switchProfile('default');
+ok(store.activeProfile().id === 'default' && store.lang('zu').xp === 123, 'switching back restores the original learner\'s progress');
+ok(store.deleteProfile(newId) === true && store.profiles().length === 1, 'a learner can be removed');
+ok(store.deleteProfile('default') === false, 'the original learner cannot be deleted');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

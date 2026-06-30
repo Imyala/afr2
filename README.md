@@ -73,6 +73,8 @@ for the full explanation. In short:
 
 **Platform**
 - 📶 **Full offline use** via service worker — install to home screen
+- 👥 **Multiple learner profiles** — a shared classroom tablet can hold many
+  learners, each with their own streak, words and progress (no accounts needed)
 - ⚙️ **Settings** — toggle sound, daily reminders and your daily XP goal
 - 💳 Premium tier (demo): all languages, unlimited hearts, no ads
 - 📚 In-app **Library** linking to free, openly-licensed book collections (see below)

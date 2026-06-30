@@ -894,15 +894,84 @@ function renderDailyReward() {
   mount(node);
 }
 
+// Re-route after a profile switch (mirrors boot's tail; LANGS already loaded).
+async function restart() {
+  Shop.applyTheme(store);
+  setSoundEnabled(store.state.settings.soundOn !== false);
+  if (!store.state.settings.onboarded && !store.state.activeLang) return renderOnboarding();
+  if (!store.state.activeLang) return renderLanguageSelect(true);
+  await openLanguage(store.state.activeLang);
+}
+
+// ---------- learner profiles (shared-device support) ----------
+function renderProfiles() {
+  const active = store.activeProfile();
+  const list = store.profiles().map((p) => {
+    const isActive = p.id === active.id;
+    const del = (p.id !== 'default' && !isActive)
+      ? `<button class="prof-del" data-del="${esc(p.id)}" title="Remove">✕</button>` : '';
+    return `<div class="prof-row ${isActive ? 'prof-row--active' : ''}">
+        <button class="prof-pick" data-pick="${esc(p.id)}">
+          <span class="prof-avatar">${esc(p.avatar)}</span>
+          <span class="prof-name">${esc(p.name)}</span>
+          ${isActive ? '<span class="prof-cur">Active</span>' : '<span class="muted">Switch →</span>'}
+        </button>
+        ${del}
+      </div>`;
+  }).join('');
+  const avatars = store.avatarChoices().map((a, i) =>
+    `<button class="prof-av ${i === 0 ? 'prof-av--sel' : ''}" data-av="${esc(a)}">${esc(a)}</button>`).join('');
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Settings</button><strong>Learners</strong><span></span></header>
+      <p class="muted">Share this device? Each learner keeps their own streak, words and progress.</p>
+      <div class="set-list">${list}</div>
+      <h3 class="sec">Add a learner</h3>
+      <section class="card">
+        <input class="ex__input" id="newName" maxlength="20" placeholder="Name" autocomplete="off" />
+        <div class="prof-avs">${avatars}</div>
+        <button class="btn btn--primary" id="addBtn">Add learner</button>
+      </section>
+    </div>`);
+  let chosen = store.avatarChoices()[0];
+  node.querySelector('#back').addEventListener('click', renderSettings);
+  node.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('click', () => {
+    if (store.switchProfile(b.dataset.pick)) { sound.tap(); restart(); }
+  }));
+  node.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', () => {
+    if (confirm('Remove this learner and all their progress on this device?')) {
+      store.deleteProfile(b.dataset.del); renderProfiles();
+    }
+  }));
+  node.querySelectorAll('[data-av]').forEach((b) => b.addEventListener('click', () => {
+    chosen = b.dataset.av;
+    node.querySelectorAll('.prof-av').forEach((x) => x.classList.remove('prof-av--sel'));
+    b.classList.add('prof-av--sel');
+  }));
+  node.querySelector('#addBtn').addEventListener('click', () => {
+    const name = node.querySelector('#newName').value.trim();
+    if (!name) { flashToast('Enter a name first'); return; }
+    store.createProfile(name, chosen);   // creates + switches to the new learner
+    sound.reward();
+    restart();                           // new learner -> onboarding/first win
+  });
+  mount(node);
+}
+
 // ---------- settings ----------
 function renderSettings() {
   const soundOn = store.state.settings.soundOn !== false;
+  const prof = store.activeProfile();
   const remOn = Notify.isEnabled(store);
   const remSupported = Notify.supported();
   const remDenied = Notify.permission() === 'denied';
   const node = h(`
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Settings</strong><span></span></header>
+      <button class="set-row set-row--btn" id="profBtn" style="width:100%;text-align:left">
+        <div class="set-row__label"><b>${esc(prof.avatar)} ${esc(prof.name)}</b><small>Active learner · tap to switch or add</small></div>
+        <span class="muted" style="font-size:22px">›</span>
+      </button>
       <div class="set-list">
         <div class="set-row">
           <div class="set-row__label"><b>Sound effects</b><small>Chimes on correct answers and lessons</small></div>
@@ -944,6 +1013,7 @@ function renderSettings() {
     store.save();
   });
   node.querySelector('#prem').addEventListener('click', renderPremium);
+  node.querySelector('#profBtn').addEventListener('click', renderProfiles);
   mount(node);
 }
 

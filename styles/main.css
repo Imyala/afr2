@@ -449,6 +449,19 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 /* settings nav button reuse */
 .set-list { display: grid; gap: 10px; }
 
+/* ---------- learner profiles ---------- */
+.set-row--btn { border: none; box-shadow: var(--shadow); cursor: pointer; }
+.prof-row { display: flex; align-items: center; gap: 8px; }
+.prof-pick { flex: 1; display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--card); border: 2px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); text-align: left; }
+.prof-row--active .prof-pick { border-color: var(--green); }
+.prof-avatar { font-size: 28px; flex: 0 0 auto; }
+.prof-name { flex: 1; font-weight: 800; }
+.prof-cur { font-weight: 800; color: var(--green); font-size: 13px; }
+.prof-del { flex: 0 0 auto; width: 38px; height: 38px; border: none; border-radius: 10px; background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); font-weight: 800; }
+.prof-avs { display: flex; flex-wrap: wrap; gap: 8px; }
+.prof-av { width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--line); background: var(--card); font-size: 22px; }
+.prof-av--sel { border-color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); }
+
 /* ---------- weekly leaderboard ---------- */
 .leaderboard { display: grid; gap: 6px; }
 .lb-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 12px; background: var(--card); box-shadow: var(--shadow); }
