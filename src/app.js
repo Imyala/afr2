@@ -1,7 +1,7 @@
 // app.js — MzansiLingo PWA controller (routing, screens, exercise rendering)
 import { store, XP_PER_CORRECT, XP_LESSON_BONUS, MAX_HEARTS } from './store.js';
 import { review as srsReview, gradeFor } from './srs.js';
-import { speak } from './audio.js';
+import { speak, recordSupported, startRecording } from './audio.js';
 import {
   loadCourse, loadLanguages, allLessons, findLesson, vocabIndex,
   checkAnswer, checkTyped, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
@@ -373,6 +373,10 @@ function renderHome() {
         📒 <span class="muted">Word list —</span> <b>browse all ${Object.keys(vocabIndex(course)).length} words</b> →
       </button>
 
+      <button class="wotd-strip" id="speakBtn">
+        🎤 <span class="muted">Speaking —</span> <b>say your words out loud</b> →
+      </button>
+
       <div class="path">${path}</div>
       <nav class="bottombar" aria-label="Main">
         <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
@@ -389,6 +393,7 @@ function renderHome() {
   node.querySelector('#reviewBtn').addEventListener('click', startReview);
   node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
   node.querySelector('#glossaryBtn').addEventListener('click', () => renderGlossary());
+  node.querySelector('#speakBtn').addEventListener('click', startSpeaking);
   node.querySelector('#shopNav').addEventListener('click', renderShop);
   node.querySelector('#questsBtn').addEventListener('click', renderQuests);
   node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
@@ -576,6 +581,108 @@ function renderGlossary() {
       g.style.display = any ? '' : 'none';
     });
   });
+  mount(node);
+}
+
+// ---------- speaking practice (shadow & self-record) ----------
+// Output practice toward spoken fluency: hear the model, say it aloud, record &
+// compare, then self-rate. No speech recognition (unreliable for SA languages) —
+// honest self-assessment, works offline. Self-rating reinforces the review
+// schedule but does NOT grant production mastery (that still needs typing).
+function speakingItems() {
+  const items = [];
+  for (const l of allLessons(course)) for (const p of (l.phrases || [])) {
+    items.push({ text: p.t, meaning: p.en, phonetic: '', ids: exerciseVocabIds({ type: 'word_bank', answer: p.t }, l) });
+  }
+  const idx = vocabIndex(course);
+  const L = store.lang();
+  const pickIds = [...new Set([...store.dueItems(), ...shuffle(Object.keys(L.items).filter((id) => L.items[id].seen > 0))])].slice(0, 8);
+  for (const id of pickIds) { const v = idx[id]; if (v) items.push({ text: v.term, meaning: v.translation, phonetic: v.phonetic || '', ids: [id] }); }
+  if (!items.length) for (const v of Object.values(idx).slice(0, 8)) items.push({ text: v.term, meaning: v.translation, phonetic: v.phonetic || '', ids: [v.id] });
+  return shuffle(items).slice(0, 10);
+}
+
+let speakSession = null;
+
+function startSpeaking() {
+  speakSession = { items: speakingItems(), idx: 0, done: 0 };
+  if (!speakSession.items.length) return renderHome();
+  renderSpeaking();
+}
+
+function renderSpeaking() {
+  const s = speakSession;
+  if (s.idx >= s.items.length) return renderSpeakingDone();
+  const it = s.items[s.idx];
+  const node = h(`
+    <div class="screen ex">
+      <header class="ex__top">
+        <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
+        <div class="ex__bar"><div class="ex__bar-fill" style="width:${Math.round((s.idx / s.items.length) * 100)}%"></div></div>
+        <span class="muted">${s.idx + 1}/${s.items.length}</span>
+      </header>
+      <div class="ex__body">
+        <h2 class="ex__q">Say it out loud 🎤</h2>
+        <div class="wotd-big">
+          <strong>${esc(it.text)}</strong>
+          ${it.phonetic ? `<span class="wotd-big__phon muted">${esc(it.phonetic)}</span>` : ''}
+          <span class="wotd-big__tr">${esc(it.meaning)}</span>
+        </div>
+        <button class="play-btn" id="hearBtn">🔊 Hear it</button>
+        <div class="spk-rec" id="recArea">
+          ${recordSupported() ? '<button class="btn btn--ghost" id="recBtn">🎤 Record yourself</button>' : '<p class="muted">Say it aloud, listen to the model, then rate yourself.</p>'}
+        </div>
+      </div>
+      <div class="ex__foot">
+        <p class="muted" style="text-align:center">Listen, repeat, then rate yourself honestly.</p>
+        <button class="btn btn--primary" id="goodBtn">✓ I said it well</button>
+        <button class="btn btn--ghost" id="againBtn">↻ Hear it again</button>
+      </div>
+    </div>`);
+  node.querySelector('#quitBtn').addEventListener('click', () => { speakSession = null; renderHome(); });
+  node.querySelector('#hearBtn').addEventListener('click', () => tryHear(it.text, course.code));
+  speak(it.text, course.code);
+  node.querySelector('#againBtn').addEventListener('click', () => tryHear(it.text, course.code));
+  node.querySelector('#goodBtn').addEventListener('click', () => {
+    for (const id of it.ids) srsReview(store.item(id), gradeFor(true, 'multiple_choice'), 'multiple_choice');
+    store.addXp(5); store.save();
+    s.done += 1; s.idx += 1; sound.correct(); haptic(12);
+    renderSpeaking();
+  });
+  const recBtn = node.querySelector('#recBtn');
+  if (recBtn) {
+    let handle = null;
+    recBtn.addEventListener('click', async () => {
+      if (!handle) {
+        try {
+          handle = await startRecording();
+          recBtn.textContent = '■ Stop'; recBtn.classList.add('spk-recording');
+        } catch (e) { flashToast('Microphone unavailable — say it aloud and self-rate.'); recBtn.remove(); }
+      } else {
+        const blob = await handle.stop(); handle = null;
+        recBtn.textContent = '🎤 Record again'; recBtn.classList.remove('spk-recording');
+        const url = URL.createObjectURL(blob);
+        let play = node.querySelector('#playYours');
+        if (!play) { play = h('<button class="btn btn--ghost" id="playYours">▶ Play your recording</button>'); node.querySelector('#recArea').appendChild(play); }
+        play.onclick = () => { try { new Audio(url).play(); } catch (e) {} };
+      }
+    });
+  }
+  mount(node);
+}
+
+function renderSpeakingDone() {
+  const done = speakSession ? speakSession.done : 0;
+  speakSession = null;
+  confetti({ count: 60, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
+  const node = h(`
+    <div class="screen screen--center result">
+      <div class="onb__art">${mascotSvg('cheer', { size: 110 })}</div>
+      <h1>Speaking practice done!</h1>
+      <p class="muted">You used your voice on ${done} ${done === 1 ? 'item' : 'items'}. Saying words out loud is how spoken fluency grows.</p>
+      <button class="btn btn--primary" id="doneBtn">Continue</button>
+    </div>`);
+  node.querySelector('#doneBtn').addEventListener('click', renderHome);
   mount(node);
 }
 

@@ -17,6 +17,36 @@ if ('speechSynthesis' in window) {
   window.speechSynthesis.onvoiceschanged = loadVoices;
 }
 
+// ---------- recording (for speaking / shadowing practice) ----------
+// Records the learner saying a word/phrase so they can play it back and compare
+// with the model pronunciation. No speech recognition (unreliable for SA
+// languages) — the learner self-assesses, which works offline and for any
+// language. Needs a secure context (https / localhost) and mic permission.
+export function recordSupported() {
+  return !!(typeof navigator !== 'undefined' && navigator.mediaDevices
+    && navigator.mediaDevices.getUserMedia && typeof window !== 'undefined' && window.MediaRecorder);
+}
+
+// Starts recording; resolves to a handle with stop() -> Promise<Blob>.
+// Rejects if permission is denied or recording is unsupported.
+export async function startRecording() {
+  if (!recordSupported()) throw new Error('unsupported');
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const rec = new MediaRecorder(stream);
+  const chunks = [];
+  rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+  rec.start();
+  return {
+    stop: () => new Promise((resolve) => {
+      rec.onstop = () => {
+        stream.getTracks().forEach((t) => t.stop());
+        resolve(new Blob(chunks, { type: rec.mimeType || 'audio/webm' }));
+      };
+      try { rec.stop(); } catch (e) { stream.getTracks().forEach((t) => t.stop()); resolve(new Blob(chunks)); }
+    }),
+  };
+}
+
 export function ttsSupported() {
   return 'speechSynthesis' in window;
 }
