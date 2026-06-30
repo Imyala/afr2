@@ -781,6 +781,12 @@
               ],
               "vocabId": "af-aangename"
             }
+          ],
+          "phrases": [
+            {
+              "t": "My naam is Pieter",
+              "en": "My name is Pieter"
+            }
           ]
         },
         {
@@ -873,6 +879,12 @@
                 "geld"
               ],
               "vocabId": "af-geld"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek hou van koffie",
+              "en": "I like coffee"
             }
           ]
         },
@@ -1183,6 +1195,12 @@
                 "woensdag"
               ],
               "vocabId": "af-woensdag"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Vandag is Maandag",
+              "en": "Today is Monday"
             }
           ]
         },

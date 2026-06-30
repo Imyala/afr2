@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { newItem, review, gradeFor } from '../src/srs.js';
-import { normalize, checkAnswer, buildLessonSession, exerciseVocabIds } from '../src/lessons.js';
+import { normalize, checkAnswer, buildLessonSession, exerciseVocabIds, checkTyped, editDistance } from '../src/lessons.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let pass = 0, fail = 0;
@@ -37,6 +37,23 @@ ok(checkAnswer({ type: 'match' }, true), 'match resolves on all-pairs');
 ok(checkAnswer({ type: 'speak', text: 'Ngiyaphila wena' }, ['ngiyaphila wena']), 'speak matches transcript');
 ok(checkAnswer({ type: 'speak', text: 'x' }, true), 'speak self-rating');
 ok(normalize('Wéna?') === 'wena', 'normalize strips accents + punctuation');
+
+// --- typo tolerance (typed answers) ---
+ok(editDistance('ngiyaphila', 'ngiyaphila') === 0, 'edit distance 0 for identical');
+ok(editDistance('ngiyaphilla', 'ngiyaphila', 2) === 1, 'edit distance counts one extra letter');
+ok(checkTyped({ type: 'translate', answer: 'ngiyaphila', accept: [] }, 'ngiyaphila').correct === true, 'exact typed answer is correct, not flagged as typo');
+ok(checkTyped({ type: 'translate', answer: 'ngiyaphila', accept: [] }, 'ngiyaphila').typo === false, 'exact answer is not a typo');
+const near = checkTyped({ type: 'translate', answer: 'ngiyaphila', accept: [] }, 'ngiyaphilla');
+ok(near.correct === true && near.typo === true, 'one-letter slip on a long word is accepted but flagged');
+ok(checkTyped({ type: 'translate', answer: 'kune', accept: [] }, 'kunye').correct === false, 'short minimal pairs (four vs one) are NOT auto-corrected');
+ok(checkTyped({ type: 'translate', answer: 'amanzi', accept: [] }, 'water').correct === false, 'a totally wrong word is still wrong');
+ok(checkAnswer({ type: 'translate', answer: 'sawubona', accept: [] }, 'sawubna'), 'checkAnswer(translate) accepts a near-miss');
+
+// --- word bank (sentence building) ---
+const wb = { type: 'word_bank', answer: 'Igama lami nguThabo' };
+ok(checkAnswer(wb, 'Igama lami nguThabo') === true, 'word bank correct in right order');
+ok(checkAnswer(wb, 'lami Igama nguThabo') === false, 'word bank wrong order fails');
+ok(exerciseVocabIds({ type: 'word_bank', answer: 'umama uyahamba' }, { vocab: [{ id: 'zu-umama', term: 'umama' }] }).includes('zu-umama'), 'word bank credits a lesson word it contains');
 
 // --- content integrity ---
 for (const c of ['zu', 'xh', 'af']) {

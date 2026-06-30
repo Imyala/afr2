@@ -147,6 +147,16 @@
               "meaning": "I am well, and you?",
               "lang": "zu"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Sawubona unjani",
+              "en": "Hello, how are you?"
+            },
+            {
+              "t": "Ngiyaphila wena",
+              "en": "I am well, and you?"
+            }
           ]
         },
         {
@@ -266,6 +276,12 @@
               "text": "Ngiyabonga kakhulu",
               "meaning": "Thank you very much",
               "lang": "zu"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngiyabonga kakhulu",
+              "en": "Thank you very much"
             }
           ]
         },
@@ -874,6 +890,12 @@
               "meaning": "My name is Sipho",
               "lang": "zu"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Igama lami nguThabo",
+              "en": "My name is Thabo"
+            }
           ]
         },
         {
@@ -1068,6 +1090,12 @@
               "text": "Ngifuna amanzi, yimalini?",
               "meaning": "I want water, how much is it?",
               "lang": "zu"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngifuna isinkwa",
+              "en": "I want bread"
             }
           ]
         },
@@ -1592,6 +1620,12 @@
                 "ngilambile"
               ],
               "vocabId": "zu-ngilambile"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngilambile kakhulu",
+              "en": "I am very hungry"
             }
           ]
         },

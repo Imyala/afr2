@@ -4,7 +4,7 @@ import { review as srsReview, gradeFor } from './srs.js';
 import { speak } from './audio.js';
 import {
   loadCourse, loadLanguages, allLessons, findLesson, vocabIndex,
-  checkAnswer, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
+  checkAnswer, checkTyped, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
 } from './lessons.js';
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
@@ -345,6 +345,10 @@ function renderHome() {
         🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
       </button>` : ''}
 
+      <button class="wotd-strip" id="glossaryBtn">
+        📒 <span class="muted">Word list —</span> <b>browse all ${Object.keys(vocabIndex(course)).length} words</b> →
+      </button>
+
       <div class="path">${path}</div>
       <nav class="bottombar">
         <button class="navbtn navbtn--active">🏠 Home</button>
@@ -360,6 +364,7 @@ function renderHome() {
   node.querySelector('#switchLang').addEventListener('click', () => renderLanguageSelect(false));
   node.querySelector('#reviewBtn').addEventListener('click', startReview);
   node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
+  node.querySelector('#glossaryBtn').addEventListener('click', () => renderGlossary());
   node.querySelector('#shopNav').addEventListener('click', renderShop);
   node.querySelector('#questsBtn').addEventListener('click', renderQuests);
   node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
@@ -458,6 +463,94 @@ function renderQuests() {
       <div class="card quests-card">${list}</div>
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
+}
+
+// ---------- glossary / word list ----------
+function masteryOf(id) {
+  const it = store.lang().items[id];
+  if (!it || !it.seen) return { cls: 'new', label: 'New' };
+  if (it.mastered) return { cls: 'mastered', label: 'Mastered' };
+  return { cls: 'learning', label: 'Learning' };
+}
+
+function renderGlossary() {
+  const lessons = allLessons(course);
+  const L = store.lang();
+  const idx = vocabIndex(course);
+
+  // toughest words: seen at least twice, ranked by lowest recall accuracy
+  const hardest = Object.entries(L.items)
+    .filter(([id, it]) => it.seen >= 2 && idx[id] && it.correct / it.seen < 1)
+    .map(([id, it]) => ({ v: idx[id], acc: it.correct / it.seen }))
+    .sort((a, b) => a.acc - b.acc)
+    .slice(0, 6);
+
+  const hardestHtml = hardest.length ? `
+    <h3 class="sec">Toughest words</h3>
+    <p class="muted">The words tripping you up most — give them some love.</p>
+    <div class="gloss-list">
+      ${hardest.map(({ v, acc }) => `
+        <button class="gloss-row gloss-row--hard" data-hear="${esc(v.term)}">
+          <span class="gloss-term"><b>${esc(v.term)}</b><span class="muted">${esc(v.phonetic || '')}</span></span>
+          <span class="gloss-tr">${esc(v.translation)}</span>
+          <span class="gloss-acc">${Math.round(acc * 100)}%</span>
+        </button>`).join('')}
+    </div>
+    <button class="btn btn--ghost" id="practiseHard">🔁 Practise these words</button>` : '';
+
+  // full list grouped by unit
+  let lastUnit = null;
+  let groups = '';
+  for (const l of lessons) {
+    if (l.unitTitle !== lastUnit) {
+      if (lastUnit !== null) groups += '</div></div>';
+      groups += `<div class="gloss-group"><h4 class="gloss-unit">${esc(l.unitTitle)}</h4><div class="gloss-list">`;
+      lastUnit = l.unitTitle;
+    }
+    for (const v of (l.vocab || [])) {
+      const m = masteryOf(v.id);
+      groups += `
+        <button class="gloss-row" data-hear="${esc(v.term)}" data-search="${esc(normalize(`${v.term} ${v.translation}`))}">
+          <span class="gloss-term"><b>${esc(v.term)}</b><span class="muted">${esc(v.phonetic || '')}</span></span>
+          <span class="gloss-tr">${esc(v.translation)}</span>
+          <span class="gloss-pill gloss-pill--${m.cls}">${m.label}</span>
+        </button>`;
+    }
+  }
+  if (lastUnit !== null) groups += '</div></div>';
+
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Word list</strong><span></span></header>
+      <input class="ex__input" id="glossSearch" placeholder="Search ${esc(course.name)} or English…" autocomplete="off" autocapitalize="off" />
+      ${hardestHtml}
+      <h3 class="sec">All words</h3>
+      <div id="glossAll">${groups}</div>
+      <p class="footnote">Tap a word to hear it. “Mastered” means you produced it from memory and it survived a spaced review.</p>
+    </div>`);
+
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelectorAll('[data-hear]').forEach((b) => b.addEventListener('click', () => tryHear(b.dataset.hear, course.code)));
+  const ph = node.querySelector('#practiseHard');
+  if (ph) ph.addEventListener('click', () => {
+    if (store.lang().hearts <= 0) return renderHeartsModal();
+    session = { mode: 'review', lesson: null, queue: buildReviewSession(course, hardest.map((x) => x.v.id)), idx: 0, mistakes: 0, total: 0 };
+    renderExercise();
+  });
+  const search = node.querySelector('#glossSearch');
+  search.addEventListener('input', () => {
+    const q = normalize(search.value);
+    node.querySelectorAll('#glossAll .gloss-group').forEach((g) => {
+      let any = false;
+      g.querySelectorAll('.gloss-row').forEach((r) => {
+        const hit = !q || (r.dataset.search || '').includes(q);
+        r.style.display = hit ? '' : 'none';
+        if (hit) any = true;
+      });
+      g.style.display = any ? '' : 'none';
+    });
+  });
   mount(node);
 }
 
@@ -584,6 +677,7 @@ function renderExercise() {
     case 'multiple_choice': body = renderChoice(ex, ex.prompt); break;
     case 'fill_blank': body = renderFill(ex); break;
     case 'translate': body = renderTranslate(ex); break;
+    case 'word_bank': body = renderWordBank(ex); break;
     default: body = '<p>Unknown exercise</p>';
   }
   const node = h(`<div class="screen ex">${progressBar()}<div class="ex__body">${body}</div><div class="ex__foot" id="foot"></div></div>`);
@@ -594,25 +688,29 @@ function renderExercise() {
 
 function footFor(node) { return node.querySelector('#foot'); }
 
-function showFeedback(node, ok, ex, correctText) {
+function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // sound + haptics first so they land with the visual
   if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic([10, 50, 10]); }
   const foot = footFor(node);
   foot.className = `ex__foot ${ok ? 'ex__foot--ok' : 'ex__foot--bad'}`;
   const note = ex.meaning ? `<div class="fb__meaning">${esc(ex.meaning)}</div>` : '';
+  // a typo-accepted answer gets a gentle spelling nudge instead of a penalty
+  const spell = (ok && typoNote) ? `<div class="fb__answer">${esc(typoNote)}</div>` : '';
+  const title = ok ? (typoNote ? 'Almost perfect!' : mascotLine('cheer', session.total)) : '✗ Not quite';
   foot.innerHTML = `
     <div class="fb">
       <span class="fb__mascot">${mascotSvg(ok ? 'cheer' : 'sad', { size: 52 })}</span>
       <div class="fb__text">
-        <div class="fb__title">${ok ? mascotLine('cheer', session.total) : '✗ Not quite'}</div>
+        <div class="fb__title">${title}</div>
         ${ok ? '' : `<div class="fb__answer">Answer: <strong>${esc(correctText)}</strong></div>`}
+        ${spell}
         ${note}
       </div>
     </div>
     <button class="btn btn--primary" id="continueBtn">Continue</button>`;
   foot.querySelector('#continueBtn').addEventListener('click', () => { sound.tap(); advance(ok, ex); });
   // lock inputs
-  node.querySelectorAll('.opt, .ex__input, .check').forEach((e) => { e.disabled = true; });
+  node.querySelectorAll('.opt, .ex__input, .check, .wb-tok').forEach((e) => { e.disabled = true; });
 }
 
 // --- multiple choice / fill / listen share an option grid ---
@@ -635,6 +733,15 @@ function renderTranslate(ex) {
     <p class="ex__prompt-big">${esc(ex.prompt)}</p>
     <input class="ex__input" id="answerInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type in ${esc(course.name)}…" />
     <button class="btn btn--primary check" id="checkBtn">Check</button>`;
+}
+
+function renderWordBank(ex) {
+  const bank = ex.tokens.map((w, i) => `<button class="wb-tok" data-i="${i}">${esc(w)}</button>`).join('');
+  return `<h2 class="ex__q">Build the sentence</h2>
+    <p class="ex__hint muted">${esc(ex.prompt)}</p>
+    <div class="wb-build" id="wbBuild" aria-label="Your sentence"></div>
+    <div class="wb-bank" id="wbBank">${bank}</div>
+    <button class="btn btn--primary check" id="checkBtn" disabled>Check</button>`;
 }
 
 function renderMatch(ex) {
@@ -660,12 +767,30 @@ function wireExercise(ex, node) {
     const input = node.querySelector('#answerInput');
     const submit = () => {
       if (!input.value.trim()) return;
-      const ok = checkAnswer(ex, input.value);
-      showFeedback(node, ok, ex, ex.answer);
+      const res = checkTyped(ex, input.value);
+      showFeedback(node, res.correct, ex, ex.answer, res.typo ? `Watch the spelling: ${ex.answer}` : '');
     };
     input.focus();
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
     node.querySelector('#checkBtn').addEventListener('click', submit);
+  }
+
+  if (ex.type === 'word_bank') {
+    const bank = node.querySelector('#wbBank');
+    const build = node.querySelector('#wbBuild');
+    const check = node.querySelector('#checkBtn');
+    const refresh = () => { check.disabled = build.children.length === 0; };
+    bank.querySelectorAll('.wb-tok').forEach((b) => b.addEventListener('click', () => {
+      if (b.disabled) return;
+      b.disabled = true; b.classList.add('wb-tok--used');
+      const chip = h(`<button class="wb-tok wb-tok--in">${esc(b.textContent)}</button>`);
+      chip.addEventListener('click', () => { chip.remove(); b.disabled = false; b.classList.remove('wb-tok--used'); refresh(); });
+      build.appendChild(chip); sound.tap(); refresh();
+    }));
+    check.addEventListener('click', () => {
+      const resp = Array.from(build.children).map((c) => c.textContent).join(' ');
+      showFeedback(node, checkAnswer(ex, resp), ex, ex.answer);
+    });
   }
 
   if (ex.type === 'match') {

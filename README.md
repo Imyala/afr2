@@ -48,7 +48,12 @@ for the full explanation. In short:
 - 📚 Daily lessons with a unit-based lesson path
 - 🔁 Spaced-repetition **Review** sessions driven by what's actually due
 - 📖 **Reading exercises** — graded stories with comprehension questions
-- ✍️ Translation, multiple choice, match-the-pairs, fill-in-the-blank
+- ✍️ Translation, multiple choice, match-the-pairs, fill-in-the-blank, and
+  **"build the sentence"** word-bank exercises for real sentence practice
+- 🙂 **Typo-tolerant typed answers** — a near-miss is accepted with a gentle
+  spelling nudge instead of costing a heart (short minimal pairs stay strict)
+- 📒 **Searchable glossary** — browse every word with phonetics and mastery
+  status, see your **toughest words**, and one-tap practise them
 - 🔤 **Phonetics on every word** so pronunciation is learnable offline
 - 🏫 Cultural notes in every lesson
 - 📊 Progress dashboard with real retention metrics + baseline/re-test

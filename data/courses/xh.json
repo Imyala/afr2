@@ -833,6 +833,12 @@
               ],
               "vocabId": "xh-ndiyavuya"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Igama lam nguThandi",
+              "en": "My name is Thandi"
+            }
           ]
         },
         {
@@ -925,6 +931,12 @@
                 "imali"
               ],
               "vocabId": "xh-imali"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndifuna imali",
+              "en": "I want money"
             }
           ]
         },
