@@ -1539,6 +1539,410 @@
           ]
         }
       ]
+    },
+    {
+      "id": "xh-u4",
+      "title": "Unit 4: Out & About",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u4-l1",
+          "title": "Time & Routine",
+          "culturalNote": "Mark the day with 'kusasa' (morning) and 'ebusuku' (night). 'Namhlanje' (today), 'izolo' (yesterday) and 'ngomso' (tomorrow) anchor any plan.",
+          "vocab": [
+            {
+              "id": "xh-namhlanje",
+              "term": "namhlanje",
+              "translation": "today",
+              "phonetic": "nahm-HLAHN-jeh"
+            },
+            {
+              "id": "xh-izolo",
+              "term": "izolo",
+              "translation": "yesterday",
+              "phonetic": "ee-ZOH-loh"
+            },
+            {
+              "id": "xh-ngomso",
+              "term": "ngomso",
+              "translation": "tomorrow",
+              "phonetic": "ngoh-MSOH"
+            },
+            {
+              "id": "xh-ngoku",
+              "term": "ngoku",
+              "translation": "now",
+              "phonetic": "NGOH-koo"
+            },
+            {
+              "id": "xh-kusasa",
+              "term": "kusasa",
+              "translation": "in the morning",
+              "phonetic": "koo-SAH-sah"
+            },
+            {
+              "id": "xh-ebusuku",
+              "term": "ebusuku",
+              "translation": "at night",
+              "phonetic": "eh-boo-SOO-koo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "namhlanje",
+                  "today"
+                ],
+                [
+                  "izolo",
+                  "yesterday"
+                ],
+                [
+                  "ngomso",
+                  "tomorrow"
+                ],
+                [
+                  "ngoku",
+                  "now"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“namhlanje” means:",
+              "answer": "today",
+              "options": [
+                "today",
+                "yesterday",
+                "tomorrow",
+                "now"
+              ],
+              "vocabId": "xh-namhlanje"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “yesterday”?",
+              "answer": "izolo",
+              "options": [
+                "izolo",
+                "namhlanje",
+                "ngomso",
+                "ngoku"
+              ],
+              "vocabId": "xh-izolo"
+            },
+            {
+              "type": "translate",
+              "prompt": "tomorrow",
+              "answer": "ngomso",
+              "accept": [
+                "ngomso"
+              ],
+              "vocabId": "xh-ngomso"
+            }
+          ]
+        },
+        {
+          "id": "xh-u4-l2",
+          "title": "Animals",
+          "culturalNote": "Animals feature in Xhosa praise poetry (izibongo). 'Inkomo' (cattle) carries cultural weight in ceremonies, much as in Zulu.",
+          "vocab": [
+            {
+              "id": "xh-inja",
+              "term": "inja",
+              "translation": "dog",
+              "phonetic": "EEN-jah"
+            },
+            {
+              "id": "xh-ikati",
+              "term": "ikati",
+              "translation": "cat",
+              "phonetic": "ee-KAH-tee"
+            },
+            {
+              "id": "xh-inkomo",
+              "term": "inkomo",
+              "translation": "cow",
+              "phonetic": "een-KOH-moh"
+            },
+            {
+              "id": "xh-ihashe",
+              "term": "ihashe",
+              "translation": "horse",
+              "phonetic": "ee-HAH-sheh"
+            },
+            {
+              "id": "xh-inkukhu",
+              "term": "inkukhu",
+              "translation": "chicken",
+              "phonetic": "een-KOO-khoo"
+            },
+            {
+              "id": "xh-intaka",
+              "term": "intaka",
+              "translation": "bird",
+              "phonetic": "een-TAH-kah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "inja",
+                  "dog"
+                ],
+                [
+                  "ikati",
+                  "cat"
+                ],
+                [
+                  "inkomo",
+                  "cow"
+                ],
+                [
+                  "ihashe",
+                  "horse"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“inja” means:",
+              "answer": "dog",
+              "options": [
+                "dog",
+                "cat",
+                "cow",
+                "horse"
+              ],
+              "vocabId": "xh-inja"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cat”?",
+              "answer": "ikati",
+              "options": [
+                "ikati",
+                "inja",
+                "inkomo",
+                "ihashe"
+              ],
+              "vocabId": "xh-ikati"
+            },
+            {
+              "type": "translate",
+              "prompt": "cow",
+              "answer": "inkomo",
+              "accept": [
+                "inkomo"
+              ],
+              "vocabId": "xh-inkomo"
+            }
+          ]
+        },
+        {
+          "id": "xh-u4-l3",
+          "title": "Around Town",
+          "culturalNote": "Find your way by asking 'Iphi...?' (Where is...?). 'Isikolo' (school) and 'isibhedlele' (hospital) are good landmarks to know.",
+          "vocab": [
+            {
+              "id": "xh-isikolo",
+              "term": "isikolo",
+              "translation": "school",
+              "phonetic": "ee-see-KOH-loh"
+            },
+            {
+              "id": "xh-isibhedlele",
+              "term": "isibhedlele",
+              "translation": "hospital",
+              "phonetic": "ee-see-bheh-DLEH-leh"
+            },
+            {
+              "id": "xh-ibhanki",
+              "term": "ibhanki",
+              "translation": "bank",
+              "phonetic": "ee-BAHN-kee"
+            },
+            {
+              "id": "xh-indlu",
+              "term": "indlu",
+              "translation": "house",
+              "phonetic": "EEN-dloo"
+            },
+            {
+              "id": "xh-isitalato",
+              "term": "isitalato",
+              "translation": "street",
+              "phonetic": "ee-see-tah-LAH-toh"
+            },
+            {
+              "id": "xh-isikhululo",
+              "term": "isikhululo",
+              "translation": "station",
+              "phonetic": "ee-see-koo-LOO-loh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "isikolo",
+                  "school"
+                ],
+                [
+                  "isibhedlele",
+                  "hospital"
+                ],
+                [
+                  "ibhanki",
+                  "bank"
+                ],
+                [
+                  "indlu",
+                  "house"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“isikolo” means:",
+              "answer": "school",
+              "options": [
+                "school",
+                "hospital",
+                "bank",
+                "house"
+              ],
+              "vocabId": "xh-isikolo"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hospital”?",
+              "answer": "isibhedlele",
+              "options": [
+                "isibhedlele",
+                "isikolo",
+                "ibhanki",
+                "indlu"
+              ],
+              "vocabId": "xh-isibhedlele"
+            },
+            {
+              "type": "translate",
+              "prompt": "bank",
+              "answer": "ibhanki",
+              "accept": [
+                "ibhanki"
+              ],
+              "vocabId": "xh-ibhanki"
+            }
+          ]
+        },
+        {
+          "id": "xh-u4-l4",
+          "title": "Numbers 6–10",
+          "culturalNote": "Higher numbers in Xhosa get longer: 'isithandathu' (six), 'isixhenxe' (seven). The 'x' in isixhenxe is a lateral click.",
+          "vocab": [
+            {
+              "id": "xh-isithandathu",
+              "term": "isithandathu",
+              "translation": "six",
+              "phonetic": "ee-see-tahn-DAH-too"
+            },
+            {
+              "id": "xh-isixhenxe",
+              "term": "isixhenxe",
+              "translation": "seven",
+              "phonetic": "ee-see-KHEN-kheh",
+              "note": "x is a click consonant"
+            },
+            {
+              "id": "xh-isibhozo",
+              "term": "isibhozo",
+              "translation": "eight",
+              "phonetic": "ee-see-BHOH-zoh"
+            },
+            {
+              "id": "xh-ithoba",
+              "term": "ithoba",
+              "translation": "nine",
+              "phonetic": "ee-TOH-bah"
+            },
+            {
+              "id": "xh-inani",
+              "term": "inani",
+              "translation": "number",
+              "phonetic": "ee-NAH-nee"
+            },
+            {
+              "id": "xh-ukubala",
+              "term": "ukubala",
+              "translation": "to count",
+              "phonetic": "oo-koo-BAH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "isithandathu",
+                  "six"
+                ],
+                [
+                  "isixhenxe",
+                  "seven"
+                ],
+                [
+                  "isibhozo",
+                  "eight"
+                ],
+                [
+                  "ithoba",
+                  "nine"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“isithandathu” means:",
+              "answer": "six",
+              "options": [
+                "six",
+                "seven",
+                "eight",
+                "nine"
+              ],
+              "vocabId": "xh-isithandathu"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “seven”?",
+              "answer": "isixhenxe",
+              "options": [
+                "isixhenxe",
+                "isithandathu",
+                "isibhozo",
+                "ithoba"
+              ],
+              "vocabId": "xh-isixhenxe"
+            },
+            {
+              "type": "translate",
+              "prompt": "eight",
+              "answer": "isibhozo",
+              "accept": [
+                "isibhozo"
+              ],
+              "vocabId": "xh-isibhozo"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
@@ -1600,6 +2004,69 @@
             "enkosi"
           ],
           "vocabId": "xh-enkosi"
+        }
+      ]
+    },
+    {
+      "id": "xh-r2",
+      "title": "Molo, Thandi!",
+      "level": "Basic Conversation",
+      "intro": "Two friends greet each other. Tap any line to hear it.",
+      "lines": [
+        {
+          "t": "Molo, igama lam nguThandi.",
+          "en": "Hello, my name is Thandi."
+        },
+        {
+          "t": "Molo Thandi. Igama lam nguSabelo.",
+          "en": "Hello Thandi. My name is Sabelo."
+        },
+        {
+          "t": "Unjani?",
+          "en": "How are you?"
+        },
+        {
+          "t": "Ndiphilile, enkosi. Wena?",
+          "en": "I am well, thank you. And you?"
+        },
+        {
+          "t": "Nam ndiphilile. Sala kakuhle!",
+          "en": "I am also well. Stay well!"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "prompt": "What is the girl's name?",
+          "answer": "Thandi",
+          "options": [
+            "Thandi",
+            "Sabelo",
+            "Nandi",
+            "Mama"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "How does Thandi feel?",
+          "answer": "Well",
+          "options": [
+            "Well",
+            "Tired",
+            "Hungry",
+            "Lost"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "“Sala kakuhle” means:",
+          "answer": "Stay well",
+          "options": [
+            "Stay well",
+            "Hello",
+            "Thank you",
+            "How are you?"
+          ]
         }
       ]
     }

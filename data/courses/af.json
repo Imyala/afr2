@@ -1484,6 +1484,409 @@
           ]
         }
       ]
+    },
+    {
+      "id": "af-u4",
+      "title": "Unit 4: Out & About",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u4-l1",
+          "title": "Time & Routine",
+          "culturalNote": "'Môre' means both 'tomorrow' and 'morning' — context tells them apart. 'Vandag' (today) and 'gister' (yesterday) complete the set.",
+          "vocab": [
+            {
+              "id": "af-vandag",
+              "term": "vandag",
+              "translation": "today",
+              "phonetic": "fun-DAKH"
+            },
+            {
+              "id": "af-gister",
+              "term": "gister",
+              "translation": "yesterday",
+              "phonetic": "KHIS-ter"
+            },
+            {
+              "id": "af-more",
+              "term": "môre",
+              "translation": "tomorrow",
+              "phonetic": "MAW-reh"
+            },
+            {
+              "id": "af-nou",
+              "term": "nou",
+              "translation": "now",
+              "phonetic": "noh"
+            },
+            {
+              "id": "af-oggend",
+              "term": "oggend",
+              "translation": "morning",
+              "phonetic": "OKH-ent"
+            },
+            {
+              "id": "af-aand",
+              "term": "aand",
+              "translation": "evening",
+              "phonetic": "aahnt"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "vandag",
+                  "today"
+                ],
+                [
+                  "gister",
+                  "yesterday"
+                ],
+                [
+                  "môre",
+                  "tomorrow"
+                ],
+                [
+                  "nou",
+                  "now"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“vandag” means:",
+              "answer": "today",
+              "options": [
+                "today",
+                "yesterday",
+                "tomorrow",
+                "now"
+              ],
+              "vocabId": "af-vandag"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “yesterday”?",
+              "answer": "gister",
+              "options": [
+                "gister",
+                "vandag",
+                "môre",
+                "nou"
+              ],
+              "vocabId": "af-gister"
+            },
+            {
+              "type": "translate",
+              "prompt": "tomorrow",
+              "answer": "môre",
+              "accept": [
+                "môre"
+              ],
+              "vocabId": "af-more"
+            }
+          ]
+        },
+        {
+          "id": "af-u4-l2",
+          "title": "Animals",
+          "culturalNote": "Afrikaans animal names are short and fun: 'hond' (dog), 'kat' (cat), 'voël' (bird).",
+          "vocab": [
+            {
+              "id": "af-hond",
+              "term": "hond",
+              "translation": "dog",
+              "phonetic": "hont"
+            },
+            {
+              "id": "af-kat",
+              "term": "kat",
+              "translation": "cat",
+              "phonetic": "kut"
+            },
+            {
+              "id": "af-koei",
+              "term": "koei",
+              "translation": "cow",
+              "phonetic": "koy"
+            },
+            {
+              "id": "af-perd",
+              "term": "perd",
+              "translation": "horse",
+              "phonetic": "pert"
+            },
+            {
+              "id": "af-hoender",
+              "term": "hoender",
+              "translation": "chicken",
+              "phonetic": "HOON-der"
+            },
+            {
+              "id": "af-voel",
+              "term": "voël",
+              "translation": "bird",
+              "phonetic": "fool"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "hond",
+                  "dog"
+                ],
+                [
+                  "kat",
+                  "cat"
+                ],
+                [
+                  "koei",
+                  "cow"
+                ],
+                [
+                  "perd",
+                  "horse"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“hond” means:",
+              "answer": "dog",
+              "options": [
+                "dog",
+                "cat",
+                "cow",
+                "horse"
+              ],
+              "vocabId": "af-hond"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cat”?",
+              "answer": "kat",
+              "options": [
+                "kat",
+                "hond",
+                "koei",
+                "perd"
+              ],
+              "vocabId": "af-kat"
+            },
+            {
+              "type": "translate",
+              "prompt": "cow",
+              "answer": "koei",
+              "accept": [
+                "koei"
+              ],
+              "vocabId": "af-koei"
+            }
+          ]
+        },
+        {
+          "id": "af-u4-l3",
+          "title": "Around Town",
+          "culturalNote": "Useful places to name: 'skool' (school), 'hospitaal' (hospital), 'winkel' (shop). Ask 'Waar is...?' (Where is...?).",
+          "vocab": [
+            {
+              "id": "af-skool",
+              "term": "skool",
+              "translation": "school",
+              "phonetic": "skohl"
+            },
+            {
+              "id": "af-hospitaal",
+              "term": "hospitaal",
+              "translation": "hospital",
+              "phonetic": "hos-pee-TAAL"
+            },
+            {
+              "id": "af-bank",
+              "term": "bank",
+              "translation": "bank",
+              "phonetic": "bunk"
+            },
+            {
+              "id": "af-huis",
+              "term": "huis",
+              "translation": "house",
+              "phonetic": "hoeys"
+            },
+            {
+              "id": "af-pad",
+              "term": "pad",
+              "translation": "road",
+              "phonetic": "put"
+            },
+            {
+              "id": "af-stasie",
+              "term": "stasie",
+              "translation": "station",
+              "phonetic": "STAH-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "skool",
+                  "school"
+                ],
+                [
+                  "hospitaal",
+                  "hospital"
+                ],
+                [
+                  "bank",
+                  "bank"
+                ],
+                [
+                  "huis",
+                  "house"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“skool” means:",
+              "answer": "school",
+              "options": [
+                "school",
+                "hospital",
+                "bank",
+                "house"
+              ],
+              "vocabId": "af-skool"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hospital”?",
+              "answer": "hospitaal",
+              "options": [
+                "hospitaal",
+                "skool",
+                "bank",
+                "huis"
+              ],
+              "vocabId": "af-hospitaal"
+            },
+            {
+              "type": "translate",
+              "prompt": "bank",
+              "answer": "bank",
+              "accept": [
+                "bank"
+              ],
+              "vocabId": "af-bank"
+            }
+          ]
+        },
+        {
+          "id": "af-u4-l4",
+          "title": "Useful Verbs",
+          "culturalNote": "A handful of verbs unlocks real sentences: 'Ek wil eet' (I want to eat), 'Ek gaan' (I go).",
+          "vocab": [
+            {
+              "id": "af-eet",
+              "term": "eet",
+              "translation": "to eat",
+              "phonetic": "eyt"
+            },
+            {
+              "id": "af-drink",
+              "term": "drink",
+              "translation": "to drink",
+              "phonetic": "drink"
+            },
+            {
+              "id": "af-gaan",
+              "term": "gaan",
+              "translation": "to go",
+              "phonetic": "khaan"
+            },
+            {
+              "id": "af-kom",
+              "term": "kom",
+              "translation": "to come",
+              "phonetic": "kom"
+            },
+            {
+              "id": "af-sien",
+              "term": "sien",
+              "translation": "to see",
+              "phonetic": "seen"
+            },
+            {
+              "id": "af-praat",
+              "term": "praat",
+              "translation": "to talk",
+              "phonetic": "praat"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "eet",
+                  "to eat"
+                ],
+                [
+                  "drink",
+                  "to drink"
+                ],
+                [
+                  "gaan",
+                  "to go"
+                ],
+                [
+                  "kom",
+                  "to come"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“eet” means:",
+              "answer": "to eat",
+              "options": [
+                "to eat",
+                "to drink",
+                "to go",
+                "to come"
+              ],
+              "vocabId": "af-eet"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to drink”?",
+              "answer": "drink",
+              "options": [
+                "drink",
+                "eet",
+                "gaan",
+                "kom"
+              ],
+              "vocabId": "af-drink"
+            },
+            {
+              "type": "translate",
+              "prompt": "to go",
+              "answer": "gaan",
+              "accept": [
+                "gaan"
+              ],
+              "vocabId": "af-gaan"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
@@ -1546,6 +1949,69 @@
             "goed dankie"
           ],
           "vocabId": "af-goeddankie"
+        }
+      ]
+    },
+    {
+      "id": "af-r2",
+      "title": "Goeie môre!",
+      "level": "Basic Conversation",
+      "intro": "A friendly morning greeting. Tap any line to hear it.",
+      "lines": [
+        {
+          "t": "Goeie môre! My naam is Pieter.",
+          "en": "Good morning! My name is Pieter."
+        },
+        {
+          "t": "Goeie môre, Pieter. Ek is Lerato.",
+          "en": "Good morning, Pieter. I am Lerato."
+        },
+        {
+          "t": "Hoe gaan dit?",
+          "en": "How are you?"
+        },
+        {
+          "t": "Goed dankie, en jy?",
+          "en": "Well thanks, and you?"
+        },
+        {
+          "t": "Ook goed. Totsiens!",
+          "en": "Also well. Goodbye!"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "prompt": "What is the man's name?",
+          "answer": "Pieter",
+          "options": [
+            "Pieter",
+            "Lerato",
+            "Jan",
+            "Sipho"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "“Totsiens” means:",
+          "answer": "Goodbye",
+          "options": [
+            "Goodbye",
+            "Hello",
+            "Thank you",
+            "Please"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "How does Lerato feel?",
+          "answer": "Well",
+          "options": [
+            "Well",
+            "Angry",
+            "Tired",
+            "Sick"
+          ]
         }
       ]
     }

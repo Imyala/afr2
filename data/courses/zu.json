@@ -2105,6 +2105,415 @@
           ]
         }
       ]
+    },
+    {
+      "id": "zu-u5",
+      "title": "Unit 5: Work & School",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "zu-u5-l1",
+          "title": "At School",
+          "culturalNote": "School vocabulary is useful for kids and parents alike. 'uthisha' (teacher) and 'umfundi' (learner) are everyday words in any classroom.",
+          "vocab": [
+            {
+              "id": "zu-uthisha",
+              "term": "uthisha",
+              "translation": "teacher",
+              "phonetic": "oo-TEE-shah"
+            },
+            {
+              "id": "zu-umfundi",
+              "term": "umfundi",
+              "translation": "learner / student",
+              "phonetic": "oom-FOON-dee"
+            },
+            {
+              "id": "zu-incwadi",
+              "term": "incwadi",
+              "translation": "book / letter",
+              "phonetic": "een-CWAH-dee"
+            },
+            {
+              "id": "zu-ipensele",
+              "term": "ipensele",
+              "translation": "pencil",
+              "phonetic": "ee-pen-SEH-leh"
+            },
+            {
+              "id": "zu-ibhodi",
+              "term": "ibhodi",
+              "translation": "board",
+              "phonetic": "ee-BOH-dee"
+            },
+            {
+              "id": "zu-ikilasi",
+              "term": "ikilasi",
+              "translation": "classroom",
+              "phonetic": "ee-kee-LAH-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "uthisha",
+                  "teacher"
+                ],
+                [
+                  "umfundi",
+                  "learner / student"
+                ],
+                [
+                  "incwadi",
+                  "book / letter"
+                ],
+                [
+                  "ipensele",
+                  "pencil"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“uthisha” means:",
+              "answer": "teacher",
+              "options": [
+                "teacher",
+                "learner / student",
+                "book / letter",
+                "pencil"
+              ],
+              "vocabId": "zu-uthisha"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “learner / student”?",
+              "answer": "umfundi",
+              "options": [
+                "umfundi",
+                "uthisha",
+                "incwadi",
+                "ipensele"
+              ],
+              "vocabId": "zu-umfundi"
+            },
+            {
+              "type": "translate",
+              "prompt": "book / letter",
+              "answer": "incwadi",
+              "accept": [
+                "incwadi"
+              ],
+              "vocabId": "zu-incwadi"
+            }
+          ]
+        },
+        {
+          "id": "zu-u5-l2",
+          "title": "Jobs",
+          "culturalNote": "Talking about work helps you connect. Many job words borrow English roots, like 'iphoyisa' (police) — but 'umlimi' (farmer) and 'umpheki' (cook) are pure Zulu.",
+          "vocab": [
+            {
+              "id": "zu-umsebenzi",
+              "term": "umsebenzi",
+              "translation": "work / job",
+              "phonetic": "oom-seh-BEN-zee"
+            },
+            {
+              "id": "zu-unesi",
+              "term": "unesi",
+              "translation": "nurse",
+              "phonetic": "oo-NEH-see"
+            },
+            {
+              "id": "zu-iphoyisa",
+              "term": "iphoyisa",
+              "translation": "police officer",
+              "phonetic": "ee-poh-YEE-sah"
+            },
+            {
+              "id": "zu-umlimi",
+              "term": "umlimi",
+              "translation": "farmer",
+              "phonetic": "oom-LEE-mee"
+            },
+            {
+              "id": "zu-ushayeli",
+              "term": "ushayeli",
+              "translation": "driver",
+              "phonetic": "oo-shah-YEH-lee"
+            },
+            {
+              "id": "zu-umpheki",
+              "term": "umpheki",
+              "translation": "cook",
+              "phonetic": "oom-PEH-kee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "umsebenzi",
+                  "work / job"
+                ],
+                [
+                  "unesi",
+                  "nurse"
+                ],
+                [
+                  "iphoyisa",
+                  "police officer"
+                ],
+                [
+                  "umlimi",
+                  "farmer"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“umsebenzi” means:",
+              "answer": "work / job",
+              "options": [
+                "work / job",
+                "nurse",
+                "police officer",
+                "farmer"
+              ],
+              "vocabId": "zu-umsebenzi"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “nurse”?",
+              "answer": "unesi",
+              "options": [
+                "unesi",
+                "umsebenzi",
+                "iphoyisa",
+                "umlimi"
+              ],
+              "vocabId": "zu-unesi"
+            },
+            {
+              "type": "translate",
+              "prompt": "police officer",
+              "answer": "iphoyisa",
+              "accept": [
+                "iphoyisa"
+              ],
+              "vocabId": "zu-iphoyisa"
+            }
+          ]
+        },
+        {
+          "id": "zu-u5-l3",
+          "title": "Telling Time",
+          "culturalNote": "Time words help you make plans. Note 'inyanga' means both 'month' and 'moon', and 'iviki' (week) sits between 'usuku' (day) and 'unyaka' (year).",
+          "vocab": [
+            {
+              "id": "zu-isikhathi",
+              "term": "isikhathi",
+              "translation": "time",
+              "phonetic": "ee-see-KAH-tee"
+            },
+            {
+              "id": "zu-ihora",
+              "term": "ihora",
+              "translation": "hour",
+              "phonetic": "ee-HOH-rah"
+            },
+            {
+              "id": "zu-iminithi",
+              "term": "iminithi",
+              "translation": "minute",
+              "phonetic": "ee-mee-NEE-tee"
+            },
+            {
+              "id": "zu-usuku",
+              "term": "usuku",
+              "translation": "day",
+              "phonetic": "oo-SOO-koo"
+            },
+            {
+              "id": "zu-iviki",
+              "term": "iviki",
+              "translation": "week",
+              "phonetic": "ee-VEE-kee"
+            },
+            {
+              "id": "zu-inyanga",
+              "term": "inyanga",
+              "translation": "month / moon",
+              "phonetic": "een-YAHN-gah"
+            },
+            {
+              "id": "zu-unyaka",
+              "term": "unyaka",
+              "translation": "year",
+              "phonetic": "oon-YAH-kah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "isikhathi",
+                  "time"
+                ],
+                [
+                  "ihora",
+                  "hour"
+                ],
+                [
+                  "iminithi",
+                  "minute"
+                ],
+                [
+                  "usuku",
+                  "day"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“isikhathi” means:",
+              "answer": "time",
+              "options": [
+                "time",
+                "hour",
+                "minute",
+                "day"
+              ],
+              "vocabId": "zu-isikhathi"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hour”?",
+              "answer": "ihora",
+              "options": [
+                "ihora",
+                "isikhathi",
+                "iminithi",
+                "usuku"
+              ],
+              "vocabId": "zu-ihora"
+            },
+            {
+              "type": "translate",
+              "prompt": "minute",
+              "answer": "iminithi",
+              "accept": [
+                "iminithi"
+              ],
+              "vocabId": "zu-iminithi"
+            }
+          ]
+        },
+        {
+          "id": "zu-u5-l4",
+          "title": "Useful Verbs",
+          "culturalNote": "Verbs in Zulu start with 'uku-' (to ...). Learn these and you can build real sentences: 'Ngifuna ukufunda' — I want to read.",
+          "vocab": [
+            {
+              "id": "zu-ukufunda",
+              "term": "ukufunda",
+              "translation": "to read / learn",
+              "phonetic": "oo-koo-FOON-dah"
+            },
+            {
+              "id": "zu-ukubhala",
+              "term": "ukubhala",
+              "translation": "to write",
+              "phonetic": "oo-koo-BAH-lah"
+            },
+            {
+              "id": "zu-ukusebenza",
+              "term": "ukusebenza",
+              "translation": "to work",
+              "phonetic": "oo-koo-seh-BEN-zah"
+            },
+            {
+              "id": "zu-ukuhamba",
+              "term": "ukuhamba",
+              "translation": "to go / walk",
+              "phonetic": "oo-koo-HAM-bah"
+            },
+            {
+              "id": "zu-ukufika",
+              "term": "ukufika",
+              "translation": "to arrive",
+              "phonetic": "oo-koo-FEE-kah"
+            },
+            {
+              "id": "zu-ukubona",
+              "term": "ukubona",
+              "translation": "to see",
+              "phonetic": "oo-koo-BOH-nah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ukufunda",
+                  "to read / learn"
+                ],
+                [
+                  "ukubhala",
+                  "to write"
+                ],
+                [
+                  "ukusebenza",
+                  "to work"
+                ],
+                [
+                  "ukuhamba",
+                  "to go / walk"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ukufunda” means:",
+              "answer": "to read / learn",
+              "options": [
+                "to read / learn",
+                "to write",
+                "to work",
+                "to go / walk"
+              ],
+              "vocabId": "zu-ukufunda"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to write”?",
+              "answer": "ukubhala",
+              "options": [
+                "ukubhala",
+                "ukufunda",
+                "ukusebenza",
+                "ukuhamba"
+              ],
+              "vocabId": "zu-ukubhala"
+            },
+            {
+              "type": "translate",
+              "prompt": "to work",
+              "answer": "ukusebenza",
+              "accept": [
+                "ukusebenza"
+              ],
+              "vocabId": "zu-ukusebenza"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
