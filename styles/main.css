@@ -492,6 +492,15 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .lst-reveal { text-align: center; font-size: 18px; font-weight: 700; }
 .lst-reveal strong { color: var(--green); }
 
+/* ---------- grammar ---------- */
+.gram-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); text-align: left; width: 100%; }
+.gram-card__icon { font-size: 24px; flex: 0 0 auto; }
+.gram-card__body { flex: 1; display: grid; gap: 2px; min-width: 0; }
+.gram-card__body .muted { font-size: 12px; }
+.gram-tip { display: flex; gap: 12px; align-items: flex-start; background: color-mix(in srgb, var(--gold) 14%, var(--card)); border: 1px solid color-mix(in srgb, var(--gold) 40%, var(--line)); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+.gram-tip__icon { font-size: 26px; flex: 0 0 auto; }
+.gram-tip p { margin: 0; font-size: 16px; line-height: 1.5; font-weight: 600; }
+
 /* ---------- speaking practice ---------- */
 .spk-rec { display: grid; gap: 10px; }
 .spk-recording { background: var(--red) !important; color: #fff !important; border-color: var(--red) !important; animation: spkPulse 1s ease-in-out infinite; }

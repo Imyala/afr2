@@ -3323,5 +3323,113 @@
         }
       ]
     }
+  ],
+  "grammar": [
+    {
+      "id": "xh-g1",
+      "title": "Saying I, you, we",
+      "level": "Beginner",
+      "tip": "Xhosa verbs begin with a subject prefix: ndi- (I), u- (you), si- (we), ba- (they). From -philile (be well): ndiphilile (I'm well), uphilile (you're well), siphilile (we're well).",
+      "drills": [
+        {
+          "prompt": "I am well",
+          "answer": "Ndiphilile",
+          "options": [
+            "Ndiphilile",
+            "Uphilile",
+            "Siphilile",
+            "Baphilile"
+          ]
+        },
+        {
+          "prompt": "You are well",
+          "answer": "Uphilile",
+          "options": [
+            "Ndiphilile",
+            "Uphilile",
+            "Siphilile",
+            "Baphilile"
+          ]
+        },
+        {
+          "prompt": "We are well",
+          "answer": "Siphilile",
+          "options": [
+            "Ndiphilile",
+            "Uphilile",
+            "Siphilile",
+            "Baphilile"
+          ]
+        },
+        {
+          "prompt": "We are hungry",
+          "answer": "Silambile",
+          "options": [
+            "Ndilambile",
+            "Silambile",
+            "Ulambile",
+            "Balambile"
+          ]
+        },
+        {
+          "prompt": "You are hungry",
+          "answer": "Ulambile",
+          "options": [
+            "Ndilambile",
+            "Silambile",
+            "Ulambile",
+            "Balambile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-g2",
+      "title": "One and many (plurals)",
+      "level": "Beginner",
+      "tip": "Xhosa nouns change prefix for the plural: um- becomes aba-, isi- becomes izi-, in- becomes izin-.",
+      "drills": [
+        {
+          "prompt": "inja (dog) → dogs",
+          "answer": "izinja",
+          "options": [
+            "izinja",
+            "abanja",
+            "iminja",
+            "amanja"
+          ]
+        },
+        {
+          "prompt": "isikolo (school) → schools",
+          "answer": "izikolo",
+          "options": [
+            "izikolo",
+            "abasikolo",
+            "imikolo",
+            "amasikolo"
+          ]
+        },
+        {
+          "prompt": "indlu (house) → houses",
+          "answer": "izindlu",
+          "options": [
+            "izindlu",
+            "amandlu",
+            "abandlu",
+            "imindlu"
+          ]
+        },
+        {
+          "prompt": "umfundi (student) → students",
+          "answer": "abafundi",
+          "options": [
+            "abafundi",
+            "imifundi",
+            "izifundi",
+            "amafundi"
+          ]
+        }
+      ]
+    }
   ]
 }

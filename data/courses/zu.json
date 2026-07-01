@@ -4010,5 +4010,123 @@
         }
       ]
     }
+  ],
+  "grammar": [
+    {
+      "id": "zu-g1",
+      "title": "Saying I, you, we",
+      "level": "Beginner",
+      "tip": "Zulu verbs begin with a subject prefix: ngi- (I), u- (you), si- (we), ba- (they). From -phila (be well): ngiyaphila (I'm well), uyaphila (you're well), siyaphila (we're well).",
+      "drills": [
+        {
+          "prompt": "I am well",
+          "answer": "Ngiyaphila",
+          "options": [
+            "Ngiyaphila",
+            "Uyaphila",
+            "Siyaphila",
+            "Bayaphila"
+          ]
+        },
+        {
+          "prompt": "You are well",
+          "answer": "Uyaphila",
+          "options": [
+            "Ngiyaphila",
+            "Uyaphila",
+            "Siyaphila",
+            "Bayaphila"
+          ]
+        },
+        {
+          "prompt": "We are well",
+          "answer": "Siyaphila",
+          "options": [
+            "Ngiyaphila",
+            "Uyaphila",
+            "Siyaphila",
+            "Bayaphila"
+          ]
+        },
+        {
+          "prompt": "We are hungry",
+          "answer": "Silambile",
+          "options": [
+            "Ngilambile",
+            "Silambile",
+            "Ulambile",
+            "Balambile"
+          ]
+        },
+        {
+          "prompt": "You are hungry",
+          "answer": "Ulambile",
+          "options": [
+            "Ngilambile",
+            "Silambile",
+            "Ulambile",
+            "Balambile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-g2",
+      "title": "One and many (plurals)",
+      "level": "Beginner",
+      "tip": "Zulu nouns change their prefix to make a plural: um- people become aba-, isi- things become izi-, in- become izin-, and um- (class 3) becomes imi-.",
+      "drills": [
+        {
+          "prompt": "umfana (boy) → boys",
+          "answer": "abafana",
+          "options": [
+            "abafana",
+            "izimfana",
+            "imifana",
+            "omfana"
+          ]
+        },
+        {
+          "prompt": "isitolo (shop) → shops",
+          "answer": "izitolo",
+          "options": [
+            "izitolo",
+            "abasitolo",
+            "imitolo",
+            "amasitolo"
+          ]
+        },
+        {
+          "prompt": "indlu (house) → houses",
+          "answer": "izindlu",
+          "options": [
+            "izindlu",
+            "amandlu",
+            "abandlu",
+            "imindlu"
+          ]
+        },
+        {
+          "prompt": "umfula (river) → rivers",
+          "answer": "imifula",
+          "options": [
+            "imifula",
+            "abafula",
+            "izifula",
+            "omfula"
+          ]
+        },
+        {
+          "prompt": "ingane (child) → children",
+          "answer": "izingane",
+          "options": [
+            "izingane",
+            "amangane",
+            "abangane",
+            "imingane"
+          ]
+        }
+      ]
+    }
   ]
 }

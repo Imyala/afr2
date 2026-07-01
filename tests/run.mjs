@@ -129,6 +129,20 @@ for (const c of ['zu', 'xh', 'af']) {
       if (q.vocabId) ok(vocabIds.has(q.vocabId), `${r.id} question vocabId ${q.vocabId} resolves`);
     }
   }
+  // grammar pattern integrity
+  const gids = (course.grammar || []).map((g) => g.id);
+  ok(gids.length === new Set(gids).size, `${c} grammar ids are unique`);
+  for (const g of (course.grammar || [])) {
+    ok(g.id && g.title && g.tip, `${g.id} has id/title/tip`);
+    ok(Array.isArray(g.drills) && g.drills.length >= 1, `${g.id} has drills`);
+    for (const d of g.drills) {
+      ok(d.answer && d.prompt, `${g.id} drill has answer + prompt`);
+      if (d.options) {
+        ok(d.options.map(normalize).includes(normalize(d.answer)), `${g.id} drill answer in options`);
+        ok(new Set(d.options.map(normalize)).size === d.options.length, `${g.id} drill options unique`);
+      }
+    }
+  }
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

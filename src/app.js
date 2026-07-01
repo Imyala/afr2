@@ -382,6 +382,10 @@ function renderHome() {
         👂 <span class="muted">Listening —</span> <b>understand it by ear</b> →
       </button>
 
+      ${(course.grammar || []).length ? `<button class="wotd-strip" id="grammarBtn">
+        🧩 <span class="muted">Grammar —</span> <b>learn the patterns to build sentences</b> →
+      </button>` : ''}
+
       <div class="path">${path}</div>
       <nav class="bottombar" aria-label="Main">
         <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
@@ -400,6 +404,7 @@ function renderHome() {
   node.querySelector('#glossaryBtn').addEventListener('click', () => renderGlossary());
   node.querySelector('#speakBtn').addEventListener('click', startSpeaking);
   node.querySelector('#listenBtn').addEventListener('click', startListening);
+  const gb = node.querySelector('#grammarBtn'); if (gb) gb.addEventListener('click', renderGrammar);
   node.querySelector('#shopNav').addEventListener('click', renderShop);
   node.querySelector('#questsBtn').addEventListener('click', renderQuests);
   node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
@@ -786,6 +791,59 @@ function renderListeningDone() {
   mount(node);
 }
 
+// ---------- grammar / pattern engine ----------
+// Teaches the *system* (subject prefixes, plurals…), not just words — the thing
+// that lets a learner build their own sentences. Patterns are spaced like vocab.
+function renderGrammar() {
+  const pats = course.grammar || [];
+  const rows = pats.map((g) => {
+    const st = store.grammarState(g.id);
+    const pill = st === 'mastered' ? 'gloss-pill--mastered' : st === 'learning' ? 'gloss-pill--learning' : 'gloss-pill--new';
+    const label = st === 'mastered' ? 'Mastered' : st === 'learning' ? 'Learning' : 'New';
+    return `<button class="gram-card" data-g="${esc(g.id)}">
+        <span class="gram-card__icon">🧩</span>
+        <div class="gram-card__body"><strong>${esc(g.title)}</strong><span class="muted">${esc(g.tip.slice(0, 64))}…</span></div>
+        <span class="gloss-pill ${pill}">${label}</span>
+      </button>`;
+  }).join('');
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Grammar</strong><span></span></header>
+      <p class="muted">Learn the patterns that let you build your own sentences — not just memorise words.</p>
+      <div class="set-list">${rows || '<p class="muted">Grammar patterns coming soon for this language.</p>'}</div>
+      <p class="footnote">Grammar here is community-reviewed. Spot something off? Help us improve it.</p>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelectorAll('[data-g]').forEach((b) => b.addEventListener('click', () => renderGrammarTip(b.dataset.g)));
+  mount(node);
+}
+
+function renderGrammarTip(gid) {
+  const g = (course.grammar || []).find((x) => x.id === gid);
+  if (!g) return renderGrammar();
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Grammar</button><strong>${esc(g.title)}</strong><span></span></header>
+      <div class="gram-tip"><span class="gram-tip__icon">💡</span><p>${esc(g.tip)}</p></div>
+      <button class="btn btn--primary" id="practise">Practise this pattern · ${g.drills.length} drills</button>
+      <button class="btn btn--ghost" id="hear">🔊 Hear an example</button>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderGrammar);
+  node.querySelector('#practise').addEventListener('click', () => startGrammar(gid));
+  node.querySelector('#hear').addEventListener('click', () => tryHear(g.drills[0].answer, course.code));
+  mount(node);
+}
+
+function startGrammar(gid) {
+  const g = (course.grammar || []).find((x) => x.id === gid);
+  if (!g) return renderGrammar();
+  const queue = shuffle(g.drills).map((d) => (d.options
+    ? { type: 'multiple_choice', prompt: d.prompt, answer: d.answer, options: d.options }
+    : { type: 'translate', prompt: d.prompt, answer: d.answer, accept: [d.answer.toLowerCase()] }));
+  session = { mode: 'grammar', grammarId: gid, lesson: null, queue, idx: 0, mistakes: 0, total: 0 };
+  renderExercise();
+}
+
 // ---------- session engine ----------
 function startLesson(lessonId) {
   if (store.lang().hearts <= 0) return renderHeartsModal();
@@ -840,7 +898,7 @@ function endSession() {
   store.addXp(earned);
 
   // small gem trickle for finishing, so the shop is reachable through play
-  const GEM_REWARD = { lesson: 5, review: 3, reading: 5 };
+  const GEM_REWARD = { lesson: 5, review: 3, reading: 5, grammar: 4 };
   const baseGems = GEM_REWARD[session.mode] || 0;
   if (baseGems) store.state.gems = (store.state.gems || 0) + baseGems;
 
@@ -874,6 +932,11 @@ function endSession() {
       }
     }
     merge(G.track(store, 'reading'));
+  } else if (session.mode === 'grammar') {
+    // grade the whole pattern by this drill set; spaced like a vocab item
+    const git = store.grammarItem(session.grammarId);
+    srsReview(git, gradeFor(session.mistakes <= 1, 'translate'), 'translate');
+    merge(G.track(store, 'review'));
   }
   merge({ quests: [], achievements: G.checkAchievements(store), gems: 0 });
   store.save();
@@ -1074,7 +1137,7 @@ function wireExercise(ex, node) {
 // ---------- completion screens ----------
 function renderSessionComplete(stars, correct, total, rewards = { quests: [], achievements: [], gems: 0 }) {
   const acc = Math.round((correct / Math.max(1, total)) * 100);
-  const title = session.mode === 'review' ? 'Review complete!' : session.mode === 'reading' ? 'Story complete!' : 'Lesson complete!';
+  const title = session.mode === 'review' ? 'Review complete!' : session.mode === 'reading' ? 'Story complete!' : session.mode === 'grammar' ? 'Grammar practice!' : 'Lesson complete!';
   const questHtml = rewards.quests.length
     ? `<div class="reward-list"><strong>Quests completed</strong>${rewards.quests.map((q) => `<div class="reward-row">${q.icon} ${esc(q.text)} <span>+💎${q.gems}</span></div>`).join('')}</div>` : '';
   const achHtml = rewards.achievements.length

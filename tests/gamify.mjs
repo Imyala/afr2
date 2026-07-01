@@ -99,5 +99,16 @@ ok(store.activeProfile().id === 'default' && store.lang('zu').xp === 123, 'switc
 ok(store.deleteProfile(newId) === true && store.profiles().length === 1, 'a learner can be removed');
 ok(store.deleteProfile('default') === false, 'the original learner cannot be deleted');
 
+// --- grammar patterns (spaced like vocab, own map) ---
+store.reset();
+store.setActiveLang('zu');
+ok(store.grammarState('zu-g1') === 'new', 'grammar pattern starts as new');
+const gi = store.grammarItem('zu-g1');
+ok(gi && gi.due != null && gi.seen === 0, 'grammarItem creates a fresh SRS record');
+gi.seen = 3; gi.mastered = true; store.save();
+ok(store.grammarState('zu-g1') === 'mastered', 'grammar state reflects mastery');
+gi.due = Date.now() - 1000;
+ok(store.dueGrammar().includes('zu-g1'), 'dueGrammar surfaces a due, seen pattern');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

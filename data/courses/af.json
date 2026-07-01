@@ -3287,5 +3287,113 @@
         }
       ]
     }
+  ],
+  "grammar": [
+    {
+      "id": "af-g1",
+      "title": "Verbs don't change",
+      "level": "Beginner",
+      "tip": "Good news: Afrikaans verbs do NOT change with the subject. 'loop' (walk) stays 'loop' for everyone — ek loop, jy loop, hy loop, ons loop, hulle loop.",
+      "drills": [
+        {
+          "prompt": "we walk (loop)",
+          "answer": "ons loop",
+          "options": [
+            "ons loop",
+            "ons lope",
+            "ons loper",
+            "ons loopt"
+          ]
+        },
+        {
+          "prompt": "they eat (eet)",
+          "answer": "hulle eet",
+          "options": [
+            "hulle eet",
+            "hulle eten",
+            "hulle eter",
+            "hulle eets"
+          ]
+        },
+        {
+          "prompt": "she drinks (drink)",
+          "answer": "sy drink",
+          "options": [
+            "sy drink",
+            "sy drinkt",
+            "sy drinker",
+            "sy drinks"
+          ]
+        },
+        {
+          "prompt": "I walk (loop)",
+          "answer": "ek loop",
+          "options": [
+            "ek loop",
+            "ek loup",
+            "ek lope",
+            "ek looper"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-g2",
+      "title": "Making plurals (-e / -s)",
+      "level": "Beginner",
+      "tip": "Most Afrikaans plurals add -e or -s: kat → katte, boom → bome, appel → appels.",
+      "drills": [
+        {
+          "prompt": "kat (cat) → cats",
+          "answer": "katte",
+          "options": [
+            "katte",
+            "kats",
+            "katten",
+            "kate"
+          ]
+        },
+        {
+          "prompt": "boom (tree) → trees",
+          "answer": "bome",
+          "options": [
+            "bome",
+            "booms",
+            "bomen",
+            "boome"
+          ]
+        },
+        {
+          "prompt": "hond (dog) → dogs",
+          "answer": "honde",
+          "options": [
+            "honde",
+            "honds",
+            "honden",
+            "hondes"
+          ]
+        },
+        {
+          "prompt": "appel (apple) → apples",
+          "answer": "appels",
+          "options": [
+            "appels",
+            "appele",
+            "appelen",
+            "appeles"
+          ]
+        },
+        {
+          "prompt": "stoel (chair) → chairs",
+          "answer": "stoele",
+          "options": [
+            "stoele",
+            "stoels",
+            "stoelen",
+            "stoeles"
+          ]
+        }
+      ]
+    }
   ]
 }

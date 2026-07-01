@@ -44,6 +44,7 @@ function freshLang() {
     readingsCompleted: 0,
     completedReadings: [],
     wotd: null,              // { day, learned } — word-of-the-day state
+    grammar: {},             // patternId -> srs record (grammar patterns are spaced too)
   };
 }
 
@@ -246,6 +247,27 @@ class Store {
     return Object.entries(L.items)
       .filter(([, it]) => it.due <= now && it.seen > 0)
       .map(([id]) => id);
+  }
+
+  // --- grammar patterns (spaced like vocab, kept in their own map) ----------
+  grammarItem(patternId, code = this.state.activeLang) {
+    const L = this.lang(code);
+    if (!L.grammar) L.grammar = {};
+    if (!L.grammar[patternId]) L.grammar[patternId] = newItem();
+    return L.grammar[patternId];
+  }
+
+  grammarState(patternId, code = this.state.activeLang) {
+    const L = this.lang(code);
+    const it = L.grammar && L.grammar[patternId];
+    if (!it || !it.seen) return 'new';
+    return it.mastered ? 'mastered' : 'learning';
+  }
+
+  dueGrammar(code = this.state.activeLang, now = Date.now()) {
+    const L = this.lang(code);
+    if (!L.grammar) return [];
+    return Object.entries(L.grammar).filter(([, it]) => it.due <= now && it.seen > 0).map(([id]) => id);
   }
 
   // --- lessons ------------------------------------------------------------

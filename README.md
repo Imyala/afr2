@@ -53,6 +53,12 @@ for the full explanation. In short:
   "what does it mean?" (sentence comprehension), and sentence fill-in-the-blank
 - 🙂 **Typo-tolerant typed answers** — a near-miss is accepted with a gentle
   spelling nudge instead of costing a heart (short minimal pairs stay strict)
+- 🧩 **Grammar / pattern engine** — short "tip" cards teach the *system*
+  (subject prefixes, plurals, invariant Afrikaans verbs…) with generative
+  drills, so learners can build their own sentences, not just recall words.
+  Patterns are spaced like vocabulary. (Community-reviewed content.)
+- 🎤 **Speaking** (shadow & self-record) and 👂 **Listening** (audio-first
+  comprehension) practice modes — output and input for all four skills
 - 📒 **Searchable glossary** — browse every word with phonetics and mastery
   status, see your **toughest words**, and one-tap practise them
 - 🔤 **Phonetics on every word** so pronunciation is learnable offline
