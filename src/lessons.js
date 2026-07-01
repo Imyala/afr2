@@ -18,7 +18,7 @@ export async function loadLanguages() {
 
 // Flatten all lessons in a course in order.
 export function allLessons(course) {
-  return course.units.flatMap((u) => u.lessons.map((l) => ({ ...l, unitTitle: u.title, level: u.level })));
+  return course.units.flatMap((u) => u.lessons.map((l) => ({ ...l, unitId: u.id, unitTitle: u.title, level: u.level })));
 }
 
 export function findLesson(course, lessonId) {

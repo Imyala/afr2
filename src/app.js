@@ -276,6 +276,9 @@ function renderHome() {
   const due = store.dueItems().length;
 
   const lessons = allLessons(course);
+  // which units are already fully complete (so we only offer "test out" on the rest)
+  const unitComplete = {};
+  for (const u of course.units) unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
   let lastUnit = null;
   let activeMarked = false;
   const path = lessons.map((l, i) => {
@@ -287,7 +290,9 @@ function renderHome() {
     // next step — highlight it so the eye lands on what to do now.
     const active = !done && !locked && !activeMarked;
     if (active) activeMarked = true;
-    const unitHeader = l.unitTitle !== lastUnit ? `<div class="unit-head"><span>${esc(l.unitTitle)}</span><small>${esc(l.level)}</small></div>` : '';
+    const unitHeader = l.unitTitle !== lastUnit
+      ? `<div class="unit-head"><span>${esc(l.unitTitle)}</span><div class="unit-head__right"><small>${esc(l.level)}</small>${!unitComplete[l.unitId] ? `<button class="testout-btn" data-testout="${esc(l.unitId)}">Test out</button>` : ''}</div></div>`
+      : '';
     lastUnit = l.unitTitle;
     const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
     const cta = active ? '<span class="node__cta">START</span>' : '';
@@ -402,6 +407,8 @@ function renderHome() {
 
   node.querySelectorAll('[data-lesson]').forEach((b) =>
     b.addEventListener('click', () => startLesson(b.dataset.lesson)));
+  node.querySelectorAll('[data-testout]').forEach((b) =>
+    b.addEventListener('click', (e) => { e.stopPropagation(); confirmTestOut(b.dataset.testout); }));
   node.querySelector('#switchLang').addEventListener('click', () => renderLanguageSelect(false));
   node.querySelector('#reviewBtn').addEventListener('click', startReview);
   node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
@@ -1005,7 +1012,64 @@ function startBaseline(isRetest) {
 
 const HEART_MODES = ['lesson', 'review'];
 
+// ---------- adaptive: test out of a unit you already know ----------
+function confirmTestOut(unitId) {
+  const unit = course.units.find((u) => u.id === unitId);
+  if (!unit) return;
+  const node = h(`
+    <div class="screen screen--center">
+      <div class="result__emoji">⏭️</div>
+      <h1>Test out of ${esc(unit.title.replace(/^Unit \d+:\s*/, ''))}?</h1>
+      <p class="muted">Already know this? Take a quick quiz. Score 80%+ and we'll mark the whole unit done so you can skip ahead — no time wasted on what you know.</p>
+      <button class="btn btn--primary" id="go">Start the quiz</button>
+      <button class="btn btn--ghost" id="back">Back</button>
+    </div>`);
+  node.querySelector('#go').addEventListener('click', () => startTestOut(unitId));
+  node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
+}
+
+function startTestOut(unitId) {
+  const unit = course.units.find((u) => u.id === unitId);
+  if (!unit) return renderHome();
+  const all = Object.values(vocabIndex(course));
+  const unitVocab = unit.lessons.flatMap((l) => l.vocab || []);
+  const pick = shuffle(unitVocab).slice(0, Math.min(10, unitVocab.length));
+  const queue = pick.map((v) => {
+    const distractors = shuffle(all.filter((o) => o.translation !== v.translation)).slice(0, 3);
+    return { type: 'multiple_choice', prompt: `"${v.term}" means:`, answer: v.translation, options: shuffle([v.translation, ...distractors.map((d) => d.translation)]), vocabId: v.id, _test: true };
+  });
+  session = { mode: 'testout', unitId, lesson: null, queue, idx: 0, mistakes: 0, total: 0, score: 0 };
+  renderExercise();
+}
+
+function finishTestOut() {
+  const unit = course.units.find((u) => u.id === session.unitId);
+  const pct = session.queue.length ? session.score / session.queue.length : 0;
+  const passed = pct >= 0.8 && unit;
+  if (passed) {
+    for (const l of unit.lessons) {
+      if (!store.isLessonComplete(l.id)) store.completeLesson(l.id, 2);
+      for (const v of (l.vocab || [])) { const it = store.item(v.id); if (!it.seen) srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice'); }
+    }
+    G.checkAchievements(store);
+    store.save();
+    confetti({ count: 80 }); sound.complete();
+  } else { sound.wrong(); }
+  const node = h(`
+    <div class="screen screen--center result">
+      <div class="onb__art">${mascotSvg(passed ? 'cheer' : 'sad', { size: 110 })}</div>
+      <h1>${passed ? 'Tested out! ⏭️' : 'Not quite yet'}</h1>
+      <div class="result__row"><div class="kpi"><span class="kpi__v">${session.score}/${session.queue.length}</span><span class="kpi__k">Score</span></div><div class="kpi"><span class="kpi__v">${Math.round(pct * 100)}%</span><span class="kpi__k">Accuracy</span></div></div>
+      <p class="muted">${passed ? `${esc(unit.title)} is marked complete — jump ahead to what's next!` : 'You need 80% to skip this unit. Work through the lessons and you\'ll master it.'}</p>
+      <button class="btn btn--primary" id="doneBtn">${passed ? 'Continue' : 'Back to lessons'}</button>
+    </div>`);
+  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  mount(node);
+}
+
 function endSession() {
+  if (session.mode === 'testout') return finishTestOut();
   const isTest = session.mode === 'baseline' || session.mode === 'retest';
   if (isTest) {
     const result = { score: session.score, total: session.queue.length, date: new Date().toISOString().slice(0, 10) };
@@ -1075,7 +1139,7 @@ function endSession() {
 function advance(wasCorrect, ex) {
   session.total += 1;
   if (!wasCorrect) session.mistakes += 1;
-  if (session.mode === 'baseline' || session.mode === 'retest') {
+  if (session.mode === 'baseline' || session.mode === 'retest' || session.mode === 'testout') {
     if (wasCorrect) session.score += 1;
   } else {
     // credit SRS for each vocab id this exercise touched

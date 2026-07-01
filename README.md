@@ -66,6 +66,8 @@ for the full explanation. In short:
   status, see your **toughest words**, and one-tap practise them
 - 🔤 **Phonetics on every word** so pronunciation is learnable offline
 - 🏫 Cultural notes in every lesson
+- ⏭️ **Test out** of any unit you already know — score 80%+ on a quick quiz
+  and the whole unit is marked done, so no time is wasted on known material
 - 📊 Progress dashboard with real retention metrics + baseline/re-test
 
 > **Audio status:** dedicated *listening* and *speaking* exercises are
