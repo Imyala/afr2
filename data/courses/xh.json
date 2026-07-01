@@ -1776,6 +1776,12 @@
               ],
               "vocabId": "xh-inkomo"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ndibona inja",
+              "en": "I see a dog"
+            }
           ]
         },
         {
@@ -1874,6 +1880,12 @@
                 "ibhanki"
               ],
               "vocabId": "xh-ibhanki"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Iphi isikolo",
+              "en": "Where is the school?"
             }
           ]
         },
@@ -2488,6 +2500,12 @@
               ],
               "vocabId": "xh-ukwazi"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ndithanda ukutya",
+              "en": "I like food"
+            }
           ]
         },
         {
@@ -2992,6 +3010,12 @@
                 "umyeni"
               ],
               "vocabId": "xh-umyeni"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Umhlobo wam",
+              "en": "My friend"
             }
           ]
         },

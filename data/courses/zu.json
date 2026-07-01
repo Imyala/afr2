@@ -808,6 +808,12 @@
               "meaning": "The shop is very far.",
               "vocabId": "zu-kude"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Isitolo sikude",
+              "en": "The shop is far"
+            }
           ]
         }
       ],
@@ -1566,6 +1572,12 @@
               ],
               "vocabId": "zu-umoya"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Kuyabanda namuhla",
+              "en": "It is cold today"
+            }
           ]
         },
         {
@@ -1988,6 +2000,12 @@
               ],
               "vocabId": "zu-inkomo"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ngibona inja",
+              "en": "I see a dog"
+            }
           ]
         },
         {
@@ -2087,6 +2105,12 @@
                 "ibhange"
               ],
               "vocabId": "zu-ibhange"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Iphi isikole",
+              "en": "Where is the school?"
             }
           ]
         },
@@ -2293,6 +2317,12 @@
                 "incwadi"
               ],
               "vocabId": "zu-incwadi"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngifunda incwadi",
+              "en": "I am reading a book"
             }
           ]
         },
@@ -2596,6 +2626,12 @@
                 "ukusebenza"
               ],
               "vocabId": "zu-ukusebenza"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngithanda ukudla",
+              "en": "I like food"
             }
           ]
         }
@@ -3109,6 +3145,12 @@
               ],
               "vocabId": "zu-ukwazi"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ngifuna ukuthenga",
+              "en": "I want to buy"
+            }
           ]
         },
         {
@@ -3513,6 +3555,12 @@
               ],
               "vocabId": "zu-isitimela"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Iphi ibhasi",
+              "en": "Where is the bus?"
+            }
           ]
         },
         {
@@ -3611,6 +3659,12 @@
                 "umyeni"
               ],
               "vocabId": "zu-umyeni"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Umngane wami",
+              "en": "My friend"
             }
           ]
         },

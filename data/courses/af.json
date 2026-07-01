@@ -1094,6 +1094,10 @@
             {
               "t": "Ek wil water hê",
               "en": "I want water"
+            },
+            {
+              "t": "Ek drink water",
+              "en": "I drink water"
             }
           ]
         }
@@ -1316,6 +1320,12 @@
                 "swart"
               ],
               "vocabId": "af-swart"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Die kat is swart",
+              "en": "The cat is black"
             }
           ]
         },
@@ -1733,6 +1743,12 @@
               ],
               "vocabId": "af-koei"
             }
+          ],
+          "phrases": [
+            {
+              "t": "Ek sien 'n hond",
+              "en": "I see a dog"
+            }
           ]
         },
         {
@@ -2037,6 +2053,12 @@
                 "kombuis"
               ],
               "vocabId": "af-kombuis"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Waar is die kombuis",
+              "en": "Where is the kitchen?"
             }
           ]
         },
@@ -2950,6 +2972,12 @@
                 "man"
               ],
               "vocabId": "af-man"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek hou van my vriend",
+              "en": "I like my friend"
             }
           ]
         },
