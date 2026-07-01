@@ -119,6 +119,23 @@ class Store {
     return true;
   }
 
+  // Ensure a profile with a specific id exists and is active (used by the demo
+  // account system: each account's id doubles as its progress-profile id).
+  ensureProfile(id, name, avatar) {
+    if (id === this.profileId) return true;
+    if (!this.reg.list.some((p) => p.id === id)) {
+      this.save();                       // persist whoever is active now
+      this.reg.list.push({ id, name: (name || 'Learner').trim().slice(0, 20) || 'Learner', avatar: avatar || '🙂' });
+      this.reg.active = id;
+      saveProfiles(this.reg);
+      this.profileId = id;
+      this.state = freshState();
+      this.save();
+      return true;
+    }
+    return this.switchProfile(id);
+  }
+
   createProfile(name, avatar) {
     this.save();                       // persist current learner first
     const id = `p${Date.now().toString(36)}${Math.floor(Math.random() * 1e4)}`;

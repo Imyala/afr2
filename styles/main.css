@@ -565,6 +565,10 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   .gloss-pill--mastered { color: var(--green); }
 }
 
+/* ---------- demo accounts / auth ---------- */
+.auth-form { display: grid; gap: 12px; }
+.auth-err { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); font-weight: 700; font-size: 14px; padding: 10px 14px; border-radius: 12px; }
+
 /* ---------- learner profiles ---------- */
 .set-row--btn { border: none; box-shadow: var(--shadow); cursor: pointer; }
 .prof-row { display: flex; align-items: center; gap: 8px; }

@@ -10,6 +10,7 @@ import * as G from './gamify.js';
 import * as Shop from './shop.js';
 import { sound, haptic, confetti, countUp, pop, setSoundEnabled } from './fx.js';
 import { mascotSvg, mascotLine } from './mascot.js';
+import * as Auth from './auth.js';
 import * as Notify from './notify.js';
 
 let LIBRARY = null;   // library.json
@@ -59,9 +60,6 @@ function weekDaysLeft(now = Date.now()) {
 
 // ---------- boot ----------
 async function boot() {
-  Shop.applyTheme(store);
-  setSoundEnabled(store.state.settings.soundOn !== false);
-  setDesiredRetention(store.state.settings.desiredRetention || 0.9);
   // Re-apply the palette if the OS flips between light/dark so themed accents
   // always use the variant tuned for the current background.
   if (window.matchMedia) {
@@ -69,6 +67,26 @@ async function boot() {
       .addEventListener('change', () => Shop.applyTheme(store));
   }
   LANGS = await loadLanguages();
+  // Auth gate (demo). Grandfather existing users in as guests so this update
+  // never locks anyone out of progress they already have.
+  let auth = Auth.getAuth();
+  if (!auth) {
+    if (store.state.activeLang || store.state.settings.onboarded) { Auth.setAuth({ mode: 'guest' }); auth = Auth.getAuth(); }
+    else return renderAuthLanding();
+  }
+  if (auth.mode === 'account') {
+    const acc = Auth.accountById(auth.accountId);
+    if (acc) store.ensureProfile(acc.id, acc.name, acc.avatar);
+    else { Auth.setAuth({ mode: 'guest' }); }
+  }
+  await bootIntoApp();
+}
+
+// Continue booting once we know who the learner is (account or guest).
+async function bootIntoApp() {
+  Shop.applyTheme(store);
+  setSoundEnabled(store.state.settings.soundOn !== false);
+  setDesiredRetention(store.state.settings.desiredRetention || 0.9);
   // Migration: anyone with an existing language has already used the app —
   // don't show them onboarding or the first-win taster.
   if (store.state.activeLang && !store.state.settings.onboarded) {
@@ -79,6 +97,80 @@ async function boot() {
   if (!store.state.settings.onboarded && !store.state.activeLang) return renderOnboarding();
   if (!store.state.activeLang) return renderLanguageSelect(true);
   await openLanguage(store.state.activeLang);
+}
+
+// ---------- demo accounts: landing / sign up / log in ----------
+function renderAuthLanding() {
+  const node = h(`
+    <div class="screen screen--center">
+      <div class="onb__art">${mascotSvg('wave', { size: 130 })}</div>
+      <h1 class="brand__name">MzansiLingo</h1>
+      <p class="onb__body">Learn real South African languages. Create an account to save your progress — or jump straight in and try it first.</p>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="create">Create account</button>
+        <button class="btn btn--ghost" id="login">Log in</button>
+        <button class="btn btn--ghost" id="guest">Try without an account →</button>
+      </div>
+      <p class="footnote">Demo: accounts are stored on this device only.</p>
+    </div>`);
+  node.querySelector('#create').addEventListener('click', () => { sound.tap(); renderSignup(); });
+  node.querySelector('#login').addEventListener('click', () => { sound.tap(); renderLogin(); });
+  node.querySelector('#guest').addEventListener('click', () => { store.ensureProfile('default', 'Me', '🦫'); Auth.setAuth({ mode: 'guest' }); sound.tap(); bootIntoApp(); });
+  mount(node);
+}
+
+function renderSignup() {
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Create account</strong><span></span></header>
+      <form class="auth-form" id="form">
+        <input class="ex__input" id="name" placeholder="Your name" autocomplete="name" />
+        <input class="ex__input" id="email" type="email" placeholder="Email" autocomplete="email" autocapitalize="off" spellcheck="false" />
+        <input class="ex__input" id="pw" type="password" placeholder="Password (min 4 characters)" autocomplete="new-password" />
+        <div class="auth-err" id="err" role="alert" hidden></div>
+        <button class="btn btn--primary" id="submit" type="submit">Create account</button>
+      </form>
+      <p class="footnote">Demo: your account and progress are stored only on this device.</p>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderAuthLanding);
+  node.querySelector('#form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = node.querySelector('#err');
+    const res = await Auth.createAccount(node.querySelector('#name').value, node.querySelector('#email').value, node.querySelector('#pw').value);
+    if (res.error) { err.textContent = res.error; err.hidden = false; sound.wrong(); return; }
+    store.ensureProfile(res.account.id, res.account.name, res.account.avatar);
+    Auth.setAuth({ mode: 'account', accountId: res.account.id });
+    sound.reward(); flashToast(`Welcome, ${res.account.name}! 🎉`);
+    bootIntoApp();
+  });
+  mount(node);
+}
+
+function renderLogin() {
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Log in</strong><span></span></header>
+      <form class="auth-form" id="form">
+        <input class="ex__input" id="email" type="email" placeholder="Email" autocomplete="email" autocapitalize="off" spellcheck="false" />
+        <input class="ex__input" id="pw" type="password" placeholder="Password" autocomplete="current-password" />
+        <div class="auth-err" id="err" role="alert" hidden></div>
+        <button class="btn btn--primary" id="submit" type="submit">Log in</button>
+        <button class="btn btn--ghost" id="toCreate" type="button">No account? Create one</button>
+      </form>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderAuthLanding);
+  node.querySelector('#toCreate').addEventListener('click', renderSignup);
+  node.querySelector('#form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = node.querySelector('#err');
+    const res = await Auth.login(node.querySelector('#email').value, node.querySelector('#pw').value);
+    if (res.error) { err.textContent = res.error; err.hidden = false; sound.wrong(); return; }
+    store.ensureProfile(res.account.id, res.account.name, res.account.avatar);
+    Auth.setAuth({ mode: 'account', accountId: res.account.id });
+    sound.reward(); flashToast(`Welcome back, ${res.account.name}!`);
+    bootIntoApp();
+  });
+  mount(node);
 }
 
 async function openLanguage(code) {
@@ -1723,9 +1815,20 @@ function renderSettings() {
   const remOn = Notify.isEnabled(store);
   const remSupported = Notify.supported();
   const remDenied = Notify.permission() === 'denied';
+  const acc = Auth.currentAccount();
+  const accountRow = acc
+    ? `<div class="set-row">
+        <div class="set-row__label"><b>${esc(acc.avatar)} ${esc(acc.name)}</b><small>Signed in · ${esc(acc.email)}</small></div>
+        <button class="btn btn--ghost" id="signOut" style="width:auto;padding:8px 14px">Sign out</button>
+      </div>`
+    : `<div class="set-row">
+        <div class="set-row__label"><b>👤 Guest</b><small>Progress saved on this device only</small></div>
+        <button class="btn btn--ghost" id="createAcc" style="width:auto;padding:8px 14px">Create account</button>
+      </div>`;
   const node = h(`
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Settings</strong><span></span></header>
+      ${accountRow}
       <button class="set-row set-row--btn" id="profBtn" style="width:100%;text-align:left">
         <div class="set-row__label"><b>${esc(prof.avatar)} ${esc(prof.name)}</b><small>Active learner · tap to switch or add</small></div>
         <span class="muted" style="font-size:22px">›</span>
@@ -1785,6 +1888,12 @@ function renderSettings() {
   });
   node.querySelector('#prem').addEventListener('click', renderPremium);
   node.querySelector('#profBtn').addEventListener('click', renderProfiles);
+  const soBtn = node.querySelector('#signOut');
+  if (soBtn) soBtn.addEventListener('click', () => {
+    if (confirm('Sign out? Your progress stays saved on this device.')) { Auth.clearAuth(); renderAuthLanding(); }
+  });
+  const caBtn = node.querySelector('#createAcc');
+  if (caBtn) caBtn.addEventListener('click', renderSignup);
   mount(node);
 }
 

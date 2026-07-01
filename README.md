@@ -95,6 +95,10 @@ for the full explanation. In short:
 - 🛒 **Rewards shop**: spend earned gems on power-ups (⚡ Double XP, ❄️ Streak Freeze, ❤️ Heart Refill) and cosmetics (🐾 SA-animal buddies, 🎨 colour themes)
 
 **Platform**
+- 🔐 **Accounts (demo)** — create an account or log in to save progress, or
+  **"try without an account"** as a guest. Client-side only (no server):
+  credentials live in the browser, passwords are hashed, and each account maps
+  to its own progress profile. A demonstration of the sign-up/login/guest flow.
 - 📶 **Full offline use** via service worker — install to home screen
 - ♿ **Accessibility** — screen-reader announcements for screen changes and
   answer feedback (ARIA live region), focus moved to each screen's heading,
