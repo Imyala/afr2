@@ -66,5 +66,49 @@ store.lang().league.weekKey = '2000-W01'; // force a stale week so rollover sett
 G.ensureWeek(store);
 ok(store.lang().league.tier === 1, 'league promotes when weekly target is met');
 
+// --- living leaderboard ---
+store.reset();
+store.setActiveLang('zu');
+G.ensureWeek(store);
+const board = G.leagueStandings(store);
+ok(board.length === G.LEAGUE_SIZE, 'leaderboard has a full cohort');
+ok(board.filter((r) => r.you).length === 1, 'exactly one "you" in the standings');
+ok(board.every((r, i) => r.rank === i + 1), 'standings are ranked 1..N in order');
+ok(board[0].xp >= board[board.length - 1].xp, 'standings sorted by XP descending');
+// a big XP haul should rank the learner near the top
+store.lang().league.weeklyXp = 99999;
+const top = G.leagueRank(store);
+ok(top.rank === 1 && top.zone === 'up', 'huge weekly XP puts you first, in the promotion zone');
+// no XP at all should leave you in the pack, not crash
+store.lang().league.weeklyXp = 0;
+const r2 = G.leagueRank(store);
+ok(r2.rank >= 1 && r2.rank <= G.LEAGUE_SIZE, 'rank stays within the cohort with zero XP');
+
+// --- learner profiles (shared device) ---
+store.reset();
+store.setActiveLang('zu');
+store.lang().xp = 123;
+store.save();
+ok(store.activeProfile().id === 'default', 'default profile is active to start');
+const newId = store.createProfile('Lerato', '🦁');
+ok(store.activeProfile().id === newId && store.activeProfile().name === 'Lerato', 'new learner becomes active');
+ok(store.state.activeLang === null && store.lang('zu').xp === 0, 'new learner starts with a clean slate');
+ok(store.profiles().length === 2, 'both learners are listed');
+store.switchProfile('default');
+ok(store.activeProfile().id === 'default' && store.lang('zu').xp === 123, 'switching back restores the original learner\'s progress');
+ok(store.deleteProfile(newId) === true && store.profiles().length === 1, 'a learner can be removed');
+ok(store.deleteProfile('default') === false, 'the original learner cannot be deleted');
+
+// --- grammar patterns (spaced like vocab, own map) ---
+store.reset();
+store.setActiveLang('zu');
+ok(store.grammarState('zu-g1') === 'new', 'grammar pattern starts as new');
+const gi = store.grammarItem('zu-g1');
+ok(gi && gi.due != null && gi.seen === 0, 'grammarItem creates a fresh SRS record');
+gi.seen = 3; gi.mastered = true; store.save();
+ok(store.grammarState('zu-g1') === 'mastered', 'grammar state reflects mastery');
+gi.due = Date.now() - 1000;
+ok(store.dueGrammar().includes('zu-g1'), 'dueGrammar surfaces a due, seen pattern');
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

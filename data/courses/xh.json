@@ -13,22 +13,138 @@
           "title": "Greetings",
           "culturalNote": "isiXhosa is famous for its three click sounds: c (dental), x (lateral), and q (palatal). Greet one person with \"Molo\" and a group with \"Molweni\".",
           "vocab": [
-            {"id": "xh-molo", "term": "Molo", "translation": "Hello", "phonetic": "MOH-loh", "note": "to one person"},
-            {"id": "xh-molweni", "term": "Molweni", "translation": "Hello (everyone)", "phonetic": "mohl-WEH-nee", "note": "to a group"},
-            {"id": "xh-unjani", "term": "Unjani?", "translation": "How are you?", "phonetic": "oon-JAH-nee"},
-            {"id": "xh-ndiphilile", "term": "Ndiphilile", "translation": "I am well", "phonetic": "ndee-pee-LEE-leh"},
-            {"id": "xh-wena", "term": "Wena?", "translation": "And you?", "phonetic": "WEH-nah"},
-            {"id": "xh-hambakakuhle", "term": "Hamba kakuhle", "translation": "Go well (goodbye)", "phonetic": "HAM-bah kah-KOO-shleh"},
-            {"id": "xh-salakakuhle", "term": "Sala kakuhle", "translation": "Stay well (goodbye)", "phonetic": "SAH-lah kah-KOO-shleh"}
+            {
+              "id": "xh-molo",
+              "term": "Molo",
+              "translation": "Hello",
+              "phonetic": "MOH-loh",
+              "note": "to one person"
+            },
+            {
+              "id": "xh-molweni",
+              "term": "Molweni",
+              "translation": "Hello (everyone)",
+              "phonetic": "mohl-WEH-nee",
+              "note": "to a group"
+            },
+            {
+              "id": "xh-unjani",
+              "term": "Unjani?",
+              "translation": "How are you?",
+              "phonetic": "oon-JAH-nee"
+            },
+            {
+              "id": "xh-ndiphilile",
+              "term": "Ndiphilile",
+              "translation": "I am well",
+              "phonetic": "ndee-pee-LEE-leh"
+            },
+            {
+              "id": "xh-wena",
+              "term": "Wena?",
+              "translation": "And you?",
+              "phonetic": "WEH-nah"
+            },
+            {
+              "id": "xh-hambakakuhle",
+              "term": "Hamba kakuhle",
+              "translation": "Go well (goodbye)",
+              "phonetic": "HAM-bah kah-KOO-shleh"
+            },
+            {
+              "id": "xh-salakakuhle",
+              "term": "Sala kakuhle",
+              "translation": "Stay well (goodbye)",
+              "phonetic": "SAH-lah kah-KOO-shleh"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["Molo", "Hello"], ["Unjani?", "How are you?"], ["Ndiphilile", "I am well"], ["Wena?", "And you?"]]},
-            {"type": "multiple_choice", "prompt": "\"Molo\" means:", "answer": "Hello", "options": ["Goodbye", "Hello", "Thank you", "Yes"], "vocabId": "xh-molo"},
-            {"type": "multiple_choice", "prompt": "How do you greet a group of people?", "answer": "Molweni", "options": ["Molo", "Molweni", "Wena", "Unjani"], "vocabId": "xh-molweni"},
-            {"type": "translate", "prompt": "I am well", "answer": "Ndiphilile", "accept": ["ndiphilile"], "vocabId": "xh-ndiphilile"},
-            {"type": "fill_blank", "sentence": "____, unjani?", "answer": "Molo", "options": ["Molo", "Hayi", "Enkosi", "Wena"], "meaning": "Hello, how are you?", "vocabId": "xh-molo"},
-            {"type": "listen", "prompt": "Tap what you hear", "answer": "Ndiphilile", "options": ["Ndiphilile", "Molo", "Unjani", "Wena"], "lang": "xh", "vocabId": "xh-ndiphilile"},
-            {"type": "speak", "text": "Ndiphilile, wena?", "meaning": "I am well, and you?", "lang": "xh"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Molo",
+                  "Hello"
+                ],
+                [
+                  "Unjani?",
+                  "How are you?"
+                ],
+                [
+                  "Ndiphilile",
+                  "I am well"
+                ],
+                [
+                  "Wena?",
+                  "And you?"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "\"Molo\" means:",
+              "answer": "Hello",
+              "options": [
+                "Goodbye",
+                "Hello",
+                "Thank you",
+                "Yes"
+              ],
+              "vocabId": "xh-molo"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you greet a group of people?",
+              "answer": "Molweni",
+              "options": [
+                "Molo",
+                "Molweni",
+                "Wena",
+                "Unjani"
+              ],
+              "vocabId": "xh-molweni"
+            },
+            {
+              "type": "translate",
+              "prompt": "I am well",
+              "answer": "Ndiphilile",
+              "accept": [
+                "ndiphilile"
+              ],
+              "vocabId": "xh-ndiphilile"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "____, unjani?",
+              "answer": "Molo",
+              "options": [
+                "Molo",
+                "Hayi",
+                "Enkosi",
+                "Wena"
+              ],
+              "meaning": "Hello, how are you?",
+              "vocabId": "xh-molo"
+            },
+            {
+              "type": "listen",
+              "prompt": "Tap what you hear",
+              "answer": "Ndiphilile",
+              "options": [
+                "Ndiphilile",
+                "Molo",
+                "Unjani",
+                "Wena"
+              ],
+              "lang": "xh",
+              "vocabId": "xh-ndiphilile"
+            },
+            {
+              "type": "speak",
+              "text": "Ndiphilile, wena?",
+              "meaning": "I am well, and you?",
+              "lang": "xh"
+            }
           ]
         },
         {
@@ -36,19 +152,112 @@
           "title": "Yes, No & Politeness",
           "culturalNote": "\"Enkosi\" (thank you) is one of the most important words you'll learn. \"Uxolo\" means both \"sorry\" and \"excuse me\".",
           "vocab": [
-            {"id": "xh-ewe", "term": "Ewe", "translation": "Yes", "phonetic": "EH-weh"},
-            {"id": "xh-hayi", "term": "Hayi", "translation": "No", "phonetic": "HAH-yee"},
-            {"id": "xh-enkosi", "term": "Enkosi", "translation": "Thank you", "phonetic": "en-KOH-see"},
-            {"id": "xh-ndicela", "term": "Ndicela", "translation": "Please / I request", "phonetic": "ndee-CEH-lah"},
-            {"id": "xh-uxolo", "term": "Uxolo", "translation": "Sorry / Excuse me", "phonetic": "oo-KLOH-loh", "note": "'x' is a lateral click"}
+            {
+              "id": "xh-ewe",
+              "term": "Ewe",
+              "translation": "Yes",
+              "phonetic": "EH-weh"
+            },
+            {
+              "id": "xh-hayi",
+              "term": "Hayi",
+              "translation": "No",
+              "phonetic": "HAH-yee"
+            },
+            {
+              "id": "xh-enkosi",
+              "term": "Enkosi",
+              "translation": "Thank you",
+              "phonetic": "en-KOH-see"
+            },
+            {
+              "id": "xh-ndicela",
+              "term": "Ndicela",
+              "translation": "Please / I request",
+              "phonetic": "ndee-CEH-lah"
+            },
+            {
+              "id": "xh-uxolo",
+              "term": "Uxolo",
+              "translation": "Sorry / Excuse me",
+              "phonetic": "oo-KLOH-loh",
+              "note": "'x' is a lateral click"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["Ewe", "Yes"], ["Hayi", "No"], ["Enkosi", "Thank you"], ["Uxolo", "Sorry"]]},
-            {"type": "multiple_choice", "prompt": "How do you say \"thank you\"?", "answer": "Enkosi", "options": ["Ndicela", "Enkosi", "Ewe", "Hayi"], "vocabId": "xh-enkosi"},
-            {"type": "multiple_choice", "prompt": "\"Hayi\" means:", "answer": "No", "options": ["Yes", "No", "Please", "Sorry"], "vocabId": "xh-hayi"},
-            {"type": "translate", "prompt": "Thank you", "answer": "Enkosi", "accept": ["enkosi"], "vocabId": "xh-enkosi"},
-            {"type": "fill_blank", "sentence": "____, ndicela amanzi.", "answer": "Uxolo", "options": ["Uxolo", "Ewe", "Hayi", "Hamba"], "meaning": "Excuse me, may I have water.", "vocabId": "xh-uxolo"},
-            {"type": "speak", "text": "Enkosi kakhulu", "meaning": "Thank you very much", "lang": "xh"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Ewe",
+                  "Yes"
+                ],
+                [
+                  "Hayi",
+                  "No"
+                ],
+                [
+                  "Enkosi",
+                  "Thank you"
+                ],
+                [
+                  "Uxolo",
+                  "Sorry"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say \"thank you\"?",
+              "answer": "Enkosi",
+              "options": [
+                "Ndicela",
+                "Enkosi",
+                "Ewe",
+                "Hayi"
+              ],
+              "vocabId": "xh-enkosi"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "\"Hayi\" means:",
+              "answer": "No",
+              "options": [
+                "Yes",
+                "No",
+                "Please",
+                "Sorry"
+              ],
+              "vocabId": "xh-hayi"
+            },
+            {
+              "type": "translate",
+              "prompt": "Thank you",
+              "answer": "Enkosi",
+              "accept": [
+                "enkosi"
+              ],
+              "vocabId": "xh-enkosi"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "____, ndicela amanzi.",
+              "answer": "Uxolo",
+              "options": [
+                "Uxolo",
+                "Ewe",
+                "Hayi",
+                "Hamba"
+              ],
+              "meaning": "Excuse me, may I have water.",
+              "vocabId": "xh-uxolo"
+            },
+            {
+              "type": "speak",
+              "text": "Enkosi kakhulu",
+              "meaning": "Thank you very much",
+              "lang": "xh"
+            }
           ]
         },
         {
@@ -56,20 +265,119 @@
           "title": "Family & Respect",
           "culturalNote": "As in Zulu, you show respect by addressing elders as \"Tata\" (father) or \"Mama\" (mother). Mandela was affectionately called \"Tata\" by the nation.",
           "vocab": [
-            {"id": "xh-umama", "term": "umama", "translation": "mother", "phonetic": "oo-MAH-mah"},
-            {"id": "xh-utata", "term": "utata", "translation": "father", "phonetic": "oo-TAH-tah"},
-            {"id": "xh-usisi", "term": "usisi", "translation": "sister", "phonetic": "oo-SEE-see"},
-            {"id": "xh-ubhuti", "term": "ubhuti", "translation": "brother", "phonetic": "oo-BOO-tee"},
-            {"id": "xh-umakhulu", "term": "umakhulu", "translation": "grandmother", "phonetic": "oo-mah-KOO-loo"},
-            {"id": "xh-utatomkhulu", "term": "utatomkhulu", "translation": "grandfather", "phonetic": "oo-tah-toh-MKOO-loo"},
-            {"id": "xh-umntwana", "term": "umntwana", "translation": "child", "phonetic": "oom-TWAH-nah"}
+            {
+              "id": "xh-umama",
+              "term": "umama",
+              "translation": "mother",
+              "phonetic": "oo-MAH-mah"
+            },
+            {
+              "id": "xh-utata",
+              "term": "utata",
+              "translation": "father",
+              "phonetic": "oo-TAH-tah"
+            },
+            {
+              "id": "xh-usisi",
+              "term": "usisi",
+              "translation": "sister",
+              "phonetic": "oo-SEE-see"
+            },
+            {
+              "id": "xh-ubhuti",
+              "term": "ubhuti",
+              "translation": "brother",
+              "phonetic": "oo-BOO-tee"
+            },
+            {
+              "id": "xh-umakhulu",
+              "term": "umakhulu",
+              "translation": "grandmother",
+              "phonetic": "oo-mah-KOO-loo"
+            },
+            {
+              "id": "xh-utatomkhulu",
+              "term": "utatomkhulu",
+              "translation": "grandfather",
+              "phonetic": "oo-tah-toh-MKOO-loo"
+            },
+            {
+              "id": "xh-umntwana",
+              "term": "umntwana",
+              "translation": "child",
+              "phonetic": "oom-TWAH-nah"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["umama", "mother"], ["utata", "father"], ["umakhulu", "grandmother"], ["umntwana", "child"]]},
-            {"type": "multiple_choice", "prompt": "How do you respectfully address an older man?", "answer": "Tata", "options": ["Tata", "Sisi", "Umntwana", "Hayi"], "vocabId": "xh-utata"},
-            {"type": "translate", "prompt": "mother", "answer": "umama", "accept": ["umama", "mama"], "vocabId": "xh-umama"},
-            {"type": "fill_blank", "sentence": "Lo ____ uneminyaka emihlanu.", "answer": "mntwana", "options": ["mntwana", "makhulu", "tata", "sisi"], "meaning": "This child is five years old.", "vocabId": "xh-umntwana"},
-            {"type": "listen", "prompt": "Tap what you hear", "answer": "utata", "options": ["utata", "umama", "usisi", "ubhuti"], "lang": "xh", "vocabId": "xh-utata"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "umama",
+                  "mother"
+                ],
+                [
+                  "utata",
+                  "father"
+                ],
+                [
+                  "umakhulu",
+                  "grandmother"
+                ],
+                [
+                  "umntwana",
+                  "child"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you respectfully address an older man?",
+              "answer": "Tata",
+              "options": [
+                "Tata",
+                "Sisi",
+                "Umntwana",
+                "Hayi"
+              ],
+              "vocabId": "xh-utata"
+            },
+            {
+              "type": "translate",
+              "prompt": "mother",
+              "answer": "umama",
+              "accept": [
+                "umama",
+                "mama"
+              ],
+              "vocabId": "xh-umama"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "Lo ____ uneminyaka emihlanu.",
+              "answer": "mntwana",
+              "options": [
+                "mntwana",
+                "makhulu",
+                "tata",
+                "sisi"
+              ],
+              "meaning": "This child is five years old.",
+              "vocabId": "xh-umntwana"
+            },
+            {
+              "type": "listen",
+              "prompt": "Tap what you hear",
+              "answer": "utata",
+              "options": [
+                "utata",
+                "umama",
+                "usisi",
+                "ubhuti"
+              ],
+              "lang": "xh",
+              "vocabId": "xh-utata"
+            }
           ]
         },
         {
@@ -77,20 +385,118 @@
           "title": "Numbers 1–10",
           "culturalNote": "Like Zulu, Xhosa numbers change shape with the noun they count. These are common counting forms used by learners.",
           "vocab": [
-            {"id": "xh-inye", "term": "inye", "translation": "one", "phonetic": "EE-nyeh"},
-            {"id": "xh-isibini", "term": "isibini", "translation": "two", "phonetic": "ee-see-BEE-nee"},
-            {"id": "xh-isithathu", "term": "isithathu", "translation": "three", "phonetic": "ee-see-TAH-too"},
-            {"id": "xh-isine", "term": "isine", "translation": "four", "phonetic": "ee-SEE-neh"},
-            {"id": "xh-isihlanu", "term": "isihlanu", "translation": "five", "phonetic": "ee-see-SHLAH-noo"},
-            {"id": "xh-isithandathu", "term": "isithandathu", "translation": "six", "phonetic": "ee-see-tahn-DAH-too"},
-            {"id": "xh-ishumi", "term": "ishumi", "translation": "ten", "phonetic": "ee-SHOO-mee"}
+            {
+              "id": "xh-inye",
+              "term": "inye",
+              "translation": "one",
+              "phonetic": "EE-nyeh"
+            },
+            {
+              "id": "xh-isibini",
+              "term": "isibini",
+              "translation": "two",
+              "phonetic": "ee-see-BEE-nee"
+            },
+            {
+              "id": "xh-isithathu",
+              "term": "isithathu",
+              "translation": "three",
+              "phonetic": "ee-see-TAH-too"
+            },
+            {
+              "id": "xh-isine",
+              "term": "isine",
+              "translation": "four",
+              "phonetic": "ee-SEE-neh"
+            },
+            {
+              "id": "xh-isihlanu",
+              "term": "isihlanu",
+              "translation": "five",
+              "phonetic": "ee-see-SHLAH-noo"
+            },
+            {
+              "id": "xh-isithandathu",
+              "term": "isithandathu",
+              "translation": "six",
+              "phonetic": "ee-see-tahn-DAH-too"
+            },
+            {
+              "id": "xh-ishumi",
+              "term": "ishumi",
+              "translation": "ten",
+              "phonetic": "ee-SHOO-mee"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["inye", "one"], ["isibini", "two"], ["isithathu", "three"], ["isihlanu", "five"]]},
-            {"type": "multiple_choice", "prompt": "How do you say \"five\"?", "answer": "isihlanu", "options": ["isine", "isihlanu", "isibini", "ishumi"], "vocabId": "xh-isihlanu"},
-            {"type": "translate", "prompt": "three", "answer": "isithathu", "accept": ["isithathu"], "vocabId": "xh-isithathu"},
-            {"type": "fill_blank", "sentence": "Ndicela ii-orenji ezi____.", "answer": "isibini", "options": ["isibini", "inye", "ishumi", "isine"], "meaning": "Please give me two oranges.", "vocabId": "xh-isibini"},
-            {"type": "listen", "prompt": "Tap the number you hear", "answer": "ishumi", "options": ["ishumi", "inye", "isine", "isihlanu"], "lang": "xh", "vocabId": "xh-ishumi"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "inye",
+                  "one"
+                ],
+                [
+                  "isibini",
+                  "two"
+                ],
+                [
+                  "isithathu",
+                  "three"
+                ],
+                [
+                  "isihlanu",
+                  "five"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say \"five\"?",
+              "answer": "isihlanu",
+              "options": [
+                "isine",
+                "isihlanu",
+                "isibini",
+                "ishumi"
+              ],
+              "vocabId": "xh-isihlanu"
+            },
+            {
+              "type": "translate",
+              "prompt": "three",
+              "answer": "isithathu",
+              "accept": [
+                "isithathu"
+              ],
+              "vocabId": "xh-isithathu"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "Ndicela ii-orenji ezi____.",
+              "answer": "isibini",
+              "options": [
+                "isibini",
+                "inye",
+                "ishumi",
+                "isine"
+              ],
+              "meaning": "Please give me two oranges.",
+              "vocabId": "xh-isibini"
+            },
+            {
+              "type": "listen",
+              "prompt": "Tap the number you hear",
+              "answer": "ishumi",
+              "options": [
+                "ishumi",
+                "inye",
+                "isine",
+                "isihlanu"
+              ],
+              "lang": "xh",
+              "vocabId": "xh-ishumi"
+            }
           ]
         },
         {
@@ -98,20 +504,117 @@
           "title": "Food & Drink",
           "culturalNote": "Offering food and drink is a sign of welcome. \"Ndicela amanzi\" (please may I have water) is a polite, useful phrase.",
           "vocab": [
-            {"id": "xh-ukutya", "term": "ukutya", "translation": "food", "phonetic": "oo-KOO-tyah"},
-            {"id": "xh-amanzi", "term": "amanzi", "translation": "water", "phonetic": "ah-MAN-zee"},
-            {"id": "xh-isonka", "term": "isonka", "translation": "bread", "phonetic": "ee-SOHN-kah"},
-            {"id": "xh-ubisi", "term": "ubisi", "translation": "milk", "phonetic": "oo-BEE-see"},
-            {"id": "xh-iti", "term": "iti", "translation": "tea", "phonetic": "EE-tee"},
-            {"id": "xh-inyama", "term": "inyama", "translation": "meat", "phonetic": "in-YAH-mah"}
+            {
+              "id": "xh-ukutya",
+              "term": "ukutya",
+              "translation": "food",
+              "phonetic": "oo-KOO-tyah"
+            },
+            {
+              "id": "xh-amanzi",
+              "term": "amanzi",
+              "translation": "water",
+              "phonetic": "ah-MAN-zee"
+            },
+            {
+              "id": "xh-isonka",
+              "term": "isonka",
+              "translation": "bread",
+              "phonetic": "ee-SOHN-kah"
+            },
+            {
+              "id": "xh-ubisi",
+              "term": "ubisi",
+              "translation": "milk",
+              "phonetic": "oo-BEE-see"
+            },
+            {
+              "id": "xh-iti",
+              "term": "iti",
+              "translation": "tea",
+              "phonetic": "EE-tee"
+            },
+            {
+              "id": "xh-inyama",
+              "term": "inyama",
+              "translation": "meat",
+              "phonetic": "in-YAH-mah"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["amanzi", "water"], ["isonka", "bread"], ["ubisi", "milk"], ["inyama", "meat"]]},
-            {"type": "multiple_choice", "prompt": "How do you say \"water\"?", "answer": "amanzi", "options": ["ubisi", "amanzi", "iti", "ukutya"], "vocabId": "xh-amanzi"},
-            {"type": "multiple_choice", "prompt": "\"ukutya\" means:", "answer": "food", "options": ["food", "drink", "bread", "meat"], "vocabId": "xh-ukutya"},
-            {"type": "translate", "prompt": "water", "answer": "amanzi", "accept": ["amanzi"], "vocabId": "xh-amanzi"},
-            {"type": "fill_blank", "sentence": "Ndicela ____ nesonka.", "answer": "iti", "options": ["iti", "inyama", "amanzi", "umntwana"], "meaning": "Please may I have tea and bread.", "vocabId": "xh-iti"},
-            {"type": "speak", "text": "Ndicela amanzi", "meaning": "Please may I have water", "lang": "xh"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "amanzi",
+                  "water"
+                ],
+                [
+                  "isonka",
+                  "bread"
+                ],
+                [
+                  "ubisi",
+                  "milk"
+                ],
+                [
+                  "inyama",
+                  "meat"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say \"water\"?",
+              "answer": "amanzi",
+              "options": [
+                "ubisi",
+                "amanzi",
+                "iti",
+                "ukutya"
+              ],
+              "vocabId": "xh-amanzi"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "\"ukutya\" means:",
+              "answer": "food",
+              "options": [
+                "food",
+                "drink",
+                "bread",
+                "meat"
+              ],
+              "vocabId": "xh-ukutya"
+            },
+            {
+              "type": "translate",
+              "prompt": "water",
+              "answer": "amanzi",
+              "accept": [
+                "amanzi"
+              ],
+              "vocabId": "xh-amanzi"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "Ndicela ____ nesonka.",
+              "answer": "iti",
+              "options": [
+                "iti",
+                "inyama",
+                "amanzi",
+                "umntwana"
+              ],
+              "meaning": "Please may I have tea and bread.",
+              "vocabId": "xh-iti"
+            },
+            {
+              "type": "speak",
+              "text": "Ndicela amanzi",
+              "meaning": "Please may I have water",
+              "lang": "xh"
+            }
           ]
         },
         {
@@ -119,20 +622,2701 @@
           "title": "Directions",
           "culturalNote": "Begin with \"Uxolo\" (excuse me) when asking for directions. \"Ekunene\" is right and \"ekhohlo\" is left.",
           "vocab": [
-            {"id": "xh-phambili", "term": "phambili", "translation": "forward / ahead", "phonetic": "pam-BEE-lee"},
-            {"id": "xh-emva", "term": "emva", "translation": "behind / back", "phonetic": "EM-vah"},
-            {"id": "xh-ekunene", "term": "ekunene", "translation": "right", "phonetic": "eh-koo-NEH-neh"},
-            {"id": "xh-ekhohlo", "term": "ekhohlo", "translation": "left", "phonetic": "eh-KOH-shloh"},
-            {"id": "xh-apha", "term": "apha", "translation": "here", "phonetic": "AH-pah"},
-            {"id": "xh-kufuphi", "term": "kufuphi", "translation": "near", "phonetic": "koo-FOO-pee"},
-            {"id": "xh-kude", "term": "kude", "translation": "far", "phonetic": "KOO-deh"}
+            {
+              "id": "xh-phambili",
+              "term": "phambili",
+              "translation": "forward / ahead",
+              "phonetic": "pam-BEE-lee"
+            },
+            {
+              "id": "xh-emva",
+              "term": "emva",
+              "translation": "behind / back",
+              "phonetic": "EM-vah"
+            },
+            {
+              "id": "xh-ekunene",
+              "term": "ekunene",
+              "translation": "right",
+              "phonetic": "eh-koo-NEH-neh"
+            },
+            {
+              "id": "xh-ekhohlo",
+              "term": "ekhohlo",
+              "translation": "left",
+              "phonetic": "eh-KOH-shloh"
+            },
+            {
+              "id": "xh-apha",
+              "term": "apha",
+              "translation": "here",
+              "phonetic": "AH-pah"
+            },
+            {
+              "id": "xh-kufuphi",
+              "term": "kufuphi",
+              "translation": "near",
+              "phonetic": "koo-FOO-pee"
+            },
+            {
+              "id": "xh-kude",
+              "term": "kude",
+              "translation": "far",
+              "phonetic": "KOO-deh"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["phambili", "ahead"], ["ekunene", "right"], ["ekhohlo", "left"], ["kude", "far"]]},
-            {"type": "multiple_choice", "prompt": "How do you say \"turn right\"? (right =)", "answer": "ekunene", "options": ["ekhohlo", "ekunene", "phambili", "emva"], "vocabId": "xh-ekunene"},
-            {"type": "multiple_choice", "prompt": "\"kufuphi\" means:", "answer": "near", "options": ["far", "near", "left", "behind"], "vocabId": "xh-kufuphi"},
-            {"type": "translate", "prompt": "here", "answer": "apha", "accept": ["apha"], "vocabId": "xh-apha"},
-            {"type": "fill_blank", "sentence": "Ivenkile i____ kakhulu.", "answer": "kude", "options": ["kude", "kufuphi", "apha", "phambili"], "meaning": "The shop is very far.", "vocabId": "xh-kude"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "phambili",
+                  "ahead"
+                ],
+                [
+                  "ekunene",
+                  "right"
+                ],
+                [
+                  "ekhohlo",
+                  "left"
+                ],
+                [
+                  "kude",
+                  "far"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say \"turn right\"? (right =)",
+              "answer": "ekunene",
+              "options": [
+                "ekhohlo",
+                "ekunene",
+                "phambili",
+                "emva"
+              ],
+              "vocabId": "xh-ekunene"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "\"kufuphi\" means:",
+              "answer": "near",
+              "options": [
+                "far",
+                "near",
+                "left",
+                "behind"
+              ],
+              "vocabId": "xh-kufuphi"
+            },
+            {
+              "type": "translate",
+              "prompt": "here",
+              "answer": "apha",
+              "accept": [
+                "apha"
+              ],
+              "vocabId": "xh-apha"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "Ivenkile i____ kakhulu.",
+              "answer": "kude",
+              "options": [
+                "kude",
+                "kufuphi",
+                "apha",
+                "phambili"
+              ],
+              "meaning": "The shop is very far.",
+              "vocabId": "xh-kude"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can greet people and use basic courtesies (hello, please, thank you, yes/no)."
+    },
+    {
+      "id": "xh-u2",
+      "title": "Unit 2: Conversation",
+      "level": "Basic Conversation",
+      "lessons": [
+        {
+          "id": "xh-u2-l1",
+          "title": "Introducing Yourself",
+          "culturalNote": "Xhosa greetings build trust quickly. 'Igama lam ngu...' means 'My name is...'. 'Ndiyavuya ukukwazi' is 'Nice to meet you'.",
+          "vocab": [
+            {
+              "id": "xh-igamalam",
+              "term": "Igama lam ngu...",
+              "translation": "My name is...",
+              "phonetic": "ee-GAH-mah lahm ngoo"
+            },
+            {
+              "id": "xh-ngubani",
+              "term": "Ngubani igama lakho?",
+              "translation": "What is your name?",
+              "phonetic": "ngoo-BAH-nee ee-GAH-mah LAH-koh"
+            },
+            {
+              "id": "xh-ndiyavuya",
+              "term": "Ndiyavuya ukukwazi",
+              "translation": "Nice to meet you",
+              "phonetic": "ndee-yah-VOO-yah oo-koo-KWAH-zee"
+            },
+            {
+              "id": "xh-uvelaphi",
+              "term": "Uvela phi?",
+              "translation": "Where are you from?",
+              "phonetic": "oo-VEH-lah pee"
+            },
+            {
+              "id": "xh-ndivela",
+              "term": "Ndivela e...",
+              "translation": "I am from...",
+              "phonetic": "ndee-VEH-lah eh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Igama lam ngu...",
+                  "My name is..."
+                ],
+                [
+                  "Ngubani igama lakho?",
+                  "What is your name?"
+                ],
+                [
+                  "Ndiyavuya ukukwazi",
+                  "Nice to meet you"
+                ],
+                [
+                  "Uvela phi?",
+                  "Where are you from?"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“Igama lam ngu...” means:",
+              "answer": "My name is...",
+              "options": [
+                "My name is...",
+                "What is your name?",
+                "Nice to meet you",
+                "Where are you from?"
+              ],
+              "vocabId": "xh-igamalam"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “What is your name?”?",
+              "answer": "Ngubani igama lakho?",
+              "options": [
+                "Ngubani igama lakho?",
+                "Igama lam ngu...",
+                "Ndiyavuya ukukwazi",
+                "Uvela phi?"
+              ],
+              "vocabId": "xh-ngubani"
+            },
+            {
+              "type": "translate",
+              "prompt": "Nice to meet you",
+              "answer": "Ndiyavuya ukukwazi",
+              "accept": [
+                "ndiyavuya ukukwazi"
+              ],
+              "vocabId": "xh-ndiyavuya"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Igama lam nguThandi",
+              "en": "My name is Thandi"
+            },
+            {
+              "t": "Ndivela eKapa",
+              "en": "I am from Cape Town"
+            }
+          ]
+        },
+        {
+          "id": "xh-u2-l2",
+          "title": "At the Shop",
+          "culturalNote": "At the market or spaza, 'Yimalini?' (How much?) and 'Ndicela...' (Please / I request) go a long way.",
+          "vocab": [
+            {
+              "id": "xh-yimalini",
+              "term": "Yimalini?",
+              "translation": "How much is it?",
+              "phonetic": "yee-mah-LEE-nee"
+            },
+            {
+              "id": "xh-ndifuna",
+              "term": "Ndifuna...",
+              "translation": "I want...",
+              "phonetic": "ndee-FOO-nah"
+            },
+            {
+              "id": "xh-imali",
+              "term": "imali",
+              "translation": "money",
+              "phonetic": "ee-MAH-lee"
+            },
+            {
+              "id": "xh-ivenkile",
+              "term": "ivenkile",
+              "translation": "shop",
+              "phonetic": "ee-veh-NKEE-leh"
+            },
+            {
+              "id": "xh-ndicela-u2",
+              "term": "Ndicela...",
+              "translation": "Please / I request",
+              "phonetic": "ndee-CEH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Yimalini?",
+                  "How much is it?"
+                ],
+                [
+                  "Ndifuna...",
+                  "I want..."
+                ],
+                [
+                  "imali",
+                  "money"
+                ],
+                [
+                  "ivenkile",
+                  "shop"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“Yimalini?” means:",
+              "answer": "How much is it?",
+              "options": [
+                "How much is it?",
+                "I want...",
+                "money",
+                "shop"
+              ],
+              "vocabId": "xh-yimalini"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “I want...”?",
+              "answer": "Ndifuna...",
+              "options": [
+                "Ndifuna...",
+                "Yimalini?",
+                "imali",
+                "ivenkile"
+              ],
+              "vocabId": "xh-ndifuna"
+            },
+            {
+              "type": "translate",
+              "prompt": "money",
+              "answer": "imali",
+              "accept": [
+                "imali"
+              ],
+              "vocabId": "xh-imali"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndifuna imali",
+              "en": "I want money"
+            },
+            {
+              "t": "Ndicela imali",
+              "en": "Please, money"
+            }
+          ]
+        },
+        {
+          "id": "xh-u2-l3",
+          "title": "Numbers 1–5",
+          "culturalNote": "Xhosa numbers, like Zulu, change with what you count. These are common forms heard when counting items.",
+          "vocab": [
+            {
+              "id": "xh-inye-u2",
+              "term": "inye",
+              "translation": "one",
+              "phonetic": "EE-nyeh"
+            },
+            {
+              "id": "xh-zimbini",
+              "term": "zimbini",
+              "translation": "two",
+              "phonetic": "zeem-BEE-nee"
+            },
+            {
+              "id": "xh-zintathu",
+              "term": "zintathu",
+              "translation": "three",
+              "phonetic": "zeen-TAH-too"
+            },
+            {
+              "id": "xh-zine",
+              "term": "zine",
+              "translation": "four",
+              "phonetic": "ZEE-neh"
+            },
+            {
+              "id": "xh-zintlanu",
+              "term": "zintlanu",
+              "translation": "five",
+              "phonetic": "zeen-TLAH-noo"
+            },
+            {
+              "id": "xh-ilishumi",
+              "term": "ilishumi",
+              "translation": "ten",
+              "phonetic": "ee-lee-SHOO-mee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "inye",
+                  "one"
+                ],
+                [
+                  "zimbini",
+                  "two"
+                ],
+                [
+                  "zintathu",
+                  "three"
+                ],
+                [
+                  "zine",
+                  "four"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“inye” means:",
+              "answer": "one",
+              "options": [
+                "one",
+                "two",
+                "three",
+                "four"
+              ],
+              "vocabId": "xh-inye-u2"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “two”?",
+              "answer": "zimbini",
+              "options": [
+                "zimbini",
+                "inye",
+                "zintathu",
+                "zine"
+              ],
+              "vocabId": "xh-zimbini"
+            },
+            {
+              "type": "translate",
+              "prompt": "three",
+              "answer": "zintathu",
+              "accept": [
+                "zintathu"
+              ],
+              "vocabId": "xh-zintathu"
+            }
+          ]
+        },
+        {
+          "id": "xh-u2-l4",
+          "title": "Family & Respect",
+          "culturalNote": "Respect for elders is central. Address an older woman as 'mama' and an older man as 'tata', even if they are not your parents.",
+          "vocab": [
+            {
+              "id": "xh-umama-u2",
+              "term": "umama",
+              "translation": "mother",
+              "phonetic": "oo-MAH-mah"
+            },
+            {
+              "id": "xh-utata-u2",
+              "term": "utata",
+              "translation": "father",
+              "phonetic": "oo-TAH-tah"
+            },
+            {
+              "id": "xh-usisi-u2",
+              "term": "usisi",
+              "translation": "sister",
+              "phonetic": "oo-SEE-see"
+            },
+            {
+              "id": "xh-ubhuti-u2",
+              "term": "ubhuti",
+              "translation": "brother",
+              "phonetic": "oo-BOO-tee"
+            },
+            {
+              "id": "xh-umntwana-u2",
+              "term": "umntwana",
+              "translation": "child",
+              "phonetic": "oom-TWAH-nah"
+            },
+            {
+              "id": "xh-umakhulu-u2",
+              "term": "umakhulu",
+              "translation": "grandmother",
+              "phonetic": "oo-mah-KOO-loo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "umama",
+                  "mother"
+                ],
+                [
+                  "utata",
+                  "father"
+                ],
+                [
+                  "usisi",
+                  "sister"
+                ],
+                [
+                  "ubhuti",
+                  "brother"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“umama” means:",
+              "answer": "mother",
+              "options": [
+                "mother",
+                "father",
+                "sister",
+                "brother"
+              ],
+              "vocabId": "xh-umama-u2"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “father”?",
+              "answer": "utata",
+              "options": [
+                "utata",
+                "umama",
+                "usisi",
+                "ubhuti"
+              ],
+              "vocabId": "xh-utata-u2"
+            },
+            {
+              "type": "translate",
+              "prompt": "sister",
+              "answer": "usisi",
+              "accept": [
+                "usisi"
+              ],
+              "vocabId": "xh-usisi-u2"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can introduce myself, say where I'm from, shop, and ask for help."
+    },
+    {
+      "id": "xh-u3",
+      "title": "Unit 3: Everyday Life",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "xh-u3-l1",
+          "title": "Days of the Week",
+          "culturalNote": "The Xhosa week starts with uMvulo (Monday) and ends with iCawa (Sunday, which also means 'church'). Several names build on counting, like Zulu.",
+          "vocab": [
+            {
+              "id": "xh-umvulo",
+              "term": "uMvulo",
+              "translation": "Monday",
+              "phonetic": "oom-VOO-loh"
+            },
+            {
+              "id": "xh-ulwesibini",
+              "term": "uLwesibini",
+              "translation": "Tuesday",
+              "phonetic": "oo-lweh-see-BEE-nee"
+            },
+            {
+              "id": "xh-ulwesithathu",
+              "term": "uLwesithathu",
+              "translation": "Wednesday",
+              "phonetic": "oo-lweh-see-TAH-too"
+            },
+            {
+              "id": "xh-ulwesine",
+              "term": "uLwesine",
+              "translation": "Thursday",
+              "phonetic": "oo-lweh-SEE-neh"
+            },
+            {
+              "id": "xh-ulwesihlanu",
+              "term": "uLwesihlanu",
+              "translation": "Friday",
+              "phonetic": "oo-lweh-see-SHLAH-noo"
+            },
+            {
+              "id": "xh-umgqibelo",
+              "term": "uMgqibelo",
+              "translation": "Saturday",
+              "phonetic": "oom-gee-BEH-loh",
+              "note": "gq is a click consonant"
+            },
+            {
+              "id": "xh-icawa",
+              "term": "iCawa",
+              "translation": "Sunday",
+              "phonetic": "ee-CAH-wah",
+              "note": "also means 'church'"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "uMvulo",
+                  "Monday"
+                ],
+                [
+                  "uLwesibini",
+                  "Tuesday"
+                ],
+                [
+                  "uLwesithathu",
+                  "Wednesday"
+                ],
+                [
+                  "uLwesine",
+                  "Thursday"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“uMvulo” means:",
+              "answer": "Monday",
+              "options": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday"
+              ],
+              "vocabId": "xh-umvulo"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “Tuesday”?",
+              "answer": "uLwesibini",
+              "options": [
+                "uLwesibini",
+                "uMvulo",
+                "uLwesithathu",
+                "uLwesine"
+              ],
+              "vocabId": "xh-ulwesibini"
+            },
+            {
+              "type": "translate",
+              "prompt": "Wednesday",
+              "answer": "uLwesithathu",
+              "accept": [
+                "ulwesithathu"
+              ],
+              "vocabId": "xh-ulwesithathu"
+            }
+          ]
+        },
+        {
+          "id": "xh-u3-l2",
+          "title": "Colours",
+          "culturalNote": "Colour words agree with the noun in Xhosa. 'Luhlaza' covers green and blue; add 'okwengca' (like grass) for green or 'okwesibhakabhaka' (like sky) for blue.",
+          "vocab": [
+            {
+              "id": "xh-bomvu",
+              "term": "bomvu",
+              "translation": "red",
+              "phonetic": "BOM-voo"
+            },
+            {
+              "id": "xh-mhlophe",
+              "term": "mhlophe",
+              "translation": "white",
+              "phonetic": "MSHLOH-peh"
+            },
+            {
+              "id": "xh-mnyama",
+              "term": "mnyama",
+              "translation": "black",
+              "phonetic": "mm-NYAH-mah"
+            },
+            {
+              "id": "xh-luhlaza",
+              "term": "luhlaza",
+              "translation": "green / blue",
+              "phonetic": "loo-SHLAH-zah"
+            },
+            {
+              "id": "xh-mthubi",
+              "term": "mthubi",
+              "translation": "yellow",
+              "phonetic": "mm-TOO-bee"
+            },
+            {
+              "id": "xh-umbala",
+              "term": "umbala",
+              "translation": "colour",
+              "phonetic": "oom-BAH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bomvu",
+                  "red"
+                ],
+                [
+                  "mhlophe",
+                  "white"
+                ],
+                [
+                  "mnyama",
+                  "black"
+                ],
+                [
+                  "luhlaza",
+                  "green / blue"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“bomvu” means:",
+              "answer": "red",
+              "options": [
+                "red",
+                "white",
+                "black",
+                "green / blue"
+              ],
+              "vocabId": "xh-bomvu"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “white”?",
+              "answer": "mhlophe",
+              "options": [
+                "mhlophe",
+                "bomvu",
+                "mnyama",
+                "luhlaza"
+              ],
+              "vocabId": "xh-mhlophe"
+            },
+            {
+              "type": "translate",
+              "prompt": "black",
+              "answer": "mnyama",
+              "accept": [
+                "mnyama"
+              ],
+              "vocabId": "xh-mnyama"
+            }
+          ]
+        },
+        {
+          "id": "xh-u3-l3",
+          "title": "Feelings",
+          "culturalNote": "Say how you feel with 'ndi-' (I). 'Ndilambile' (I'm hungry) and 'ndinxaniwe' (I'm thirsty) are everyday phrases — the 'nx' in nxaniwe is a click.",
+          "vocab": [
+            {
+              "id": "xh-ndonwabile",
+              "term": "ndonwabile",
+              "translation": "I am happy",
+              "phonetic": "ndoh-nwah-BEE-leh"
+            },
+            {
+              "id": "xh-ndidiniwe",
+              "term": "ndidiniwe",
+              "translation": "I am tired",
+              "phonetic": "ndee-dee-NEE-weh"
+            },
+            {
+              "id": "xh-ndilambile",
+              "term": "ndilambile",
+              "translation": "I am hungry",
+              "phonetic": "ndee-lahm-BEE-leh"
+            },
+            {
+              "id": "xh-ndinxaniwe",
+              "term": "ndinxaniwe",
+              "translation": "I am thirsty",
+              "phonetic": "ndee-nxah-NEE-weh",
+              "note": "nx is a click consonant"
+            },
+            {
+              "id": "xh-ndiyabulela",
+              "term": "ndiyabulela",
+              "translation": "I am grateful",
+              "phonetic": "ndee-yah-boo-LEH-lah"
+            },
+            {
+              "id": "xh-ndicaphukile",
+              "term": "ndicaphukile",
+              "translation": "I am angry",
+              "phonetic": "ndee-cah-poo-KEE-leh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ndonwabile",
+                  "I am happy"
+                ],
+                [
+                  "ndidiniwe",
+                  "I am tired"
+                ],
+                [
+                  "ndilambile",
+                  "I am hungry"
+                ],
+                [
+                  "ndinxaniwe",
+                  "I am thirsty"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ndonwabile” means:",
+              "answer": "I am happy",
+              "options": [
+                "I am happy",
+                "I am tired",
+                "I am hungry",
+                "I am thirsty"
+              ],
+              "vocabId": "xh-ndonwabile"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “I am tired”?",
+              "answer": "ndidiniwe",
+              "options": [
+                "ndidiniwe",
+                "ndonwabile",
+                "ndilambile",
+                "ndinxaniwe"
+              ],
+              "vocabId": "xh-ndidiniwe"
+            },
+            {
+              "type": "translate",
+              "prompt": "I am hungry",
+              "answer": "ndilambile",
+              "accept": [
+                "ndilambile"
+              ],
+              "vocabId": "xh-ndilambile"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndilambile kakhulu",
+              "en": "I am very hungry"
+            }
+          ]
+        },
+        {
+          "id": "xh-u3-l4",
+          "title": "The Body",
+          "culturalNote": "Body words show up in greetings about health. Note the classes: 'intloko' (head) and 'isandla' (hand) take different plural forms.",
+          "vocab": [
+            {
+              "id": "xh-intloko",
+              "term": "intloko",
+              "translation": "head",
+              "phonetic": "een-TLOH-koh"
+            },
+            {
+              "id": "xh-isandla",
+              "term": "isandla",
+              "translation": "hand",
+              "phonetic": "ee-SAHN-dlah"
+            },
+            {
+              "id": "xh-unyawo",
+              "term": "unyawo",
+              "translation": "foot",
+              "phonetic": "oon-YAH-woh"
+            },
+            {
+              "id": "xh-amehlo",
+              "term": "amehlo",
+              "translation": "eyes",
+              "phonetic": "ah-MEH-shloh"
+            },
+            {
+              "id": "xh-indlebe",
+              "term": "indlebe",
+              "translation": "ear",
+              "phonetic": "een-DLEH-beh"
+            },
+            {
+              "id": "xh-umlomo",
+              "term": "umlomo",
+              "translation": "mouth",
+              "phonetic": "oom-LOH-moh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "intloko",
+                  "head"
+                ],
+                [
+                  "isandla",
+                  "hand"
+                ],
+                [
+                  "unyawo",
+                  "foot"
+                ],
+                [
+                  "amehlo",
+                  "eyes"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“intloko” means:",
+              "answer": "head",
+              "options": [
+                "head",
+                "hand",
+                "foot",
+                "eyes"
+              ],
+              "vocabId": "xh-intloko"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hand”?",
+              "answer": "isandla",
+              "options": [
+                "isandla",
+                "intloko",
+                "unyawo",
+                "amehlo"
+              ],
+              "vocabId": "xh-isandla"
+            },
+            {
+              "type": "translate",
+              "prompt": "foot",
+              "answer": "unyawo",
+              "accept": [
+                "unyawo"
+              ],
+              "vocabId": "xh-unyawo"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can talk about days, colours, weather, feelings and the body."
+    },
+    {
+      "id": "xh-u4",
+      "title": "Unit 4: Out & About",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u4-l1",
+          "title": "Time & Routine",
+          "culturalNote": "Mark the day with 'kusasa' (morning) and 'ebusuku' (night). 'Namhlanje' (today), 'izolo' (yesterday) and 'ngomso' (tomorrow) anchor any plan.",
+          "vocab": [
+            {
+              "id": "xh-namhlanje",
+              "term": "namhlanje",
+              "translation": "today",
+              "phonetic": "nahm-HLAHN-jeh"
+            },
+            {
+              "id": "xh-izolo",
+              "term": "izolo",
+              "translation": "yesterday",
+              "phonetic": "ee-ZOH-loh"
+            },
+            {
+              "id": "xh-ngomso",
+              "term": "ngomso",
+              "translation": "tomorrow",
+              "phonetic": "ngoh-MSOH"
+            },
+            {
+              "id": "xh-ngoku",
+              "term": "ngoku",
+              "translation": "now",
+              "phonetic": "NGOH-koo"
+            },
+            {
+              "id": "xh-kusasa",
+              "term": "kusasa",
+              "translation": "in the morning",
+              "phonetic": "koo-SAH-sah"
+            },
+            {
+              "id": "xh-ebusuku",
+              "term": "ebusuku",
+              "translation": "at night",
+              "phonetic": "eh-boo-SOO-koo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "namhlanje",
+                  "today"
+                ],
+                [
+                  "izolo",
+                  "yesterday"
+                ],
+                [
+                  "ngomso",
+                  "tomorrow"
+                ],
+                [
+                  "ngoku",
+                  "now"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“namhlanje” means:",
+              "answer": "today",
+              "options": [
+                "today",
+                "yesterday",
+                "tomorrow",
+                "now"
+              ],
+              "vocabId": "xh-namhlanje"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “yesterday”?",
+              "answer": "izolo",
+              "options": [
+                "izolo",
+                "namhlanje",
+                "ngomso",
+                "ngoku"
+              ],
+              "vocabId": "xh-izolo"
+            },
+            {
+              "type": "translate",
+              "prompt": "tomorrow",
+              "answer": "ngomso",
+              "accept": [
+                "ngomso"
+              ],
+              "vocabId": "xh-ngomso"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndifika ngomso",
+              "en": "I arrive tomorrow"
+            }
+          ]
+        },
+        {
+          "id": "xh-u4-l2",
+          "title": "Animals",
+          "culturalNote": "Animals feature in Xhosa praise poetry (izibongo). 'Inkomo' (cattle) carries cultural weight in ceremonies, much as in Zulu.",
+          "vocab": [
+            {
+              "id": "xh-inja",
+              "term": "inja",
+              "translation": "dog",
+              "phonetic": "EEN-jah"
+            },
+            {
+              "id": "xh-ikati",
+              "term": "ikati",
+              "translation": "cat",
+              "phonetic": "ee-KAH-tee"
+            },
+            {
+              "id": "xh-inkomo",
+              "term": "inkomo",
+              "translation": "cow",
+              "phonetic": "een-KOH-moh"
+            },
+            {
+              "id": "xh-ihashe",
+              "term": "ihashe",
+              "translation": "horse",
+              "phonetic": "ee-HAH-sheh"
+            },
+            {
+              "id": "xh-inkukhu",
+              "term": "inkukhu",
+              "translation": "chicken",
+              "phonetic": "een-KOO-khoo"
+            },
+            {
+              "id": "xh-intaka",
+              "term": "intaka",
+              "translation": "bird",
+              "phonetic": "een-TAH-kah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "inja",
+                  "dog"
+                ],
+                [
+                  "ikati",
+                  "cat"
+                ],
+                [
+                  "inkomo",
+                  "cow"
+                ],
+                [
+                  "ihashe",
+                  "horse"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“inja” means:",
+              "answer": "dog",
+              "options": [
+                "dog",
+                "cat",
+                "cow",
+                "horse"
+              ],
+              "vocabId": "xh-inja"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cat”?",
+              "answer": "ikati",
+              "options": [
+                "ikati",
+                "inja",
+                "inkomo",
+                "ihashe"
+              ],
+              "vocabId": "xh-ikati"
+            },
+            {
+              "type": "translate",
+              "prompt": "cow",
+              "answer": "inkomo",
+              "accept": [
+                "inkomo"
+              ],
+              "vocabId": "xh-inkomo"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndibona inja",
+              "en": "I see a dog"
+            }
+          ]
+        },
+        {
+          "id": "xh-u4-l3",
+          "title": "Around Town",
+          "culturalNote": "Find your way by asking 'Iphi...?' (Where is...?). 'Isikolo' (school) and 'isibhedlele' (hospital) are good landmarks to know.",
+          "vocab": [
+            {
+              "id": "xh-isikolo",
+              "term": "isikolo",
+              "translation": "school",
+              "phonetic": "ee-see-KOH-loh"
+            },
+            {
+              "id": "xh-isibhedlele",
+              "term": "isibhedlele",
+              "translation": "hospital",
+              "phonetic": "ee-see-bheh-DLEH-leh"
+            },
+            {
+              "id": "xh-ibhanki",
+              "term": "ibhanki",
+              "translation": "bank",
+              "phonetic": "ee-BAHN-kee"
+            },
+            {
+              "id": "xh-indlu",
+              "term": "indlu",
+              "translation": "house",
+              "phonetic": "EEN-dloo"
+            },
+            {
+              "id": "xh-isitalato",
+              "term": "isitalato",
+              "translation": "street",
+              "phonetic": "ee-see-tah-LAH-toh"
+            },
+            {
+              "id": "xh-isikhululo",
+              "term": "isikhululo",
+              "translation": "station",
+              "phonetic": "ee-see-koo-LOO-loh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "isikolo",
+                  "school"
+                ],
+                [
+                  "isibhedlele",
+                  "hospital"
+                ],
+                [
+                  "ibhanki",
+                  "bank"
+                ],
+                [
+                  "indlu",
+                  "house"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“isikolo” means:",
+              "answer": "school",
+              "options": [
+                "school",
+                "hospital",
+                "bank",
+                "house"
+              ],
+              "vocabId": "xh-isikolo"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hospital”?",
+              "answer": "isibhedlele",
+              "options": [
+                "isibhedlele",
+                "isikolo",
+                "ibhanki",
+                "indlu"
+              ],
+              "vocabId": "xh-isibhedlele"
+            },
+            {
+              "type": "translate",
+              "prompt": "bank",
+              "answer": "ibhanki",
+              "accept": [
+                "ibhanki"
+              ],
+              "vocabId": "xh-ibhanki"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Iphi isikolo",
+              "en": "Where is the school?"
+            }
+          ]
+        },
+        {
+          "id": "xh-u4-l4",
+          "title": "Numbers 6–10",
+          "culturalNote": "Higher numbers in Xhosa get longer: 'isithandathu' (six), 'isixhenxe' (seven). The 'x' in isixhenxe is a lateral click.",
+          "vocab": [
+            {
+              "id": "xh-isithandathu-u4",
+              "term": "isithandathu",
+              "translation": "six",
+              "phonetic": "ee-see-tahn-DAH-too"
+            },
+            {
+              "id": "xh-isixhenxe",
+              "term": "isixhenxe",
+              "translation": "seven",
+              "phonetic": "ee-see-KHEN-kheh",
+              "note": "x is a click consonant"
+            },
+            {
+              "id": "xh-isibhozo",
+              "term": "isibhozo",
+              "translation": "eight",
+              "phonetic": "ee-see-BHOH-zoh"
+            },
+            {
+              "id": "xh-ithoba",
+              "term": "ithoba",
+              "translation": "nine",
+              "phonetic": "ee-TOH-bah"
+            },
+            {
+              "id": "xh-inani",
+              "term": "inani",
+              "translation": "number",
+              "phonetic": "ee-NAH-nee"
+            },
+            {
+              "id": "xh-ukubala",
+              "term": "ukubala",
+              "translation": "to count",
+              "phonetic": "oo-koo-BAH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "isithandathu",
+                  "six"
+                ],
+                [
+                  "isixhenxe",
+                  "seven"
+                ],
+                [
+                  "isibhozo",
+                  "eight"
+                ],
+                [
+                  "ithoba",
+                  "nine"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“isithandathu” means:",
+              "answer": "six",
+              "options": [
+                "six",
+                "seven",
+                "eight",
+                "nine"
+              ],
+              "vocabId": "xh-isithandathu-u4"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “seven”?",
+              "answer": "isixhenxe",
+              "options": [
+                "isixhenxe",
+                "isithandathu",
+                "isibhozo",
+                "ithoba"
+              ],
+              "vocabId": "xh-isixhenxe"
+            },
+            {
+              "type": "translate",
+              "prompt": "eight",
+              "answer": "isibhozo",
+              "accept": [
+                "isibhozo"
+              ],
+              "vocabId": "xh-isibhozo"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can talk about time, animals, places in town, and getting help."
+    },
+    {
+      "id": "xh-u5",
+      "title": "Unit 5: Home & Community",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u5-l1",
+          "title": "In the Home",
+          "culturalNote": "'Ikhaya' (home) means family and belonging in Xhosa culture. Learn the rooms and furniture to talk about daily life.",
+          "vocab": [
+            {
+              "id": "xh-ikhaya",
+              "term": "ikhaya",
+              "translation": "home",
+              "phonetic": "ee-KAH-yah"
+            },
+            {
+              "id": "xh-umnyango",
+              "term": "umnyango",
+              "translation": "door",
+              "phonetic": "oom-NYAH-ngoh"
+            },
+            {
+              "id": "xh-ifestile",
+              "term": "ifestile",
+              "translation": "window",
+              "phonetic": "ee-feh-STEE-leh"
+            },
+            {
+              "id": "xh-umbhede",
+              "term": "umbhede",
+              "translation": "bed",
+              "phonetic": "oom-BEH-deh"
+            },
+            {
+              "id": "xh-itafile",
+              "term": "itafile",
+              "translation": "table",
+              "phonetic": "ee-tah-FEE-leh"
+            },
+            {
+              "id": "xh-isitulo",
+              "term": "isitulo",
+              "translation": "chair",
+              "phonetic": "ee-see-TOO-loh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ikhaya",
+                  "home"
+                ],
+                [
+                  "umnyango",
+                  "door"
+                ],
+                [
+                  "ifestile",
+                  "window"
+                ],
+                [
+                  "umbhede",
+                  "bed"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ikhaya” means:",
+              "answer": "home",
+              "options": [
+                "home",
+                "door",
+                "window",
+                "bed"
+              ],
+              "vocabId": "xh-ikhaya"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “door”?",
+              "answer": "umnyango",
+              "options": [
+                "umnyango",
+                "ikhaya",
+                "ifestile",
+                "umbhede"
+              ],
+              "vocabId": "xh-umnyango"
+            },
+            {
+              "type": "translate",
+              "prompt": "window",
+              "answer": "ifestile",
+              "accept": [
+                "ifestile"
+              ],
+              "vocabId": "xh-ifestile"
+            }
+          ]
+        },
+        {
+          "id": "xh-u5-l2",
+          "title": "Clothing",
+          "culturalNote": "Everyday clothes: 'ihempe' (shirt), 'izihlangu' (shoes). 'Umnqwazi' (hat) has a click — the 'nq'.",
+          "vocab": [
+            {
+              "id": "xh-ihempe",
+              "term": "ihempe",
+              "translation": "shirt",
+              "phonetic": "ee-HEM-peh"
+            },
+            {
+              "id": "xh-ibhulukhwe",
+              "term": "ibhulukhwe",
+              "translation": "trousers",
+              "phonetic": "ee-boo-LOO-khweh"
+            },
+            {
+              "id": "xh-izihlangu",
+              "term": "izihlangu",
+              "translation": "shoes",
+              "phonetic": "ee-zee-HLAHN-goo"
+            },
+            {
+              "id": "xh-umnqwazi",
+              "term": "umnqwazi",
+              "translation": "hat",
+              "phonetic": "oom-NQWAH-zee",
+              "note": "nq is a click consonant"
+            },
+            {
+              "id": "xh-ilokhwe",
+              "term": "ilokhwe",
+              "translation": "dress",
+              "phonetic": "ee-LOH-khweh"
+            },
+            {
+              "id": "xh-idyasi",
+              "term": "idyasi",
+              "translation": "jacket",
+              "phonetic": "ee-DYAH-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ihempe",
+                  "shirt"
+                ],
+                [
+                  "ibhulukhwe",
+                  "trousers"
+                ],
+                [
+                  "izihlangu",
+                  "shoes"
+                ],
+                [
+                  "umnqwazi",
+                  "hat"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ihempe” means:",
+              "answer": "shirt",
+              "options": [
+                "shirt",
+                "trousers",
+                "shoes",
+                "hat"
+              ],
+              "vocabId": "xh-ihempe"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “trousers”?",
+              "answer": "ibhulukhwe",
+              "options": [
+                "ibhulukhwe",
+                "ihempe",
+                "izihlangu",
+                "umnqwazi"
+              ],
+              "vocabId": "xh-ibhulukhwe"
+            },
+            {
+              "type": "translate",
+              "prompt": "shoes",
+              "answer": "izihlangu",
+              "accept": [
+                "izihlangu"
+              ],
+              "vocabId": "xh-izihlangu"
+            }
+          ]
+        },
+        {
+          "id": "xh-u5-l3",
+          "title": "Nature & Places",
+          "culturalNote": "From 'intaba' (mountain) to 'ulwandle' (sea), the Eastern Cape is full of natural beauty. 'Idolophu' (town) and 'ifama' (farm) name where people live.",
+          "vocab": [
+            {
+              "id": "xh-intaba",
+              "term": "intaba",
+              "translation": "mountain",
+              "phonetic": "een-TAH-bah"
+            },
+            {
+              "id": "xh-umlambo",
+              "term": "umlambo",
+              "translation": "river",
+              "phonetic": "oom-LAHM-boh"
+            },
+            {
+              "id": "xh-ulwandle",
+              "term": "ulwandle",
+              "translation": "sea",
+              "phonetic": "ool-WAHN-dleh"
+            },
+            {
+              "id": "xh-umthi",
+              "term": "umthi",
+              "translation": "tree",
+              "phonetic": "oom-TEE"
+            },
+            {
+              "id": "xh-idolophu",
+              "term": "idolophu",
+              "translation": "town",
+              "phonetic": "ee-doh-LOH-poo"
+            },
+            {
+              "id": "xh-ifama",
+              "term": "ifama",
+              "translation": "farm",
+              "phonetic": "ee-FAH-mah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "intaba",
+                  "mountain"
+                ],
+                [
+                  "umlambo",
+                  "river"
+                ],
+                [
+                  "ulwandle",
+                  "sea"
+                ],
+                [
+                  "umthi",
+                  "tree"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“intaba” means:",
+              "answer": "mountain",
+              "options": [
+                "mountain",
+                "river",
+                "sea",
+                "tree"
+              ],
+              "vocabId": "xh-intaba"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “river”?",
+              "answer": "umlambo",
+              "options": [
+                "umlambo",
+                "intaba",
+                "ulwandle",
+                "umthi"
+              ],
+              "vocabId": "xh-umlambo"
+            },
+            {
+              "type": "translate",
+              "prompt": "sea",
+              "answer": "ulwandle",
+              "accept": [
+                "ulwandle"
+              ],
+              "vocabId": "xh-ulwandle"
+            }
+          ]
+        },
+        {
+          "id": "xh-u5-l4",
+          "title": "Question Words",
+          "culturalNote": "Ask away: 'Ngubani?' (Who?), 'Yintoni?' (What?), 'Phi?' (Where?). These open up real conversation.",
+          "vocab": [
+            {
+              "id": "xh-ngubani-u5",
+              "term": "ngubani",
+              "translation": "who",
+              "phonetic": "ngoo-BAH-nee"
+            },
+            {
+              "id": "xh-yintoni",
+              "term": "yintoni",
+              "translation": "what",
+              "phonetic": "yeen-TOH-nee"
+            },
+            {
+              "id": "xh-phi",
+              "term": "phi",
+              "translation": "where",
+              "phonetic": "pee"
+            },
+            {
+              "id": "xh-nini",
+              "term": "nini",
+              "translation": "when",
+              "phonetic": "NEE-nee"
+            },
+            {
+              "id": "xh-kutheni",
+              "term": "kutheni",
+              "translation": "why",
+              "phonetic": "koo-TEH-nee"
+            },
+            {
+              "id": "xh-njani",
+              "term": "njani",
+              "translation": "how",
+              "phonetic": "NJAH-nee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ngubani",
+                  "who"
+                ],
+                [
+                  "yintoni",
+                  "what"
+                ],
+                [
+                  "phi",
+                  "where"
+                ],
+                [
+                  "nini",
+                  "when"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ngubani” means:",
+              "answer": "who",
+              "options": [
+                "who",
+                "what",
+                "where",
+                "when"
+              ],
+              "vocabId": "xh-ngubani-u5"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “what”?",
+              "answer": "yintoni",
+              "options": [
+                "yintoni",
+                "ngubani",
+                "phi",
+                "nini"
+              ],
+              "vocabId": "xh-yintoni"
+            },
+            {
+              "type": "translate",
+              "prompt": "where",
+              "answer": "phi",
+              "accept": [
+                "phi"
+              ],
+              "vocabId": "xh-phi"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can describe my home, clothing and surroundings, and ask questions."
+    },
+    {
+      "id": "xh-u6",
+      "title": "Unit 6: Saying More",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u6-l1",
+          "title": "Action Verbs",
+          "culturalNote": "Useful 'uku-' verbs. 'Ukunceda' (to help) has a click — the 'nc'. Pair verbs with 'ndi-' to say what you do.",
+          "vocab": [
+            {
+              "id": "xh-ukuthanda",
+              "term": "ukuthanda",
+              "translation": "to love / like",
+              "phonetic": "oo-koo-TAHN-dah"
+            },
+            {
+              "id": "xh-ukufuna",
+              "term": "ukufuna",
+              "translation": "to want",
+              "phonetic": "oo-koo-FOO-nah"
+            },
+            {
+              "id": "xh-ukwazi",
+              "term": "ukwazi",
+              "translation": "to know",
+              "phonetic": "oo-KWAH-zee"
+            },
+            {
+              "id": "xh-ukunika",
+              "term": "ukunika",
+              "translation": "to give",
+              "phonetic": "oo-koo-NEE-kah"
+            },
+            {
+              "id": "xh-ukuthenga",
+              "term": "ukuthenga",
+              "translation": "to buy",
+              "phonetic": "oo-koo-TEHN-gah"
+            },
+            {
+              "id": "xh-ukunceda",
+              "term": "ukunceda",
+              "translation": "to help",
+              "phonetic": "oo-koo-NCEH-dah",
+              "note": "nc is a click consonant"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ukuthanda",
+                  "to love / like"
+                ],
+                [
+                  "ukufuna",
+                  "to want"
+                ],
+                [
+                  "ukwazi",
+                  "to know"
+                ],
+                [
+                  "ukunika",
+                  "to give"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ukuthanda” means:",
+              "answer": "to love / like",
+              "options": [
+                "to love / like",
+                "to want",
+                "to know",
+                "to give"
+              ],
+              "vocabId": "xh-ukuthanda"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to want”?",
+              "answer": "ukufuna",
+              "options": [
+                "ukufuna",
+                "ukuthanda",
+                "ukwazi",
+                "ukunika"
+              ],
+              "vocabId": "xh-ukufuna"
+            },
+            {
+              "type": "translate",
+              "prompt": "to know",
+              "answer": "ukwazi",
+              "accept": [
+                "ukwazi"
+              ],
+              "vocabId": "xh-ukwazi"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndithanda ukutya",
+              "en": "I like food"
+            }
+          ]
+        },
+        {
+          "id": "xh-u6-l2",
+          "title": "Fruit & Veg",
+          "culturalNote": "Market staples: 'iapile' (apple), 'ibhanana' (banana), 'iorenji' (orange). 'Imifuno' means vegetables.",
+          "vocab": [
+            {
+              "id": "xh-iapile",
+              "term": "iapile",
+              "translation": "apple",
+              "phonetic": "ee-AH-pee-leh"
+            },
+            {
+              "id": "xh-ibhanana",
+              "term": "ibhanana",
+              "translation": "banana",
+              "phonetic": "ee-BAH-nah-nah"
+            },
+            {
+              "id": "xh-iorenji",
+              "term": "iorenji",
+              "translation": "orange",
+              "phonetic": "ee-oh-REN-jee"
+            },
+            {
+              "id": "xh-itapile",
+              "term": "itapile",
+              "translation": "potato",
+              "phonetic": "ee-tah-PEE-leh"
+            },
+            {
+              "id": "xh-itswele",
+              "term": "itswele",
+              "translation": "onion",
+              "phonetic": "ee-TSWEH-leh"
+            },
+            {
+              "id": "xh-imifuno",
+              "term": "imifuno",
+              "translation": "vegetables",
+              "phonetic": "ee-mee-FOO-noh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "iapile",
+                  "apple"
+                ],
+                [
+                  "ibhanana",
+                  "banana"
+                ],
+                [
+                  "iorenji",
+                  "orange"
+                ],
+                [
+                  "itapile",
+                  "potato"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“iapile” means:",
+              "answer": "apple",
+              "options": [
+                "apple",
+                "banana",
+                "orange",
+                "potato"
+              ],
+              "vocabId": "xh-iapile"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “banana”?",
+              "answer": "ibhanana",
+              "options": [
+                "ibhanana",
+                "iapile",
+                "iorenji",
+                "itapile"
+              ],
+              "vocabId": "xh-ibhanana"
+            },
+            {
+              "type": "translate",
+              "prompt": "orange",
+              "answer": "iorenji",
+              "accept": [
+                "iorenji"
+              ],
+              "vocabId": "xh-iorenji"
+            }
+          ]
+        },
+        {
+          "id": "xh-u6-l3",
+          "title": "In the Kitchen",
+          "culturalNote": "Table words: 'ipleyiti' (plate), 'ikomityi' (cup), 'icephe' (spoon — the 'c' is a click). 'Ityuwa' is salt; 'iswekile' is sugar.",
+          "vocab": [
+            {
+              "id": "xh-ipleyiti",
+              "term": "ipleyiti",
+              "translation": "plate",
+              "phonetic": "ee-PLEH-yee-tee"
+            },
+            {
+              "id": "xh-ikomityi",
+              "term": "ikomityi",
+              "translation": "cup",
+              "phonetic": "ee-koh-MEE-tyee"
+            },
+            {
+              "id": "xh-imela",
+              "term": "imela",
+              "translation": "knife",
+              "phonetic": "ee-MEH-lah"
+            },
+            {
+              "id": "xh-icephe",
+              "term": "icephe",
+              "translation": "spoon",
+              "phonetic": "ee-CEH-peh",
+              "note": "c is a click consonant"
+            },
+            {
+              "id": "xh-ityuwa",
+              "term": "ityuwa",
+              "translation": "salt",
+              "phonetic": "ee-TYOO-wah"
+            },
+            {
+              "id": "xh-iswekile",
+              "term": "iswekile",
+              "translation": "sugar",
+              "phonetic": "ee-sweh-KEE-leh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ipleyiti",
+                  "plate"
+                ],
+                [
+                  "ikomityi",
+                  "cup"
+                ],
+                [
+                  "imela",
+                  "knife"
+                ],
+                [
+                  "icephe",
+                  "spoon"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ipleyiti” means:",
+              "answer": "plate",
+              "options": [
+                "plate",
+                "cup",
+                "knife",
+                "spoon"
+              ],
+              "vocabId": "xh-ipleyiti"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cup”?",
+              "answer": "ikomityi",
+              "options": [
+                "ikomityi",
+                "ipleyiti",
+                "imela",
+                "icephe"
+              ],
+              "vocabId": "xh-ikomityi"
+            },
+            {
+              "type": "translate",
+              "prompt": "knife",
+              "answer": "imela",
+              "accept": [
+                "imela"
+              ],
+              "vocabId": "xh-imela"
+            }
+          ]
+        },
+        {
+          "id": "xh-u6-l4",
+          "title": "Bigger Numbers",
+          "culturalNote": "Beyond ten: 'amashumi amabini' (twenty), 'ikhulu' (hundred), 'iwaka' (thousand).",
+          "vocab": [
+            {
+              "id": "xh-ishumi-u6",
+              "term": "ishumi",
+              "translation": "ten",
+              "phonetic": "ee-SHOO-mee"
+            },
+            {
+              "id": "xh-amashumiamabini",
+              "term": "amashumi amabini",
+              "translation": "twenty",
+              "phonetic": "ah-MAH-shoo-mee ah-mah-BEE-nee"
+            },
+            {
+              "id": "xh-ikhulu",
+              "term": "ikhulu",
+              "translation": "hundred",
+              "phonetic": "ee-KOO-loo"
+            },
+            {
+              "id": "xh-iwaka",
+              "term": "iwaka",
+              "translation": "thousand",
+              "phonetic": "ee-WAH-kah"
+            },
+            {
+              "id": "xh-ininzi",
+              "term": "ininzi",
+              "translation": "many",
+              "phonetic": "ee-NEEN-zee"
+            },
+            {
+              "id": "xh-amashumiamathathu",
+              "term": "amashumi amathathu",
+              "translation": "thirty",
+              "phonetic": "ah-MAH-shoo-mee ah-mah-TAH-too"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ishumi",
+                  "ten"
+                ],
+                [
+                  "amashumi amabini",
+                  "twenty"
+                ],
+                [
+                  "ikhulu",
+                  "hundred"
+                ],
+                [
+                  "iwaka",
+                  "thousand"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ishumi” means:",
+              "answer": "ten",
+              "options": [
+                "ten",
+                "twenty",
+                "hundred",
+                "thousand"
+              ],
+              "vocabId": "xh-ishumi-u6"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “twenty”?",
+              "answer": "amashumi amabini",
+              "options": [
+                "amashumi amabini",
+                "ishumi",
+                "ikhulu",
+                "iwaka"
+              ],
+              "vocabId": "xh-amashumiamabini"
+            },
+            {
+              "type": "translate",
+              "prompt": "hundred",
+              "answer": "ikhulu",
+              "accept": [
+                "ikhulu"
+              ],
+              "vocabId": "xh-ikhulu"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can use action verbs, name food and kitchen items, and count higher."
+    },
+    {
+      "id": "xh-u7",
+      "title": "Unit 7: Getting Around & People",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u7-l1",
+          "title": "Transport",
+          "culturalNote": "On the move: 'imoto' (car), 'ibhasi' (bus), 'uloliwe' (train). 'Inqwelomoya' (airplane) has the 'nq' click.",
+          "vocab": [
+            {
+              "id": "xh-imoto",
+              "term": "imoto",
+              "translation": "car",
+              "phonetic": "ee-MOH-toh"
+            },
+            {
+              "id": "xh-ibhasi",
+              "term": "ibhasi",
+              "translation": "bus",
+              "phonetic": "ee-BAH-see"
+            },
+            {
+              "id": "xh-uloliwe",
+              "term": "uloliwe",
+              "translation": "train",
+              "phonetic": "oo-loh-LEE-weh"
+            },
+            {
+              "id": "xh-ibhayisekile",
+              "term": "ibhayisekile",
+              "translation": "bicycle",
+              "phonetic": "ee-bah-yee-seh-KEE-leh"
+            },
+            {
+              "id": "xh-inqwelomoya",
+              "term": "inqwelomoya",
+              "translation": "airplane",
+              "phonetic": "een-qweh-loh-MOH-yah",
+              "note": "nq is a click consonant"
+            },
+            {
+              "id": "xh-isikhephe",
+              "term": "isikhephe",
+              "translation": "boat",
+              "phonetic": "ee-see-KEH-peh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "imoto",
+                  "car"
+                ],
+                [
+                  "ibhasi",
+                  "bus"
+                ],
+                [
+                  "uloliwe",
+                  "train"
+                ],
+                [
+                  "ibhayisekile",
+                  "bicycle"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“imoto” means:",
+              "answer": "car",
+              "options": [
+                "car",
+                "bus",
+                "train",
+                "bicycle"
+              ],
+              "vocabId": "xh-imoto"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “bus”?",
+              "answer": "ibhasi",
+              "options": [
+                "ibhasi",
+                "imoto",
+                "uloliwe",
+                "ibhayisekile"
+              ],
+              "vocabId": "xh-ibhasi"
+            },
+            {
+              "type": "translate",
+              "prompt": "train",
+              "answer": "uloliwe",
+              "accept": [
+                "uloliwe"
+              ],
+              "vocabId": "xh-uloliwe"
+            }
+          ]
+        },
+        {
+          "id": "xh-u7-l2",
+          "title": "People & Family",
+          "culturalNote": "The wider family: 'umhlobo' (friend), 'umalume' (uncle), 'umzala' (cousin). 'Umyeni' is husband; 'inkosikazi' is wife.",
+          "vocab": [
+            {
+              "id": "xh-umhlobo",
+              "term": "umhlobo",
+              "translation": "friend",
+              "phonetic": "oom-HLOH-boh"
+            },
+            {
+              "id": "xh-usana",
+              "term": "usana",
+              "translation": "baby",
+              "phonetic": "oo-SAH-nah"
+            },
+            {
+              "id": "xh-umyeni",
+              "term": "umyeni",
+              "translation": "husband",
+              "phonetic": "oom-YEH-nee"
+            },
+            {
+              "id": "xh-inkosikazi",
+              "term": "inkosikazi",
+              "translation": "wife",
+              "phonetic": "een-koh-see-KAH-zee"
+            },
+            {
+              "id": "xh-umalume",
+              "term": "umalume",
+              "translation": "uncle",
+              "phonetic": "oo-mah-LOO-meh"
+            },
+            {
+              "id": "xh-umzala",
+              "term": "umzala",
+              "translation": "cousin",
+              "phonetic": "oom-ZAH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "umhlobo",
+                  "friend"
+                ],
+                [
+                  "usana",
+                  "baby"
+                ],
+                [
+                  "umyeni",
+                  "husband"
+                ],
+                [
+                  "inkosikazi",
+                  "wife"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“umhlobo” means:",
+              "answer": "friend",
+              "options": [
+                "friend",
+                "baby",
+                "husband",
+                "wife"
+              ],
+              "vocabId": "xh-umhlobo"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “baby”?",
+              "answer": "usana",
+              "options": [
+                "usana",
+                "umhlobo",
+                "umyeni",
+                "inkosikazi"
+              ],
+              "vocabId": "xh-usana"
+            },
+            {
+              "type": "translate",
+              "prompt": "husband",
+              "answer": "umyeni",
+              "accept": [
+                "umyeni"
+              ],
+              "vocabId": "xh-umyeni"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Umhlobo wam",
+              "en": "My friend"
+            }
+          ]
+        },
+        {
+          "id": "xh-u7-l3",
+          "title": "Sports & Fun",
+          "culturalNote": "'Ibhola' (soccer/ball) and 'umculo' (music) are loved across the Eastern Cape. 'Ukudlala' is to play; 'ukucula' is to sing.",
+          "vocab": [
+            {
+              "id": "xh-ibhola",
+              "term": "ibhola",
+              "translation": "ball / soccer",
+              "phonetic": "ee-BOH-lah"
+            },
+            {
+              "id": "xh-ukudlala",
+              "term": "ukudlala",
+              "translation": "to play",
+              "phonetic": "oo-koo-DLAH-lah"
+            },
+            {
+              "id": "xh-ukubaleka",
+              "term": "ukubaleka",
+              "translation": "to run",
+              "phonetic": "oo-koo-bah-LEH-kah"
+            },
+            {
+              "id": "xh-ukucula",
+              "term": "ukucula",
+              "translation": "to sing",
+              "phonetic": "oo-koo-COO-lah"
+            },
+            {
+              "id": "xh-ukudanisa",
+              "term": "ukudanisa",
+              "translation": "to dance",
+              "phonetic": "oo-koo-dah-NEE-sah"
+            },
+            {
+              "id": "xh-umculo",
+              "term": "umculo",
+              "translation": "music",
+              "phonetic": "oom-COO-loh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ibhola",
+                  "ball / soccer"
+                ],
+                [
+                  "ukudlala",
+                  "to play"
+                ],
+                [
+                  "ukubaleka",
+                  "to run"
+                ],
+                [
+                  "ukucula",
+                  "to sing"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ibhola” means:",
+              "answer": "ball / soccer",
+              "options": [
+                "ball / soccer",
+                "to play",
+                "to run",
+                "to sing"
+              ],
+              "vocabId": "xh-ibhola"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to play”?",
+              "answer": "ukudlala",
+              "options": [
+                "ukudlala",
+                "ibhola",
+                "ukubaleka",
+                "ukucula"
+              ],
+              "vocabId": "xh-ukudlala"
+            },
+            {
+              "type": "translate",
+              "prompt": "to run",
+              "answer": "ukubaleka",
+              "accept": [
+                "ukubaleka"
+              ],
+              "vocabId": "xh-ukubaleka"
+            }
+          ]
+        },
+        {
+          "id": "xh-u7-l4",
+          "title": "Helpful Phrases",
+          "culturalNote": "Smooth any moment: 'Andiqondi' (I don't understand), 'Ndiyaxolisa' (I'm sorry), 'Ndicela uncede' (Please help me).",
+          "vocab": [
+            {
+              "id": "xh-ndiyaxolisa",
+              "term": "ndiyaxolisa",
+              "translation": "I'm sorry",
+              "phonetic": "ndee-yah-koh-LEE-sah"
+            },
+            {
+              "id": "xh-akukhongxaki",
+              "term": "akukho ngxaki",
+              "translation": "no problem",
+              "phonetic": "ah-koo-koh NGXAH-kee",
+              "note": "ngx is a click consonant"
+            },
+            {
+              "id": "xh-andiqondi",
+              "term": "andiqondi",
+              "translation": "I don't understand",
+              "phonetic": "ahn-dee-QOHN-dee"
+            },
+            {
+              "id": "xh-kancinci",
+              "term": "kancinci",
+              "translation": "slowly / a little",
+              "phonetic": "kahn-CEEN-cee"
+            },
+            {
+              "id": "xh-ndicelauncede",
+              "term": "ndicela uncede",
+              "translation": "please help me",
+              "phonetic": "ndee-CEH-lah oon-CEH-deh"
+            },
+            {
+              "id": "xh-uthethaisingesi",
+              "term": "uthetha isiNgesi?",
+              "translation": "do you speak English?",
+              "phonetic": "oo-TEH-tah ee-see-NGEH-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ndiyaxolisa",
+                  "I'm sorry"
+                ],
+                [
+                  "akukho ngxaki",
+                  "no problem"
+                ],
+                [
+                  "andiqondi",
+                  "I don't understand"
+                ],
+                [
+                  "kancinci",
+                  "slowly / a little"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ndiyaxolisa” means:",
+              "answer": "I'm sorry",
+              "options": [
+                "I'm sorry",
+                "no problem",
+                "I don't understand",
+                "slowly / a little"
+              ],
+              "vocabId": "xh-ndiyaxolisa"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “no problem”?",
+              "answer": "akukho ngxaki",
+              "options": [
+                "akukho ngxaki",
+                "ndiyaxolisa",
+                "andiqondi",
+                "kancinci"
+              ],
+              "vocabId": "xh-akukhongxaki"
+            },
+            {
+              "type": "translate",
+              "prompt": "I don't understand",
+              "answer": "andiqondi",
+              "accept": [
+                "andiqondi"
+              ],
+              "vocabId": "xh-andiqondi"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can talk about transport, people and sport, and use helpful phrases."
+    },
+    {
+      "id": "xh-u8",
+      "title": "Unit 8: Connecting Words",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "xh-u8-l1",
+          "title": "Joining ideas",
+          "culturalNote": "Link your sentences: 'Ndilambile kodwa ndiphilile' (I'm hungry but I'm well).",
+          "vocab": [
+            {
+              "id": "xh-kodwa",
+              "term": "kodwa",
+              "translation": "but",
+              "phonetic": "KOH-dwah"
+            },
+            {
+              "id": "xh-kwaye",
+              "term": "kwaye",
+              "translation": "and",
+              "phonetic": "KWAH-yeh"
+            },
+            {
+              "id": "xh-okanye",
+              "term": "okanye",
+              "translation": "or",
+              "phonetic": "oh-KAH-nyeh"
+            },
+            {
+              "id": "xh-kuba",
+              "term": "kuba",
+              "translation": "because",
+              "phonetic": "KOO-bah"
+            },
+            {
+              "id": "xh-kakhulu",
+              "term": "kakhulu",
+              "translation": "very / a lot",
+              "phonetic": "kah-KOO-loo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kodwa",
+                  "but"
+                ],
+                [
+                  "kwaye",
+                  "and"
+                ],
+                [
+                  "okanye",
+                  "or"
+                ],
+                [
+                  "kuba",
+                  "because"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kodwa” means:",
+              "answer": "but",
+              "options": [
+                "but",
+                "and",
+                "or",
+                "because"
+              ],
+              "vocabId": "xh-kodwa"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “and”?",
+              "answer": "kwaye",
+              "options": [
+                "kwaye",
+                "kodwa",
+                "okanye",
+                "kuba"
+              ],
+              "vocabId": "xh-kwaye"
+            },
+            {
+              "type": "translate",
+              "prompt": "or",
+              "answer": "okanye",
+              "accept": [
+                "okanye"
+              ],
+              "vocabId": "xh-okanye"
+            }
           ]
         }
       ]
@@ -145,16 +3329,348 @@
       "level": "Beginner",
       "intro": "Two friends greet each other. Tap any line to hear it.",
       "lines": [
-        {"t": "Molo, igama lam nguLindiwe.", "en": "Hello, my name is Lindiwe."},
-        {"t": "Molo Lindiwe. Igama lam nguAyanda.", "en": "Hello Lindiwe. My name is Ayanda."},
-        {"t": "Unjani namhlanje?", "en": "How are you today?"},
-        {"t": "Ndiphilile, enkosi. Wena?", "en": "I am well, thank you. And you?"},
-        {"t": "Nam ndiphilile. Hamba kakuhle!", "en": "I am also well. Go well!"}
+        {
+          "t": "Molo, igama lam nguLindiwe.",
+          "en": "Hello, my name is Lindiwe."
+        },
+        {
+          "t": "Molo Lindiwe. Igama lam nguAyanda.",
+          "en": "Hello Lindiwe. My name is Ayanda."
+        },
+        {
+          "t": "Unjani namhlanje?",
+          "en": "How are you today?"
+        },
+        {
+          "t": "Ndiphilile, enkosi. Wena?",
+          "en": "I am well, thank you. And you?"
+        },
+        {
+          "t": "Nam ndiphilile. Hamba kakuhle!",
+          "en": "I am also well. Go well!"
+        }
       ],
       "questions": [
-        {"type": "multiple_choice", "prompt": "What is the girl's name?", "answer": "Lindiwe", "options": ["Lindiwe", "Ayanda", "Nandi", "Mama"]},
-        {"type": "multiple_choice", "prompt": "How does Ayanda feel?", "answer": "Well", "options": ["Well", "Tired", "Sad", "Lost"]},
-        {"type": "translate", "prompt": "Thank you", "answer": "Enkosi", "accept": ["enkosi"], "vocabId": "xh-enkosi"}
+        {
+          "type": "multiple_choice",
+          "prompt": "What is the girl's name?",
+          "answer": "Lindiwe",
+          "options": [
+            "Lindiwe",
+            "Ayanda",
+            "Nandi",
+            "Mama"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "How does Ayanda feel?",
+          "answer": "Well",
+          "options": [
+            "Well",
+            "Tired",
+            "Sad",
+            "Lost"
+          ]
+        },
+        {
+          "type": "translate",
+          "prompt": "Thank you",
+          "answer": "Enkosi",
+          "accept": [
+            "enkosi"
+          ],
+          "vocabId": "xh-enkosi"
+        }
+      ]
+    },
+    {
+      "id": "xh-r2",
+      "title": "Molo, Thandi!",
+      "level": "Basic Conversation",
+      "intro": "Two friends greet each other. Tap any line to hear it.",
+      "lines": [
+        {
+          "t": "Molo, igama lam nguThandi.",
+          "en": "Hello, my name is Thandi."
+        },
+        {
+          "t": "Molo Thandi. Igama lam nguSabelo.",
+          "en": "Hello Thandi. My name is Sabelo."
+        },
+        {
+          "t": "Unjani?",
+          "en": "How are you?"
+        },
+        {
+          "t": "Ndiphilile, enkosi. Wena?",
+          "en": "I am well, thank you. And you?"
+        },
+        {
+          "t": "Nam ndiphilile. Sala kakuhle!",
+          "en": "I am also well. Stay well!"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "prompt": "What is the girl's name?",
+          "answer": "Thandi",
+          "options": [
+            "Thandi",
+            "Sabelo",
+            "Nandi",
+            "Mama"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "How does Thandi feel?",
+          "answer": "Well",
+          "options": [
+            "Well",
+            "Tired",
+            "Hungry",
+            "Lost"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "“Sala kakuhle” means:",
+          "answer": "Stay well",
+          "options": [
+            "Stay well",
+            "Hello",
+            "Thank you",
+            "How are you?"
+          ]
+        }
+      ]
+    }
+  ],
+  "grammar": [
+    {
+      "id": "xh-g1",
+      "title": "Saying I, you, we",
+      "level": "Beginner",
+      "tip": "Xhosa verbs begin with a subject prefix: ndi- (I), u- (you), si- (we), ba- (they). From -philile (be well): ndiphilile (I'm well), uphilile (you're well), siphilile (we're well).",
+      "drills": [
+        {
+          "prompt": "I am well",
+          "answer": "Ndiphilile",
+          "options": [
+            "Ndiphilile",
+            "Uphilile",
+            "Siphilile",
+            "Baphilile"
+          ]
+        },
+        {
+          "prompt": "You are well",
+          "answer": "Uphilile",
+          "options": [
+            "Ndiphilile",
+            "Uphilile",
+            "Siphilile",
+            "Baphilile"
+          ]
+        },
+        {
+          "prompt": "We are well",
+          "answer": "Siphilile",
+          "options": [
+            "Ndiphilile",
+            "Uphilile",
+            "Siphilile",
+            "Baphilile"
+          ]
+        },
+        {
+          "prompt": "We are hungry",
+          "answer": "Silambile",
+          "options": [
+            "Ndilambile",
+            "Silambile",
+            "Ulambile",
+            "Balambile"
+          ]
+        },
+        {
+          "prompt": "You are hungry",
+          "answer": "Ulambile",
+          "options": [
+            "Ndilambile",
+            "Silambile",
+            "Ulambile",
+            "Balambile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-g2",
+      "title": "One and many (plurals)",
+      "level": "Beginner",
+      "tip": "Xhosa nouns change prefix for the plural: um- becomes aba-, isi- becomes izi-, in- becomes izin-.",
+      "drills": [
+        {
+          "prompt": "inja (dog) → dogs",
+          "answer": "izinja",
+          "options": [
+            "izinja",
+            "abanja",
+            "iminja",
+            "amanja"
+          ]
+        },
+        {
+          "prompt": "isikolo (school) → schools",
+          "answer": "izikolo",
+          "options": [
+            "izikolo",
+            "abasikolo",
+            "imikolo",
+            "amasikolo"
+          ]
+        },
+        {
+          "prompt": "indlu (house) → houses",
+          "answer": "izindlu",
+          "options": [
+            "izindlu",
+            "amandlu",
+            "abandlu",
+            "imindlu"
+          ]
+        },
+        {
+          "prompt": "umfundi (student) → students",
+          "answer": "abafundi",
+          "options": [
+            "abafundi",
+            "imifundi",
+            "izifundi",
+            "amafundi"
+          ]
+        }
+      ]
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "xh-d1",
+      "title": "Greeting a friend",
+      "goal": "Greet and introduce yourself",
+      "level": "Beginner",
+      "turns": [
+        {
+          "speaker": "npc",
+          "name": "Thandi",
+          "t": "Molo!",
+          "en": "Hello!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Greet back",
+          "options": [
+            {
+              "t": "Molo!",
+              "en": "Hello!",
+              "ok": true
+            },
+            {
+              "t": "Ewe",
+              "en": "Yes",
+              "ok": false
+            },
+            {
+              "t": "Hayi",
+              "en": "No",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Thandi",
+          "t": "Unjani?",
+          "en": "How are you?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say you're well and ask back",
+          "options": [
+            {
+              "t": "Ndiphilile, wena?",
+              "en": "I'm well, and you?",
+              "ok": true
+            },
+            {
+              "t": "Yimalini?",
+              "en": "How much?",
+              "ok": false
+            },
+            {
+              "t": "Ndilambile",
+              "en": "I'm hungry",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Thandi",
+          "t": "Ndiphilile. Ngubani igama lakho?",
+          "en": "I'm well. What's your name?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say your name",
+          "options": [
+            {
+              "t": "Igama lam nguSipho",
+              "en": "My name is Sipho",
+              "ok": true
+            },
+            {
+              "t": "Ndivela eKapa",
+              "en": "I'm from Cape Town",
+              "ok": false
+            },
+            {
+              "t": "Enkosi",
+              "en": "Thank you",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Thandi",
+          "t": "Ndiyavuya ukukwazi!",
+          "en": "Nice to meet you!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say goodbye",
+          "options": [
+            {
+              "t": "Sala kakuhle!",
+              "en": "Stay well (goodbye)!",
+              "ok": true
+            },
+            {
+              "t": "Molo",
+              "en": "Hello",
+              "ok": false
+            },
+            {
+              "t": "Ndilambile",
+              "en": "I'm hungry",
+              "ok": false
+            }
+          ]
+        }
       ]
     }
   ]
