@@ -4128,5 +4128,239 @@
         }
       ]
     }
+  ],
+  "dialogues": [
+    {
+      "id": "zu-d1",
+      "title": "At the spaza shop",
+      "goal": "Buy bread and ask the price",
+      "level": "Beginner",
+      "turns": [
+        {
+          "speaker": "npc",
+          "name": "Shopkeeper",
+          "t": "Sawubona!",
+          "en": "Hello!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Greet back",
+          "options": [
+            {
+              "t": "Sawubona!",
+              "en": "Hello!",
+              "ok": true
+            },
+            {
+              "t": "Hamba kahle",
+              "en": "Goodbye",
+              "ok": false
+            },
+            {
+              "t": "Cha",
+              "en": "No",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Shopkeeper",
+          "t": "Ufunani?",
+          "en": "What do you want?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say you want bread",
+          "options": [
+            {
+              "t": "Ngicela isinkwa",
+              "en": "Please, bread",
+              "ok": true
+            },
+            {
+              "t": "Ngicela amanzi",
+              "en": "Please, water",
+              "ok": false
+            },
+            {
+              "t": "Ngiyabonga",
+              "en": "Thank you",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Shopkeeper",
+          "t": "Yebo.",
+          "en": "Yes."
+        },
+        {
+          "speaker": "you",
+          "prompt": "Ask the price",
+          "options": [
+            {
+              "t": "Yimalini?",
+              "en": "How much is it?",
+              "ok": true
+            },
+            {
+              "t": "Uvelaphi?",
+              "en": "Where are you from?",
+              "ok": false
+            },
+            {
+              "t": "Unjani?",
+              "en": "How are you?",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Shopkeeper",
+          "t": "Amarandi amahlanu.",
+          "en": "Five rand."
+        },
+        {
+          "speaker": "you",
+          "prompt": "Thank them and say goodbye",
+          "options": [
+            {
+              "t": "Ngiyabonga, hamba kahle!",
+              "en": "Thank you, goodbye!",
+              "ok": true
+            },
+            {
+              "t": "Ngilambile",
+              "en": "I'm hungry",
+              "ok": false
+            },
+            {
+              "t": "Ngicela usizo",
+              "en": "I need help",
+              "ok": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-d2",
+      "title": "Meeting a friend",
+      "goal": "Greet and introduce yourself",
+      "level": "Beginner",
+      "turns": [
+        {
+          "speaker": "npc",
+          "name": "Nandi",
+          "t": "Sawubona!",
+          "en": "Hello!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Greet back",
+          "options": [
+            {
+              "t": "Sawubona!",
+              "en": "Hello!",
+              "ok": true
+            },
+            {
+              "t": "Yebo",
+              "en": "Yes",
+              "ok": false
+            },
+            {
+              "t": "Kude",
+              "en": "Far",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Nandi",
+          "t": "Unjani?",
+          "en": "How are you?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say you're well and ask back",
+          "options": [
+            {
+              "t": "Ngiyaphila, wena?",
+              "en": "I'm well, and you?",
+              "ok": true
+            },
+            {
+              "t": "Yimalini?",
+              "en": "How much?",
+              "ok": false
+            },
+            {
+              "t": "Cha",
+              "en": "No",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Nandi",
+          "t": "Nami ngiyaphila. Ngubani igama lakho?",
+          "en": "I'm also well. What's your name?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say your name",
+          "options": [
+            {
+              "t": "Igama lami nguThabo",
+              "en": "My name is Thabo",
+              "ok": true
+            },
+            {
+              "t": "Ngivela eGoli",
+              "en": "I'm from Joburg",
+              "ok": false
+            },
+            {
+              "t": "Ngiyabonga",
+              "en": "Thank you",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Nandi",
+          "t": "Ngijabulele ukukwazi!",
+          "en": "Nice to meet you!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say goodbye",
+          "options": [
+            {
+              "t": "Sala kahle!",
+              "en": "Stay well (goodbye)!",
+              "ok": true
+            },
+            {
+              "t": "Sawubona",
+              "en": "Hello",
+              "ok": false
+            },
+            {
+              "t": "Ngilambile",
+              "en": "I'm hungry",
+              "ok": false
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

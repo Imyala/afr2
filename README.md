@@ -57,6 +57,9 @@ for the full explanation. In short:
   (subject prefixes, plurals, invariant Afrikaans verbs…) with generative
   drills, so learners can build their own sentences, not just recall words.
   Patterns are spaced like vocabulary. (Community-reviewed content.)
+- 💬 **Task-based conversations** — branching real-life dialogues (spaza shop,
+  meeting a friend) where the other person speaks and you choose how to reply;
+  builds communicative ability and feeds the review schedule
 - 🎤 **Speaking** (shadow & self-record) and 👂 **Listening** (audio-first
   comprehension) practice modes — output and input for all four skills
 - 📒 **Searchable glossary** — browse every word with phonetics and mastery

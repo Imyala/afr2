@@ -3395,5 +3395,123 @@
         }
       ]
     }
+  ],
+  "dialogues": [
+    {
+      "id": "af-d1",
+      "title": "At the shop",
+      "goal": "Buy bread and ask the price",
+      "level": "Beginner",
+      "turns": [
+        {
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Hallo!",
+          "en": "Hello!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Greet back",
+          "options": [
+            {
+              "t": "Hallo!",
+              "en": "Hello!",
+              "ok": true
+            },
+            {
+              "t": "Totsiens",
+              "en": "Goodbye",
+              "ok": false
+            },
+            {
+              "t": "Nee",
+              "en": "No",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Hoe kan ek help?",
+          "en": "How can I help?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say you want bread",
+          "options": [
+            {
+              "t": "Ek wil brood hê",
+              "en": "I want bread",
+              "ok": true
+            },
+            {
+              "t": "Ek wil water hê",
+              "en": "I want water",
+              "ok": false
+            },
+            {
+              "t": "Dankie",
+              "en": "Thank you",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Ja. Nog iets?",
+          "en": "Yes. Anything else?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Ask the price",
+          "options": [
+            {
+              "t": "Hoeveel kos dit?",
+              "en": "How much does it cost?",
+              "ok": true
+            },
+            {
+              "t": "Waarvandaan kom jy?",
+              "en": "Where are you from?",
+              "ok": false
+            },
+            {
+              "t": "Hoe gaan dit?",
+              "en": "How are you?",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Vyf rand.",
+          "en": "Five rand."
+        },
+        {
+          "speaker": "you",
+          "prompt": "Thank them and say goodbye",
+          "options": [
+            {
+              "t": "Dankie, totsiens!",
+              "en": "Thank you, goodbye!",
+              "ok": true
+            },
+            {
+              "t": "Ek is honger",
+              "en": "I'm hungry",
+              "ok": false
+            },
+            {
+              "t": "Help my",
+              "en": "Help me",
+              "ok": false
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

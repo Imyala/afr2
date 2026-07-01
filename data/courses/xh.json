@@ -3431,5 +3431,123 @@
         }
       ]
     }
+  ],
+  "dialogues": [
+    {
+      "id": "xh-d1",
+      "title": "Greeting a friend",
+      "goal": "Greet and introduce yourself",
+      "level": "Beginner",
+      "turns": [
+        {
+          "speaker": "npc",
+          "name": "Thandi",
+          "t": "Molo!",
+          "en": "Hello!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Greet back",
+          "options": [
+            {
+              "t": "Molo!",
+              "en": "Hello!",
+              "ok": true
+            },
+            {
+              "t": "Ewe",
+              "en": "Yes",
+              "ok": false
+            },
+            {
+              "t": "Hayi",
+              "en": "No",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Thandi",
+          "t": "Unjani?",
+          "en": "How are you?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say you're well and ask back",
+          "options": [
+            {
+              "t": "Ndiphilile, wena?",
+              "en": "I'm well, and you?",
+              "ok": true
+            },
+            {
+              "t": "Yimalini?",
+              "en": "How much?",
+              "ok": false
+            },
+            {
+              "t": "Ndilambile",
+              "en": "I'm hungry",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Thandi",
+          "t": "Ndiphilile. Ngubani igama lakho?",
+          "en": "I'm well. What's your name?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say your name",
+          "options": [
+            {
+              "t": "Igama lam nguSipho",
+              "en": "My name is Sipho",
+              "ok": true
+            },
+            {
+              "t": "Ndivela eKapa",
+              "en": "I'm from Cape Town",
+              "ok": false
+            },
+            {
+              "t": "Enkosi",
+              "en": "Thank you",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Thandi",
+          "t": "Ndiyavuya ukukwazi!",
+          "en": "Nice to meet you!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say goodbye",
+          "options": [
+            {
+              "t": "Sala kakuhle!",
+              "en": "Stay well (goodbye)!",
+              "ok": true
+            },
+            {
+              "t": "Molo",
+              "en": "Hello",
+              "ok": false
+            },
+            {
+              "t": "Ndilambile",
+              "en": "I'm hungry",
+              "ok": false
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

@@ -382,6 +382,10 @@ function renderHome() {
         👂 <span class="muted">Listening —</span> <b>understand it by ear</b> →
       </button>
 
+      ${(course.dialogues || []).length ? `<button class="wotd-strip" id="dialogueBtn">
+        💬 <span class="muted">Conversations —</span> <b>practise real-life chats</b> →
+      </button>` : ''}
+
       ${(course.grammar || []).length ? `<button class="wotd-strip" id="grammarBtn">
         🧩 <span class="muted">Grammar —</span> <b>learn the patterns to build sentences</b> →
       </button>` : ''}
@@ -405,6 +409,7 @@ function renderHome() {
   node.querySelector('#speakBtn').addEventListener('click', startSpeaking);
   node.querySelector('#listenBtn').addEventListener('click', startListening);
   const gb = node.querySelector('#grammarBtn'); if (gb) gb.addEventListener('click', renderGrammar);
+  const db = node.querySelector('#dialogueBtn'); if (db) db.addEventListener('click', renderDialogues);
   node.querySelector('#shopNav').addEventListener('click', renderShop);
   node.querySelector('#questsBtn').addEventListener('click', renderQuests);
   node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
@@ -785,6 +790,129 @@ function renderListeningDone() {
       <div class="onb__art">${mascotSvg('cheer', { size: 110 })}</div>
       <h1>Listening practice done!</h1>
       <p class="muted">You understood ${done} from sound. Training your ear is how real comprehension grows.</p>
+      <button class="btn btn--primary" id="doneBtn">Continue</button>
+    </div>`);
+  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  mount(node);
+}
+
+// ---------- task-based dialogues (communicative practice) ----------
+// Real scenarios (spaza shop, meeting a friend): the NPC speaks, the learner
+// chooses an appropriate reply. Turns vocabulary into communicative ability,
+// and the lines feed the review schedule (input-first). Offline & branching.
+function renderDialogues() {
+  const dias = course.dialogues || [];
+  const L = store.lang();
+  const rows = dias.map((d) => {
+    const done = (L.completedDialogues || []).includes(d.id);
+    return `<button class="story ${done ? 'story--done' : ''}" data-d="${esc(d.id)}">
+        <span class="story__icon">${done ? '✅' : '💬'}</span>
+        <div class="story__body"><strong>${esc(d.title)}</strong><span class="muted">🎯 ${esc(d.goal)}</span></div>
+      </button>`;
+  }).join('');
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Conversations</strong><span></span></header>
+      <p class="muted">Practise real conversations. The other person speaks — you choose how to reply.</p>
+      <div class="stories">${rows || '<p class="muted">Conversations coming soon for this language.</p>'}</div>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelectorAll('[data-d]').forEach((b) => b.addEventListener('click', () => startDialogue(b.dataset.d)));
+  mount(node);
+}
+
+let dlg = null;
+function startDialogue(id) {
+  const d = (course.dialogues || []).find((x) => x.id === id);
+  if (!d) return renderDialogues();
+  dlg = { d, idx: 0, log: [], mistakes: 0 };
+  advanceDialogueNpc();
+  renderDialogue();
+}
+function advanceDialogueNpc() {
+  const turns = dlg.d.turns;
+  while (dlg.idx < turns.length && turns[dlg.idx].speaker === 'npc') {
+    const t = turns[dlg.idx];
+    dlg.log.push({ who: 'npc', name: t.name || '', t: t.t, en: t.en });
+    dlg.idx += 1;
+  }
+}
+function renderDialogue() {
+  const d = dlg.d;
+  const done = dlg.idx >= d.turns.length;
+  const cur = done ? null : d.turns[dlg.idx];
+  const shown = cur ? shuffle(cur.options.slice()) : [];
+  const bubbles = dlg.log.map((m) => `
+    <div class="dbubble dbubble--${m.who}">
+      ${m.who === 'npc' && m.name ? `<span class="dbubble__name">${esc(m.name)}</span>` : ''}
+      <button class="dbubble__t" data-hear="${esc(m.t)}">${esc(m.t)} 🔊</button>
+      <span class="dbubble__en">${esc(m.en)}</span>
+    </div>`).join('');
+  const opts = shown.map((o, i) => `<button class="opt dopt" data-i="${i}"><b>${esc(o.t)}</b><span class="opt__en muted">${esc(o.en)}</span></button>`).join('');
+  const foot = done
+    ? '<button class="btn btn--primary" id="finishBtn">✓ Conversation complete</button>'
+    : `<p class="ex__hint muted">${esc(cur.prompt || 'Your turn — choose a reply:')}</p><div class="opts dlg-opts">${opts}</div>`;
+  const node = h(`
+    <div class="screen ex">
+      <header class="ex__top">
+        <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
+        <div class="dlg-goal">🎯 ${esc(d.goal)}</div>
+      </header>
+      <div class="dchat">${bubbles}</div>
+      <div class="ex__foot" id="foot">${foot}</div>
+    </div>`);
+  node.querySelector('#quitBtn').addEventListener('click', () => { dlg = null; renderDialogues(); });
+  node.querySelectorAll('[data-hear]').forEach((b) => b.addEventListener('click', () => tryHear(b.dataset.hear, course.code)));
+  // autoplay the most recent NPC line
+  const lastNpc = [...dlg.log].reverse().find((m) => m.who === 'npc');
+  if (lastNpc) speak(lastNpc.t, course.code);
+  if (cur) {
+    node.querySelectorAll('.dopt').forEach((b) => b.addEventListener('click', () => {
+      const choice = shown[b.dataset.i];
+      if (choice.ok) {
+        sound.correct(); haptic(12);
+        dlg.log.push({ who: 'you', name: '', t: choice.t, en: choice.en });
+        dlg.idx += 1;
+        advanceDialogueNpc();
+        renderDialogue();
+      } else {
+        dlg.mistakes += 1;
+        sound.wrong(); haptic([10, 40, 10]);
+        b.classList.add('opt--bad'); b.disabled = true;
+        flashToast('Not quite — try a different reply.');
+      }
+    }));
+  }
+  const fin = node.querySelector('#finishBtn');
+  if (fin) fin.addEventListener('click', finishDialogue);
+  mount(node);
+}
+function finishDialogue() {
+  const d = dlg.d;
+  const L = store.lang();
+  if (!(L.completedDialogues || (L.completedDialogues = [])).includes(d.id)) L.completedDialogues.push(d.id);
+  // input-first: seed the conversation's vocabulary into the review schedule
+  const idx = vocabIndex(course);
+  const byTerm = {}; for (const v of Object.values(idx)) byTerm[normalize(v.term)] = v.id;
+  const text = normalize(d.turns.map((t) => t.t || (t.options || []).map((o) => o.t).join(' ')).join(' '));
+  const seeded = new Set();
+  for (const [term, id] of Object.entries(byTerm)) {
+    if (term && !seeded.has(id) && (text === term || text.includes(` ${term} `) || text.startsWith(`${term} `) || text.endsWith(` ${term}`))) {
+      seeded.add(id); const it = store.item(id); if (!it.seen) srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice');
+    }
+  }
+  const perfect = dlg.mistakes === 0;
+  const xp = perfect ? 25 : 15;
+  store.addXp(xp); store.state.gems = (store.state.gems || 0) + 5;
+  G.track(store, 'xp', { amount: xp }); G.checkAchievements(store); store.save();
+  dlg = null;
+  confetti({ count: 80, duration: 1200 }); sound.complete(); haptic([15, 30, 15]);
+  const node = h(`
+    <div class="screen screen--center result">
+      <div class="onb__art">${mascotSvg('cheer', { size: 120 })}</div>
+      <h1>Conversation complete! 💬</h1>
+      <p class="muted">${perfect ? 'Flawless — you handled the whole conversation!' : 'Nicely done — you got through it!'}</p>
+      <div class="result__row"><div class="kpi"><span class="kpi__v">+${xp}</span><span class="kpi__k">XP</span></div><div class="kpi"><span class="kpi__v">+💎5</span><span class="kpi__k">Gems</span></div></div>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
   node.querySelector('#doneBtn').addEventListener('click', renderHome);

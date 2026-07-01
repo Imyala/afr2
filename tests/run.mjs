@@ -143,6 +143,23 @@ for (const c of ['zu', 'xh', 'af']) {
       }
     }
   }
+  // dialogue integrity
+  const dids = (course.dialogues || []).map((x) => x.id);
+  ok(dids.length === new Set(dids).size, `${c} dialogue ids are unique`);
+  for (const dia of (course.dialogues || [])) {
+    ok(dia.id && dia.title && dia.goal && Array.isArray(dia.turns) && dia.turns.length >= 2, `${dia.id} has id/title/goal/turns`);
+    let youTurns = 0;
+    for (const t of dia.turns) {
+      if (t.speaker === 'npc') { ok(t.t && t.en, `${dia.id} npc turn has t+en`); }
+      else if (t.speaker === 'you') {
+        youTurns += 1;
+        ok(Array.isArray(t.options) && t.options.length >= 2, `${dia.id} you-turn has options`);
+        ok(t.options.filter((o) => o.ok).length === 1, `${dia.id} you-turn has exactly one correct reply`);
+        for (const o of t.options) ok(o.t && o.en, `${dia.id} option has t+en`);
+      } else ok(false, `${dia.id} turn has a valid speaker`);
+    }
+    ok(youTurns >= 1, `${dia.id} has at least one learner turn`);
+  }
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

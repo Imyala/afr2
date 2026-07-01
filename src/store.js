@@ -45,6 +45,7 @@ function freshLang() {
     completedReadings: [],
     wotd: null,              // { day, learned } — word-of-the-day state
     grammar: {},             // patternId -> srs record (grammar patterns are spaced too)
+    completedDialogues: [],  // dialogue ids the learner has finished
   };
 }
 
