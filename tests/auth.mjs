@@ -1,9 +1,16 @@
 // Demo account/auth logic tests. Run: node tests/auth.mjs
 import './_setup.mjs';
+import { createHash } from 'node:crypto';
 import * as Auth from '../src/auth.js';
 
 let pass = 0, fail = 0;
 const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗', m); } };
+
+// Default: stub the network so the breach check treats passwords as safe and
+// the account tests never touch the real Have I Been Pwned API.
+const sha1suffix = (pw) => createHash('sha1').update(pw).digest('hex').toUpperCase().slice(5);
+const stubRange = (body) => { globalThis.fetch = async () => ({ ok: true, text: async () => body }); };
+stubRange('');
 
 // email validation
 ok(Auth.validEmail('a@b.co'), 'accepts a valid email');
@@ -28,6 +35,24 @@ ok((await Auth.createAccount('', 'x@y.co', 'pass1')).error, 'rejects empty name'
 ok((await Auth.createAccount('N', 'bad', 'pass1')).error, 'rejects bad email');
 ok((await Auth.createAccount('N', 'n@y.co', '12')).error, 'rejects short password');
 ok((await Auth.createAccount('Dup', 'thabo@example.com', 'pass1')).error, 'rejects duplicate email');
+
+// Have I Been Pwned k-anonymity check (stubbed range responses)
+stubRange(`${sha1suffix('hunter2')}:9999\r\n0000000000000000000000000000000000:0`);
+ok((await Auth.pwnedCount('hunter2')) === 9999, 'pwnedCount returns breach count for a matching suffix');
+stubRange('0000000000000000000000000000000000:5');
+ok((await Auth.pwnedCount('hunter2')) === 0, 'pwnedCount returns 0 when the suffix is not in the range');
+globalThis.fetch = async () => { throw new Error('offline'); };
+ok((await Auth.pwnedCount('hunter2')) === -1, 'pwnedCount returns -1 when the check cannot run (offline)');
+// createAccount blocks a breached password
+stubRange(`${sha1suffix('breachedpw')}:1000000`);
+const rp = await Auth.createAccount('Sipho', 'sipho@example.com', 'breachedpw');
+ok(rp.error && /breach/i.test(rp.error), 'createAccount rejects a password found in breaches');
+ok(!Auth.findAccountByEmail('sipho@example.com'), 'the breached-password account was not created');
+// offline (-1) should NOT block account creation
+globalThis.fetch = async () => { throw new Error('offline'); };
+const rOffline = await Auth.createAccount('Ayanda', 'ayanda@example.com', 'localpass');
+ok(rOffline.account, 'offline breach-check does not block account creation');
+stubRange(''); // restore safe stub
 
 // login
 ok((await Auth.login('thabo@example.com', 'pass1')).account, 'logs in with correct credentials');

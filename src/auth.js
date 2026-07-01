@@ -36,6 +36,30 @@ export async function hashPassword(pw) {
 
 export const validEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((e || '').trim());
 
+// Check a password against Have I Been Pwned's Pwned Passwords range API using
+// k-anonymity: we SHA-1 the password locally and send ONLY the first 5 hex
+// characters of that hash. The API returns all breached-hash suffixes sharing
+// that prefix; we match the rest locally. The password (and its full hash)
+// never leave the device. Returns the breach count, 0 if not found, or -1 if
+// the check couldn't run (offline / unsupported) so callers can skip it.
+export async function pwnedCount(password) {
+  try {
+    if (!(typeof crypto !== 'undefined' && crypto.subtle && typeof fetch !== 'undefined')) return -1;
+    const buf = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(password));
+    const hex = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+    const prefix = hex.slice(0, 5);
+    const suffix = hex.slice(5);
+    const res = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+    if (!res.ok) return -1;
+    const text = await res.text();
+    for (const line of text.split('\n')) {
+      const [suf, count] = line.trim().split(':');
+      if (suf === suffix) return parseInt(count, 10) || 0;
+    }
+    return 0;
+  } catch (e) { return -1; }
+}
+
 export function findAccountByEmail(email) {
   const e = (email || '').trim().toLowerCase();
   return loadAccounts().list.find((a) => a.email.toLowerCase() === e);
@@ -51,6 +75,9 @@ export async function createAccount(name, email, password, avatar) {
   if (!validEmail(email)) return { error: 'Please enter a valid email address.' };
   if ((password || '').length < 4) return { error: 'Password must be at least 4 characters.' };
   if (findAccountByEmail(email)) return { error: 'An account with this email already exists.' };
+  // Reject passwords found in known breaches (privacy-preserving; skipped offline).
+  const pwned = await pwnedCount(password);
+  if (pwned > 0) return { error: `This password has appeared in ${pwned.toLocaleString()} known data breaches. Please choose a different one.` };
   const passHash = await hashPassword(password);
   const id = `a${Date.now().toString(36)}${Math.floor(Math.random() * 1e4)}`;
   const account = { id, name: name.slice(0, 30), email, passHash, avatar: avatar || '🦫', createdAt: new Date().toISOString().slice(0, 10) };

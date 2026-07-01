@@ -99,6 +99,10 @@ for the full explanation. In short:
   **"try without an account"** as a guest. Client-side only (no server):
   credentials live in the browser, passwords are hashed, and each account maps
   to its own progress profile. A demonstration of the sign-up/login/guest flow.
+- 🛡️ **Breached-password check** — sign-up rejects passwords found in the
+  [Have I Been Pwned](https://haveibeenpwned.com/) database using **k-anonymity**
+  (only the first 5 chars of the password's SHA-1 hash are sent; it never leaves
+  the device), and skips gracefully when offline.
 - 📶 **Full offline use** via service worker — install to home screen
 - ♿ **Accessibility** — screen-reader announcements for screen changes and
   answer feedback (ARIA live region), focus moved to each screen's heading,

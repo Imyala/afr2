@@ -136,7 +136,11 @@ function renderSignup() {
   node.querySelector('#form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const err = node.querySelector('#err');
+    const submit = node.querySelector('#submit');
+    err.hidden = true;
+    submit.disabled = true; submit.textContent = 'Checking password…';
     const res = await Auth.createAccount(node.querySelector('#name').value, node.querySelector('#email').value, node.querySelector('#pw').value);
+    submit.disabled = false; submit.textContent = 'Create account';
     if (res.error) { err.textContent = res.error; err.hidden = false; sound.wrong(); return; }
     store.ensureProfile(res.account.id, res.account.name, res.account.avatar);
     Auth.setAuth({ mode: 'account', accountId: res.account.id });
