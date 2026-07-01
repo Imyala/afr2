@@ -356,6 +356,10 @@ function renderHome() {
         </div>
       </section>
 
+      ${L.plan
+    ? `<button class="plan-card" id="planBtn"><span class="plan-card__l">📅 <b>Day ${L.plan.day}/90</b> · today's loop</span><span class="plan-card__r">${Object.values(L.plan.done).filter(Boolean).length}/4 ›</span></button>`
+    : '<button class="plan-card plan-card--start" id="planBtn"><span class="plan-card__l">📅 <b>Start your 90-day plan</b></span><span class="plan-card__r">guided daily path ›</span></button>'}
+
       <button class="btn btn--review" id="reviewBtn" ${due ? '' : 'disabled'}>
         🔁 Review ${due ? `<span class="badge">${due} due</span>` : '<span class="muted">none due</span>'}
       </button>
@@ -411,6 +415,7 @@ function renderHome() {
     b.addEventListener('click', (e) => { e.stopPropagation(); confirmTestOut(b.dataset.testout); }));
   node.querySelector('#switchLang').addEventListener('click', () => renderLanguageSelect(false));
   node.querySelector('#reviewBtn').addEventListener('click', startReview);
+  node.querySelector('#planBtn').addEventListener('click', renderPlan);
   node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
   node.querySelector('#glossaryBtn').addEventListener('click', () => renderGlossary());
   node.querySelector('#speakBtn').addEventListener('click', startSpeaking);
@@ -697,6 +702,7 @@ function renderSpeaking() {
 function renderSpeakingDone() {
   const done = speakSession ? speakSession.done : 0;
   speakSession = null;
+  markPlan('output');
   confetti({ count: 60, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
   const node = h(`
     <div class="screen screen--center result">
@@ -791,6 +797,7 @@ function renderListening() {
 function renderListeningDone() {
   const done = listenSession ? listenSession.done : 0;
   listenSession = null;
+  markPlan('input');
   confetti({ count: 60, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
   const node = h(`
     <div class="screen screen--center result">
@@ -800,6 +807,88 @@ function renderListeningDone() {
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
   node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  mount(node);
+}
+
+// ---------- 90-day guided curriculum ----------
+// A structured daily loop — interleaved review → new lesson → comprehensible
+// input → pushed output — the research-backed sequence, tracked over 90 days.
+function markPlan(type) {
+  const L = store.lang();
+  if (!L.plan || L.plan.completed) return;
+  if (type && !L.plan.done[type]) L.plan.done[type] = true;
+  if (!L.plan.done.review && store.dueItems().length === 0) L.plan.done.review = true; // nothing to review
+  const d = L.plan.done;
+  if (d.review && d.lesson && d.input && d.output) {
+    const finished = L.plan.day;
+    if (L.plan.day >= 90) { L.plan.completed = true; store.save(); flashToast('🎉 You finished the 90-day plan!'); }
+    else { L.plan.day += 1; L.plan.done = { review: false, lesson: false, input: false, output: false }; store.save(); flashToast(`Day ${finished} complete! 🎉`); }
+  } else { store.save(); }
+}
+
+function planActivities() {
+  const done = store.lang().plan.done;
+  const lessons = allLessons(course);
+  const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
+  const due = store.dueItems().length;
+  const hasReading = (course.reading || []).length > 0;
+  const hasDialogue = (course.dialogues || []).length > 0;
+  return [
+    { key: 'review', icon: '🔁', label: 'Warm-up review', sub: due > 0 ? `${due} words are due` : 'nothing due — auto-done', done: done.review, action: due > 0 ? () => startReview() : null },
+    { key: 'lesson', icon: '📘', label: nextLesson ? `Learn: ${nextLesson.title}` : 'Learn: all lessons done!', sub: nextLesson ? 'a new lesson' : 'try grammar or review', done: done.lesson, action: nextLesson ? () => startLesson(nextLesson.id) : () => ((course.grammar || []).length ? renderGrammar() : startReview()) },
+    { key: 'input', icon: '📖', label: 'Input: read or listen', sub: 'understand real language', done: done.input, action: () => (hasReading ? renderLibrary() : startListening()) },
+    { key: 'output', icon: '🗣️', label: 'Output: speak or converse', sub: 'use it out loud', done: done.output, action: () => (hasDialogue ? renderDialogues() : startSpeaking()) },
+  ];
+}
+
+function renderPlanIntro() {
+  const node = h(`
+    <div class="screen screen--center">
+      <div class="onb__art">${mascotSvg('wave', { size: 130 })}</div>
+      <h1>Your 90-day plan</h1>
+      <p class="onb__body">A guided daily loop — review, a new lesson, real input, and speaking practice — built to get you conversational in ${esc(course.name)} in about 3 months. Show up every day and we'll track the journey.</p>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="start">Start my 90 days</button>
+        <button class="btn btn--ghost" id="back">Maybe later</button>
+      </div>
+    </div>`);
+  node.querySelector('#start').addEventListener('click', () => { store.startPlan(); sound.reward(); confetti({ count: 60 }); renderPlan(); });
+  node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
+}
+
+function renderPlan() {
+  const L = store.lang();
+  if (!L.plan) return renderPlanIntro();
+  const p = L.plan;
+  if (!p.done.review && store.dueItems().length === 0) { p.done.review = true; store.save(); }
+  const acts = planActivities();
+  const doneCount = acts.filter((a) => a.done).length;
+  const allDone = doneCount === acts.length;
+  const pct = Math.round(((p.day - 1) / 90) * 100);
+  const rows = acts.map((a) => `
+    <div class="plan-act ${a.done ? 'plan-act--done' : ''}">
+      <span class="plan-act__icon">${a.done ? '✅' : a.icon}</span>
+      <div class="plan-act__body"><strong>${esc(a.label)}</strong><span class="muted">${esc(a.sub)}</span></div>
+      ${a.done ? '<span class="plan-act__ok">Done</span>' : `<button class="plan-act__go" data-act="${a.key}">Start</button>`}
+    </div>`).join('');
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>90-Day Plan</strong><span></span></header>
+      <div class="level-card">
+        <span class="level-card__tag">${p.completed ? 'Plan complete! 🎉' : `Day ${p.day} of 90`}</span>
+        <span class="level-card__sub">${p.completed ? 'You finished — keep the habit going' : `Guided path to conversational ${esc(course.name)}`}</span>
+      </div>
+      <div class="mastery-bar"><div class="mastery-bar__fill" style="width:${pct}%"></div><span>Day ${p.day} / 90</span></div>
+      <h3 class="sec">Today's loop ${allDone ? '✓' : `· ${doneCount}/${acts.length}`}</h3>
+      <p class="muted" style="margin:0 4px">Review locks in old words → a new lesson adds more → input builds understanding → output builds speaking.</p>
+      <div class="set-list">${rows}</div>
+      ${allDone ? '<div class="plan-complete">🎉 Loop done! Come back tomorrow — daily practice is what makes 90 days work.</div>' : ''}
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', () => {
+    const a = acts.find((x) => x.key === b.dataset.act); if (a && a.action) a.action();
+  }));
   mount(node);
 }
 
@@ -911,7 +1000,7 @@ function finishDialogue() {
   const perfect = dlg.mistakes === 0;
   const xp = perfect ? 25 : 15;
   store.addXp(xp); store.state.gems = (store.state.gems || 0) + 5;
-  G.track(store, 'xp', { amount: xp }); G.checkAchievements(store); store.save();
+  G.track(store, 'xp', { amount: xp }); G.checkAchievements(store); store.save(); markPlan('output');
   dlg = null;
   confetti({ count: 80, duration: 1200 }); sound.complete(); haptic([15, 30, 15]);
   const node = h(`
@@ -1132,6 +1221,10 @@ function endSession() {
   }
   merge({ quests: [], achievements: G.checkAchievements(store), gems: 0 });
   store.save();
+  // advance the 90-day plan's daily loop
+  if (session.mode === 'lesson') markPlan('lesson');
+  else if (session.mode === 'review') markPlan('review');
+  else if (session.mode === 'reading') markPlan('input');
   session.earned = earned;
   renderSessionComplete(stars, correct, session.total, rewards);
 }

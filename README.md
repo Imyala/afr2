@@ -45,6 +45,10 @@ for the full explanation. In short:
 ## Features
 
 **Learning**
+- 📅 **Guided 90-day plan** — a structured daily loop that interleaves the
+  research-backed sequence (warm-up **review** → new **lesson** → **input**:
+  read/listen → **output**: speak/converse) and tracks your journey to
+  conversational level over ~3 months
 - 📚 Daily lessons with a unit-based lesson path
 - 🔁 Spaced-repetition **Review** sessions driven by what's actually due
 - 📖 **Reading exercises** — graded stories with comprehension questions

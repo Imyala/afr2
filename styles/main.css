@@ -497,6 +497,25 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .lst-reveal { text-align: center; font-size: 18px; font-weight: 700; }
 .lst-reveal strong { color: var(--green); }
 
+/* ---------- 90-day plan ---------- */
+.plan-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;
+  padding: 14px 16px; border-radius: var(--radius); color: #fff; box-shadow: var(--shadow);
+  background: linear-gradient(95deg, var(--green), var(--blue)); font-size: 15px;
+}
+.plan-card--start { background: linear-gradient(95deg, var(--gold), var(--green)); color: #1a2e12; }
+.plan-card b { font-size: 16px; }
+.plan-card__r { font-weight: 800; white-space: nowrap; opacity: .95; }
+.plan-act { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.plan-act--done { border-color: var(--green); opacity: .75; }
+.plan-act__icon { font-size: 24px; flex: 0 0 auto; }
+.plan-act__body { flex: 1; display: grid; gap: 1px; min-width: 0; }
+.plan-act__body .muted { font-size: 12px; }
+.plan-act__go { border: none; border-radius: 12px; padding: 9px 16px; font-weight: 800; background: var(--green); color: #fff; box-shadow: 0 3px 0 var(--green-dark); white-space: nowrap; }
+.plan-act__ok { font-weight: 800; color: var(--green); font-size: 13px; }
+.plan-complete { text-align: center; font-weight: 800; padding: 14px; border-radius: 14px; background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green-dark); }
+@media (prefers-color-scheme: dark) { .plan-complete { color: var(--green); } }
+
 /* ---------- dialogues / conversations ---------- */
 .dlg-goal { font-size: 14px; font-weight: 800; color: var(--green); }
 .dchat { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 4px 0 8px; overflow-y: auto; }

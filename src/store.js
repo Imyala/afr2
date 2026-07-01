@@ -46,6 +46,7 @@ function freshLang() {
     wotd: null,              // { day, learned } — word-of-the-day state
     grammar: {},             // patternId -> srs record (grammar patterns are spaced too)
     completedDialogues: [],  // dialogue ids the learner has finished
+    plan: null,              // 90-day guided curriculum: { started, day, done:{...} }
   };
 }
 
@@ -248,6 +249,14 @@ class Store {
     return Object.entries(L.items)
       .filter(([, it]) => it.due <= now && it.seen > 0)
       .map(([id]) => id);
+  }
+
+  // --- 90-day guided plan --------------------------------------------------
+  startPlan(code = this.state.activeLang) {
+    const L = this.lang(code);
+    L.plan = { started: todayKey(), day: 1, done: { review: false, lesson: false, input: false, output: false } };
+    this.save();
+    return L.plan;
   }
 
   // --- grammar patterns (spaced like vocab, kept in their own map) ----------
