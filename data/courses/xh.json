@@ -3220,6 +3220,106 @@
         }
       ],
       "canDo": "I can talk about transport, people and sport, and use helpful phrases."
+    },
+    {
+      "id": "xh-u8",
+      "title": "Unit 8: Connecting Words",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "xh-u8-l1",
+          "title": "Joining ideas",
+          "culturalNote": "Link your sentences: 'Ndilambile kodwa ndiphilile' (I'm hungry but I'm well).",
+          "vocab": [
+            {
+              "id": "xh-kodwa",
+              "term": "kodwa",
+              "translation": "but",
+              "phonetic": "KOH-dwah"
+            },
+            {
+              "id": "xh-kwaye",
+              "term": "kwaye",
+              "translation": "and",
+              "phonetic": "KWAH-yeh"
+            },
+            {
+              "id": "xh-okanye",
+              "term": "okanye",
+              "translation": "or",
+              "phonetic": "oh-KAH-nyeh"
+            },
+            {
+              "id": "xh-kuba",
+              "term": "kuba",
+              "translation": "because",
+              "phonetic": "KOO-bah"
+            },
+            {
+              "id": "xh-kakhulu",
+              "term": "kakhulu",
+              "translation": "very / a lot",
+              "phonetic": "kah-KOO-loo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kodwa",
+                  "but"
+                ],
+                [
+                  "kwaye",
+                  "and"
+                ],
+                [
+                  "okanye",
+                  "or"
+                ],
+                [
+                  "kuba",
+                  "because"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kodwa” means:",
+              "answer": "but",
+              "options": [
+                "but",
+                "and",
+                "or",
+                "because"
+              ],
+              "vocabId": "xh-kodwa"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “and”?",
+              "answer": "kwaye",
+              "options": [
+                "kwaye",
+                "kodwa",
+                "okanye",
+                "kuba"
+              ],
+              "vocabId": "xh-kwaye"
+            },
+            {
+              "type": "translate",
+              "prompt": "or",
+              "answer": "okanye",
+              "accept": [
+                "okanye"
+              ],
+              "vocabId": "xh-okanye"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

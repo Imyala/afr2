@@ -3187,6 +3187,890 @@
         }
       ],
       "canDo": "I can talk about transport, people and sport, and use helpful phrases."
+    },
+    {
+      "id": "af-u8",
+      "title": "Unit 8: In the Kitchen",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u8-l1",
+          "title": "Food extras",
+          "culturalNote": "Everyday kitchen staples you'll hear at any Afrikaans table.",
+          "vocab": [
+            {
+              "id": "af-kaas",
+              "term": "kaas",
+              "translation": "cheese",
+              "phonetic": "kaas"
+            },
+            {
+              "id": "af-eier",
+              "term": "eier",
+              "translation": "egg",
+              "phonetic": "AY-er"
+            },
+            {
+              "id": "af-botter",
+              "term": "botter",
+              "translation": "butter",
+              "phonetic": "BOT-ter"
+            },
+            {
+              "id": "af-rys",
+              "term": "rys",
+              "translation": "rice",
+              "phonetic": "rays"
+            },
+            {
+              "id": "af-suiker",
+              "term": "suiker",
+              "translation": "sugar",
+              "phonetic": "SOEY-ker"
+            },
+            {
+              "id": "af-vis",
+              "term": "vis",
+              "translation": "fish",
+              "phonetic": "fis"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kaas",
+                  "cheese"
+                ],
+                [
+                  "eier",
+                  "egg"
+                ],
+                [
+                  "botter",
+                  "butter"
+                ],
+                [
+                  "rys",
+                  "rice"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kaas” means:",
+              "answer": "cheese",
+              "options": [
+                "cheese",
+                "egg",
+                "butter",
+                "rice"
+              ],
+              "vocabId": "af-kaas"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “egg”?",
+              "answer": "eier",
+              "options": [
+                "eier",
+                "kaas",
+                "botter",
+                "rys"
+              ],
+              "vocabId": "af-eier"
+            },
+            {
+              "type": "translate",
+              "prompt": "butter",
+              "answer": "botter",
+              "accept": [
+                "botter"
+              ],
+              "vocabId": "af-botter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u9",
+      "title": "Unit 9: Around the House",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u9-l1",
+          "title": "House things",
+          "culturalNote": "Naming what's in and around the home.",
+          "vocab": [
+            {
+              "id": "af-kas",
+              "term": "kas",
+              "translation": "cupboard",
+              "phonetic": "kus"
+            },
+            {
+              "id": "af-sleutel",
+              "term": "sleutel",
+              "translation": "key",
+              "phonetic": "SLUH-tel"
+            },
+            {
+              "id": "af-mat",
+              "term": "mat",
+              "translation": "mat",
+              "phonetic": "mut"
+            },
+            {
+              "id": "af-lig",
+              "term": "lig",
+              "translation": "light",
+              "phonetic": "likh"
+            },
+            {
+              "id": "af-muur",
+              "term": "muur",
+              "translation": "wall",
+              "phonetic": "meer"
+            },
+            {
+              "id": "af-vloer",
+              "term": "vloer",
+              "translation": "floor",
+              "phonetic": "floor"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kas",
+                  "cupboard"
+                ],
+                [
+                  "sleutel",
+                  "key"
+                ],
+                [
+                  "mat",
+                  "mat"
+                ],
+                [
+                  "lig",
+                  "light"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kas” means:",
+              "answer": "cupboard",
+              "options": [
+                "cupboard",
+                "key",
+                "mat",
+                "light"
+              ],
+              "vocabId": "af-kas"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “key”?",
+              "answer": "sleutel",
+              "options": [
+                "sleutel",
+                "kas",
+                "mat",
+                "lig"
+              ],
+              "vocabId": "af-sleutel"
+            },
+            {
+              "type": "translate",
+              "prompt": "mat",
+              "answer": "mat",
+              "accept": [
+                "mat"
+              ],
+              "vocabId": "af-mat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u10",
+      "title": "Unit 10: Weather",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u10-l1",
+          "title": "The weather",
+          "culturalNote": "Small talk about the weather is universal.",
+          "vocab": [
+            {
+              "id": "af-reen",
+              "term": "reen",
+              "translation": "rain",
+              "phonetic": "RAY-en"
+            },
+            {
+              "id": "af-son",
+              "term": "son",
+              "translation": "sun",
+              "phonetic": "son"
+            },
+            {
+              "id": "af-wolk",
+              "term": "wolk",
+              "translation": "cloud",
+              "phonetic": "volk"
+            },
+            {
+              "id": "af-wind",
+              "term": "wind",
+              "translation": "wind",
+              "phonetic": "vint"
+            },
+            {
+              "id": "af-warm",
+              "term": "warm",
+              "translation": "warm",
+              "phonetic": "vurm"
+            },
+            {
+              "id": "af-sneeu",
+              "term": "sneeu",
+              "translation": "snow",
+              "phonetic": "SNEE-oo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "reen",
+                  "rain"
+                ],
+                [
+                  "son",
+                  "sun"
+                ],
+                [
+                  "wolk",
+                  "cloud"
+                ],
+                [
+                  "wind",
+                  "wind"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“reen” means:",
+              "answer": "rain",
+              "options": [
+                "rain",
+                "sun",
+                "cloud",
+                "wind"
+              ],
+              "vocabId": "af-reen"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “sun”?",
+              "answer": "son",
+              "options": [
+                "son",
+                "reen",
+                "wolk",
+                "wind"
+              ],
+              "vocabId": "af-son"
+            },
+            {
+              "type": "translate",
+              "prompt": "cloud",
+              "answer": "wolk",
+              "accept": [
+                "wolk"
+              ],
+              "vocabId": "af-wolk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u11",
+      "title": "Unit 11: Describing Things",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u11-l1",
+          "title": "Common adjectives",
+          "culturalNote": "Adjectives come before the noun, like English: 'n groot huis (a big house).",
+          "vocab": [
+            {
+              "id": "af-groot",
+              "term": "groot",
+              "translation": "big",
+              "phonetic": "khroot"
+            },
+            {
+              "id": "af-klein",
+              "term": "klein",
+              "translation": "small",
+              "phonetic": "klayn"
+            },
+            {
+              "id": "af-goed",
+              "term": "goed",
+              "translation": "good",
+              "phonetic": "khoot"
+            },
+            {
+              "id": "af-sleg",
+              "term": "sleg",
+              "translation": "bad",
+              "phonetic": "slekh"
+            },
+            {
+              "id": "af-mooi",
+              "term": "mooi",
+              "translation": "pretty",
+              "phonetic": "moy"
+            },
+            {
+              "id": "af-nuut",
+              "term": "nuut",
+              "translation": "new",
+              "phonetic": "neet"
+            },
+            {
+              "id": "af-oud",
+              "term": "oud",
+              "translation": "old",
+              "phonetic": "oht"
+            },
+            {
+              "id": "af-vinnig",
+              "term": "vinnig",
+              "translation": "fast",
+              "phonetic": "FIN-nikh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "groot",
+                  "big"
+                ],
+                [
+                  "klein",
+                  "small"
+                ],
+                [
+                  "goed",
+                  "good"
+                ],
+                [
+                  "sleg",
+                  "bad"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“groot” means:",
+              "answer": "big",
+              "options": [
+                "big",
+                "small",
+                "good",
+                "bad"
+              ],
+              "vocabId": "af-groot"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “small”?",
+              "answer": "klein",
+              "options": [
+                "klein",
+                "groot",
+                "goed",
+                "sleg"
+              ],
+              "vocabId": "af-klein"
+            },
+            {
+              "type": "translate",
+              "prompt": "good",
+              "answer": "goed",
+              "accept": [
+                "goed"
+              ],
+              "vocabId": "af-goed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u12",
+      "title": "Unit 12: More Verbs",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u12-l1",
+          "title": "Everyday actions",
+          "culturalNote": "Remember: Afrikaans verbs don't change with the subject.",
+          "vocab": [
+            {
+              "id": "af-staan",
+              "term": "staan",
+              "translation": "to stand",
+              "phonetic": "staan"
+            },
+            {
+              "id": "af-sit",
+              "term": "sit",
+              "translation": "to sit",
+              "phonetic": "sit"
+            },
+            {
+              "id": "af-slaap",
+              "term": "slaap",
+              "translation": "to sleep",
+              "phonetic": "slaap"
+            },
+            {
+              "id": "af-lees",
+              "term": "lees",
+              "translation": "to read",
+              "phonetic": "leys"
+            },
+            {
+              "id": "af-skryf",
+              "term": "skryf",
+              "translation": "to write",
+              "phonetic": "skrayf"
+            },
+            {
+              "id": "af-betaal",
+              "term": "betaal",
+              "translation": "to pay",
+              "phonetic": "beh-TAAL"
+            },
+            {
+              "id": "af-neem",
+              "term": "neem",
+              "translation": "to take",
+              "phonetic": "neym"
+            },
+            {
+              "id": "af-maak",
+              "term": "maak",
+              "translation": "to make",
+              "phonetic": "maak"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "staan",
+                  "to stand"
+                ],
+                [
+                  "sit",
+                  "to sit"
+                ],
+                [
+                  "slaap",
+                  "to sleep"
+                ],
+                [
+                  "lees",
+                  "to read"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“staan” means:",
+              "answer": "to stand",
+              "options": [
+                "to stand",
+                "to sit",
+                "to sleep",
+                "to read"
+              ],
+              "vocabId": "af-staan"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to sit”?",
+              "answer": "sit",
+              "options": [
+                "sit",
+                "staan",
+                "slaap",
+                "lees"
+              ],
+              "vocabId": "af-sit"
+            },
+            {
+              "type": "translate",
+              "prompt": "to sleep",
+              "answer": "slaap",
+              "accept": [
+                "slaap"
+              ],
+              "vocabId": "af-slaap"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u13",
+      "title": "Unit 13: Time & Frequency",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u13-l1",
+          "title": "When things happen",
+          "culturalNote": "Words to place things in time.",
+          "vocab": [
+            {
+              "id": "af-uur",
+              "term": "uur",
+              "translation": "hour",
+              "phonetic": "eer"
+            },
+            {
+              "id": "af-week",
+              "term": "week",
+              "translation": "week",
+              "phonetic": "vek"
+            },
+            {
+              "id": "af-maand",
+              "term": "maand",
+              "translation": "month",
+              "phonetic": "maant"
+            },
+            {
+              "id": "af-jaar",
+              "term": "jaar",
+              "translation": "year",
+              "phonetic": "yaar"
+            },
+            {
+              "id": "af-altyd",
+              "term": "altyd",
+              "translation": "always",
+              "phonetic": "UL-tayt"
+            },
+            {
+              "id": "af-nooit",
+              "term": "nooit",
+              "translation": "never",
+              "phonetic": "noyt"
+            },
+            {
+              "id": "af-soms",
+              "term": "soms",
+              "translation": "sometimes",
+              "phonetic": "soms"
+            },
+            {
+              "id": "af-later",
+              "term": "later",
+              "translation": "later",
+              "phonetic": "LAA-ter"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "uur",
+                  "hour"
+                ],
+                [
+                  "week",
+                  "week"
+                ],
+                [
+                  "maand",
+                  "month"
+                ],
+                [
+                  "jaar",
+                  "year"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“uur” means:",
+              "answer": "hour",
+              "options": [
+                "hour",
+                "week",
+                "month",
+                "year"
+              ],
+              "vocabId": "af-uur"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “week”?",
+              "answer": "week",
+              "options": [
+                "week",
+                "uur",
+                "maand",
+                "jaar"
+              ],
+              "vocabId": "af-week"
+            },
+            {
+              "type": "translate",
+              "prompt": "month",
+              "answer": "maand",
+              "accept": [
+                "maand"
+              ],
+              "vocabId": "af-maand"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u14",
+      "title": "Unit 14: Family",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u14-l1",
+          "title": "The family",
+          "culturalNote": "Warm, everyday family words.",
+          "vocab": [
+            {
+              "id": "af-ma-2",
+              "term": "ma",
+              "translation": "mom",
+              "phonetic": "maa"
+            },
+            {
+              "id": "af-pa-2",
+              "term": "pa",
+              "translation": "dad",
+              "phonetic": "paa"
+            },
+            {
+              "id": "af-broer-2",
+              "term": "broer",
+              "translation": "brother",
+              "phonetic": "broor"
+            },
+            {
+              "id": "af-suster-2",
+              "term": "suster",
+              "translation": "sister",
+              "phonetic": "SIS-ter"
+            },
+            {
+              "id": "af-ouma-2",
+              "term": "ouma",
+              "translation": "grandma",
+              "phonetic": "OH-maa"
+            },
+            {
+              "id": "af-oupa-2",
+              "term": "oupa",
+              "translation": "grandpa",
+              "phonetic": "OH-paa"
+            },
+            {
+              "id": "af-kind-2",
+              "term": "kind",
+              "translation": "child",
+              "phonetic": "kint"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ma",
+                  "mom"
+                ],
+                [
+                  "pa",
+                  "dad"
+                ],
+                [
+                  "broer",
+                  "brother"
+                ],
+                [
+                  "suster",
+                  "sister"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ma” means:",
+              "answer": "mom",
+              "options": [
+                "mom",
+                "dad",
+                "brother",
+                "sister"
+              ],
+              "vocabId": "af-ma-2"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “dad”?",
+              "answer": "pa",
+              "options": [
+                "pa",
+                "ma",
+                "broer",
+                "suster"
+              ],
+              "vocabId": "af-pa-2"
+            },
+            {
+              "type": "translate",
+              "prompt": "brother",
+              "answer": "broer",
+              "accept": [
+                "broer"
+              ],
+              "vocabId": "af-broer-2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u15",
+      "title": "Unit 15: More Colours",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u15-l1",
+          "title": "More colours",
+          "culturalNote": "Rounding out the palette.",
+          "vocab": [
+            {
+              "id": "af-pers",
+              "term": "pers",
+              "translation": "purple",
+              "phonetic": "pers"
+            },
+            {
+              "id": "af-grys",
+              "term": "grys",
+              "translation": "grey",
+              "phonetic": "khrays"
+            },
+            {
+              "id": "af-bruin",
+              "term": "bruin",
+              "translation": "brown",
+              "phonetic": "broeyn"
+            },
+            {
+              "id": "af-pienk",
+              "term": "pienk",
+              "translation": "pink",
+              "phonetic": "peenk"
+            },
+            {
+              "id": "af-oranje",
+              "term": "oranje",
+              "translation": "orange",
+              "phonetic": "oh-RUN-yeh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "pers",
+                  "purple"
+                ],
+                [
+                  "grys",
+                  "grey"
+                ],
+                [
+                  "bruin",
+                  "brown"
+                ],
+                [
+                  "pienk",
+                  "pink"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“pers” means:",
+              "answer": "purple",
+              "options": [
+                "purple",
+                "grey",
+                "brown",
+                "pink"
+              ],
+              "vocabId": "af-pers"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “grey”?",
+              "answer": "grys",
+              "options": [
+                "grys",
+                "pers",
+                "bruin",
+                "pienk"
+              ],
+              "vocabId": "af-grys"
+            },
+            {
+              "type": "translate",
+              "prompt": "brown",
+              "answer": "bruin",
+              "accept": [
+                "bruin"
+              ],
+              "vocabId": "af-bruin"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

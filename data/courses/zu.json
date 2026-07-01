@@ -3869,6 +3869,112 @@
         }
       ],
       "canDo": "I can talk about transport, people and sport, and use helpful phrases."
+    },
+    {
+      "id": "zu-u9",
+      "title": "Unit 9: Connecting Words",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "zu-u9-l1",
+          "title": "Joining ideas",
+          "culturalNote": "Small words that let you link sentences: 'Ngilambile kodwa ngiyaphila' (I'm hungry but I'm well).",
+          "vocab": [
+            {
+              "id": "zu-kodwa",
+              "term": "kodwa",
+              "translation": "but",
+              "phonetic": "KOH-dwah"
+            },
+            {
+              "id": "zu-futhi",
+              "term": "futhi",
+              "translation": "and / also",
+              "phonetic": "FOO-tee"
+            },
+            {
+              "id": "zu-noma",
+              "term": "noma",
+              "translation": "or",
+              "phonetic": "NOH-mah"
+            },
+            {
+              "id": "zu-ngoba",
+              "term": "ngoba",
+              "translation": "because",
+              "phonetic": "NGOH-bah"
+            },
+            {
+              "id": "zu-kakhulu",
+              "term": "kakhulu",
+              "translation": "very / a lot",
+              "phonetic": "kah-KOO-loo"
+            },
+            {
+              "id": "zu-kancane",
+              "term": "kancane",
+              "translation": "a little",
+              "phonetic": "kahn-CAH-neh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kodwa",
+                  "but"
+                ],
+                [
+                  "futhi",
+                  "and / also"
+                ],
+                [
+                  "noma",
+                  "or"
+                ],
+                [
+                  "ngoba",
+                  "because"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kodwa” means:",
+              "answer": "but",
+              "options": [
+                "but",
+                "and / also",
+                "or",
+                "because"
+              ],
+              "vocabId": "zu-kodwa"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “and / also”?",
+              "answer": "futhi",
+              "options": [
+                "futhi",
+                "kodwa",
+                "noma",
+                "ngoba"
+              ],
+              "vocabId": "zu-futhi"
+            },
+            {
+              "type": "translate",
+              "prompt": "or",
+              "answer": "noma",
+              "accept": [
+                "noma"
+              ],
+              "vocabId": "zu-noma"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

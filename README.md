@@ -20,13 +20,13 @@ things that matter most are:
 **Available now (MVP):** isiZulu, isiXhosa, Afrikaans
 **Coming soon:** Sesotho, Setswana, Sepedi, Tshivenda, Xitsonga, isiNdebele, siSwati
 
-The Zulu course ships with 35 lessons across eight units (~212 words); Xhosa and
-Afrikaans ship with 30 lessons across seven units (~182 words each) — nearly 580
-words in total. All content is real, culturally grounded vocabulary with
-phonetics and cultural notes (respect terms, taxi phrases, click sounds, days,
-colours, feelings, body, animals, health, time, jobs, school, verbs, home,
-clothing, nature, question words, food, kitchen, numbers, transport, family,
-sport, helpful phrases, formal vs casual speech).
+The Zulu course ships with ~218 words, Xhosa ~187, and Afrikaans ~236 — real,
+culturally grounded vocabulary with phonetics and cultural notes (greetings,
+respect terms, taxi phrases, click sounds, days, colours, feelings, body,
+animals, health, time, jobs, school, verbs, home, clothing, nature, question
+words, food, kitchen, numbers, transport, family, sport, connectors, helpful
+phrases). Vocabulary grows toward a ~1,000-word core via a native-reviewed
+content pipeline — see **[docs/CONTENT_PIPELINE.md](docs/CONTENT_PIPELINE.md)**.
 
 ## Why this isn't "just Duolingo for SA"
 
