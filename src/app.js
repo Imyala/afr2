@@ -3,8 +3,9 @@ import { store, XP_PER_CORRECT, XP_LESSON_BONUS, MAX_HEARTS } from './store.js';
 import { review as srsReview, gradeFor, setDesiredRetention } from './srs.js';
 import { speak, recordSupported, startRecording } from './audio.js';
 import {
-  loadCourse, loadLanguages, allLessons, findLesson, vocabIndex,
+  loadCourse, loadLanguages, allLessons, findLesson, vocabIndex, phraseIndex,
   checkAnswer, checkTyped, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
+  sentencePool, readingCoverage, genFrameDrills, memberVocabIds,
 } from './lessons.js';
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
@@ -487,6 +488,10 @@ function renderHome() {
         👂 <span class="muted">Listening —</span> <b>understand it by ear</b> →
       </button>
 
+      <button class="wotd-strip" id="blitzBtn">
+        ⚡ <span class="muted">Lightning —</span> <b>fast recall against the clock</b> →
+      </button>
+
       ${(course.dialogues || []).length ? `<button class="wotd-strip" id="dialogueBtn">
         💬 <span class="muted">Conversations —</span> <b>practise real-life chats</b> →
       </button>` : ''}
@@ -516,6 +521,7 @@ function renderHome() {
   node.querySelector('#glossaryBtn').addEventListener('click', () => renderGlossary());
   node.querySelector('#speakBtn').addEventListener('click', startSpeaking);
   node.querySelector('#listenBtn').addEventListener('click', startListening);
+  node.querySelector('#blitzBtn').addEventListener('click', startBlitz);
   const gb = node.querySelector('#grammarBtn'); if (gb) gb.addEventListener('click', renderGrammar);
   const db = node.querySelector('#dialogueBtn'); if (db) db.addEventListener('click', renderDialogues);
   node.querySelector('#shopNav').addEventListener('click', renderShop);
@@ -584,8 +590,7 @@ function renderWotd() {
   node.querySelector('#hear').addEventListener('click', () => tryHear(w.term, course.code));
   speak(w.term, course.code); // best-effort autoplay (silent if no voice)
   node.querySelector('#learn').addEventListener('click', () => {
-    const it = store.item(w.id);
-    srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice'); // introduce into the SRS schedule
+    store.encounter(w.id); // enters the SRS schedule; the first review tests it for real
     if (!already) { store.addXp(5); store.lang().wotd = { day: todayStr(), learned: true }; }
     store.save();
     flashToast('Added to your reviews! 🎉');
@@ -708,20 +713,27 @@ function renderGlossary() {
   mount(node);
 }
 
-// ---------- speaking practice (shadow & self-record) ----------
-// Output practice toward spoken fluency: hear the model, say it aloud, record &
-// compare, then self-rate. No speech recognition (unreliable for SA languages) —
-// honest self-assessment, works offline. Self-rating reinforces the review
-// schedule but does NOT grant production mastery (that still needs typing).
+// ---------- speaking practice (spoken sentence production) ----------
+// Output practice toward spoken fluency, built on the production effect: words
+// said aloud IN SENTENCES stick far better than typed single words. The flow is
+// recall-first — see the English, formulate and SAY it, then reveal the model
+// and self-rate honestly (with a real "not quite" that counts as a lapse).
+// No speech recognition (unreliable for SA languages) — honest self-assessment,
+// works offline. Self-rating reinforces the review schedule but does NOT grant
+// production mastery (that still needs typing).
 function speakingItems() {
-  const items = [];
-  for (const l of allLessons(course)) for (const p of (l.phrases || [])) {
-    items.push({ text: p.t, meaning: p.en, phonetic: '', ids: exerciseVocabIds({ type: 'word_bank', answer: p.t }, l) });
-  }
   const idx = vocabIndex(course);
+  const items = [];
+  // sentence-first: full sentences from phrases, dialogues and stories
+  // outrank single-word cards (chunks are how fluent speech is retrieved)
+  for (const s of shuffle(sentencePool(course))) {
+    const ids = [...(s.phraseId ? [s.phraseId] : []), ...memberVocabIds(s.t, idx)];
+    items.push({ text: s.t, meaning: s.en, phonetic: '', ids });
+    if (items.length >= 7) break;
+  }
   const L = store.lang();
-  const pickIds = [...new Set([...store.dueItems(), ...shuffle(Object.keys(L.items).filter((id) => L.items[id].seen > 0))])].slice(0, 8);
-  for (const id of pickIds) { const v = idx[id]; if (v) items.push({ text: v.term, meaning: v.translation, phonetic: v.phonetic || '', ids: [id] }); }
+  const pickIds = [...new Set([...store.dueItems(), ...shuffle(Object.keys(L.items).filter((id) => L.items[id].seen > 0))])].filter((id) => idx[id]).slice(0, 3);
+  for (const id of pickIds) { const v = idx[id]; items.push({ text: v.term, meaning: v.translation, phonetic: v.phonetic || '', ids: [id] }); }
   if (!items.length) for (const v of Object.values(idx).slice(0, 8)) items.push({ text: v.term, meaning: v.translation, phonetic: v.phonetic || '', ids: [v.id] });
   return shuffle(items).slice(0, 10);
 }
@@ -738,6 +750,7 @@ function renderSpeaking() {
   const s = speakSession;
   if (s.idx >= s.items.length) return renderSpeakingDone();
   const it = s.items[s.idx];
+  const isSentence = /\s/.test(it.text.trim());
   const node = h(`
     <div class="screen ex">
       <header class="ex__top">
@@ -746,53 +759,72 @@ function renderSpeaking() {
         <span class="muted">${s.idx + 1}/${s.items.length}</span>
       </header>
       <div class="ex__body">
-        <h2 class="ex__q">Say it out loud 🎤</h2>
+        <h2 class="ex__q">Say it in ${esc(course.name)} 🎤</h2>
         <div class="wotd-big">
-          <strong>${esc(it.text)}</strong>
-          ${it.phonetic ? `<span class="wotd-big__phon muted">${esc(it.phonetic)}</span>` : ''}
           <span class="wotd-big__tr">${esc(it.meaning)}</span>
+          <div id="target" hidden>
+            <strong>${esc(it.text)}</strong>
+            ${it.phonetic ? `<span class="wotd-big__phon muted">${esc(it.phonetic)}</span>` : ''}
+          </div>
         </div>
-        <button class="play-btn" id="hearBtn">🔊 Hear it</button>
-        <div class="spk-rec" id="recArea">
-          ${recordSupported() ? '<button class="btn btn--ghost" id="recBtn">🎤 Record yourself</button>' : '<p class="muted">Say it aloud, listen to the model, then rate yourself.</p>'}
+        <p class="muted" id="coach" style="text-align:center">${isSentence ? 'Say the whole sentence out loud from memory — then check yourself.' : 'Say it out loud from memory — then check yourself.'}</p>
+        <div class="spk-rec" id="recArea" hidden>
+          <button class="play-btn" id="hearBtn">🔊 Hear it again</button>
+          ${recordSupported() ? '<button class="btn btn--ghost" id="recBtn">🎤 Record yourself</button>' : ''}
         </div>
       </div>
-      <div class="ex__foot">
-        <p class="muted" style="text-align:center">Listen, repeat, then rate yourself honestly.</p>
-        <button class="btn btn--primary" id="goodBtn">✓ I said it well</button>
-        <button class="btn btn--ghost" id="againBtn">↻ Hear it again</button>
+      <div class="ex__foot" id="foot">
+        <button class="btn btn--primary" id="revealBtn">🎤 I said it — show the answer</button>
       </div>
     </div>`);
   node.querySelector('#quitBtn').addEventListener('click', () => { speakSession = null; renderHome(); });
-  node.querySelector('#hearBtn').addEventListener('click', () => tryHear(it.text, course.code));
-  speak(it.text, course.code);
-  node.querySelector('#againBtn').addEventListener('click', () => tryHear(it.text, course.code));
-  node.querySelector('#goodBtn').addEventListener('click', () => {
-    for (const id of it.ids) srsReview(store.item(id), gradeFor(true, 'multiple_choice'), 'multiple_choice');
-    store.addXp(5); store.save();
-    s.done += 1; s.idx += 1; sound.correct(); haptic(12);
+  const rate = (good) => {
+    // honest self-rating: "not quite" is a real lapse signal, and even "got it"
+    // never grants production mastery (that still needs typing/real recall)
+    for (const id of it.ids) srsReview(store.item(id), gradeFor(good, 'multiple_choice'), 'multiple_choice');
+    if (good) { store.addXp(5); s.done += 1; sound.correct(); haptic(12); } else { sound.wrong(); haptic([10, 40, 10]); }
+    store.save();
+    s.idx += 1;
     renderSpeaking();
+  };
+  node.querySelector('#revealBtn').addEventListener('click', () => {
+    node.querySelector('#target').hidden = false;
+    node.querySelector('#recArea').hidden = false;
+    node.querySelector('#coach').textContent = 'Compare with the model. Say it again out loud — then rate yourself honestly.';
+    speak(it.text, course.code);
+    const foot = node.querySelector('#foot');
+    foot.innerHTML = `
+      <button class="btn btn--primary" id="goodBtn">✓ I said it right</button>
+      <button class="btn btn--ghost" id="missBtn">✗ Not quite — review it</button>`;
+    foot.querySelector('#goodBtn').addEventListener('click', () => rate(true));
+    foot.querySelector('#missBtn').addEventListener('click', () => rate(false));
+    node.querySelector('#hearBtn').addEventListener('click', () => tryHear(it.text, course.code));
+    wireRecorder(node);
   });
-  const recBtn = node.querySelector('#recBtn');
-  if (recBtn) {
-    let handle = null;
-    recBtn.addEventListener('click', async () => {
-      if (!handle) {
-        try {
-          handle = await startRecording();
-          recBtn.textContent = '■ Stop'; recBtn.classList.add('spk-recording');
-        } catch (e) { flashToast('Microphone unavailable — say it aloud and self-rate.'); recBtn.remove(); }
-      } else {
-        const blob = await handle.stop(); handle = null;
-        recBtn.textContent = '🎤 Record again'; recBtn.classList.remove('spk-recording');
-        const url = URL.createObjectURL(blob);
-        let play = node.querySelector('#playYours');
-        if (!play) { play = h('<button class="btn btn--ghost" id="playYours">▶ Play your recording</button>'); node.querySelector('#recArea').appendChild(play); }
-        play.onclick = () => { try { new Audio(url).play(); } catch (e) {} };
-      }
-    });
-  }
   mount(node);
+}
+
+// Record & compare (shadowing): optional mic capture so learners can hear
+// themselves against the model.
+function wireRecorder(node) {
+  const recBtn = node.querySelector('#recBtn');
+  if (!recBtn) return;
+  let handle = null;
+  recBtn.addEventListener('click', async () => {
+    if (!handle) {
+      try {
+        handle = await startRecording();
+        recBtn.textContent = '■ Stop'; recBtn.classList.add('spk-recording');
+      } catch (e) { flashToast('Microphone unavailable — say it aloud and self-rate.'); recBtn.remove(); }
+    } else {
+      const blob = await handle.stop(); handle = null;
+      recBtn.textContent = '🎤 Record again'; recBtn.classList.remove('spk-recording');
+      const url = URL.createObjectURL(blob);
+      let play = node.querySelector('#playYours');
+      if (!play) { play = h('<button class="btn btn--ghost" id="playYours">▶ Play your recording</button>'); node.querySelector('#recArea').appendChild(play); }
+      play.onclick = () => { try { new Audio(url).play(); } catch (e) {} };
+    }
+  });
 }
 
 function renderSpeakingDone() {
@@ -902,6 +934,129 @@ function renderListeningDone() {
       <p class="muted">You understood ${done} from sound. Training your ear is how real comprehension grows.</p>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
+  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  mount(node);
+}
+
+// ---------- lightning round (fluency under time pressure) ----------
+// The fluency strand: rapid retrieval of words you ALREADY know, against the
+// clock. Time pressure pushes retrieval from slow-and-deliberate towards
+// automatic — the missing step between "knowing" a word and using it in real
+// conversation. Reuses learned content only, so it's pure consolidation.
+const BLITZ_SECONDS = 60;
+let blitz = null;
+
+function blitzPool() {
+  const idx = vocabIndex(course);
+  const L = store.lang();
+  return Object.keys(L.items).filter((id) => L.items[id].seen > 0 && idx[id]).map((id) => idx[id]);
+}
+
+function startBlitz() {
+  const pool = blitzPool();
+  if (pool.length < 5) return flashToast('Learn a few more words first — Lightning uses words you already know.');
+  const best = store.lang().blitzBest || 0;
+  const node = h(`
+    <div class="screen screen--center">
+      <div class="result__emoji">⚡</div>
+      <h1>Lightning round</h1>
+      <p class="onb__body">${BLITZ_SECONDS} seconds. As many words as you can — fast recall is what makes real conversation possible. Only words you've already learned, no hearts.</p>
+      ${best ? `<p class="muted">Your best: <strong>${best}</strong> correct</p>` : ''}
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="go">Start ⚡</button>
+        <button class="btn btn--ghost" id="back">Back</button>
+      </div>
+    </div>`);
+  node.querySelector('#go').addEventListener('click', runBlitz);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
+}
+
+function runBlitz() {
+  const pool = blitzPool();
+  blitz = { pool: shuffle(pool), i: 0, answered: 0, correct: 0, ends: Date.now() + BLITZ_SECONDS * 1000, timer: null };
+  const node = h(`
+    <div class="screen ex">
+      <header class="ex__top">
+        <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
+        <div class="ex__bar"><div class="ex__bar-fill ex__bar-fill--blitz" id="timeBar" style="width:100%"></div></div>
+        <span class="muted" id="blitzScore">⚡ 0</span>
+      </header>
+      <div class="ex__body" id="qArea"></div>
+    </div>`);
+  const stop = () => { if (blitz && blitz.timer) clearInterval(blitz.timer); };
+  node.querySelector('#quitBtn').addEventListener('click', () => { stop(); blitz = null; renderHome(); });
+  mount(node);
+  blitz.timer = setInterval(() => {
+    if (!blitz) return;
+    const left = blitz.ends - Date.now();
+    const bar = document.getElementById('timeBar');
+    if (bar) bar.style.width = `${Math.max(0, (left / (BLITZ_SECONDS * 1000)) * 100)}%`;
+    if (left <= 0) { stop(); finishBlitz(); }
+  }, 100);
+  blitzQuestion(node);
+}
+
+function blitzQuestion(node) {
+  if (!blitz) return;
+  if (blitz.i >= blitz.pool.length) { blitz.pool = shuffle(blitz.pool); blitz.i = 0; }
+  const v = blitz.pool[blitz.i]; blitz.i += 1;
+  const toEn = Math.random() < 0.5;
+  const all = blitzPool();
+  const key = toEn ? 'translation' : 'term';
+  const seen = new Set([normalize(v[key])]);
+  const opts = [v[key]];
+  for (const o of shuffle(all)) {
+    const k = normalize(o[key]);
+    if (o.id === v.id || seen.has(k)) continue;
+    seen.add(k); opts.push(o[key]);
+    if (opts.length >= 4) break;
+  }
+  const q = node.querySelector('#qArea');
+  q.innerHTML = `
+    <h2 class="ex__q">${toEn ? `“${esc(v.term)}” means:` : `How do you say “${esc(v.translation)}”?`}</h2>
+    <div class="opts">${shuffle(opts).map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
+  q.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
+    if (!blitz) return;
+    const ok = normalize(b.dataset.val) === normalize(v[key]);
+    blitz.answered += 1;
+    if (ok) { blitz.correct += 1; sound.correct(); haptic(8); } else { sound.wrong(); haptic([10, 30, 10]); }
+    // answered under time pressure is still real evidence — grade it honestly
+    srsReview(store.item(v.id), gradeFor(ok, 'multiple_choice'), 'multiple_choice');
+    const sc = document.getElementById('blitzScore');
+    if (sc) sc.textContent = `⚡ ${blitz.correct}`;
+    b.classList.add(ok ? 'opt--ok' : 'opt--bad');
+    q.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
+    setTimeout(() => blitzQuestion(node), ok ? 140 : 450);
+  }));
+}
+
+function finishBlitz() {
+  if (!blitz) return;
+  const { answered, correct } = blitz;
+  blitz = null;
+  const L = store.lang();
+  const isBest = correct > (L.blitzBest || 0);
+  if (isBest) L.blitzBest = correct;
+  const xp = Math.min(40, correct * 2);
+  if (xp) { store.addXp(xp); G.track(store, 'xp', { amount: xp }); }
+  store.save();
+  sound.complete(); haptic([15, 30, 15]);
+  if (isBest) confetti({ count: 90, duration: 1200 });
+  const node = h(`
+    <div class="screen screen--center result">
+      <div class="onb__art">${mascotSvg('cheer', { size: 110 })}</div>
+      <h1>${isBest ? 'New record! ⚡' : 'Time!'}</h1>
+      <div class="result__row">
+        <div class="kpi"><span class="kpi__v">${correct}</span><span class="kpi__k">Correct</span></div>
+        <div class="kpi"><span class="kpi__v">${answered}</span><span class="kpi__k">Answered</span></div>
+        <div class="kpi"><span class="kpi__v">+${xp}</span><span class="kpi__k">XP</span></div>
+      </div>
+      <p class="muted">Fast recall turns words you know into words you can USE mid-conversation.</p>
+      <button class="btn btn--primary" id="again">⚡ Go again</button>
+      <button class="btn btn--ghost" id="doneBtn">Done</button>
+    </div>`);
+  node.querySelector('#again').addEventListener('click', runBlitz);
   node.querySelector('#doneBtn').addEventListener('click', renderHome);
   mount(node);
 }
@@ -1021,12 +1176,20 @@ function startDialogue(id) {
   advanceDialogueNpc();
   renderDialogue();
 }
+// Where a turn id lives in the turns array ('end' finishes the conversation).
+// Turn ids + option `next` pointers are what make dialogues genuinely branch:
+// different replies can lead to different NPC responses before converging.
+function dialogueJump(next) {
+  if (next === 'end') return dlg.d.turns.length;
+  const i = dlg.d.turns.findIndex((t) => t.id === next);
+  return i >= 0 ? i : dlg.idx + 1;
+}
 function advanceDialogueNpc() {
   const turns = dlg.d.turns;
   while (dlg.idx < turns.length && turns[dlg.idx].speaker === 'npc') {
     const t = turns[dlg.idx];
     dlg.log.push({ who: 'npc', name: t.name || '', t: t.t, en: t.en });
-    dlg.idx += 1;
+    dlg.idx = t.next != null ? dialogueJump(t.next) : dlg.idx + 1;
   }
 }
 function renderDialogue() {
@@ -1064,14 +1227,20 @@ function renderDialogue() {
       if (choice.ok) {
         sound.correct(); haptic(12);
         dlg.log.push({ who: 'you', name: '', t: choice.t, en: choice.en });
-        dlg.idx += 1;
+        dlg.idx = choice.next != null ? dialogueJump(choice.next) : dlg.idx + 1;
         advanceDialogueNpc();
         renderDialogue();
       } else {
         dlg.mistakes += 1;
         sound.wrong(); haptic([10, 40, 10]);
         b.classList.add('opt--bad'); b.disabled = true;
-        flashToast('Not quite — try a different reply.');
+        // corrective feedback — the highest-impact ingredient of interaction:
+        // say WHY the reply doesn't work, not just that it doesn't
+        const why = choice.why || 'Not quite — try a different reply.';
+        let fb = node.querySelector('#dlgWhy');
+        if (!fb) { fb = h('<p class="dlg-why" id="dlgWhy" role="alert"></p>'); node.querySelector('#foot').prepend(fb); }
+        fb.textContent = `💡 ${why}`;
+        announce(why);
       }
     }));
   }
@@ -1083,15 +1252,13 @@ function finishDialogue() {
   const d = dlg.d;
   const L = store.lang();
   if (!(L.completedDialogues || (L.completedDialogues = [])).includes(d.id)) L.completedDialogues.push(d.id);
-  // input-first: seed the conversation's vocabulary into the review schedule
+  // input-first: the conversation's vocabulary enters the review schedule —
+  // honestly (encountered, due now), not as fake correct recalls.
   const idx = vocabIndex(course);
   const byTerm = {}; for (const v of Object.values(idx)) byTerm[normalize(v.term)] = v.id;
   const text = normalize(d.turns.map((t) => t.t || (t.options || []).map((o) => o.t).join(' ')).join(' '));
-  const seeded = new Set();
   for (const [term, id] of Object.entries(byTerm)) {
-    if (term && !seeded.has(id) && (text === term || text.includes(` ${term} `) || text.startsWith(`${term} `) || text.endsWith(` ${term}`))) {
-      seeded.add(id); const it = store.item(id); if (!it.seen) srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice');
-    }
+    if (term && (text === term || text.includes(` ${term} `) || text.startsWith(`${term} `) || text.endsWith(` ${term}`))) store.encounter(id);
   }
   const perfect = dlg.mistakes === 0;
   const xp = perfect ? 25 : 15;
@@ -1145,7 +1312,8 @@ function renderGrammarTip(gid) {
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Grammar</button><strong>${esc(g.title)}</strong><span></span></header>
       <div class="gram-tip"><span class="gram-tip__icon">💡</span><p>${esc(g.tip)}</p></div>
-      <button class="btn btn--primary" id="practise">Practise this pattern · ${g.drills.length} drills</button>
+      ${g.frames ? '<p class="muted">Drills for this pattern are generated fresh every time from real course verbs — you\'re learning the frame, not memorising a list.</p>' : ''}
+      <button class="btn btn--primary" id="practise">Practise this pattern${g.frames ? ' · fresh drills each time' : ` · ${g.drills.length} drills`}</button>
       <button class="btn btn--ghost" id="hear">🔊 Hear an example</button>
     </div>`);
   node.querySelector('#back').addEventListener('click', renderGrammar);
@@ -1157,7 +1325,12 @@ function renderGrammarTip(gid) {
 function startGrammar(gid) {
   const g = (course.grammar || []).find((x) => x.id === gid);
   if (!g) return renderGrammar();
-  const queue = shuffle(g.drills).map((d) => (d.options
+  // generative: a frames spec produces fresh whole-chunk drills from course
+  // verbs every session (subject prefix + stem drilled as one unit); a couple
+  // of hand-authored drills are kept in the mix for curated coverage
+  const generated = g.frames ? genFrameDrills(g.frames, 6) : [];
+  const authored = shuffle(g.drills || []).slice(0, generated.length ? 3 : (g.drills || []).length);
+  const queue = shuffle([...authored, ...generated]).map((d) => (d.options
     ? { type: 'multiple_choice', prompt: d.prompt, answer: d.answer, options: d.options }
     : { type: 'translate', prompt: d.prompt, answer: d.answer, accept: [d.answer.toLowerCase()] }));
   session = { mode: 'grammar', grammarId: gid, lesson: null, queue, idx: 0, mistakes: 0, total: 0 };
@@ -1292,20 +1465,16 @@ function endSession() {
   } else if (session.mode === 'reading') {
     const r = session.reading;
     if (r && !store.lang().completedReadings.includes(r.id)) store.lang().completedReadings.push(r.id);
-    // input-first: words encountered in the story enter the review schedule, so
-    // reading itself feeds spaced repetition (comprehensible input → retention)
+    // input-first: words encountered in the story enter the review schedule
+    // (due now) — but reading past a word is NOT a recall, so it never counts
+    // as a correct review or inflates retention. The first real review will.
     if (r) {
       const idx = vocabIndex(course);
       const byTerm = {};
       for (const v of Object.values(idx)) byTerm[normalize(v.term)] = v.id;
       const text = normalize(r.lines.map((ln) => ln.t).join(' '));
-      const seeded = new Set();
       for (const [term, id] of Object.entries(byTerm)) {
-        if (term && !seeded.has(id) && (text === term || text.includes(` ${term} `) || text.startsWith(`${term} `) || text.endsWith(` ${term}`))) {
-          seeded.add(id);
-          const it = store.item(id);
-          if (!it.seen) srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice');
-        }
+        if (term && (text === term || text.includes(` ${term} `) || text.startsWith(`${term} `) || text.endsWith(` ${term}`))) store.encounter(id);
       }
     }
     merge(G.track(store, 'reading'));
@@ -1331,12 +1500,19 @@ function advance(wasCorrect, ex) {
   if (session.mode === 'baseline' || session.mode === 'retest' || session.mode === 'testout') {
     if (wasCorrect) session.score += 1;
   } else {
-    // credit SRS for each vocab id this exercise touched
+    // credit SRS for each item id this exercise touched. Match grades per
+    // pair: only the words the learner actually paired first-try count as
+    // correct — the pairs they mixed up are honest lapses.
+    const missed = ex.type === 'match' ? new Set(ex._missedTerms || []) : null;
+    const byId = missed ? vocabIndex(course) : null;
     for (const vid of exerciseVocabIds(ex, session.lesson)) {
       const it = store.item(vid);
-      srsReview(it, gradeFor(wasCorrect, ex.type), ex.type);
+      const itemCorrect = missed ? !(byId[vid] && missed.has(normalize(byId[vid].term))) : wasCorrect;
+      srsReview(it, gradeFor(itemCorrect, ex.type), ex.type);
     }
-    if (!wasCorrect && HEART_MODES.includes(session.mode)) {
+    // Match is the lesson's first-exposure intro, and mispairs are already
+    // corrected in place — it counts against accuracy/stars but not hearts.
+    if (!wasCorrect && HEART_MODES.includes(session.mode) && ex.type !== 'match') {
       store.loseHeart();
       session.queue.push({ ...ex }); // requeue missed item to the end
       if (store.lang().hearts <= 0) return renderOutOfHearts();
@@ -1394,7 +1570,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
       <span class="fb__mascot">${mascotSvg(ok ? 'cheer' : 'sad', { size: 52, decorative: true })}</span>
       <div class="fb__text">
         <div class="fb__title">${title}</div>
-        ${ok ? '' : `<div class="fb__answer">Answer: <strong>${esc(correctText)}</strong></div>`}
+        ${ok ? '' : `<div class="fb__answer">${ex.type === 'match' ? esc(correctText) : `Answer: <strong>${esc(correctText)}</strong>`}</div>`}
         ${spell}
         ${note}
       </div>
@@ -1405,7 +1581,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // lock inputs
   node.querySelectorAll('.opt, .ex__input, .check, .wb-tok').forEach((e) => { e.disabled = true; });
   // a11y: announce the result, then put focus on Continue so it's one keypress away
-  announce(ok ? (typoNote ? `Correct, but ${typoNote}` : 'Correct!') : `Not quite. Answer: ${correctText}`);
+  announce(ok ? (typoNote ? `Correct, but ${typoNote}` : 'Correct!') : (ex.type === 'match' ? `Not quite. ${correctText}` : `Not quite. Answer: ${correctText}`));
   cont.focus();
 }
 
@@ -1493,6 +1669,10 @@ function wireExercise(ex, node) {
     let firstPick = null;
     let solved = 0;
     const total = ex.pairs.length;
+    // honesty: a mispairing is a real miss. Track which pairs were ever paired
+    // wrongly so the scheduler hears the truth per word instead of a blanket
+    // "success" just because the exercise was eventually completed.
+    const missed = new Set();
     node.querySelectorAll('.match-opt').forEach((b) => b.addEventListener('click', () => {
       if (b.classList.contains('match-opt--done')) return;
       if (!firstPick) {
@@ -1504,9 +1684,18 @@ function wireExercise(ex, node) {
       if (match) {
         [firstPick, b].forEach((x) => { x.classList.remove('match-opt--sel'); x.classList.add('match-opt--done'); x.disabled = true; });
         solved += 1;
-        if (solved === total) showFeedback(node, true, ex, '');
+        if (solved === total) {
+          ex._missedTerms = [...missed];
+          const ok = missed.size === 0;
+          showFeedback(node, ok, ex, ok ? '' : `you mixed up ${missed.size} pair${missed.size === 1 ? '' : 's'} — they'll come round again`);
+        }
       } else {
         const a = firstPick;
+        if (!sameSide) {
+          // both words involved in the wrong pairing were missed
+          missed.add(normalize(ex.pairs[a.dataset.i][0]));
+          missed.add(normalize(ex.pairs[b.dataset.i][0]));
+        }
         [a, b].forEach((x) => x.classList.add('match-opt--wrong'));
         setTimeout(() => [a, b].forEach((x) => x.classList.remove('match-opt--wrong', 'match-opt--sel')), 500);
       }
@@ -1656,6 +1845,7 @@ function renderProgress() {
       <div class="dash">
         <div class="dcard"><span class="dcard__v">${m.mastered}</span><span class="dcard__k">Words mastered</span><div class="dcard__sub">of ${totalVocab} (${masteredPct}%)</div></div>
         <div class="dcard"><span class="dcard__v">${m.learning}</span><span class="dcard__k">Still learning</span></div>
+        <div class="dcard"><span class="dcard__v">${m.phrases.mastered}</span><span class="dcard__k">Phrase chunks</span><div class="dcard__sub">of ${m.phrases.introduced} practised</div></div>
         <div class="dcard"><span class="dcard__v">${retPct}%</span><span class="dcard__k">Retention</span><div class="dcard__sub">recall accuracy</div></div>
         <div class="dcard"><span class="dcard__v">${m.lessonsCompleted}</span><span class="dcard__k">Lessons done</span></div>
         <div class="dcard"><span class="dcard__v">🔥 ${m.streak}</span><span class="dcard__k">Day streak</span><div class="dcard__sub">best ${m.bestStreak}</div></div>
@@ -1906,11 +2096,30 @@ async function renderLibrary() {
   if (!LIBRARY) { try { LIBRARY = await (await fetch('data/library.json')).json(); } catch (e) { LIBRARY = { sources: [] }; } }
   const readings = course.reading || [];
   const L = store.lang();
+  // comprehensible input: how much of each story does this learner already
+  // know? Research targets ~95% known words for reading to teach — surface
+  // the fit and recommend the best next story instead of a blind list.
+  const idx = vocabIndex(course);
+  const known = new Set();
+  for (const [id, it] of Object.entries(L.items)) {
+    if ((it.seen > 0 || it.encountered) && idx[id]) for (const tok of normalize(idx[id].term).split(' ')) known.add(tok);
+  }
+  const cov = {};
+  for (const r of readings) cov[r.id] = readingCoverage(r.lines, known);
+  const unread = readings.filter((r) => !(L.completedReadings || []).includes(r.id));
+  const rec = unread.sort((a, b) => cov[b.id].pct - cov[a.id].pct)[0];
+  const covChip = (r) => {
+    const pct = Math.round(cov[r.id].pct * 100);
+    const band = pct >= 90 ? 'ok' : pct >= 60 ? 'mid' : 'low';
+    const label = pct >= 90 ? 'just right' : pct >= 60 ? 'a stretch' : 'tough for now';
+    return `<span class="story__cov story__cov--${band}">${pct}% known · ${label}</span>`;
+  };
   const cards = readings.map((r) => {
     const done = (L.completedReadings || []).includes(r.id);
     return `<button class="story ${done ? 'story--done' : ''}" data-read="${r.id}">
         <span class="story__icon">${done ? '✅' : '📖'}</span>
-        <div class="story__body"><strong>${esc(r.title)}</strong><span class="muted">${esc(r.level)} · ${r.lines.length} lines</span></div>
+        <div class="story__body"><strong>${esc(r.title)}${rec && r.id === rec.id ? ' <span class="story__rec">★ best fit</span>' : ''}</strong>
+          <span class="muted">${esc(r.level)} · ${r.lines.length} lines</span>${done ? '' : covChip(r)}</div>
       </button>`;
   }).join('');
   const books = (LIBRARY.sources || []).filter((s) => s.langs.includes(course.code)).map((s) => `
@@ -1923,7 +2132,7 @@ async function renderLibrary() {
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Stories</strong><span></span></header>
       <h3 class="sec">Read in ${esc(course.name)}</h3>
-      <p class="muted">Read the story, tap a line to hear it, then answer a few questions. Reading builds real comprehension.</p>
+      <p class="muted">Read the story, tap a line to hear it, then answer a few questions. The % shows how many of the words you already know — around 90%+ is the sweet spot where reading teaches best.</p>
       <div class="stories">${cards || '<p class="muted">Stories coming soon for this language.</p>'}</div>
       <h3 class="sec">Free book libraries</h3>
       <p class="muted">Thousands more children's books in ${esc(course.name)} — all free and openly licensed. Best with internet.</p>

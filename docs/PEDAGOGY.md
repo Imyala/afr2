@@ -12,19 +12,25 @@ recognition, which feels easy and rewarding but is the weakest form of memory.
 Learners rack up streaks and XP while forgetting most of what they "covered".
 
 MzansiLingo keeps the motivating game layer (streaks, XP, hearts) **but
-subordinates it to four evidence-based mechanisms.**
+subordinates it to five evidence-based mechanisms.**
 
 ## 1. Spaced repetition (the core)
 
-Implemented in `src/srs.js` using a variant of the **SM-2** algorithm with
-short same-session *learning steps* before a card graduates to day-scale
-intervals.
+Implemented in `src/srs.js` as an **FSRS-style target-retention scheduler**
+(an upgrade over classic SM-2 fixed multipliers) with short same-session
+*learning steps* before a card graduates to day-scale intervals.
 
-- Each vocabulary item carries a memory record: ease factor, repetition count,
-  interval, and a due date.
-- When you answer, the item is rescheduled. Correct answers push the next
-  review further out (1 day → 6 days → 6×ease …); a wrong answer (a *lapse*)
-  resets the schedule and lowers the ease factor.
+- Each item carries a memory record: **stability** (days until recall decays
+  to ~90%), **difficulty**, and a due date. Words *and* phrase chunks are
+  scheduled this way.
+- When you answer, the item is rescheduled at the point where predicted recall
+  drops to your desired retention. Production grows stability more than
+  recognition; a wrong answer (a *lapse*) shrinks stability and resets the
+  learning steps.
+- Words met passively (in a story, a dialogue, Word of the Day) enter the
+  schedule as *encountered* — due for review immediately, but **never counted
+  as a correct recall**. Reading past a word is not evidence you can retrieve
+  it; the first real review is what grades it.
 - The **Review** button surfaces exactly the items that are *due* — the words
   you're about to forget. This is the single most important difference from a
   linear lesson-only app: review is driven by your memory, not by a syllabus.
@@ -39,11 +45,16 @@ from scratch. So MzansiLingo weights exercise types by how much they prove:
 
 | Exercise | What it proves | Grade signal |
 |---|---|---|
-| Match / Multiple choice / Listen | recognition | weaker (quality 4) |
-| **Translate / Fill-in-blank / Speak** | **production / recall** | **strong (quality 5)** |
+| Match / Multiple choice / Listen / Fill-in-blank / Word bank | recognition | weaker (quality 4) |
+| **Translate (typed) / Speak** | **production / recall** | **strong (quality 5)** |
+
+Fill-in-the-blank sits in the *recognition* row on purpose: it is rendered as
+pick-from-options, so counting it as production would let a word be "mastered"
+through multiple choice alone. Likewise, **match grades per pair** — the pairs
+you mix up are recorded as misses even though the exercise lets you finish.
 
 A word is only marked **mastered** when it has been **produced correctly at
-least twice** *and* has survived to a spaced interval of 6+ days
+least twice** *and* has survived to a spaced interval of 7+ days
 (`srs.js` → `review()`). You cannot "master" a word just by clicking the right
 bubble. This is enforced in code, not just encouraged.
 
@@ -73,6 +84,37 @@ To make "real progress in 1 month" provable rather than a slogan:
 
 For a classroom, this is the artefact a teacher can point to: a measured,
 per-learner gain over a defined period.
+
+## 5. The five strands of a real speaking skill
+
+Spaced retrieval is one strand of language ability, not the whole skill. The
+app implements the five methods with the strongest evidence in second-language
+acquisition research:
+
+1. **Massive comprehensible input** — graded stories and audio-first listening
+   at a high proportion of known words (extensive-reading meta-analyses:
+   d ≈ 0.5–0.8). Every story shows **how many of its words you already know**
+   and the library recommends the best-fit story; ~90%+ known is the sweet spot
+   where reading teaches. Words met in input enter the review schedule
+   (honestly — see §1).
+2. **Spoken, sentence-level production** — the production effect: words said
+   aloud in sentences stick far better than typed single words. Speaking
+   practice is recall-first (see the English → say it → reveal the model) and
+   sentence-first, with an honest "not quite" self-rating that counts as a
+   lapse.
+3. **Chunks, not words** — fluent speech is retrieved as prefabricated
+   multi-word frames. Phrase chunks are first-class spaced items reviewed as
+   whole sentences, and the grammar engine **generates** frame drills
+   (ngi-/u-/si-/ba- + stem for isiZulu/isiXhosa; pronoun + invariant verb for
+   Afrikaans) fresh each session from real course verbs.
+4. **Interaction with corrective feedback** — the largest effect sizes in all
+   of SLA (d ≈ 0.75–1.13). Dialogue practice explains *why* a wrong reply
+   doesn't work (not just that it doesn't), and conversations genuinely
+   branch: different valid replies lead to different responses.
+5. **Fluency practice under time pressure** — the Lightning round: rapid
+   retrieval of *already-known* words against a 60-second clock, pushing
+   retrieval from deliberate to automatic. It reuses learned content only, so
+   it is pure consolidation, and answers still feed the scheduler honestly.
 
 ## How the game layer supports (not replaces) learning
 

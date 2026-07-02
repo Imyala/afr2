@@ -264,8 +264,20 @@ class Store {
   dueItems(code = this.state.activeLang, now = Date.now()) {
     const L = this.lang(code);
     return Object.entries(L.items)
-      .filter(([, it]) => it.due <= now && it.seen > 0)
+      .filter(([, it]) => it.due <= now && (it.seen > 0 || it.encountered))
       .map(([id]) => id);
+  }
+
+  // Honest input-first seeding: a word met in a story/dialogue enters the
+  // review queue (due now) WITHOUT being counted as a correct recall — reading
+  // past a word is not evidence you can retrieve it, so seen/correct/retention
+  // stay untouched until the first real review tests it.
+  encounter(vocabId, code = this.state.activeLang) {
+    const it = this.item(vocabId, code);
+    if (it.seen || it.encountered) return it;
+    it.encountered = true;
+    it.due = Date.now();
+    return it;
   }
 
   // --- 90-day guided plan --------------------------------------------------
@@ -312,7 +324,11 @@ class Store {
   // --- progress metrics (the "real proof of learning") --------------------
   metrics(code = this.state.activeLang) {
     const L = this.lang(code);
-    const items = Object.values(L.items);
+    // phrase chunks (ids prefixed "ph:") are tracked separately so the
+    // "words mastered" numbers stay honest word counts
+    const words = Object.entries(L.items).filter(([id]) => !id.startsWith('ph:')).map(([, it]) => it);
+    const phraseItems = Object.entries(L.items).filter(([id]) => id.startsWith('ph:')).map(([, it]) => it);
+    const items = words;
     const introduced = items.length;
     const mastered = items.filter((i) => i.mastered).length;
     const learning = items.filter((i) => !i.mastered && i.seen > 0).length;
@@ -322,6 +338,10 @@ class Store {
       introduced,
       mastered,
       learning,
+      phrases: {
+        introduced: phraseItems.filter((i) => i.seen > 0).length,
+        mastered: phraseItems.filter((i) => i.mastered).length,
+      },
       retention: totalSeen ? totalCorrect / totalSeen : 0,
       lessonsCompleted: L.completedLessons.length,
       xp: L.xp,

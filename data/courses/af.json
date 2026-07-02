@@ -4247,7 +4247,54 @@
             "ek looper"
           ]
         }
-      ]
+      ],
+      "frames": {
+        "join": " ",
+        "subjects": [
+          {
+            "p": "ek",
+            "en": "I"
+          },
+          {
+            "p": "jy",
+            "en": "you"
+          },
+          {
+            "p": "ons",
+            "en": "we"
+          },
+          {
+            "p": "hulle",
+            "en": "they"
+          }
+        ],
+        "verbs": [
+          {
+            "stem": "werk",
+            "en": "work"
+          },
+          {
+            "stem": "leer",
+            "en": "learn"
+          },
+          {
+            "stem": "eet",
+            "en": "eat"
+          },
+          {
+            "stem": "praat",
+            "en": "speak"
+          },
+          {
+            "stem": "drink",
+            "en": "drink"
+          },
+          {
+            "stem": "sing",
+            "en": "sing"
+          }
+        ]
+      }
     },
     {
       "id": "af-g2",
@@ -4312,7 +4359,7 @@
     {
       "id": "af-d1",
       "title": "At the shop",
-      "goal": "Buy bread and ask the price",
+      "goal": "Buy what you need and ask the price",
       "level": "Beginner",
       "turns": [
         {
@@ -4333,12 +4380,14 @@
             {
               "t": "Totsiens",
               "en": "Goodbye",
-              "ok": false
+              "ok": false,
+              "why": "'Totsiens' means goodbye — the shopkeeper just greeted you. Say 'Hallo!'"
             },
             {
               "t": "Nee",
               "en": "No",
-              "ok": false
+              "ok": false,
+              "why": "'Nee' means 'no'. Answer the greeting with 'Hallo!'"
             }
           ]
         },
@@ -4350,32 +4399,46 @@
         },
         {
           "speaker": "you",
-          "prompt": "Say you want bread",
+          "prompt": "Ask for what you want — bread or water",
           "options": [
             {
               "t": "Ek wil brood hê",
               "en": "I want bread",
-              "ok": true
+              "ok": true,
+              "next": "npc-brood"
             },
             {
               "t": "Ek wil water hê",
               "en": "I want water",
-              "ok": false
+              "ok": true,
+              "next": "npc-water"
             },
             {
               "t": "Dankie",
               "en": "Thank you",
-              "ok": false
+              "ok": false,
+              "why": "'Dankie' says thank you — you haven't asked for anything yet. Use 'Ek wil … hê' (I want …)."
             }
           ]
         },
         {
+          "id": "npc-brood",
           "speaker": "npc",
           "name": "Winkelier",
-          "t": "Ja. Nog iets?",
-          "en": "Yes. Anything else?"
+          "t": "Hier is die brood. Nog iets?",
+          "en": "Here is the bread. Anything else?",
+          "next": "ask-price"
         },
         {
+          "id": "npc-water",
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Hier is die water. Nog iets?",
+          "en": "Here is the water. Anything else?",
+          "next": "ask-price"
+        },
+        {
+          "id": "ask-price",
           "speaker": "you",
           "prompt": "Ask the price",
           "options": [
@@ -4387,12 +4450,14 @@
             {
               "t": "Waarvandaan kom jy?",
               "en": "Where are you from?",
-              "ok": false
+              "ok": false,
+              "why": "That asks where someone is from. To ask the price: 'Hoeveel kos dit?'"
             },
             {
               "t": "Hoe gaan dit?",
               "en": "How are you?",
-              "ok": false
+              "ok": false,
+              "why": "That asks how someone is doing. For the price, ask 'Hoeveel kos dit?'"
             }
           ]
         },
@@ -4414,12 +4479,14 @@
             {
               "t": "Ek is honger",
               "en": "I'm hungry",
-              "ok": false
+              "ok": false,
+              "why": "'Ek is honger' says you're hungry — that's not a thank-you. Say 'Dankie, totsiens!'"
             },
             {
               "t": "Help my",
               "en": "Help me",
-              "ok": false
+              "ok": false,
+              "why": "You already got the help you needed! Thank them: 'Dankie, totsiens!'"
             }
           ]
         }

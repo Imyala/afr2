@@ -32,6 +32,58 @@ export function vocabIndex(course) {
   return byId;
 }
 
+// Phrase CHUNKS are first-class spaced items ("chunks, not words": fluent
+// speech is retrieved as prefabricated multi-word frames, so phrase cards are
+// scheduled and reviewed just like vocabulary). Ids are derived from the
+// lesson id + position, which is stable as long as authored order is stable.
+export function phraseIndex(course) {
+  const byId = {};
+  for (const u of course.units) for (const l of u.lessons) {
+    (l.phrases || []).forEach((p, i) => {
+      if (!p || !p.t || !p.en) return;
+      const id = `ph:${l.id}:${i}`;
+      byId[id] = { id, t: p.t, en: p.en, lessonId: l.id };
+    });
+  }
+  return byId;
+}
+
+// Every authored sentence in a course — lesson phrases, dialogue lines and
+// story lines — as one pool: { t, en, phraseId? }. This is where sentence-level
+// practice (speaking, review word-banks) draws from, so hand-authored dialogue
+// and story content is reused instead of sitting unseen.
+export function sentencePool(course) {
+  const out = [];
+  for (const p of Object.values(phraseIndex(course))) out.push({ t: p.t, en: p.en, phraseId: p.id });
+  for (const d of (course.dialogues || [])) {
+    for (const turn of (d.turns || [])) {
+      if (turn.t && turn.en) out.push({ t: turn.t, en: turn.en });
+      for (const o of (turn.options || [])) if (o.ok && o.t && o.en) out.push({ t: o.t, en: o.en });
+    }
+  }
+  for (const r of (course.reading || [])) for (const ln of (r.lines || [])) {
+    if (ln.t && ln.en) out.push({ t: ln.t, en: ln.en });
+  }
+  // de-dup by normalized target text
+  const seen = new Set();
+  return out.filter((s) => { const k = normalize(s.t); if (!k || seen.has(k)) return false; seen.add(k); return true; });
+}
+
+// Comprehensible-input fit: what fraction of a story's word tokens does the
+// learner already know? (Extensive-reading research targets ~95%+ known words
+// for input to be comprehensible enough to learn from.)
+export function readingCoverage(lines, knownTerms) {
+  let known = 0, total = 0;
+  for (const ln of (lines || [])) {
+    for (const tok of normalize(ln.t || '').split(' ')) {
+      if (!tok) continue;
+      total += 1;
+      if (knownTerms.has(tok)) known += 1;
+    }
+  }
+  return { known, total, pct: total ? known / total : 0 };
+}
+
 export function normalize(s) {
   return (s || '')
     .toLowerCase()
@@ -178,7 +230,15 @@ function genWordBank(phrase, pool) {
     distract.push(w);
     if (distract.length >= 2) break;
   }
-  return { type: 'word_bank', prompt: phrase.en, answer: phrase.t, tokens: shuffle([...words, ...distract]) };
+  return { type: 'word_bank', prompt: phrase.en, answer: phrase.t, tokens: shuffle([...words, ...distract]), ...(phrase.id ? { phraseId: phrase.id } : {}) };
+}
+
+// Which course vocab items appear (as whole words) inside a sentence.
+export function memberVocabIds(text, vocabById) {
+  const hay = normalize(text);
+  return Object.values(vocabById)
+    .filter((v) => { const t = normalize(v.term); return t && (hay === t || hay.includes(` ${t} `) || hay.startsWith(`${t} `) || hay.endsWith(` ${t}`)); })
+    .map((v) => v.id);
 }
 
 // Sentence comprehension: "what does this sentence mean?" — recognition at the
@@ -190,7 +250,7 @@ function genPhraseChoice(phrase, enPool) {
     distract.push(e);
     if (distract.length >= 3) break;
   }
-  return { type: 'multiple_choice', prompt: `What does “${phrase.t}” mean?`, answer: phrase.en, options: shuffle([phrase.en, ...distract]) };
+  return { type: 'multiple_choice', prompt: `What does “${phrase.t}” mean?`, answer: phrase.en, options: shuffle([phrase.en, ...distract]), ...(phrase.id ? { phraseId: phrase.id } : {}) };
 }
 
 // Sentence fill-in-the-blank: drop one known word from the sentence and pick it
@@ -211,7 +271,45 @@ function genPhraseBlank(phrase, pool, byTerm) {
     if (opts.length >= 4) break;
   }
   const vid = byTerm[normalize(pick)];
-  return { type: 'fill_blank', sentence, answer: pick, options: shuffle(opts), meaning: phrase.en, ...(vid ? { vocabId: vid } : {}) };
+  return { type: 'fill_blank', sentence, answer: pick, options: shuffle(opts), meaning: phrase.en, ...(vid ? { vocabId: vid } : {}), ...(phrase.id ? { phraseId: phrase.id } : {}) };
+}
+
+// ---------------------------------------------------------------------------
+// Generative frame drills ("chunks, not words")
+//
+// A frames spec on a grammar pattern generates whole-chunk conjugation drills
+// from real course verbs: subject prefix (+ optional link) + stem, drilled as
+// one prefabricated unit (ngi+ya+sebenza -> "ngiyasebenza"), the way fluent
+// speech actually retrieves it. Every session samples fresh combinations, so
+// the drills are generated, not a fixed hand-authored list.
+//
+//   frames: {
+//     join:     '' (agglutinative: ngiyasebenza) or ' ' (separate: ek werk)
+//     link:     optional infix between prefix and stem (zu/xh long present 'ya')
+//     subjects: [{ p: 'ngi', en: 'I' }, ...]
+//     verbs:    [{ stem: 'sebenza', en: 'work' }, ...]
+//   }
+// ---------------------------------------------------------------------------
+
+export function frameChunk(frames, subj, verb) {
+  const parts = frames.join === ' ' ? [subj.p, verb.stem] : [subj.p + (frames.link || '') + verb.stem];
+  const s = parts.join(' ');
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+export function genFrameDrills(frames, n = 6) {
+  const combos = [];
+  for (const subj of frames.subjects) for (const verb of frames.verbs) combos.push({ subj, verb });
+  const drills = shuffle(combos).slice(0, n).map(({ subj, verb }, i) => {
+    const answer = frameChunk(frames, subj, verb);
+    const en = `${subj.en} ${verb.en}`;
+    // options: the same verb across all subject frames — the choice IS the frame
+    const options = shuffle(frames.subjects.map((s) => frameChunk(frames, s, verb)));
+    // mix shapes: pick-the-frame first, then produce the whole chunk from memory
+    if (i % 2 === 0 && options.length >= 3) return { prompt: en, answer, options };
+    return { prompt: en, answer };
+  });
+  return drills;
 }
 
 // All authored phrase meanings in a course (distractor pool for sentence MCs).
@@ -237,15 +335,24 @@ export function buildLessonSession(lesson, course = null, dueIds = []) {
   // production phase: every word
   const production = vocab.map((v) => genProduction(v));
 
-  // flavour: 1-2 authored contextual fill-in-the-blanks (kept from content)
-  const authoredFill = (lesson.exercises || []).filter((e) => e.type === 'fill_blank');
-  const flavour = shuffle(authoredFill).slice(0, Math.min(2, authoredFill.length));
+  // hand-authored contextual items: sample across every renderable type so
+  // authored content actually reaches learners (match/listen/speak authored
+  // items are covered by the generator / disabled audio modes instead)
+  const RENDERABLE = ['multiple_choice', 'fill_blank', 'translate'];
+  const authored = shuffle((lesson.exercises || []).filter((e) => RENDERABLE.includes(e.type))).slice(0, 4);
+  // authored typed items are production, so they belong in the production
+  // block — keeping the every-word rule "recognition before production"
+  const flavour = authored.filter((e) => e.type !== 'translate');
+  const flavourProd = authored.filter((e) => e.type === 'translate');
 
   // sentence practice: 1-2 items from any authored phrases, varied across three
   // shapes (build-the-sentence, sentence meaning, sentence fill-the-blank). Kept
   // in the pre-production block so every word still gets a recognition exposure
-  // before it must be produced.
-  const phrases = (lesson.phrases || []).filter((p) => p && p.t && p.en);
+  // before it must be produced. Phrases carry stable ids so each phrase CHUNK
+  // is also a spaced item of its own (chunks, not words).
+  const phrases = (lesson.phrases || [])
+    .map((p, i) => (p && p.t && p.en ? { ...p, id: `ph:${lesson.id}:${i}` } : null))
+    .filter(Boolean);
   const enPool = course ? allPhraseEns(course) : phrases.map((p) => p.en);
   const byTerm = {};
   for (const v of pool) if (!/\s/.test(v.term)) byTerm[normalize(v.term)] = v.id;
@@ -267,26 +374,49 @@ export function buildLessonSession(lesson, course = null, dueIds = []) {
   const queue = [
     ...warmup,
     ...shuffle([...recognition, ...flavour, ...wordbanks]),
-    ...shuffle(production),
+    ...shuffle([...production, ...flavourProd]),
   ];
   return queue.map((ex, i) => ({ ...ex, _i: i }));
 }
 
-// Build a review session from due vocab ids, with randomised, varied items.
+// Build a review session from due ids (vocab AND phrase chunks), with
+// randomised, varied items.
 export function buildReviewSession(course, dueIds, max = 15) {
   const byId = vocabIndex(course);
+  const phrases = phraseIndex(course);
   const pool = Object.values(byId);
-  const picked = shuffle(dueIds.map((id) => byId[id]).filter(Boolean)).slice(0, max);
+  const enPool = allPhraseEns(course);
+
+  // due phrase chunks: up to a third of the session, reviewed as sentences
+  // (build-the-sentence or sentence-meaning), crediting the chunk AND its words
+  const duePhrases = shuffle(dueIds.filter((id) => phrases[id])).slice(0, Math.floor(max / 3));
+  const phraseExs = duePhrases.map((id) => {
+    const p = phrases[id];
+    const r = Math.random();
+    // three shapes: build-the-sentence, TYPE the sentence (production — the
+    // only route to phrase mastery), or sentence meaning
+    const ex = r < 0.4 ? genWordBank(p, pool)
+      : r < 0.7 ? { type: 'translate', prompt: p.en, answer: p.t, accept: [p.t.toLowerCase()] }
+        : (enPool.length >= 2 ? genPhraseChoice(p, enPool) : genWordBank(p, pool));
+    return { ...ex, phraseId: id, vocabIds: memberVocabIds(p.t, byId), _review: true };
+  });
+
+  const picked = shuffle(dueIds.map((id) => byId[id]).filter(Boolean)).slice(0, max - phraseExs.length);
   // production is the stronger test, so bias towards it but keep variety
-  return picked.map((v) => {
+  const wordExs = picked.map((v) => {
     const ex = Math.random() < 0.6 ? genProduction(v) : genRecognition(v, pool);
     return { ...ex, _review: true };
   });
+  return shuffle([...wordExs, ...phraseExs]);
 }
 
-// Map exercises to the vocab ids they exercise (for SRS crediting).
+// Map exercises to the item ids they exercise (for SRS crediting): explicit
+// lists first, then the single vocabId, plus the phrase-chunk id if the
+// exercise practises a whole phrase.
 export function exerciseVocabIds(ex, lesson) {
-  if (ex.vocabId) return [ex.vocabId];
+  const phrase = ex.phraseId ? [ex.phraseId] : [];
+  if (ex.vocabIds) return [...new Set([...ex.vocabIds, ...phrase])];
+  if (ex.vocabId) return [ex.vocabId, ...phrase];
   if (ex.type === 'match' && lesson) {
     // credit any lesson vocab whose term appears in the pairs
     const terms = new Set(ex.pairs.map((p) => normalize(p[0])));
@@ -295,7 +425,7 @@ export function exerciseVocabIds(ex, lesson) {
   if (ex.type === 'word_bank' && lesson) {
     // credit any lesson vocab whose term appears in the built sentence
     const hay = normalize(ex.answer);
-    return (lesson.vocab || []).filter((v) => { const t = normalize(v.term); return t && (hay === t || hay.includes(` ${t} `) || hay.startsWith(`${t} `) || hay.endsWith(` ${t}`)); }).map((v) => v.id);
+    return [...(lesson.vocab || []).filter((v) => { const t = normalize(v.term); return t && (hay === t || hay.includes(` ${t} `) || hay.startsWith(`${t} `) || hay.endsWith(` ${t}`)); }).map((v) => v.id), ...phrase];
   }
-  return [];
+  return phrase;
 }

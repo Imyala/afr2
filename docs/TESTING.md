@@ -4,7 +4,9 @@
 
 These cover the spaced-repetition engine, answer grading, and content
 integrity (every exercise answer reachable, every vocab reference resolves,
-every word has phonetics for the offline fallback).
+every word has phonetics for the offline fallback, dialogue branches resolve
+and every wrong reply carries corrective feedback, grammar frames generate
+valid drills, phrase chunks build valid review sessions).
 
 ```bash
 node tests/run.mjs       # SRS, answer grading, lesson + reading content integrity

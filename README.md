@@ -35,9 +35,13 @@ for the full explanation. In short:
 
 | Proven method | How MzansiLingo uses it |
 |---|---|
-| **Spaced repetition (SM-2)** | Every word is scheduled for review at the moment you're about to forget it (`src/srs.js`). |
+| **Spaced repetition (FSRS-style)** | Every word *and phrase chunk* is scheduled for review at the moment you're about to forget it, targeting your desired retention (`src/srs.js`). |
 | **Generated, interleaved practice** | Sessions are generated from the vocab (`buildLessonSession`): every word is quizzed with a recognition *and* a spaced production exposure, plus a short cross-lesson review warm-up. Types/order/distractors are randomised so it reinforces without feeling scripted. |
-| **Active recall / production** | Recognition (multiple choice) is the *weakest* signal. A word only becomes **mastered** once you've typed it correctly *and* it survived a spaced review. |
+| **Active recall / production** | Recognition (multiple choice, fill-in-the-blank, match) is the *weakest* signal. A word only becomes **mastered** once you've produced it from memory *and* it survived a spaced review. Match grades per pair; a mixed-up pair counts as a miss. |
+| **Comprehensible input** | Stories show **how many of their words you already know** and the library recommends the best fit — ~90%+ known is where reading teaches. Words met in input enter the schedule *without* being counted as recalls. |
+| **Chunks, not words** | Phrase chunks are spaced items of their own, reviewed as whole sentences; the grammar engine generates frame drills (subject prefix + stem) fresh each session from real course verbs. |
+| **Interaction + corrective feedback** | Branching dialogues where every wrong reply explains *why* it doesn't work — the largest effect sizes in SLA research. |
+| **Fluency under time pressure** | The ⚡ Lightning round drills fast recall of words you already know against the clock — the step from "knowing" a word to using it mid-conversation. |
 | **Mastery-based progress** | The Progress page reports **words mastered**, **retention %**, and **still learning** — honest learning metrics, not just XP. |
 | **Measured outcomes** | A **baseline test** records where you start. After ~1 month of daily practice, a **re-test** shows your exact improvement. This is the "real progress in 1 month" proof. |
 | **Engagement that serves learning** | XP, streaks, hearts and a daily goal keep kids coming back — but they're wrapped around the spaced-repetition core, not a substitute for it. |
@@ -51,21 +55,33 @@ for the full explanation. In short:
   conversational level over ~3 months
 - 📚 Daily lessons with a unit-based lesson path
 - 🔁 Spaced-repetition **Review** sessions driven by what's actually due
-- 📖 **Reading exercises** — graded stories with comprehension questions
+- 📖 **Reading exercises** — graded stories with comprehension questions, each
+  labelled with **how many of its words you already know** (comprehensible
+  input: ~90%+ known is the sweet spot) and a "best fit" recommendation
 - ✍️ Translation, multiple choice, match-the-pairs, fill-in-the-blank, plus
   three **sentence-level** exercises — "build the sentence" (word bank),
   "what does it mean?" (sentence comprehension), and sentence fill-in-the-blank
+- 🧱 **Phrase chunks as first-class cards** — authored phrases are spaced items
+  of their own, reviewed as whole sentences (build it, type it, or pick its
+  meaning), because fluent speech is retrieved in multi-word chunks
 - 🙂 **Typo-tolerant typed answers** — a near-miss is accepted with a gentle
   spelling nudge instead of costing a heart (short minimal pairs stay strict)
-- 🧩 **Grammar / pattern engine** — short "tip" cards teach the *system*
-  (subject prefixes, plurals, invariant Afrikaans verbs…) with generative
-  drills, so learners can build their own sentences, not just recall words.
-  Patterns are spaced like vocabulary. (Community-reviewed content.)
+- 🧩 **Grammar / pattern engine** — short "tip" cards teach the *system*, and
+  frame patterns **generate fresh drills every session** from real course verbs
+  (ngi-/u-/si-/ba- + stem for isiZulu/isiXhosa; pronoun + invariant verb for
+  Afrikaans) — whole chunks, drilled as units. Patterns are spaced like
+  vocabulary. (Community-reviewed content.)
 - 💬 **Task-based conversations** — branching real-life dialogues (spaza shop,
-  meeting a friend) where the other person speaks and you choose how to reply;
-  builds communicative ability and feeds the review schedule
-- 🎤 **Speaking** (shadow & self-record) and 👂 **Listening** (audio-first
-  comprehension) practice modes — output and input for all four skills
+  meeting a friend) where the other person speaks and you choose how to reply.
+  Wrong replies get **corrective feedback explaining why**, and different valid
+  replies can genuinely branch the conversation. Feeds the review schedule.
+- 🎤 **Speaking** — recall-first, sentence-first spoken production: see the
+  English, say it aloud, reveal the model (record & compare optional), then
+  self-rate honestly ("not quite" counts as a lapse)
+- 👂 **Listening** — audio-first comprehension practice
+- ⚡ **Lightning round** — 60 seconds of rapid recall over words you already
+  know: fluency practice under time pressure, the bridge from "knowing" a word
+  to using it mid-conversation
 - 📒 **Searchable glossary** — browse every word with phonetics and mastery
   status, see your **toughest words**, and one-tap practise them
 - 🔤 **Phonetics on every word** so pronunciation is learnable offline
@@ -143,7 +159,7 @@ styles/main.css         Mobile-first styles
 src/
   app.js                Screens, routing, exercise rendering, onboarding
   store.js              Progress, hearts, XP, streaks (localStorage)
-  srs.js                Spaced-repetition engine (SM-2 + learning steps)
+  srs.js                Spaced-repetition engine (FSRS-style + learning steps)
   lessons.js            Course loading, grading, session building
   audio.js              TTS (listening) + speech recognition (speaking)
   fx.js                 Sound (Web Audio), haptics, confetti, count-up — no assets

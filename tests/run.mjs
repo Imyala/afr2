@@ -5,7 +5,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { newItem, review, gradeFor } from '../src/srs.js';
-import { normalize, checkAnswer, buildLessonSession, exerciseVocabIds, checkTyped, editDistance } from '../src/lessons.js';
+import {
+  normalize, checkAnswer, buildLessonSession, buildReviewSession, exerciseVocabIds, checkTyped, editDistance,
+  phraseIndex, sentencePool, readingCoverage, frameChunk, genFrameDrills,
+} from '../src/lessons.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let pass = 0, fail = 0;
@@ -26,6 +29,13 @@ ok(it.intervalDays >= 6, 'interval grows to several days');
 let it2 = newItem();
 for (let i = 0; i < 8; i++) review(it2, gradeFor(true, 'multiple_choice'), 'multiple_choice');
 ok(it2.mastered === false, 'recognition-only does NOT master (needs production)');
+
+// fill_blank is rendered as pick-from-options, so it must count as recognition:
+// a word can never be "mastered" through fill-in-the-blank taps alone
+let itFb = newItem();
+for (let i = 0; i < 8; i++) review(itFb, gradeFor(true, 'fill_blank'), 'fill_blank');
+ok(itFb.mastered === false, 'fill_blank (pick-from-options) does NOT master');
+ok(gradeFor(true, 'fill_blank') === gradeFor(true, 'multiple_choice'), 'fill_blank graded as recognition');
 
 // higher desired retention => shorter interval for the same stability
 let itA = newItem(); for (let i = 0; i < 5; i++) review(itA, gradeFor(true, 'translate'), 'translate', Date.now(), 0.85);
@@ -65,6 +75,28 @@ const wb = { type: 'word_bank', answer: 'Igama lami nguThabo' };
 ok(checkAnswer(wb, 'Igama lami nguThabo') === true, 'word bank correct in right order');
 ok(checkAnswer(wb, 'lami Igama nguThabo') === false, 'word bank wrong order fails');
 ok(exerciseVocabIds({ type: 'word_bank', answer: 'umama uyahamba' }, { vocab: [{ id: 'zu-umama', term: 'umama' }] }).includes('zu-umama'), 'word bank credits a lesson word it contains');
+ok(exerciseVocabIds({ type: 'word_bank', answer: 'umama uyahamba', phraseId: 'ph:x:0' }, { vocab: [] }).includes('ph:x:0'), 'a phrase exercise credits its phrase chunk');
+ok(exerciseVocabIds({ type: 'translate', vocabIds: ['a', 'b'], phraseId: 'ph:x:1' }).sort().join(',') === 'a,b,ph:x:1', 'explicit vocabIds + phraseId are credited');
+
+// --- generative frame drills (chunks, not words) ---
+const zuFrames = {
+  join: '', link: 'ya',
+  subjects: [{ p: 'ngi', en: 'I' }, { p: 'u', en: 'you' }, { p: 'si', en: 'we' }, { p: 'ba', en: 'they' }],
+  verbs: [{ stem: 'sebenza', en: 'work' }, { stem: 'dla', en: 'eat' }],
+};
+ok(frameChunk(zuFrames, zuFrames.subjects[0], zuFrames.verbs[0]) === 'Ngiyasebenza', 'agglutinative chunk = prefix+link+stem');
+ok(frameChunk({ join: ' ', subjects: [], verbs: [] }, { p: 'ek', en: 'I' }, { stem: 'werk', en: 'work' }) === 'Ek werk', 'separate-word chunk for Afrikaans');
+const fd = genFrameDrills(zuFrames, 6);
+ok(fd.length === 6, 'frame drills sample the requested count');
+ok(fd.every((d) => d.prompt && d.answer), 'every frame drill has prompt+answer');
+ok(fd.filter((d) => d.options).every((d) => d.options.includes(d.answer)), 'frame drill options contain the answer');
+ok(fd.some((d) => !d.options), 'frame drills include typed production (no options)');
+
+// --- comprehensible-input coverage ---
+const covLines = [{ t: 'umama uyahamba' }, { t: 'ubaba uyadla' }];
+const cov = readingCoverage(covLines, new Set(['umama', 'uyahamba', 'ubaba']));
+ok(cov.total === 4 && cov.known === 3 && Math.abs(cov.pct - 0.75) < 1e-9, 'coverage counts known tokens over total');
+ok(readingCoverage([], new Set()).pct === 0, 'empty reading coverage is 0');
 
 // --- content integrity ---
 for (const c of ['zu', 'xh', 'af']) {
@@ -148,18 +180,59 @@ for (const c of ['zu', 'xh', 'af']) {
   ok(dids.length === new Set(dids).size, `${c} dialogue ids are unique`);
   for (const dia of (course.dialogues || [])) {
     ok(dia.id && dia.title && dia.goal && Array.isArray(dia.turns) && dia.turns.length >= 2, `${dia.id} has id/title/goal/turns`);
+    const turnIds = new Set(dia.turns.filter((t) => t.id).map((t) => t.id));
     let youTurns = 0;
     for (const t of dia.turns) {
+      if (t.next != null) ok(t.next === 'end' || turnIds.has(t.next), `${dia.id} turn next '${t.next}' resolves`);
       if (t.speaker === 'npc') { ok(t.t && t.en, `${dia.id} npc turn has t+en`); }
       else if (t.speaker === 'you') {
         youTurns += 1;
         ok(Array.isArray(t.options) && t.options.length >= 2, `${dia.id} you-turn has options`);
-        ok(t.options.filter((o) => o.ok).length === 1, `${dia.id} you-turn has exactly one correct reply`);
-        for (const o of t.options) ok(o.t && o.en, `${dia.id} option has t+en`);
+        // branching: one or MORE acceptable replies (different replies may lead
+        // to different responses)
+        ok(t.options.filter((o) => o.ok).length >= 1, `${dia.id} you-turn has a correct reply`);
+        for (const o of t.options) {
+          ok(o.t && o.en, `${dia.id} option has t+en`);
+          // interaction needs CORRECTIVE feedback: every wrong reply explains why
+          if (!o.ok) ok(!!o.why, `${dia.id} wrong option '${o.t}' has corrective feedback (why)`);
+          if (o.next != null) ok(o.next === 'end' || turnIds.has(o.next), `${dia.id} option next '${o.next}' resolves`);
+        }
       } else ok(false, `${dia.id} turn has a valid speaker`);
     }
     ok(youTurns >= 1, `${dia.id} has at least one learner turn`);
   }
+  // generative frames integrity (chunks, not words)
+  for (const g of (course.grammar || [])) {
+    if (!g.frames) continue;
+    ok(Array.isArray(g.frames.subjects) && g.frames.subjects.length >= 3, `${g.id} frames have >=3 subjects`);
+    ok(Array.isArray(g.frames.verbs) && g.frames.verbs.length >= 3, `${g.id} frames have >=3 verbs`);
+    for (const s of g.frames.subjects) ok(s.p && s.en, `${g.id} frame subject has p+en`);
+    for (const v of g.frames.verbs) ok(v.stem && v.en, `${g.id} frame verb has stem+en`);
+    for (let i = 0; i < 5; i++) {
+      const drills = genFrameDrills(g.frames, 6);
+      if (drills.length !== 6 || !drills.every((d) => d.prompt && d.answer && (!d.options || d.options.includes(d.answer)))) {
+        ok(false, `${g.id} generated frame drills invalid (iter ${i})`); break;
+      }
+    }
+    ok(true, `${g.id} frame drills generate validly`);
+  }
+  ok((course.grammar || []).some((g) => g.frames), `${c} has at least one generative frame pattern`);
+  // phrase chunks are reviewable items
+  const phrases = phraseIndex(course);
+  const phraseIds = Object.keys(phrases);
+  ok(phraseIds.length > 0, `${c} has phrase chunks`);
+  ok(phraseIds.every((id) => id.startsWith('ph:') && phrases[id].t && phrases[id].en), `${c} phrase ids/content well-formed`);
+  for (let i = 0; i < 10; i++) {
+    const rev = buildReviewSession(course, phraseIds.slice(0, 6), 15);
+    if (!rev.length || !rev.every((ex) => ex.phraseId && exerciseVocabIds(ex, null).includes(ex.phraseId))) {
+      ok(false, `${c} phrase review session invalid (iter ${i})`); break;
+    }
+  }
+  ok(true, `${c} phrase reviews credit the chunk`);
+  // the sentence pool (speaking practice + review sentences) is well-formed
+  const sp = sentencePool(course);
+  ok(sp.length >= 10, `${c} sentence pool has enough sentences (${sp.length})`);
+  ok(sp.every((s) => s.t && s.en), `${c} sentence pool entries have t+en`);
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

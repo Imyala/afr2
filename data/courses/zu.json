@@ -4228,7 +4228,55 @@
             "Balambile"
           ]
         }
-      ]
+      ],
+      "frames": {
+        "join": "",
+        "link": "ya",
+        "subjects": [
+          {
+            "p": "ngi",
+            "en": "I"
+          },
+          {
+            "p": "u",
+            "en": "you"
+          },
+          {
+            "p": "si",
+            "en": "we"
+          },
+          {
+            "p": "ba",
+            "en": "they"
+          }
+        ],
+        "verbs": [
+          {
+            "stem": "sebenza",
+            "en": "work"
+          },
+          {
+            "stem": "funda",
+            "en": "learn"
+          },
+          {
+            "stem": "hamba",
+            "en": "go"
+          },
+          {
+            "stem": "dla",
+            "en": "eat"
+          },
+          {
+            "stem": "phuza",
+            "en": "drink"
+          },
+          {
+            "stem": "khuluma",
+            "en": "speak"
+          }
+        ]
+      }
     },
     {
       "id": "zu-g2",
@@ -4293,7 +4341,7 @@
     {
       "id": "zu-d1",
       "title": "At the spaza shop",
-      "goal": "Buy bread and ask the price",
+      "goal": "Buy what you need and ask the price",
       "level": "Beginner",
       "turns": [
         {
@@ -4314,12 +4362,14 @@
             {
               "t": "Hamba kahle",
               "en": "Goodbye",
-              "ok": false
+              "ok": false,
+              "why": "'Hamba kahle' means 'go well' — it's a goodbye, not a greeting. Answer a greeting with 'Sawubona'."
             },
             {
               "t": "Cha",
               "en": "No",
-              "ok": false
+              "ok": false,
+              "why": "'Cha' means 'no'. Someone greeted you — greet them back with 'Sawubona'."
             }
           ]
         },
@@ -4331,32 +4381,46 @@
         },
         {
           "speaker": "you",
-          "prompt": "Say you want bread",
+          "prompt": "Ask for what you want — bread or water",
           "options": [
             {
               "t": "Ngicela isinkwa",
               "en": "Please, bread",
-              "ok": true
+              "ok": true,
+              "next": "npc-bread"
             },
             {
               "t": "Ngicela amanzi",
               "en": "Please, water",
-              "ok": false
+              "ok": true,
+              "next": "npc-water"
             },
             {
               "t": "Ngiyabonga",
               "en": "Thank you",
-              "ok": false
+              "ok": false,
+              "why": "'Ngiyabonga' says thank you — but you haven't asked for anything yet. Use 'Ngicela …' (please may I have …)."
             }
           ]
         },
         {
+          "id": "npc-bread",
           "speaker": "npc",
           "name": "Shopkeeper",
-          "t": "Yebo.",
-          "en": "Yes."
+          "t": "Yebo. Nasi isinkwa.",
+          "en": "Yes. Here is the bread.",
+          "next": "ask-price"
         },
         {
+          "id": "npc-water",
+          "speaker": "npc",
+          "name": "Shopkeeper",
+          "t": "Yebo. Nanka amanzi.",
+          "en": "Yes. Here is the water.",
+          "next": "ask-price"
+        },
+        {
+          "id": "ask-price",
           "speaker": "you",
           "prompt": "Ask the price",
           "options": [
@@ -4368,12 +4432,14 @@
             {
               "t": "Uvelaphi?",
               "en": "Where are you from?",
-              "ok": false
+              "ok": false,
+              "why": "'Uvelaphi?' asks where someone comes from. To ask a price, use 'Yimalini?'"
             },
             {
               "t": "Unjani?",
               "en": "How are you?",
-              "ok": false
+              "ok": false,
+              "why": "'Unjani?' asks how someone is. For a price, ask 'Yimalini?'"
             }
           ]
         },
@@ -4395,12 +4461,14 @@
             {
               "t": "Ngilambile",
               "en": "I'm hungry",
-              "ok": false
+              "ok": false,
+              "why": "'Ngilambile' means 'I'm hungry' — you already have your food! Say thanks: 'Ngiyabonga'."
             },
             {
               "t": "Ngicela usizo",
               "en": "I need help",
-              "ok": false
+              "ok": false,
+              "why": "That asks for help — you're all done here. Thank them and greet goodbye."
             }
           ]
         }
@@ -4430,12 +4498,14 @@
             {
               "t": "Yebo",
               "en": "Yes",
-              "ok": false
+              "ok": false,
+              "why": "'Yebo' means 'yes'. Nandi greeted you — greet her back with 'Sawubona'."
             },
             {
               "t": "Kude",
               "en": "Far",
-              "ok": false
+              "ok": false,
+              "why": "'Kude' means 'far'. Answer a greeting with a greeting: 'Sawubona!'"
             }
           ]
         },
@@ -4457,12 +4527,14 @@
             {
               "t": "Yimalini?",
               "en": "How much?",
-              "ok": false
+              "ok": false,
+              "why": "That asks 'how much?' — but Nandi asked how you ARE. Say 'Ngiyaphila' (I'm well)."
             },
             {
               "t": "Cha",
               "en": "No",
-              "ok": false
+              "ok": false,
+              "why": "'Cha' is 'no'. 'Unjani?' asks how you are — answer 'Ngiyaphila, wena?'"
             }
           ]
         },
@@ -4484,12 +4556,14 @@
             {
               "t": "Ngivela eGoli",
               "en": "I'm from Joburg",
-              "ok": false
+              "ok": false,
+              "why": "That says where you're from — she asked your NAME. Use 'Igama lami ngu…'"
             },
             {
               "t": "Ngiyabonga",
               "en": "Thank you",
-              "ok": false
+              "ok": false,
+              "why": "'Ngiyabonga' is 'thank you'. She asked your name — 'Igama lami ngu…'"
             }
           ]
         },
@@ -4511,12 +4585,14 @@
             {
               "t": "Sawubona",
               "en": "Hello",
-              "ok": false
+              "ok": false,
+              "why": "'Sawubona' is 'hello' — but you're leaving! Say 'Sala kahle' (stay well)."
             },
             {
               "t": "Ngilambile",
               "en": "I'm hungry",
-              "ok": false
+              "ok": false,
+              "why": "'I'm hungry' isn't a goodbye. 'Sala kahle' is how you take your leave."
             }
           ]
         }

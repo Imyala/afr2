@@ -604,3 +604,20 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   .lb-banner--down { color: var(--red); }
 }
 
+
+/* --- comprehensible-input fit on stories --- */
+.story__cov { font-size: 12px; font-weight: 700; }
+.story__cov--ok { color: var(--green-dark); }
+.story__cov--mid { color: var(--gold); }
+.story__cov--low { color: var(--red); }
+.story__rec { font-size: 12px; font-weight: 800; color: var(--gold); }
+@media (prefers-color-scheme: dark) {
+  .story__cov--ok { color: var(--green); }
+}
+
+/* --- corrective feedback in dialogues --- */
+.dlg-why { margin: 0 0 8px; padding: 10px 12px; border-radius: 12px; font-size: 14px;
+  background: color-mix(in srgb, var(--gold) 16%, transparent); }
+
+/* --- lightning round --- */
+.ex__bar-fill--blitz { background: var(--gold); transition: width .1s linear; }

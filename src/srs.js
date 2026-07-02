@@ -39,7 +39,11 @@ export function setDesiredRetention(r) {
 export function getDesiredRetention() { return desiredRetention; }
 
 const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
-const PRODUCTION = ['translate', 'speak', 'fill_blank'];
+// Only exercises where the learner GENERATES the answer count as production.
+// fill_blank is deliberately NOT here: it is rendered as pick-from-options, so
+// counting it as production would let a word reach "mastered" through multiple
+// choice alone — exactly the dishonesty the README promises against.
+const PRODUCTION = ['translate', 'speak'];
 
 export function newItem(now = Date.now()) {
   return {
@@ -51,7 +55,7 @@ export function newItem(now = Date.now()) {
     reps: 0,
     seen: 0,
     correct: 0,
-    prodCorrect: 0, // correct answers on production exercises (translate/fill/speak)
+    prodCorrect: 0, // correct answers on production exercises (translate/speak)
     mastered: false,
     firstSeen: now,
     lastReview: now,

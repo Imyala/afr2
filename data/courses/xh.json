@@ -3505,7 +3505,55 @@
             "Balambile"
           ]
         }
-      ]
+      ],
+      "frames": {
+        "join": "",
+        "link": "ya",
+        "subjects": [
+          {
+            "p": "ndi",
+            "en": "I"
+          },
+          {
+            "p": "u",
+            "en": "you"
+          },
+          {
+            "p": "si",
+            "en": "we"
+          },
+          {
+            "p": "ba",
+            "en": "they"
+          }
+        ],
+        "verbs": [
+          {
+            "stem": "sebenza",
+            "en": "work"
+          },
+          {
+            "stem": "funda",
+            "en": "learn"
+          },
+          {
+            "stem": "hamba",
+            "en": "go"
+          },
+          {
+            "stem": "tya",
+            "en": "eat"
+          },
+          {
+            "stem": "sela",
+            "en": "drink"
+          },
+          {
+            "stem": "thetha",
+            "en": "speak"
+          }
+        ]
+      }
     },
     {
       "id": "xh-g2",
@@ -3581,12 +3629,14 @@
             {
               "t": "Ewe",
               "en": "Yes",
-              "ok": false
+              "ok": false,
+              "why": "'Ewe' means 'yes'. Thandi greeted you — greet back with 'Molo!'"
             },
             {
               "t": "Hayi",
               "en": "No",
-              "ok": false
+              "ok": false,
+              "why": "'Hayi' means 'no'. Answer a greeting with 'Molo!'"
             }
           ]
         },
@@ -3608,12 +3658,14 @@
             {
               "t": "Yimalini?",
               "en": "How much?",
-              "ok": false
+              "ok": false,
+              "why": "That asks 'how much?' — she asked how you ARE. Say 'Ndiphilile' (I'm well)."
             },
             {
               "t": "Ndilambile",
               "en": "I'm hungry",
-              "ok": false
+              "ok": false,
+              "why": "'Ndilambile' says you're hungry. The reply that fits here is 'Ndiphilile, wena?' (I'm well, and you?) — or 'Sala kakuhle' when leaving."
             }
           ]
         },
@@ -3635,12 +3687,14 @@
             {
               "t": "Ndivela eKapa",
               "en": "I'm from Cape Town",
-              "ok": false
+              "ok": false,
+              "why": "That says where you're from — she asked your NAME. Use 'Igama lam ngu…'"
             },
             {
               "t": "Enkosi",
               "en": "Thank you",
-              "ok": false
+              "ok": false,
+              "why": "'Enkosi' is 'thank you'. She asked your name — 'Igama lam ngu…'"
             }
           ]
         },
@@ -3662,12 +3716,14 @@
             {
               "t": "Molo",
               "en": "Hello",
-              "ok": false
+              "ok": false,
+              "why": "'Molo' is hello — but you're leaving! Say 'Sala kakuhle' (stay well)."
             },
             {
               "t": "Ndilambile",
               "en": "I'm hungry",
-              "ok": false
+              "ok": false,
+              "why": "'Ndilambile' says you're hungry. The reply that fits here is 'Ndiphilile, wena?' (I'm well, and you?) — or 'Sala kakuhle' when leaving."
             }
           ]
         }
