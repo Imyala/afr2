@@ -136,6 +136,32 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .wotd-strip { width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; box-shadow: var(--shadow); font-size: 14px; }
 .wotd-strip b { color: var(--green); }
 
+/* home "Practice" activity grid — colourful, scannable tiles */
+.sec--home { margin: 6px 4px -4px; }
+.act-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.act {
+  display: flex; align-items: center; gap: 11px; text-align: left;
+  background: var(--card); border: 1px solid var(--line);
+  border-left: 4px solid color-mix(in srgb, var(--acc) 65%, var(--line));
+  border-radius: 16px; padding: 11px 12px; box-shadow: var(--shadow);
+  transition: transform .08s ease;
+}
+.act:active { transform: translateY(2px); }
+.act__ic {
+  flex: none; width: 40px; height: 40px; border-radius: 12px; font-size: 21px;
+  display: grid; place-items: center;
+  background: color-mix(in srgb, var(--acc) 20%, var(--card));
+}
+.act__l { display: grid; min-width: 0; line-height: 1.15; }
+.act__l b { font-size: 15px; }
+.act__l small { color: var(--muted); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.act--grammar { --acc: var(--green); }
+.act--convo   { --acc: var(--blue); }
+.act--speak   { --acc: #e8823a; }
+.act--listen  { --acc: #8b5cf6; }
+.act--blitz   { --acc: var(--gold); }
+.act--words   { --acc: #14a08f; }
+
 .quest__prog { font-size: 11px; }
 
 /* ---------- lesson path ---------- */
@@ -606,13 +632,21 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 
 
 /* --- comprehensible-input fit on stories --- */
-.story__cov { font-size: 12px; font-weight: 700; }
-.story__cov--ok { color: var(--green-dark); }
-.story__cov--mid { color: var(--gold); }
-.story__cov--low { color: var(--red); }
+.story__cov {
+  display: inline-block; margin-top: 4px; padding: 2px 9px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: .1px; width: fit-content;
+}
+.story__cov--ok { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green-dark); }
+.story__cov--mid { background: color-mix(in srgb, var(--gold) 24%, transparent); color: #8a6400; }
+.story__cov--low { background: color-mix(in srgb, var(--red) 14%, transparent); color: var(--red); }
 .story__rec { font-size: 12px; font-weight: 800; color: var(--gold); }
+/* new-word highlight in story text (visualises comprehensible input) */
+.rword--new { background: color-mix(in srgb, var(--gold) 24%, transparent); border-radius: 5px; padding: 0 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.reading-legend { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.reading-legend .rword--new { font-size: 12px; }
 @media (prefers-color-scheme: dark) {
   .story__cov--ok { color: var(--green); }
+  .story__cov--mid { color: var(--gold); }
 }
 
 /* --- corrective feedback in dialogues --- */

@@ -476,29 +476,21 @@ function renderHome() {
         🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
       </button>` : ''}
 
-      <button class="wotd-strip" id="glossaryBtn">
-        📒 <span class="muted">Word list —</span> <b>browse all ${Object.keys(vocabIndex(course)).length} words</b> →
-      </button>
-
-      <button class="wotd-strip" id="speakBtn">
-        🎤 <span class="muted">Speaking —</span> <b>say your words out loud</b> →
-      </button>
-
-      <button class="wotd-strip" id="listenBtn">
-        👂 <span class="muted">Listening —</span> <b>understand it by ear</b> →
-      </button>
-
-      <button class="wotd-strip" id="blitzBtn">
-        ⚡ <span class="muted">Lightning —</span> <b>fast recall against the clock</b> →
-      </button>
-
-      ${(course.dialogues || []).length ? `<button class="wotd-strip" id="dialogueBtn">
-        💬 <span class="muted">Conversations —</span> <b>practise real-life chats</b> →
-      </button>` : ''}
-
-      ${(course.grammar || []).length ? `<button class="wotd-strip" id="grammarBtn">
-        🧩 <span class="muted">Grammar —</span> <b>learn the patterns to build sentences</b> →
-      </button>` : ''}
+      <h3 class="sec sec--home">Practice</h3>
+      <div class="act-grid">
+        ${(course.grammar || []).length ? `<button class="act act--grammar" id="grammarBtn">
+          <span class="act__ic">🧩</span><span class="act__l"><b>Grammar</b><small>patterns</small></span></button>` : ''}
+        ${(course.dialogues || []).length ? `<button class="act act--convo" id="dialogueBtn">
+          <span class="act__ic">💬</span><span class="act__l"><b>Conversations</b><small>real chats</small></span></button>` : ''}
+        <button class="act act--speak" id="speakBtn">
+          <span class="act__ic">🎤</span><span class="act__l"><b>Speaking</b><small>out loud</small></span></button>
+        <button class="act act--listen" id="listenBtn">
+          <span class="act__ic">👂</span><span class="act__l"><b>Listening</b><small>understand by ear</small></span></button>
+        <button class="act act--blitz" id="blitzBtn">
+          <span class="act__ic">⚡</span><span class="act__l"><b>Lightning</b><small>fast recall</small></span></button>
+        <button class="act act--words" id="glossaryBtn">
+          <span class="act__ic">📒</span><span class="act__l"><b>Word list</b><small>all ${Object.keys(vocabIndex(course)).length} words</small></span></button>
+      </div>
 
       <div class="path">${path}</div>
       <nav class="bottombar" aria-label="Main">
@@ -2146,15 +2138,33 @@ async function renderLibrary() {
 function renderReadingIntro(readId) {
   const r = (course.reading || []).find((x) => x.id === readId);
   if (!r) return renderLibrary();
+  // words the learner already knows (seen or encountered), for highlighting the
+  // NEW words in the story — making comprehensible input visible
+  const idx = vocabIndex(course);
+  const L = store.lang();
+  const known = new Set();
+  for (const [id, it] of Object.entries(L.items)) {
+    if ((it.seen > 0 || it.encountered) && idx[id]) for (const tok of normalize(idx[id].term).split(' ')) known.add(tok);
+  }
+  const highlight = (t) => t.split(/(\s+)/).map((tok) => {
+    if (/^\s+$/.test(tok)) return tok;
+    const n = normalize(tok);
+    return `<span class="rword${n && !known.has(n) ? ' rword--new' : ''}">${esc(tok)}</span>`;
+  }).join('');
+  const cov = readingCoverage(r.lines, known);
+  const newWords = new Set();
+  for (const ln of r.lines) for (const tok of normalize(ln.t).split(' ')) if (tok && !known.has(tok)) newWords.add(tok);
+  const newCount = newWords.size;
   const lines = r.lines.map((ln, i) => `
     <button class="rline" data-line="${i}">
-      <span class="rline__t">${esc(ln.t)}</span>
+      <span class="rline__t">${highlight(ln.t)}</span>
       <span class="rline__en muted">${esc(ln.en)}</span>
     </button>`).join('');
   const node = h(`
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Stories</button><strong>${esc(r.title)}</strong><span></span></header>
       <p class="muted">${esc(r.intro || '')}</p>
+      <p class="reading-legend">${Math.round(cov.pct * 100)}% known · <span class="rword--new">${newCount} new word${newCount === 1 ? '' : 's'}</span> highlighted — meet them here, then they join your reviews.</p>
       <div class="reading">${lines}</div>
       <button class="play-btn" id="playAll">🔊 Play the whole story</button>
       <button class="btn btn--primary" id="quizBtn">I've read it — answer questions</button>
