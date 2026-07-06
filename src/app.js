@@ -530,11 +530,42 @@ function renderHome() {
   Notify.armSessionFallback(store);
 }
 
-// A friendly, situation-aware line for the home mascot.
+// A friendly, situation-aware line for the home mascot. Each situation has a
+// small pool of warm, playful lines, rotated by a progress-based seed so the
+// greeting stays fresh between visits instead of repeating one canned line —
+// but is stable within a single render (no flicker).
 function homeGreeting(L, due) {
-  if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review — let's lock them in!`;
-  if ((L.streak || 0) >= 3) return `${L.streak}-day streak! Keep it burning. 🔥`;
-  return mascotLine('idle', (L.xp || 0) + (L.streak || 0));
+  const seed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
+  const pick = (arr) => arr[Math.abs(seed) % arr.length];
+  if (due > 0) {
+    const w = due === 1 ? 'word' : 'words';
+    return pick([
+      `${due} ${w} ready — let's lock them in! 🔒`,
+      `${due} to review. Quick-win time! ⚡`,
+      `${due} ${w} waiting to say hello. 👋`,
+      `Warm up with ${due} ${w} — you've got this! 💪`,
+    ]);
+  }
+  if ((L.streak || 0) >= 3) {
+    return pick([
+      `${L.streak}-day streak! Keep it burning. 🔥`,
+      `${L.streak} days strong — don't stop now! 💪`,
+      `${L.streak}-day streak. You're on fire! 🔥`,
+      `Whoa, ${L.streak} days in a row — superstar! ⭐`,
+    ]);
+  }
+  const hr = new Date().getHours();
+  const tod = hr < 12 ? 'morning' : hr < 18 ? 'afternoon' : 'evening';
+  return pick([
+    'Sawubona! Ready to learn? 🌟',
+    'Howzit! Your words missed you. 👋',
+    'Sharp sharp — let\'s get going! 😎',
+    'Aweh! A little today goes a long way. 🚀',
+    'Hey superstar, ready to play? ⭐',
+    'Molo! Small steps, big wins. 🙌',
+    `Good ${tod}! Let's do a little today. ☀️`,
+    'Back for more? Lekker! 🎉',
+  ]);
 }
 
 // ---------- word of the day (offline, from the active course vocab) ----------
