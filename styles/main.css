@@ -126,6 +126,18 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .goal__text strong { font-size: 16px; }
 .goal__text p { margin: 2px 0 0; font-size: 13px; }
 
+/* home hero — mascot + friendly greeting + goal ring in one warm card */
+.home-hero {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 22px;
+  padding: 12px 16px 12px 8px; box-shadow: var(--shadow);
+}
+.home-hero__mascot { flex: 0 0 auto; }
+.home-hero__text { flex: 1; min-width: 0; }
+.home-hero__greet { font-size: 17px; line-height: 1.2; display: block; }
+.home-hero__sub { margin: 3px 0 0; font-size: 13px; }
+.goal__ring--hero { width: 66px; height: 66px; }
+
 /* compact "today" mini cards (quests + league) */
 .mini-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .mini { display: grid; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); text-align: left; }
@@ -549,14 +561,53 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .plan-card--start { background: linear-gradient(95deg, var(--gold), var(--green)); color: #1a2e12; }
 .plan-card b { font-size: 16px; }
 .plan-card__r { font-weight: 800; white-space: nowrap; opacity: .95; }
-.plan-act { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
-.plan-act--done { border-color: var(--green); opacity: .75; }
-.plan-act__icon { font-size: 24px; flex: 0 0 auto; }
-.plan-act__body { flex: 1; display: grid; gap: 1px; min-width: 0; }
-.plan-act__body .muted { font-size: 12px; }
-.plan-act__go { border: none; border-radius: 12px; padding: 9px 16px; font-weight: 800; background: var(--green); color: #fff; box-shadow: 0 3px 0 var(--green-dark); white-space: nowrap; }
-.plan-act__ok { font-weight: 800; color: var(--green); font-size: 13px; }
-.plan-complete { text-align: center; font-weight: 800; padding: 14px; border-radius: 14px; background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green-dark); }
+
+/* plan hero — one card carries the day, today's progress, and a friendly cue */
+.plan-hero {
+  display: flex; align-items: center; gap: 12px;
+  border-radius: 22px; padding: 14px 18px 14px 8px; color: #fff;
+  background: linear-gradient(120deg, var(--green), var(--blue)); box-shadow: var(--shadow);
+}
+.plan-hero__mascot { flex: 0 0 auto; }
+.plan-hero__main { flex: 1; min-width: 0; display: grid; gap: 7px; }
+.plan-hero__day { font-size: 25px; font-weight: 800; letter-spacing: -.3px; line-height: 1; }
+.plan-hero__day small { font-size: 15px; font-weight: 700; opacity: .85; }
+.plan-hero__bar { height: 12px; border-radius: 999px; background: rgba(255,255,255,.28); overflow: hidden; }
+.plan-hero__fill { height: 100%; border-radius: 999px; background: #fff; transition: width .45s cubic-bezier(.22,1,.36,1); }
+.plan-hero__cue { font-size: 13px; font-weight: 700; opacity: .96; }
+
+/* today's steps — big, colourful, numbered cards */
+.plan-steps { display: grid; gap: 12px; }
+.pstep {
+  display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 18px;
+  background: var(--card); border: 2px solid var(--line); box-shadow: var(--shadow);
+  border-left: 5px solid color-mix(in srgb, var(--acc) 70%, var(--line));
+}
+.pstep__num {
+  flex: none; width: 48px; height: 48px; border-radius: 15px; font-size: 24px;
+  display: grid; place-items: center; background: color-mix(in srgb, var(--acc) 20%, var(--card));
+}
+.pstep__body { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.pstep__body strong { font-size: 16px; }
+.pstep__body .muted { font-size: 13px; }
+.pstep__go {
+  flex: none; border: none; border-radius: 14px; padding: 12px 22px; font-size: 15px; font-weight: 800;
+  color: #fff; background: var(--acc); box-shadow: 0 3px 0 color-mix(in srgb, var(--acc) 55%, #000);
+}
+.pstep__go:active { transform: translateY(2px); box-shadow: 0 1px 0 color-mix(in srgb, var(--acc) 55%, #000); }
+.pstep__ok { flex: none; font-weight: 800; color: var(--green); font-size: 14px; padding-right: 4px; }
+.pstep--review { --acc: var(--gold); }
+.pstep--review .pstep__go { color: #3a2c00; }
+.pstep--lesson { --acc: var(--green); }
+.pstep--input  { --acc: var(--blue); }
+.pstep--output { --acc: #e8823a; }
+.pstep--done {
+  --acc: var(--green);
+  border-color: color-mix(in srgb, var(--green) 45%, var(--line));
+  background: color-mix(in srgb, var(--green) 8%, var(--card));
+}
+.pstep--done .pstep__num { background: var(--green); color: #fff; }
+.plan-complete { text-align: center; font-weight: 800; padding: 14px; border-radius: 16px; background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green-dark); }
 @media (prefers-color-scheme: dark) { .plan-complete { color: var(--green); } }
 
 /* ---------- dialogues / conversations ---------- */

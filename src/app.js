@@ -420,7 +420,6 @@ function renderHome() {
   const lg = L.league;
   const lgRank = G.leagueRank(store);
   const hasReading = (course.reading || []).length > 0;
-  const mascot = Shop.equippedMascot(store);
   const wotd = wordOfTheDay();
   const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
   const boostN = Shop.inventory(store).boosts.double_xp || 0;
@@ -438,19 +437,15 @@ function renderHome() {
         </div>
       </header>
 
-      <div class="mascot-row">
-        <span class="goal__mascot">${mascotSvg(pct >= 100 ? 'cheer' : 'idle', { size: 64, decorative: true })}</span>
-        <div class="speech">${pct >= 100 ? mascotLine('cheer', L.streak) : esc(homeGreeting(L, due))}</div>
-      </div>
-
-      <section class="goal">
-        <div class="goal__ring" style="--pct:${pct}">
-          <span>${L.xpToday}/${goal}</span>
-        </div>
-        <div class="goal__text">
-          <strong>${mascot.icon} ${pct >= 100 ? 'Sharp sharp!' : 'Daily goal'}</strong>
-          <p class="muted">${pct >= 100 ? 'Done for today — well played! 🎉' : `${goal - L.xpToday} XP to keep your streak`}</p>
+      <section class="home-hero">
+        <span class="home-hero__mascot">${mascotSvg(pct >= 100 ? 'cheer' : 'wave', { size: 76, decorative: true })}</span>
+        <div class="home-hero__text">
+          <strong class="home-hero__greet">${pct >= 100 ? esc(mascotLine('cheer', L.streak)) : esc(homeGreeting(L, due))}</strong>
+          <p class="muted home-hero__sub">${pct >= 100 ? 'Done for today — well played! 🎉' : `${goal - L.xpToday} XP to keep your 🔥 streak`}</p>
           ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
+        </div>
+        <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
+          <span>${L.xpToday}/${goal}</span>
         </div>
       </section>
 
@@ -1124,25 +1119,32 @@ function renderPlan() {
   const acts = planActivities();
   const doneCount = acts.filter((a) => a.done).length;
   const allDone = doneCount === acts.length;
-  const pct = Math.round(((p.day - 1) / 90) * 100);
-  const rows = acts.map((a) => `
-    <div class="plan-act ${a.done ? 'plan-act--done' : ''}">
-      <span class="plan-act__icon">${a.done ? '✅' : a.icon}</span>
-      <div class="plan-act__body"><strong>${esc(a.label)}</strong><span class="muted">${esc(a.sub)}</span></div>
-      ${a.done ? '<span class="plan-act__ok">Done</span>' : `<button class="plan-act__go" data-act="${a.key}">Start</button>`}
+  const pct = Math.round((doneCount / acts.length) * 100); // today's progress, not the 90-day bar
+  // a friendly, plain-language cue instead of the old jargon paragraph
+  const cue = allDone
+    ? 'All done for today! 🎉'
+    : doneCount === 0 ? 'Four little steps today — tap Start! 🌟'
+      : `Nice — ${acts.length - doneCount} step${acts.length - doneCount === 1 ? '' : 's'} to go! 💪`;
+  const rows = acts.map((a, i) => `
+    <div class="pstep pstep--${a.key} ${a.done ? 'pstep--done' : ''}">
+      <span class="pstep__num">${a.done ? '✓' : a.icon}</span>
+      <div class="pstep__body"><strong>${esc(a.label)}</strong><span class="muted">${esc(a.sub)}</span></div>
+      ${a.done ? '<span class="pstep__ok">Done</span>' : `<button class="pstep__go" data-act="${a.key}">Start</button>`}
     </div>`).join('');
   const node = h(`
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>90-Day Plan</strong><span></span></header>
-      <div class="level-card">
-        <span class="level-card__tag">${p.completed ? 'Plan complete! 🎉' : `Day ${p.day} of 90`}</span>
-        <span class="level-card__sub">${p.completed ? 'You finished — keep the habit going' : `Guided path to conversational ${esc(course.name)}`}</span>
-      </div>
-      <div class="mastery-bar"><div class="mastery-bar__fill" style="width:${pct}%"></div><span>Day ${p.day} / 90</span></div>
-      <h3 class="sec">Today's loop ${allDone ? '✓' : `· ${doneCount}/${acts.length}`}</h3>
-      <p class="muted" style="margin:0 4px">Review locks in old words → a new lesson adds more → input builds understanding → output builds speaking.</p>
-      <div class="set-list">${rows}</div>
-      ${allDone ? '<div class="plan-complete">🎉 Loop done! Come back tomorrow — daily practice is what makes 90 days work.</div>' : ''}
+      <section class="plan-hero">
+        <span class="plan-hero__mascot">${mascotSvg(allDone ? 'cheer' : 'wave', { size: 76, decorative: true })}</span>
+        <div class="plan-hero__main">
+          <span class="plan-hero__day">${p.completed ? 'Plan complete! 🎉' : `Day ${p.day} <small>of 90</small>`}</span>
+          <div class="plan-hero__bar"><div class="plan-hero__fill" style="width:${pct}%"></div></div>
+          <span class="plan-hero__cue">${p.completed ? 'You finished — keep the habit going' : `${doneCount}/${acts.length} done · ${cue}`}</span>
+        </div>
+      </section>
+      <h3 class="sec">Today's steps</h3>
+      <div class="plan-steps">${rows}</div>
+      ${allDone ? '<div class="plan-complete">🎉 Come back tomorrow — a little every day is what makes 90 days work!</div>' : ''}
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
   node.querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', () => {
