@@ -10,7 +10,7 @@ import {
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
 import { sound, haptic, confetti, countUp, pop, setSoundEnabled } from './fx.js';
-import { mascotSvg, mascotLine } from './mascot.js';
+import { mascotSvg, mascotLine, cheerLine } from './mascot.js';
 import * as Auth from './auth.js';
 import * as Notify from './notify.js';
 
@@ -1556,7 +1556,9 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   const note = ex.meaning ? `<div class="fb__meaning">${esc(ex.meaning)}</div>` : '';
   // a typo-accepted answer gets a gentle spelling nudge instead of a penalty
   const spell = (ok && typoNote) ? `<div class="fb__answer">${esc(typoNote)}</div>` : '';
-  const title = ok ? (typoNote ? 'Almost perfect!' : mascotLine('cheer', session.total)) : '✗ Not quite';
+  // track the correct-in-a-row streak so praise can build instead of resetting
+  session.combo = ok ? (session.combo || 0) + 1 : 0;
+  const title = ok ? (typoNote ? 'Almost perfect!' : cheerLine(session.total, session.combo)) : '✗ Not quite';
   foot.innerHTML = `
     <div class="fb">
       <span class="fb__mascot">${mascotSvg(ok ? 'cheer' : 'sad', { size: 52, decorative: true })}</span>

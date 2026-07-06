@@ -61,8 +61,17 @@ export function mascotSvg(mood = 'idle', { size = 96, className = '', decorative
 
 // A short, warm line of encouragement to pair with the mascot. Varied so it
 // doesn't feel canned; index in by a number (e.g. streak or score) for stability.
+// The cheer pool is deliberately large so a single session rarely repeats a
+// line — repetition is what makes praise stop landing.
 const LINES = {
-  cheer: ['Sharp sharp! 🎉', 'Yebo! You nailed it!', 'Halala! Well played!', 'Awesome — keep going!'],
+  cheer: [
+    'Sharp sharp! 🎉', 'Yebo! You nailed it!', 'Halala! Well played!',
+    'Lekker! Spot on. 👏', 'Kwaai — that\'s the one!', 'Mooi! Exactly right.',
+    'Aweh! You got it. ⭐', 'Too good! Nailed it.', 'Boom — correct!',
+    'Yhu, clean answer!', 'Spot on, star!', 'That\'s it exactly! 🙌',
+    'Grootman! Perfect.', 'Ncaa, beautiful!', 'On the money! 💯',
+    'Eish, you\'re sharp!',
+  ],
   happy: ['Lekker work!', 'You\'re getting it!', 'Nice one!', 'Keep it up!'],
   sad:   ['Almost! Try again.', 'No stress — you\'ve got this.', 'Shame, close one!'],
   wave:  ['Sawubona! Ready to learn?', 'Let\'s do this!', 'Molo! Welcome back.'],
@@ -71,4 +80,15 @@ const LINES = {
 export function mascotLine(mood = 'idle', seed = 0) {
   const arr = LINES[mood] || LINES.idle;
   return arr[Math.abs(seed) % arr.length];
+}
+
+// Praise for a correct answer. `seed` keeps the choice stable for one render
+// (pass an ever-incrementing counter so consecutive answers differ); `combo`
+// is the current run of correct-in-a-row so a streak gets its own escalating
+// call-out at milestones instead of yet another generic line.
+export function cheerLine(seed = 0, combo = 0) {
+  if (combo >= 3 && (combo === 3 || combo % 5 === 0)) {
+    return combo >= 5 ? `🔥 ${combo} in a row — unstoppable!` : '🔥 Three in a row!';
+  }
+  return LINES.cheer[Math.abs(seed) % LINES.cheer.length];
 }
