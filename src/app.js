@@ -10,25 +10,20 @@ import {
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
 import { sound, haptic, confetti, countUp, pop, setSoundEnabled } from './fx.js';
-import { mascotSvg, mascotLine, cheerLine } from './mascot.js';
-import { mascotImg, mascotBySeed } from './mascots.js';
+import { mascotSvg, cheerLine } from './mascot.js';
+import { mascotImg, mascotBySeed, mascotGreeting } from './mascots.js';
 import * as Auth from './auth.js';
 import * as Notify from './notify.js';
 
 let LIBRARY = null;   // library.json
 
-// The illustrated companion for this app-open. Chosen once per session and
-// advanced through the whole cast each visit, so the learner keeps meeting a
-// different buddy rather than the same face — but it stays put while they move
-// between screens (a companion, not a flicker). Reset per page load.
-let _buddy = null;
-function currentBuddy() {
-  if (_buddy) return _buddy;
-  const s = store.state;
-  s.mascotRot = ((s.mascotRot || 0) + 1) % 1000; // rolling counter, persisted
-  store.save();
-  _buddy = mascotBySeed(s.mascotRot);
-  return _buddy;
+// The illustrated "buddy of the day". The cast is cycled by the day number, so
+// one character companions the learner all day and the troop rotates day by day
+// — familiar, but always changing. Same buddy across every screen that day.
+function buddyOfTheDay() {
+  const [y, m, d] = todayStr().split('-').map(Number);
+  const dayNum = Math.floor(Date.UTC(y, m - 1, d) / 86400000);
+  return mascotBySeed(dayNum);
 }
 
 const app = document.getElementById('app');
@@ -435,6 +430,8 @@ function renderHome() {
   const lg = L.league;
   const lgRank = G.leagueRank(store);
   const hasReading = (course.reading || []).length > 0;
+  const buddy = buddyOfTheDay();
+  const greetSeed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
   const wotd = wordOfTheDay();
   const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
   const boostN = Shop.inventory(store).boosts.double_xp || 0;
@@ -453,10 +450,10 @@ function renderHome() {
       </header>
 
       <section class="home-hero">
-        <span class="home-hero__mascot">${mascotImg(currentBuddy(), { size: 84 })}</span>
+        <span class="home-hero__mascot">${mascotImg(buddy, { size: 84 })}</span>
         <div class="home-hero__text">
-          <strong class="home-hero__greet">${pct >= 100 ? esc(mascotLine('cheer', L.streak)) : esc(homeGreeting(L, due))}</strong>
-          <p class="muted home-hero__sub">${pct >= 100 ? 'Done for today — well played! 🎉' : `${goal - L.xpToday} XP to keep your 🔥 streak`}</p>
+          <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed))}</strong>
+          <p class="muted home-hero__sub">${esc(homeStatus(L, due, pct, goal))}</p>
           ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
         </div>
         <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
@@ -545,42 +542,14 @@ function renderHome() {
   Notify.armSessionFallback(store);
 }
 
-// A friendly, situation-aware line for the home mascot. Each situation has a
-// small pool of warm, playful lines, rotated by a progress-based seed so the
-// greeting stays fresh between visits instead of repeating one canned line —
-// but is stable within a single render (no flicker).
-function homeGreeting(L, due) {
-  const seed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
-  const pick = (arr) => arr[Math.abs(seed) % arr.length];
-  if (due > 0) {
-    const w = due === 1 ? 'word' : 'words';
-    return pick([
-      `${due} ${w} ready — let's lock them in! 🔒`,
-      `${due} to review. Quick-win time! ⚡`,
-      `${due} ${w} waiting to say hello. 👋`,
-      `Warm up with ${due} ${w} — you've got this! 💪`,
-    ]);
-  }
-  if ((L.streak || 0) >= 3) {
-    return pick([
-      `${L.streak}-day streak! Keep it burning. 🔥`,
-      `${L.streak} days strong — don't stop now! 💪`,
-      `${L.streak}-day streak. You're on fire! 🔥`,
-      `Whoa, ${L.streak} days in a row — superstar! ⭐`,
-    ]);
-  }
-  const hr = new Date().getHours();
-  const tod = hr < 12 ? 'morning' : hr < 18 ? 'afternoon' : 'evening';
-  return pick([
-    'Sawubona! Ready to learn? 🌟',
-    'Howzit! Your words missed you. 👋',
-    'Sharp sharp — let\'s get going! 😎',
-    'Aweh! A little today goes a long way. 🚀',
-    'Hey superstar, ready to play? ⭐',
-    'Molo! Small steps, big wins. 🙌',
-    `Good ${tod}! Let's do a little today. ☀️`,
-    'Back for more? Lekker! 🎉',
-  ]);
+// The situational status line under the buddy's greeting — what to do right now.
+// The buddy's own voice carries the warmth (see mascotGreeting); this line keeps
+// the learner oriented: what's due, the streak, or XP left to the daily goal.
+function homeStatus(L, due, pct, goal) {
+  if (pct >= 100) return 'Done for today — well played! 🎉';
+  if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔒`;
+  if ((L.streak || 0) >= 3) return `🔥 ${L.streak}-day streak — keep it going!`;
+  return `${goal - L.xpToday} XP to keep your streak`;
 }
 
 // ---------- word of the day (offline, from the active course vocab) ----------
@@ -1181,7 +1150,7 @@ function renderPlan() {
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>90-Day Plan</strong><span></span></header>
       <section class="plan-hero">
-        <span class="plan-hero__mascot">${mascotImg(currentBuddy(), { size: 84 })}</span>
+        <span class="plan-hero__mascot">${mascotImg(buddyOfTheDay(), { size: 84 })}</span>
         <div class="plan-hero__main">
           <span class="plan-hero__day">${p.completed ? 'Plan complete! 🎉' : `Day ${p.day} <small>of 90</small>`}</span>
           <div class="plan-hero__bar"><div class="plan-hero__fill" style="width:${pct}%"></div></div>
