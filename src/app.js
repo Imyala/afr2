@@ -363,6 +363,7 @@ function finishOnboarding() {
 
 // ---------- home / lesson path ----------
 function renderHome() {
+  planLaunch = null; // any loop step we drop back home from is abandoned, not done
   store.rollover();
   store.refreshHearts();
   const L = store.lang();
@@ -831,7 +832,7 @@ function renderSpeakingDone() {
       <p class="muted">You used your voice on ${done} ${done === 1 ? 'item' : 'items'}. Saying words out loud is how spoken fluency grows.</p>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
-  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  node.querySelector('#doneBtn').addEventListener('click', afterActivityNav);
   mount(node);
 }
 
@@ -926,7 +927,7 @@ function renderListeningDone() {
       <p class="muted">You understood ${done} from sound. Training your ear is how real comprehension grows.</p>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
-  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  node.querySelector('#doneBtn').addEventListener('click', afterActivityNav);
   mount(node);
 }
 
@@ -1056,10 +1057,25 @@ function finishBlitz() {
 // ---------- 90-day guided curriculum ----------
 // A structured daily loop — interleaved review → new lesson → comprehensible
 // input → pushed output — the research-backed sequence, tracked over 90 days.
+
+// Which loop step (if any) the learner launched from the plan screen. Steps are
+// only ticked off — and the learner is only returned to the plan afterwards —
+// when the activity was started here, so unrelated practice elsewhere doesn't
+// silently complete today's loop. Cleared whenever we land on home or the plan.
+let planLaunch = null;
+// Where to go when a finished activity's "Continue" is tapped: back to the plan
+// if it was part of today's loop, otherwise home.
+function afterActivityNav() {
+  const fromPlan = planLaunch;
+  planLaunch = null;
+  return fromPlan ? renderPlan() : renderHome();
+}
+
 function markPlan(type) {
   const L = store.lang();
   if (!L.plan || L.plan.completed) return;
-  if (type && !L.plan.done[type]) L.plan.done[type] = true;
+  // credit a step only when the learner actually started it from the plan
+  if (type && type === planLaunch && !L.plan.done[type]) L.plan.done[type] = true;
   if (!L.plan.done.review && store.dueItems().length === 0) L.plan.done.review = true; // nothing to review
   const d = L.plan.done;
   if (d.review && d.lesson && d.input && d.output) {
@@ -1130,7 +1146,8 @@ function renderPlan() {
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
   node.querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', () => {
-    const a = acts.find((x) => x.key === b.dataset.act); if (a && a.action) a.action();
+    const a = acts.find((x) => x.key === b.dataset.act);
+    if (a && a.action) { planLaunch = a.key; a.action(); }
   }));
   mount(node);
 }
@@ -1266,7 +1283,7 @@ function finishDialogue() {
       <div class="result__row"><div class="kpi"><span class="kpi__v">+${xp}</span><span class="kpi__k">XP</span></div><div class="kpi"><span class="kpi__v">+💎5</span><span class="kpi__k">Gems</span></div></div>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
-  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  node.querySelector('#doneBtn').addEventListener('click', afterActivityNav);
   mount(node);
 }
 
@@ -1722,7 +1739,7 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
       <p class="muted">Words you missed are scheduled for review so they actually stick.</p>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
-  node.querySelector('#doneBtn').addEventListener('click', () => { sound.tap(); renderHome(); });
+  node.querySelector('#doneBtn').addEventListener('click', () => { sound.tap(); afterActivityNav(); });
   mount(node);
   // celebrate: a perfect run gets the big confetti; any finish gets a chime
   sound.complete();
