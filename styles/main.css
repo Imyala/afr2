@@ -132,8 +132,10 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   background: var(--card); border: 1px solid var(--line); border-radius: 22px;
   padding: 12px 16px 12px 8px; box-shadow: var(--shadow);
 }
-.home-hero__mascot { flex: 0 0 auto; }
+.home-hero__mascot { flex: 0 0 auto; display: grid; place-items: end center; }
 .home-hero__text { flex: 1; min-width: 0; }
+/* illustrated companion cast — height drives size, width follows the character */
+.mascot-img { width: auto; max-width: 104px; display: block; filter: drop-shadow(0 3px 5px rgba(0,0,0,.28)); }
 .home-hero__greet { font-size: 17px; line-height: 1.2; display: block; }
 .home-hero__sub { margin: 3px 0 0; font-size: 13px; }
 .goal__ring--hero { width: 66px; height: 66px; }

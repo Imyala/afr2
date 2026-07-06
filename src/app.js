@@ -11,10 +11,25 @@ import * as G from './gamify.js';
 import * as Shop from './shop.js';
 import { sound, haptic, confetti, countUp, pop, setSoundEnabled } from './fx.js';
 import { mascotSvg, mascotLine, cheerLine } from './mascot.js';
+import { mascotImg, mascotBySeed } from './mascots.js';
 import * as Auth from './auth.js';
 import * as Notify from './notify.js';
 
 let LIBRARY = null;   // library.json
+
+// The illustrated companion for this app-open. Chosen once per session and
+// advanced through the whole cast each visit, so the learner keeps meeting a
+// different buddy rather than the same face — but it stays put while they move
+// between screens (a companion, not a flicker). Reset per page load.
+let _buddy = null;
+function currentBuddy() {
+  if (_buddy) return _buddy;
+  const s = store.state;
+  s.mascotRot = ((s.mascotRot || 0) + 1) % 1000; // rolling counter, persisted
+  store.save();
+  _buddy = mascotBySeed(s.mascotRot);
+  return _buddy;
+}
 
 const app = document.getElementById('app');
 let LANGS = null;     // languages.json
@@ -438,7 +453,7 @@ function renderHome() {
       </header>
 
       <section class="home-hero">
-        <span class="home-hero__mascot">${mascotSvg(pct >= 100 ? 'cheer' : 'wave', { size: 76, decorative: true })}</span>
+        <span class="home-hero__mascot">${mascotImg(currentBuddy(), { size: 84 })}</span>
         <div class="home-hero__text">
           <strong class="home-hero__greet">${pct >= 100 ? esc(mascotLine('cheer', L.streak)) : esc(homeGreeting(L, due))}</strong>
           <p class="muted home-hero__sub">${pct >= 100 ? 'Done for today — well played! 🎉' : `${goal - L.xpToday} XP to keep your 🔥 streak`}</p>
@@ -1166,7 +1181,7 @@ function renderPlan() {
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>90-Day Plan</strong><span></span></header>
       <section class="plan-hero">
-        <span class="plan-hero__mascot">${mascotSvg(allDone ? 'cheer' : 'wave', { size: 76, decorative: true })}</span>
+        <span class="plan-hero__mascot">${mascotImg(currentBuddy(), { size: 84 })}</span>
         <div class="plan-hero__main">
           <span class="plan-hero__day">${p.completed ? 'Plan complete! 🎉' : `Day ${p.day} <small>of 90</small>`}</span>
           <div class="plan-hero__bar"><div class="plan-hero__fill" style="width:${pct}%"></div></div>
