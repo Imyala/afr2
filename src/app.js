@@ -69,13 +69,32 @@ function weekDaysLeft(now = Date.now()) {
   return days <= 1 ? '1 day' : `${days} days`;
 }
 
+// ---------- appearance (light / dark / system) ----------
+// The learner picks Light, Dark or System in Settings. We stamp the resolved
+// mode on <html data-theme> (which all the dark CSS keys off) and mirror the
+// choice to localStorage so the index.html bootstrap can apply it before the
+// first paint on the next visit.
+function applyAppearance() {
+  const pref = store.state.settings.theme || 'system';
+  const sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = pref === 'dark' || (pref === 'system' && sysDark);
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  try {
+    if (pref === 'system') localStorage.removeItem('ml_theme');
+    else localStorage.setItem('ml_theme', pref);
+  } catch (e) { /* storage unavailable — theme still applies for this visit */ }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = dark ? '#0e1611' : '#1b7a43';
+  Shop.applyTheme(store); // accent palettes have light/dark variants too
+}
+
 // ---------- boot ----------
 async function boot() {
-  // Re-apply the palette if the OS flips between light/dark so themed accents
-  // always use the variant tuned for the current background.
+  // Follow the OS if the learner chose "System" — re-resolve on flips so the
+  // theme and accent palette always match the current background.
   if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', () => Shop.applyTheme(store));
+      .addEventListener('change', () => applyAppearance());
   }
   LANGS = await loadLanguages();
   // Auth gate (demo). Grandfather existing users in as guests so this update
@@ -95,7 +114,7 @@ async function boot() {
 
 // Continue booting once we know who the learner is (account or guest).
 async function bootIntoApp() {
-  Shop.applyTheme(store);
+  applyAppearance();
   setSoundEnabled(store.state.settings.soundOn !== false);
   setDesiredRetention(store.state.settings.desiredRetention || 0.9);
   // Migration: anyone with an existing language has already used the app —
@@ -444,7 +463,7 @@ function renderHome() {
         <div class="topbar__stats">
           <span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
           <span class="stat stat--gems" id="gemsBtn" role="button" tabindex="0" aria-label="${G.gems(store)} gems. Open shop.">💎 ${G.gems(store)}</span>
-          <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
+          <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️ ∞' : `❤️ ${L.hearts}`}</span>
           <button class="stat" id="settingsBtn" aria-label="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
         </div>
       </header>
@@ -466,7 +485,7 @@ function renderHome() {
     : '<button class="plan-card plan-card--start" id="planBtn"><span class="plan-card__l">📅 <b>Start your 90-day plan</b></span><span class="plan-card__r">guided daily path ›</span></button>'}
 
       <button class="btn btn--review" id="reviewBtn" ${due ? '' : 'disabled'}>
-        🔁 Review ${due ? `<span class="badge">${due} due</span>` : '<span class="muted">none due</span>'}
+        🔁 Review ${due ? `<span class="badge">${due} due</span>` : '<span class="muted">all caught up ✓</span>'}
       </button>
 
       <div class="mini-row">
@@ -547,7 +566,7 @@ function renderHome() {
 // the learner oriented: what's due, the streak, or XP left to the daily goal.
 function homeStatus(L, due, pct, goal) {
   if (pct >= 100) return 'Done for today — well played! 🎉';
-  if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔒`;
+  if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔁`;
   if ((L.streak || 0) >= 3) return `🔥 ${L.streak}-day streak — keep it going!`;
   return `${goal - L.xpToday} XP to keep your streak`;
 }
@@ -1442,7 +1461,7 @@ function finishTestOut() {
   } else { sound.wrong(); }
   const node = h(`
     <div class="screen screen--center result">
-      <div class="onb__art">${mascotSvg(passed ? 'cheer' : 'sad', { size: 110 })}</div>
+      <div class="onb__art">${mascotSvg(passed ? 'cheer' : 'think', { size: 110 })}</div>
       <h1>${passed ? 'Tested out! ⏭️' : 'Not quite yet'}</h1>
       <div class="result__row"><div class="kpi"><span class="kpi__v">${session.score}/${session.queue.length}</span><span class="kpi__k">Score</span></div><div class="kpi"><span class="kpi__v">${Math.round(pct * 100)}%</span><span class="kpi__k">Accuracy</span></div></div>
       <p class="muted">${passed ? `${esc(unit.title)} is marked complete — jump ahead to what's next!` : 'You need 80% to skip this unit. Work through the lessons and you\'ll master it.'}</p>
@@ -1555,7 +1574,7 @@ function progressBar() {
   const pct = Math.round((session.idx / session.queue.length) * 100);
   const L = store.lang();
   const hearts = HEART_MODES.includes(session.mode)
-    ? `<span class="ex__hearts">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>` : '';
+    ? `<span class="ex__hearts" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️ ∞' : `❤️ ${L.hearts}`}</span>` : '';
   return `<header class="ex__top">
       <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
       <div class="ex__bar"><div class="ex__bar-fill" style="width:${pct}%"></div></div>
@@ -1582,6 +1601,16 @@ function renderExercise() {
 
 function footFor(node) { return node.querySelector('#foot'); }
 
+// Kind, forward-looking lines for a miss — the buddy stays on your side
+// (no frowning mascot), and the message points at the next chance to get it.
+const MISS_LINES = [
+  'No stress — it\'ll come round again.',
+  'Tough one! You\'ll catch it next time.',
+  'That\'s how learning works — it\'s scheduled for another go.',
+  'Close! This word will visit you again soon.',
+  'All good — every miss teaches the app what to practise.',
+];
+
 function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // sound + haptics first so they land with the visual
   if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic([10, 50, 10]); }
@@ -1592,15 +1621,17 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   const spell = (ok && typoNote) ? `<div class="fb__answer">${esc(typoNote)}</div>` : '';
   // track the correct-in-a-row streak so praise can build instead of resetting
   session.combo = ok ? (session.combo || 0) + 1 : 0;
-  const title = ok ? (typoNote ? 'Almost perfect!' : cheerLine(session.total, session.combo)) : '✗ Not quite';
+  const title = ok ? (typoNote ? 'Almost perfect!' : cheerLine(session.total, session.combo)) : 'Not quite';
+  const support = ok ? '' : `<div class="fb__support">${esc(MISS_LINES[session.total % MISS_LINES.length])}</div>`;
   foot.innerHTML = `
     <div class="fb">
-      <span class="fb__mascot">${mascotSvg(ok ? 'cheer' : 'sad', { size: 52, decorative: true })}</span>
+      <span class="fb__ava">${mascotImg(buddyOfTheDay(), { size: 40 })}</span>
       <div class="fb__text">
         <div class="fb__title">${title}</div>
         ${ok ? '' : `<div class="fb__answer">${ex.type === 'match' ? esc(correctText) : `Answer: <strong>${esc(correctText)}</strong>`}</div>`}
         ${spell}
         ${note}
+        ${support}
       </div>
     </div>
     <button class="btn btn--primary" id="continueBtn">Continue</button>`;
@@ -1967,7 +1998,7 @@ function renderDailyReward() {
 
 // Re-route after a profile switch (mirrors boot's tail; LANGS already loaded).
 async function restart() {
-  Shop.applyTheme(store);
+  applyAppearance();
   setSoundEnabled(store.state.settings.soundOn !== false);
   setDesiredRetention(store.state.settings.desiredRetention || 0.9);
   if (!store.state.settings.onboarded && !store.state.activeLang) return renderOnboarding();
@@ -2057,6 +2088,12 @@ function renderSettings() {
       </button>
       <div class="set-list">
         <div class="set-row">
+          <div class="set-row__label"><b>Appearance</b><small>Light or dark look — System follows your device</small></div>
+          <select id="themeSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[['system', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, label]) => `<option value="${v}" ${(store.state.settings.theme || 'system') === v ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
+        <div class="set-row">
           <div class="set-row__label"><b>Sound effects</b><small>Chimes on correct answers and lessons</small></div>
           <label class="switch"><input type="checkbox" id="soundTgl" ${soundOn ? 'checked' : ''}><span class="switch__track"></span></label>
         </div>
@@ -2082,6 +2119,11 @@ function renderSettings() {
       <p class="footnote">MzansiLingo v1 · Works offline · Made for South Africa 🇿🇦</p>
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#themeSel').addEventListener('change', (e) => {
+    store.state.settings.theme = e.target.value;
+    store.save();
+    applyAppearance();
+  });
   node.querySelector('#soundTgl').addEventListener('change', (e) => {
     store.state.settings.soundOn = e.target.checked;
     setSoundEnabled(e.target.checked);

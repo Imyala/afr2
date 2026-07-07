@@ -6,6 +6,19 @@
   <meta name="theme-color" content="#1b7a43" />
   <meta name="description" content="MzansiLingo — learn real South African languages offline. Built for classrooms with spaced repetition for real, measurable progress." />
   <title>MzansiLingo — Learn South African Languages</title>
+  <!-- Apply the saved appearance (light/dark/system) before styles paint so
+       there's no flash of the wrong theme. Kept in sync by app.js. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('ml_theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = t;
+      } catch (e) { document.documentElement.dataset.theme = 'light'; }
+    })();
+  </script>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />

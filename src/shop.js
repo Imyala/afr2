@@ -104,15 +104,21 @@ export function equippedMascot(store) {
 }
 
 // Apply the equipped colour theme to the document. Picks the brightened
-// `darkVars` when the OS is in dark mode so accents (headings, links, the
+// `darkVars` when the app is in dark mode so accents (headings, links, the
 // "Beginner" level tag, region names…) keep enough contrast to stay legible.
+// Dark mode is whatever [data-theme] says — the Settings appearance choice —
+// falling back to the OS preference if it hasn't been stamped yet.
 export function applyTheme(store, doc = (typeof document !== 'undefined' ? document : null)) {
   if (!doc) return;
   const inv = inventory(store);
   const theme = THEMES.find((t) => t.id === inv.equipped.theme) || THEMES[0];
-  const mq = doc.defaultView && doc.defaultView.matchMedia
-    && doc.defaultView.matchMedia('(prefers-color-scheme: dark)');
-  const vars = (mq && mq.matches && theme.darkVars) ? theme.darkVars : theme.vars;
+  let dark = doc.documentElement.dataset.theme === 'dark';
+  if (!doc.documentElement.dataset.theme) {
+    const mq = doc.defaultView && doc.defaultView.matchMedia
+      && doc.defaultView.matchMedia('(prefers-color-scheme: dark)');
+    dark = !!(mq && mq.matches);
+  }
+  const vars = (dark && theme.darkVars) ? theme.darkVars : theme.vars;
   for (const [k, v] of Object.entries(vars)) doc.documentElement.style.setProperty(k, v);
 }
 
