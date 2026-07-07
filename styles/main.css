@@ -135,7 +135,14 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .home-hero__mascot { flex: 0 0 auto; display: grid; place-items: end center; }
 .home-hero__text { flex: 1; min-width: 0; }
 /* illustrated companion cast — height drives size, width follows the character */
-.mascot-img { width: auto; max-width: 104px; display: block; filter: drop-shadow(0 3px 5px rgba(0,0,0,.28)); }
+.mascot-img { width: auto; max-width: min(70vw, 240px); object-fit: contain; display: block; filter: drop-shadow(0 3px 5px rgba(0,0,0,.28)); }
+.home-hero .mascot-img { max-width: 104px; }
+/* moods for the illustrated cast: gentle idle float, a celebratory pop, and a
+   washed-out "oops" look for wrong answers (the art itself is a single pose) */
+.mascot-img--bob { animation: mascotBob 3.4s ease-in-out infinite; }
+.mascot-img--cheer { animation: mascotCheer .6s cubic-bezier(.2,.7,.3,1) both; }
+.mascot-img--sad { filter: grayscale(.6) opacity(.85) drop-shadow(0 3px 5px rgba(0,0,0,.28)); }
+@media (prefers-reduced-motion: reduce) { .mascot-img--bob, .mascot-img--cheer { animation: none; } }
 .home-hero__greet { font-size: 17px; line-height: 1.2; display: block; }
 .home-hero__sub { margin: 3px 0 0; font-size: 13px; }
 .goal__ring--hero { width: 66px; height: 66px; }
@@ -401,7 +408,9 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .tier--past { opacity: .6; }
 .tier .muted { margin-left: auto; font-weight: 600; font-size: 12px; }
 
-.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 12px 20px; border-radius: 999px; font-weight: 700; z-index: 50; box-shadow: var(--shadow); }
+/* toast: inverted ink-on-bg so it contrasts in BOTH schemes (a fixed white
+   text would vanish on the dark theme's near-white --ink bubble) */
+.toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 999px; font-weight: 700; z-index: 50; box-shadow: var(--shadow); max-width: min(88vw, 440px); text-align: center; }
 
 /* word of the day */
 .wotd-card { display: flex; align-items: center; gap: 14px; }
@@ -431,8 +440,12 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .shop-buy--off { opacity: .5; }
 .shop-eq { font-weight: 800; color: var(--green); font-size: 13px; white-space: nowrap; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+/* Dark palette — applied ONLY when <html data-theme="dark"> is stamped by the
+   app (Settings → Appearance). The app defaults to light; "Match device" is an
+   explicit opt-in, so no bare prefers-color-scheme rules here. */
+:root { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+:root[data-theme="dark"] {
     --bg: #0e1611;
     --card: #1c2a22;        /* clearly lighter than bg so cards separate */
     --ink: #f1f7f3;         /* near-white body text */
@@ -443,21 +456,20 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
     --gold: #f5c33b;
     --blue: #5cabec;        /* bright blue for links/regions */
     --purple: #b794f6;      /* bright purple for gems/rewards on dark */
-  }
-  .opt { box-shadow: 0 2px 0 rgba(0,0,0,.3); }
-  .lang-card, .node, .card, .story, .book, .shop-item, .tier, .kpi, .dcard, .rline { box-shadow: 0 1px 0 rgba(0,0,0,.3); }
-  .btn--ghost { border-color: var(--line); color: var(--green); }
-  .chip { background: #243a30; border: 1px solid var(--line); color: var(--muted); }
-  /* light accent pills/blocks would glare on dark — tint them to the theme */
-  .navbtn--active { background: color-mix(in srgb, var(--green) 18%, transparent); }
-  .stat--gems, .quest__reward, .reward-row span, .chest { color: var(--purple); }
-  .reward-list { background: color-mix(in srgb, var(--purple) 14%, transparent); }
-  .reward-list--ach { background: color-mix(in srgb, var(--gold) 14%, transparent); }
-  .chest { background: color-mix(in srgb, var(--purple) 14%, transparent); }
-  .boost-badge, .boost-chip { background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--gold); }
-  .plan--best { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
-  body { background-image: radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--green) 14%, transparent), transparent 60%); }
 }
+[data-theme="dark"] .opt { box-shadow: 0 2px 0 rgba(0,0,0,.3); }
+[data-theme="dark"] :is(.lang-card, .node, .card, .story, .book, .shop-item, .tier, .kpi, .dcard, .rline) { box-shadow: 0 1px 0 rgba(0,0,0,.3); }
+[data-theme="dark"] .btn--ghost { border-color: var(--line); color: var(--green); }
+[data-theme="dark"] .chip { background: #243a30; border: 1px solid var(--line); color: var(--muted); }
+/* light accent pills/blocks would glare on dark — tint them to the theme */
+[data-theme="dark"] .navbtn--active { background: color-mix(in srgb, var(--green) 18%, transparent); }
+[data-theme="dark"] :is(.stat--gems, .quest__reward, .reward-row span, .chest) { color: var(--purple); }
+[data-theme="dark"] .reward-list { background: color-mix(in srgb, var(--purple) 14%, transparent); }
+[data-theme="dark"] .reward-list--ach { background: color-mix(in srgb, var(--gold) 14%, transparent); }
+[data-theme="dark"] .chest { background: color-mix(in srgb, var(--purple) 14%, transparent); }
+[data-theme="dark"] :is(.boost-badge, .boost-chip) { background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--gold); }
+[data-theme="dark"] .plan--best { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
+[data-theme="dark"] body { background-image: radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--green) 14%, transparent), transparent 60%); }
 
 /* ---------- mascot (Themba) ---------- */
 .mascot { display: block; --accent: var(--green); overflow: visible; }
@@ -549,7 +561,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .cando__text { font-size: 14px; font-weight: 600; }
 .cando--done { border-color: var(--green); }
 .cando--done .cando__text { color: var(--green-dark); }
-@media (prefers-color-scheme: dark) { .cando--done .cando__text { color: var(--green); } }
+[data-theme="dark"] .cando--done .cando__text { color: var(--green); }
 
 .lst-reveal { text-align: center; font-size: 18px; font-weight: 700; }
 .lst-reveal strong { color: var(--green); }
@@ -610,7 +622,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 }
 .pstep--done .pstep__num { background: var(--green); color: #fff; }
 .plan-complete { text-align: center; font-weight: 800; padding: 14px; border-radius: 16px; background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green-dark); }
-@media (prefers-color-scheme: dark) { .plan-complete { color: var(--green); } }
+[data-theme="dark"] .plan-complete { color: var(--green); }
 
 /* ---------- dialogues / conversations ---------- */
 .dlg-goal { font-size: 14px; font-weight: 800; color: var(--green); }
@@ -656,10 +668,8 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .gloss-pill--mastered { background: color-mix(in srgb, var(--green) 18%, transparent); color: var(--green-dark); }
 .gloss-row--hard { border-color: color-mix(in srgb, var(--red) 40%, var(--line)); }
 .gloss-acc { font-size: 13px; font-weight: 800; color: var(--red); white-space: nowrap; }
-@media (prefers-color-scheme: dark) {
-  .gloss-pill--learning { color: var(--gold); }
-  .gloss-pill--mastered { color: var(--green); }
-}
+[data-theme="dark"] .gloss-pill--learning { color: var(--gold); }
+[data-theme="dark"] .gloss-pill--mastered { color: var(--green); }
 
 /* ---------- demo accounts / auth ---------- */
 .auth-form { display: grid; gap: 12px; }
@@ -694,11 +704,9 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .lb-banner { font-weight: 800; font-size: 14px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--gold) 18%, transparent); color: #8a5a00; }
 .lb-banner--up { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green-dark); }
 .lb-banner--down { background: color-mix(in srgb, var(--red) 14%, transparent); color: var(--red); }
-@media (prefers-color-scheme: dark) {
-  .lb-banner { color: var(--gold); }
-  .lb-banner--up { color: var(--green); }
-  .lb-banner--down { color: var(--red); }
-}
+[data-theme="dark"] .lb-banner { color: var(--gold); }
+[data-theme="dark"] .lb-banner--up { color: var(--green); }
+[data-theme="dark"] .lb-banner--down { color: var(--red); }
 
 
 /* --- comprehensible-input fit on stories --- */
@@ -714,10 +722,8 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .rword--new { background: color-mix(in srgb, var(--gold) 24%, transparent); border-radius: 5px; padding: 0 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .reading-legend { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
 .reading-legend .rword--new { font-size: 12px; }
-@media (prefers-color-scheme: dark) {
-  .story__cov--ok { color: var(--green); }
-  .story__cov--mid { color: var(--gold); }
-}
+[data-theme="dark"] .story__cov--ok { color: var(--green); }
+[data-theme="dark"] .story__cov--mid { color: var(--gold); }
 
 /* --- corrective feedback in dialogues --- */
 .dlg-why { margin: 0 0 8px; padding: 10px 12px; border-radius: 12px; font-size: 14px;

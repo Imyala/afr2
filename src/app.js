@@ -10,20 +10,29 @@ import {
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
 import { sound, haptic, confetti, countUp, pop, setSoundEnabled } from './fx.js';
-import { mascotSvg, cheerLine } from './mascot.js';
-import { mascotImg, mascotBySeed, mascotGreeting } from './mascots.js';
+import { cheerLine } from './mascot.js';
+import { MASCOT_CAST, mascotById, mascotImg, mascotGreeting } from './mascots.js';
 import * as Auth from './auth.js';
 import * as Notify from './notify.js';
 
 let LIBRARY = null;   // library.json
 
-// The illustrated "buddy of the day". The cast is cycled by the day number, so
-// one character companions the learner all day and the troop rotates day by day
-// — familiar, but always changing. Same buddy across every screen that day.
-function buddyOfTheDay() {
-  const [y, m, d] = todayStr().split('-').map(Number);
-  const dayNum = Math.floor(Date.UTC(y, m - 1, d) / 86400000);
-  return mascotBySeed(dayNum);
+// The learner's illustrated buddy: picked at RANDOM once per day, per learner,
+// and remembered, so it's one familiar companion all day — but every learner
+// (and every day) gets their own surprise instead of the whole world seeing
+// the same animal on the same date. Never repeats yesterday's buddy.
+function currentBuddy() {
+  const s = store.state;
+  const day = todayStr();
+  if (!s.buddy || s.buddy.day !== day) {
+    let pick = MASCOT_CAST[Math.floor(Math.random() * MASCOT_CAST.length)];
+    while (MASCOT_CAST.length > 1 && s.buddy && pick.id === s.buddy.id) {
+      pick = MASCOT_CAST[Math.floor(Math.random() * MASCOT_CAST.length)];
+    }
+    s.buddy = { day, id: pick.id };
+    store.save();
+  }
+  return mascotById(s.buddy.id);
 }
 
 const app = document.getElementById('app');
@@ -35,7 +44,11 @@ let session = null;   // active lesson/review session
 const h = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const shuffle = (a) => a.map((v) => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
+// Bumped on every screen change: pending auto-advance timers compare against
+// it so they die quietly if the learner quit to another screen meanwhile.
+let mountSeq = 0;
 function mount(node) {
+  mountSeq += 1;
   app.innerHTML = '';
   app.appendChild(node);
   window.scrollTo(0, 0);
@@ -69,13 +82,29 @@ function weekDaysLeft(now = Date.now()) {
   return days <= 1 ? '1 day' : `${days} days`;
 }
 
+// ---------- colour scheme (light by default) ----------
+// The app is LIGHT unless the learner changes it in Settings: 'light' | 'dark'
+// | 'system'. The resolved scheme is stamped on <html data-theme="…"> — the
+// stylesheet keys its dark palette off that attribute, never off the OS alone.
+function applyColorScheme() {
+  const pref = store.state.settings.theme || 'light';
+  const dark = pref === 'dark'
+    || (pref === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  // keep the browser chrome (address bar) matching the scheme
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = dark ? '#0e1611' : '#1b7a43';
+}
+
 // ---------- boot ----------
 async function boot() {
-  // Re-apply the palette if the OS flips between light/dark so themed accents
+  applyColorScheme();
+  // Re-resolve the scheme if the OS flips between light/dark (only matters for
+  // learners on "Match device") and re-apply the palette so themed accents
   // always use the variant tuned for the current background.
   if (window.matchMedia) {
     window.matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', () => Shop.applyTheme(store));
+      .addEventListener('change', () => { applyColorScheme(); Shop.applyTheme(store); });
   }
   LANGS = await loadLanguages();
   // Auth gate (demo). Grandfather existing users in as guests so this update
@@ -95,6 +124,7 @@ async function boot() {
 
 // Continue booting once we know who the learner is (account or guest).
 async function bootIntoApp() {
+  applyColorScheme();
   Shop.applyTheme(store);
   setSoundEnabled(store.state.settings.soundOn !== false);
   setDesiredRetention(store.state.settings.desiredRetention || 0.9);
@@ -114,7 +144,7 @@ async function bootIntoApp() {
 function renderAuthLanding() {
   const node = h(`
     <div class="screen screen--center">
-      <div class="onb__art">${mascotSvg('wave', { size: 130 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 130, className: 'mascot-img--bob' })}</div>
       <h1 class="brand__name">MzansiLingo</h1>
       <p class="onb__body">Learn real South African languages. Create an account to save your progress — or jump straight in and try it first.</p>
       <div class="onb__actions">
@@ -243,21 +273,23 @@ function renderLanguageSelect(first = false) {
 
 // ---------- onboarding (first run only) ----------
 const ONB_SLIDES = [
-  { mood: 'wave', title: 'Sawubona! I\'m Themba 👋',
+  { title: null, // filled in with the buddy's own name at render time
     body: 'I\'ll help you learn a real South African language — one you can actually speak with people around you.' },
-  { mood: 'happy', title: 'Real progress, proven',
+  { title: 'Real progress, proven',
     body: 'No empty taps. Spaced repetition reviews each word right before you\'d forget it, so it truly sticks — and we measure it.' },
-  { mood: 'cheer', title: 'Works offline, free to start',
+  { title: 'Works offline, free to start',
     body: 'Learn anywhere with no data — on the taxi, at school, at home. Add it to your home screen and go.' },
 ];
 function renderOnboarding(i = 0) {
   const s = ONB_SLIDES[i];
+  const buddy = currentBuddy();
+  const title = s.title || `Sawubona! I'm ${buddy.name} 👋`;
   const last = i === ONB_SLIDES.length - 1;
   const dots = ONB_SLIDES.map((_, k) => `<span class="onb__dot ${k === i ? 'onb__dot--on' : ''}"></span>`).join('');
   const node = h(`
     <div class="screen onb">
-      <div class="onb__art">${mascotSvg(s.mood, { size: 150 })}</div>
-      <h1 class="onb__title">${esc(s.title)}</h1>
+      <div class="onb__art">${mascotImg(buddy, { size: 150, className: 'mascot-img--bob' })}</div>
+      <h1 class="onb__title">${esc(title)}</h1>
       <p class="onb__body">${esc(s.body)}</p>
       <div class="onb__dots">${dots}</div>
       <div class="onb__actions">
@@ -290,7 +322,7 @@ function renderFirstWin(step = 0, picks = null) {
     const node = h(`
       <div class="screen onb">
         <p class="muted">Your first words · ${step + 1} of 3</p>
-        <div class="onb__art">${mascotSvg('happy', { size: 96 })}</div>
+        <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
         <div class="wotd-big">
           <strong>${esc(w.term)}</strong>
           <span class="wotd-big__phon muted">${esc(w.phonetic || '')}</span>
@@ -311,7 +343,7 @@ function renderFirstWin(step = 0, picks = null) {
     const options = shuffle([w.translation, ...others]);
     const node = h(`
       <div class="screen onb">
-        <div class="onb__art">${mascotSvg('think', { size: 96 })}</div>
+        <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
         <h2 class="ex__q">What does “${esc(w.term)}” mean?</h2>
         <div class="opts">${options.map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
       </div>`);
@@ -335,7 +367,7 @@ function renderFirstWin(step = 0, picks = null) {
   const chips = picks.map((p) => `<span class="win-word">${esc(p.term)}</span>`).join('');
   const node = h(`
     <div class="screen onb">
-      <div class="onb__art">${mascotSvg('cheer', { size: 150 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 150, className: 'mascot-img--cheer' })}</div>
       <h1 class="onb__title">You just learned 3 words! 🎉</h1>
       <div class="win-words">${chips}</div>
       <p class="onb__body">That's how it works — short, real, and it sticks. Ready for your first full lesson?</p>
@@ -350,7 +382,7 @@ function promptReminders() {
   if (!Notify.supported() || Notify.permission() !== 'default') return finishOnboarding();
   const node = h(`
     <div class="screen onb">
-      <div class="onb__art">${mascotSvg('wave', { size: 130 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 130, className: 'mascot-img--bob' })}</div>
       <h1 class="onb__title">Want a daily nudge? 🔥</h1>
       <p class="onb__body">A gentle reminder helps you keep your streak and actually learn. No spam — just once a day if you haven't practised.</p>
       <div class="onb__actions">
@@ -387,8 +419,20 @@ function renderHome() {
   // which units are already fully complete (so we only offer "test out" on the rest)
   const unitComplete = {};
   for (const u of course.units) unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
+  // Step 0: a no-pressure warm-up before Lesson 1 for absolute beginners.
+  // Shown until the first lesson is complete; while it's pending it is the
+  // highlighted next step (Lesson 1 stays open for those who want to dive in).
+  const firstLesson = lessons[0];
+  const showWarmup = firstLesson && !store.isLessonComplete(firstLesson.id) && (firstLesson.vocab || []).length >= 3;
+  const warmupPending = showWarmup && !L.warmupDone;
+  const warmupNode = showWarmup ? `
+      <button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup>
+        <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
+        <span class="node__title">Warm-up: meet your first words</span>
+        ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
+      </button>` : '';
   let lastUnit = null;
-  let activeMarked = false;
+  let activeMarked = warmupPending;
   const path = lessons.map((l, i) => {
     const done = store.isLessonComplete(l.id);
     const stars = L.lessonStars[l.id] || 0;
@@ -404,7 +448,7 @@ function renderHome() {
     lastUnit = l.unitTitle;
     const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
     const cta = active ? '<span class="node__cta">START</span>' : '';
-    return `${unitHeader}
+    return `${unitHeader}${i === 0 ? warmupNode : ''}
       <button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''}>
         <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
         <span class="node__title">${esc(l.title)}</span>
@@ -430,7 +474,7 @@ function renderHome() {
   const lg = L.league;
   const lgRank = G.leagueRank(store);
   const hasReading = (course.reading || []).length > 0;
-  const buddy = buddyOfTheDay();
+  const buddy = currentBuddy();
   const greetSeed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
   const wotd = wordOfTheDay();
   const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
@@ -512,6 +556,8 @@ function renderHome() {
 
   node.querySelectorAll('[data-lesson]').forEach((b) =>
     b.addEventListener('click', () => startLesson(b.dataset.lesson)));
+  node.querySelectorAll('[data-warmup]').forEach((b) =>
+    b.addEventListener('click', () => { sound.tap(); startWarmup(); }));
   node.querySelectorAll('[data-testout]').forEach((b) =>
     b.addEventListener('click', (e) => { e.stopPropagation(); confirmTestOut(b.dataset.testout); }));
   node.querySelector('#switchLang').addEventListener('click', () => renderLanguageSelect(false));
@@ -837,7 +883,7 @@ function renderSpeakingDone() {
   confetti({ count: 60, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
   const node = h(`
     <div class="screen screen--center result">
-      <div class="onb__art">${mascotSvg('cheer', { size: 110 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 110, className: 'mascot-img--cheer' })}</div>
       <h1>Speaking practice done!</h1>
       <p class="muted">You used your voice on ${done} ${done === 1 ? 'item' : 'items'}. Saying words out loud is how spoken fluency grows.</p>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
@@ -917,10 +963,21 @@ function renderListening() {
     for (const id of it.ids) srsReview(store.item(id), gradeFor(ok, 'multiple_choice'), 'multiple_choice');
     if (ok) { store.addXp(5); s.done += 1; }
     store.save();
-    const foot = node.querySelector('#foot');
-    foot.innerHTML = '<button class="btn btn--primary" id="next">Continue</button>';
-    foot.querySelector('#next').addEventListener('click', () => { sound.tap(); s.idx += 1; renderListening(); });
-    foot.querySelector('#next').focus();
+    // auto-advance (a miss lingers so the revealed text + meaning can be read)
+    const seq = mountSeq;
+    let advanced = false;
+    const go = () => {
+      if (advanced || mountSeq !== seq || !listenSession) return;
+      advanced = true;
+      s.idx += 1; renderListening();
+    };
+    setTimeout(go, ok ? 1000 : 3000);
+    if (!ok) {
+      const foot = node.querySelector('#foot');
+      foot.innerHTML = '<button class="btn btn--primary" id="next">Continue</button>';
+      foot.querySelector('#next').addEventListener('click', () => { sound.tap(); go(); });
+      foot.querySelector('#next').focus();
+    }
   }));
   mount(node);
 }
@@ -932,7 +989,7 @@ function renderListeningDone() {
   confetti({ count: 60, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
   const node = h(`
     <div class="screen screen--center result">
-      <div class="onb__art">${mascotSvg('cheer', { size: 110 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 110, className: 'mascot-img--cheer' })}</div>
       <h1>Listening practice done!</h1>
       <p class="muted">You understood ${done} from sound. Training your ear is how real comprehension grows.</p>
       <button class="btn btn--primary" id="doneBtn">Continue</button>
@@ -1048,7 +1105,7 @@ function finishBlitz() {
   if (isBest) confetti({ count: 90, duration: 1200 });
   const node = h(`
     <div class="screen screen--center result">
-      <div class="onb__art">${mascotSvg('cheer', { size: 110 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 110, className: 'mascot-img--cheer' })}</div>
       <h1>${isBest ? 'New record! ⚡' : 'Time!'}</h1>
       <div class="result__row">
         <div class="kpi"><span class="kpi__v">${correct}</span><span class="kpi__k">Correct</span></div>
@@ -1113,7 +1170,7 @@ function planActivities() {
 function renderPlanIntro() {
   const node = h(`
     <div class="screen screen--center">
-      <div class="onb__art">${mascotSvg('wave', { size: 130 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 130, className: 'mascot-img--bob' })}</div>
       <h1>Your 90-day plan</h1>
       <p class="onb__body">A guided daily loop — review, a new lesson, real input, and speaking practice — built to get you conversational in ${esc(course.name)} in about 3 months. Show up every day and we'll track the journey.</p>
       <div class="onb__actions">
@@ -1150,7 +1207,7 @@ function renderPlan() {
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>90-Day Plan</strong><span></span></header>
       <section class="plan-hero">
-        <span class="plan-hero__mascot">${mascotImg(buddyOfTheDay(), { size: 84 })}</span>
+        <span class="plan-hero__mascot">${mascotImg(currentBuddy(), { size: 84 })}</span>
         <div class="plan-hero__main">
           <span class="plan-hero__day">${p.completed ? 'Plan complete! 🎉' : `Day ${p.day} <small>of 90</small>`}</span>
           <div class="plan-hero__bar"><div class="plan-hero__fill" style="width:${pct}%"></div></div>
@@ -1294,7 +1351,7 @@ function finishDialogue() {
   confetti({ count: 80, duration: 1200 }); sound.complete(); haptic([15, 30, 15]);
   const node = h(`
     <div class="screen screen--center result">
-      <div class="onb__art">${mascotSvg('cheer', { size: 120 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 120, className: 'mascot-img--cheer' })}</div>
       <h1>Conversation complete! 💬</h1>
       <p class="muted">${perfect ? 'Flawless — you handled the whole conversation!' : 'Nicely done — you got through it!'}</p>
       <div class="result__row"><div class="kpi"><span class="kpi__v">+${xp}</span><span class="kpi__k">XP</span></div><div class="kpi"><span class="kpi__v">+💎5</span><span class="kpi__k">Gems</span></div></div>
@@ -1361,6 +1418,100 @@ function startGrammar(gid) {
     : { type: 'translate', prompt: d.prompt, answer: d.answer, accept: [d.answer.toLowerCase()] }));
   session = { mode: 'grammar', grammarId: gid, lesson: null, queue, idx: 0, mistakes: 0, total: 0 };
   renderExercise();
+}
+
+// ---------- gentle warm-up (step 0, before Lesson 1) ----------
+// For someone starting from absolutely nothing, even Lesson 1 can feel like a
+// test. The warm-up teaches each word FIRST (see it, hear it, read the meaning)
+// and only then asks one friendly tap about it — no hearts, no typing, nothing
+// to fail. Words still enter the real review schedule, graded honestly.
+const WARMUP_WORDS = 5;
+
+function startWarmup() {
+  const first = allLessons(course)[0];
+  const words = (first.vocab || []).slice(0, WARMUP_WORDS);
+  if (words.length < 3) return startLesson(first.id); // nothing to warm up with
+  renderWarmupStep({ words, i: 0, firstLessonId: first.id });
+}
+
+function renderWarmupStep(w) {
+  const { words, i } = w;
+  if (i >= words.length) return renderWarmupDone(w);
+  const word = words[i];
+  const node = h(`
+    <div class="screen onb">
+      <header class="ex__top" style="align-self:stretch">
+        <button class="ex__quit" id="quitBtn" aria-label="Quit warm-up">✕</button>
+        <span class="muted">Warm-up · word ${i + 1} of ${words.length}</span>
+      </header>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
+      <div class="wotd-big">
+        <strong>${esc(word.term)}</strong>
+        <span class="wotd-big__phon muted">${esc(word.phonetic || '')}</span>
+        <span class="wotd-big__tr">${esc(word.translation)}</span>
+      </div>
+      <button class="play-btn" id="hear">🔊 Hear it</button>
+      <p class="onb__body">Just meet the word — try saying it out loud once.</p>
+      <div class="onb__actions"><button class="btn btn--primary" id="next">Got it →</button></div>
+    </div>`);
+  node.querySelector('#quitBtn').addEventListener('click', renderHome);
+  node.querySelector('#hear').addEventListener('click', () => tryHear(word.term, course.code));
+  speak(word.term, course.code);
+  node.querySelector('#next').addEventListener('click', () => { sound.tap(); renderWarmupCheck(w); });
+  mount(node);
+}
+
+function renderWarmupCheck(w) {
+  const { words, i } = w;
+  const word = words[i];
+  const others = shuffle(words.filter((x) => x.id !== word.id)).slice(0, 2).map((x) => x.translation);
+  const options = shuffle([word.translation, ...others]);
+  const node = h(`
+    <div class="screen onb">
+      <header class="ex__top" style="align-self:stretch">
+        <button class="ex__quit" id="quitBtn" aria-label="Quit warm-up">✕</button>
+        <span class="muted">Warm-up · word ${i + 1} of ${words.length}</span>
+      </header>
+      <h2 class="ex__q">Quick tap — what does “${esc(word.term)}” mean?</h2>
+      <div class="opts" style="width:100%">${options.map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+    </div>`);
+  node.querySelector('#quitBtn').addEventListener('click', renderHome);
+  node.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
+    const ok = normalize(b.dataset.val) === normalize(word.translation);
+    node.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
+    b.classList.add(ok ? 'opt--ok' : 'opt--bad');
+    if (!ok) node.querySelectorAll('.opt').forEach((x) => { if (normalize(x.dataset.val) === normalize(word.translation)) x.classList.add('opt--ok'); });
+    if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic([10, 40, 10]); }
+    announce(ok ? 'Correct!' : `It means ${word.translation}`);
+    // honest crediting: the word enters the real schedule graded by this try
+    srsReview(store.item(word.id), gradeFor(ok, 'multiple_choice'), 'multiple_choice');
+    store.save();
+    const seq = mountSeq;
+    setTimeout(() => { if (mountSeq === seq) renderWarmupStep({ ...w, i: i + 1 }); }, ok ? 900 : 2200);
+  }));
+  mount(node);
+}
+
+function renderWarmupDone(w) {
+  const L = store.lang();
+  if (!L.warmupDone) { L.warmupDone = true; store.addXp(10); }
+  store.save();
+  confetti({ count: 70, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
+  const chips = w.words.map((p) => `<span class="win-word">${esc(p.term)}</span>`).join('');
+  const node = h(`
+    <div class="screen onb">
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 140, className: 'mascot-img--cheer' })}</div>
+      <h1 class="onb__title">Warmed up! 🌱</h1>
+      <div class="win-words">${chips}</div>
+      <p class="onb__body">You've met your first words, so Lesson 1 will feel familiar. Ready?</p>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="go">Start Lesson 1</button>
+        <button class="btn btn--ghost" id="home">Back home</button>
+      </div>
+    </div>`);
+  node.querySelector('#go').addEventListener('click', () => { sound.tap(); startLesson(w.firstLessonId); });
+  node.querySelector('#home').addEventListener('click', renderHome);
+  mount(node);
 }
 
 // ---------- session engine ----------
@@ -1442,7 +1593,7 @@ function finishTestOut() {
   } else { sound.wrong(); }
   const node = h(`
     <div class="screen screen--center result">
-      <div class="onb__art">${mascotSvg(passed ? 'cheer' : 'sad', { size: 110 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 110, className: passed ? 'mascot-img--cheer' : 'mascot-img--sad' })}</div>
       <h1>${passed ? 'Tested out! ⏭️' : 'Not quite yet'}</h1>
       <div class="result__row"><div class="kpi"><span class="kpi__v">${session.score}/${session.queue.length}</span><span class="kpi__k">Score</span></div><div class="kpi"><span class="kpi__v">${Math.round(pct * 100)}%</span><span class="kpi__k">Accuracy</span></div></div>
       <p class="muted">${passed ? `${esc(unit.title)} is marked complete — jump ahead to what's next!` : 'You need 80% to skip this unit. Work through the lessons and you\'ll master it.'}</p>
@@ -1593,9 +1744,14 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // track the correct-in-a-row streak so praise can build instead of resetting
   session.combo = ok ? (session.combo || 0) + 1 : 0;
   const title = ok ? (typoNote ? 'Almost perfect!' : cheerLine(session.total, session.combo)) : '✗ Not quite';
+  // Auto-advance, like the intro taster — no "Continue" tap after every answer.
+  // A clean correct flows straight on; a miss (or a spelling nudge) pauses long
+  // enough to actually read the right answer, with a button to skip the wait.
+  const instant = ok && !typoNote;
+  const delay = instant ? 1000 : ok ? 2200 : 3000;
   foot.innerHTML = `
     <div class="fb">
-      <span class="fb__mascot">${mascotSvg(ok ? 'cheer' : 'sad', { size: 52, decorative: true })}</span>
+      <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52, className: ok ? '' : 'mascot-img--sad' })}</span>
       <div class="fb__text">
         <div class="fb__title">${title}</div>
         ${ok ? '' : `<div class="fb__answer">${ex.type === 'match' ? esc(correctText) : `Answer: <strong>${esc(correctText)}</strong>`}</div>`}
@@ -1603,14 +1759,22 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
         ${note}
       </div>
     </div>
-    <button class="btn btn--primary" id="continueBtn">Continue</button>`;
+    ${instant ? '' : '<button class="btn btn--primary" id="continueBtn">Continue</button>'}`;
+  const seq = mountSeq;
+  let advanced = false;
+  const go = () => {
+    if (advanced || mountSeq !== seq) return; // screen changed (quit) — stand down
+    advanced = true;
+    advance(ok, ex);
+  };
+  setTimeout(go, delay);
   const cont = foot.querySelector('#continueBtn');
-  cont.addEventListener('click', () => { sound.tap(); advance(ok, ex); });
+  if (cont) cont.addEventListener('click', () => { sound.tap(); go(); });
   // lock inputs
   node.querySelectorAll('.opt, .ex__input, .check, .wb-tok').forEach((e) => { e.disabled = true; });
-  // a11y: announce the result, then put focus on Continue so it's one keypress away
+  // a11y: announce the result (and where focus should wait when there's a button)
   announce(ok ? (typoNote ? `Correct, but ${typoNote}` : 'Correct!') : (ex.type === 'match' ? `Not quite. ${correctText}` : `Not quite. Answer: ${correctText}`));
-  cont.focus();
+  if (cont) cont.focus();
 }
 
 // --- multiple choice / fill / listen share an option grid ---
@@ -1742,7 +1906,7 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
     ? `<div class="reward-list reward-list--ach"><strong>New badges! 🏅</strong>${rewards.achievements.map((a) => `<div class="reward-row">${a.icon} ${esc(a.name)} <span>+💎20</span></div>`).join('')}</div>` : '';
   const node = h(`
     <div class="screen screen--center result">
-      <div class="onb__art">${mascotSvg('cheer', { size: 120 })}</div>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 120, className: 'mascot-img--cheer' })}</div>
       <h1>${title}</h1>
       <div class="result__stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
       ${session.xpBoosted ? '<div class="boost-badge">⚡ Double XP applied!</div>' : ''}
@@ -1967,6 +2131,7 @@ function renderDailyReward() {
 
 // Re-route after a profile switch (mirrors boot's tail; LANGS already loaded).
 async function restart() {
+  applyColorScheme();
   Shop.applyTheme(store);
   setSoundEnabled(store.state.settings.soundOn !== false);
   setDesiredRetention(store.state.settings.desiredRetention || 0.9);
@@ -2057,6 +2222,12 @@ function renderSettings() {
       </button>
       <div class="set-list">
         <div class="set-row">
+          <div class="set-row__label"><b>Appearance</b><small>Light unless you choose otherwise</small></div>
+          <select id="themeSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[['light', 'Light'], ['dark', 'Dark'], ['system', 'Match device']].map(([v, label]) => `<option value="${v}" ${(store.state.settings.theme || 'light') === v ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
+        <div class="set-row">
           <div class="set-row__label"><b>Sound effects</b><small>Chimes on correct answers and lessons</small></div>
           <label class="switch"><input type="checkbox" id="soundTgl" ${soundOn ? 'checked' : ''}><span class="switch__track"></span></label>
         </div>
@@ -2082,6 +2253,12 @@ function renderSettings() {
       <p class="footnote">MzansiLingo v1 · Works offline · Made for South Africa 🇿🇦</p>
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#themeSel').addEventListener('change', (e) => {
+    store.state.settings.theme = e.target.value;
+    store.save();
+    applyColorScheme();
+    Shop.applyTheme(store); // accents are tuned per scheme — re-pick the variant
+  });
   node.querySelector('#soundTgl').addEventListener('change', (e) => {
     store.state.settings.soundOn = e.target.checked;
     setSoundEnabled(e.target.checked);

@@ -1,15 +1,13 @@
 // mascots.js — the illustrated companion cast.
 //
 // A troop of Southern African characters (art by the MzansiLingo team) that the
-// learner meets around the app. A "buddy of the day" greets them on the home and
-// plan heroes — the same character all day, rotating through the whole troop day
-// by day, so it's a familiar companion that still keeps changing.
+// learner meets around the app. A daily buddy — picked at random per learner,
+// per day (see currentBuddy in app.js) — companions them everywhere: welcome,
+// onboarding, home and plan heroes, answer feedback and celebrations.
 //
 // Each buddy has their OWN voice: a small pool of in-character greeting lines,
 // drawn from their traits, so meeting Rendani the rhino feels different from
-// meeting Gigi the giraffe. The expressive line-drawn meerkat in mascot.js still
-// handles answer feedback (it can smile, cheer and frown); this cast is for the
-// warm "hello" spots.
+// meeting Gigi the giraffe.
 
 export const MASCOT_CAST = [
   { id: 'lion', name: 'Leo', animal: 'lion', traits: 'Brave · Proud · Leader',
@@ -212,11 +210,6 @@ export const MASCOT_CAST = [
 
 export function mascotById(id) {
   return MASCOT_CAST.find((m) => m.id === id) || MASCOT_CAST[0];
-}
-
-// Pick a cast member by a stable numeric seed (e.g. a day number).
-export function mascotBySeed(seed = 0) {
-  return MASCOT_CAST[Math.abs(seed | 0) % MASCOT_CAST.length];
 }
 
 // A line in this buddy's own voice. `seed` (e.g. XP + streak) rotates through

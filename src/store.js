@@ -33,6 +33,7 @@ function freshLang() {
     items: {},               // vocabId -> srs record
     completedLessons: [],
     lessonStars: {},         // lessonId -> 1..3
+    warmupDone: false,       // the gentle pre-Lesson-1 warm-up
     reviewsDone: 0,
     baseline: null,          // { score, total, date }
     retest: null,
@@ -55,7 +56,8 @@ function freshState() {
     version: 1,
     activeLang: null,
     premium: false,
-    settings: { dailyGoalXP: 30, soundOn: true, onboarded: false, remindersOn: false, desiredRetention: 0.9 },
+    // theme: 'light' (default) | 'dark' | 'system' — light unless changed in settings
+    settings: { dailyGoalXP: 30, soundOn: true, onboarded: false, remindersOn: false, desiredRetention: 0.9, theme: 'light' },
     langs: {},
     // account-wide gamification
     gems: 0,

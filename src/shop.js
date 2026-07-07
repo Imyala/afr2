@@ -104,16 +104,18 @@ export function equippedMascot(store) {
 }
 
 // Apply the equipped colour theme to the document. Picks the brightened
-// `darkVars` when the OS is in dark mode so accents (headings, links, the
-// "Beginner" level tag, region names…) keep enough contrast to stay legible.
+// `darkVars` when the app is in dark mode — read from <html data-theme="…">,
+// which the app stamps from the learner's Appearance setting (light by
+// default) — so accents (headings, links, the "Beginner" level tag, region
+// names…) keep enough contrast to stay legible.
 export function applyTheme(store, doc = (typeof document !== 'undefined' ? document : null)) {
   if (!doc) return;
   const inv = inventory(store);
   const theme = THEMES.find((t) => t.id === inv.equipped.theme) || THEMES[0];
-  const mq = doc.defaultView && doc.defaultView.matchMedia
-    && doc.defaultView.matchMedia('(prefers-color-scheme: dark)');
-  const vars = (mq && mq.matches && theme.darkVars) ? theme.darkVars : theme.vars;
-  for (const [k, v] of Object.entries(vars)) doc.documentElement.style.setProperty(k, v);
+  const el = doc.documentElement;
+  const dark = !!(el.dataset && el.dataset.theme === 'dark');
+  const vars = (dark && theme.darkVars) ? theme.darkVars : theme.vars;
+  for (const [k, v] of Object.entries(vars)) el.style.setProperty(k, v);
 }
 
 // Consume one Double XP boost if active. Returns the (possibly doubled) amount
