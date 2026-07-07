@@ -10,7 +10,7 @@ import {
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
 import { sound, haptic, confetti, countUp, pop, setSoundEnabled } from './fx.js';
-import { cheerLine } from './mascot.js';
+import { cheerLine, learnLine } from './mascot.js';
 import { MASCOT_CAST, mascotById, mascotImg, mascotGreeting } from './mascots.js';
 import * as Auth from './auth.js';
 import * as Notify from './notify.js';
@@ -789,7 +789,7 @@ function renderSpeaking() {
     const foot = node.querySelector('#foot');
     foot.innerHTML = `
       <button class="btn btn--primary" id="goodBtn">✓ I said it right</button>
-      <button class="btn btn--ghost" id="missBtn">✗ Not quite — review it</button>`;
+      <button class="btn btn--ghost" id="missBtn">🔁 Not yet — review it for me</button>`;
     foot.querySelector('#goodBtn').addEventListener('click', () => rate(true));
     foot.querySelector('#missBtn').addEventListener('click', () => rate(false));
     node.querySelector('#hearBtn').addEventListener('click', () => tryHear(it.text, course.code));
@@ -904,7 +904,7 @@ function renderListening() {
     if (!ok) node.querySelectorAll('.opt').forEach((x) => { if (normalize(x.dataset.val) === normalize(it.answer)) x.classList.add('opt--ok'); });
     reveal.hidden = false;
     if (ok) { sound.correct(); haptic(12); } else { sound.wrong(); haptic([10, 40, 10]); }
-    announce(ok ? 'Correct!' : `Not quite. It was ${it.text}, meaning ${it.answer}`);
+    announce(ok ? 'Correct!' : `It was ${it.text}, meaning ${it.answer}`);
     for (const id of it.ids) srsReview(store.item(id), gradeFor(ok, 'multiple_choice'), 'multiple_choice');
     if (ok) { store.addXp(5); s.done += 1; }
     store.save();
@@ -1701,6 +1701,8 @@ function advance(wasCorrect, ex) {
     // correct — the pairs they mixed up are honest lapses.
     const missed = ex.type === 'match' ? new Set(ex._missedTerms || []) : null;
     const byId = missed ? vocabIndex(course) : null;
+    // capture BEFORE grading below increments each item's `seen` count
+    const learningGrace = stillLearningEx(ex);
     for (const vid of exerciseVocabIds(ex, session.lesson)) {
       const it = store.item(vid);
       const itemCorrect = missed ? !(byId[vid] && missed.has(normalize(byId[vid].term))) : wasCorrect;
@@ -1709,7 +1711,9 @@ function advance(wasCorrect, ex) {
     // Match is the lesson's first-exposure intro, and mispairs are already
     // corrected in place — it counts against accuracy/stars but not hearts.
     if (!wasCorrect && HEART_MODES.includes(session.mode) && ex.type !== 'match') {
-      store.loseHeart();
+      // hearts guard the recall of things already TAUGHT; missing material
+      // you're still learning is part of learning and stays free
+      if (!learningGrace) store.loseHeart();
       session.queue.push({ ...ex }); // requeue missed item to the end
       if (store.lang().hearts <= 0) return renderOutOfHearts();
     }
@@ -1752,30 +1756,51 @@ function renderExercise() {
 
 function footFor(node) { return node.querySelector('#foot'); }
 
+// True while any item this exercise touches has been met fewer than two times
+// — material the learner is still LEARNING. Missing it then is simply how
+// learning works, so it earns grace (no heart lost), not punishment.
+function stillLearningEx(ex) {
+  const ids = exerciseVocabIds(ex, session.lesson);
+  return ids.length > 0 && ids.some((vid) => (store.item(vid).seen || 0) < 2);
+}
+
 function showFeedback(node, ok, ex, correctText, typoNote = '') {
-  // sound + haptics first so they land with the visual
-  if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic([10, 50, 10]); }
+  // sound + haptics first so they land with the visual (the miss cue is a soft
+  // low note and a single gentle tick — informative, never a punishment buzz)
+  if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic(10); }
   const foot = footFor(node);
-  foot.className = `ex__foot ${ok ? 'ex__foot--ok' : 'ex__foot--bad'}`;
+  foot.className = `ex__foot ${ok ? 'ex__foot--ok' : 'ex__foot--learn'}`;
   const note = ex.meaning ? `<div class="fb__meaning">${esc(ex.meaning)}</div>` : '';
   // a typo-accepted answer gets a gentle spelling nudge instead of a penalty
   const spell = (ok && typoNote) ? `<div class="fb__answer">${esc(typoNote)}</div>` : '';
   // track the correct-in-a-row streak so praise can build instead of resetting
   session.combo = ok ? (session.combo || 0) + 1 : 0;
-  const title = ok ? (typoNote ? 'Almost perfect!' : cheerLine(session.total, session.combo)) : '✗ Not quite';
+  // A miss is a LEARNING MOMENT, not a failure: warm title, the answer with
+  // its pronunciation, and the promise that it comes back — because it does.
+  const title = ok ? (typoNote ? 'Almost perfect!' : cheerLine(session.total, session.combo)) : learnLine(session.total);
+  const v = (!ok && ex.vocabId) ? vocabIndex(course)[ex.vocabId] : null;
+  // pronunciation only when it belongs to exactly what's shown as the answer
+  const phon = (v && v.phonetic && normalize(v.term) === normalize(correctText)) ? ` <span class="muted">(${esc(v.phonetic)})</span>` : '';
+  const answer = ok ? '' : `<div class="fb__answer">${ex.type === 'match' ? esc(correctText) : `It's: <strong>${esc(correctText)}</strong>${phon}`}</div>`;
+  const requeues = !ok && HEART_MODES.includes(session.mode) && ex.type !== 'match';
+  const spared = requeues && stillLearningEx(ex);
+  const again = requeues
+    ? `<div class="fb__again">🔁 It comes round again in a bit — that's how it sticks${spared ? ' · 🌱 still learning, no heart lost' : ''}</div>`
+    : '';
   // Auto-advance, like the intro taster — no "Continue" tap after every answer.
-  // A clean correct flows straight on; a miss (or a spelling nudge) pauses long
-  // enough to actually read the right answer, with a button to skip the wait.
+  // A clean correct flows straight on; a learning moment (or a spelling nudge)
+  // pauses long enough to actually take the answer in, with a button to skip.
   const instant = ok && !typoNote;
-  const delay = instant ? 1000 : ok ? 2200 : 3000;
+  const delay = instant ? 1000 : ok ? 2200 : 3500;
   foot.innerHTML = `
     <div class="fb">
-      <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52, className: ok ? '' : 'mascot-img--sad' })}</span>
+      <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52 })}</span>
       <div class="fb__text">
         <div class="fb__title">${title}</div>
-        ${ok ? '' : `<div class="fb__answer">${ex.type === 'match' ? esc(correctText) : `Answer: <strong>${esc(correctText)}</strong>`}</div>`}
+        ${answer}
         ${spell}
         ${note}
+        ${again}
       </div>
     </div>
     ${instant ? '' : '<button class="btn btn--primary" id="continueBtn">Continue</button>'}`;
@@ -1792,7 +1817,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // lock inputs
   node.querySelectorAll('.opt, .ex__input, .check, .wb-tok').forEach((e) => { e.disabled = true; });
   // a11y: announce the result (and where focus should wait when there's a button)
-  announce(ok ? (typoNote ? `Correct, but ${typoNote}` : 'Correct!') : (ex.type === 'match' ? `Not quite. ${correctText}` : `Not quite. Answer: ${correctText}`));
+  announce(ok ? (typoNote ? `Correct, but ${typoNote}` : 'Correct!') : (ex.type === 'match' ? correctText : `The answer is ${correctText}.`));
   if (cont) cont.focus();
 }
 
@@ -1936,7 +1961,7 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
       </div>
       ${questHtml}
       ${achHtml}
-      ${session.mistakes ? '<p class="muted">Words you missed are scheduled for review so they actually stick.</p>' : ''}
+      ${session.mistakes ? '<p class="muted">💡 The tricky ones will come back at just the right moment — that\'s how they stick.</p>' : ''}
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
   node.querySelector('#doneBtn').addEventListener('click', () => { sound.tap(); afterActivityNav(); });
@@ -1954,8 +1979,8 @@ function renderOutOfHearts() {
   const node = h(`
     <div class="screen screen--center result">
       <div class="result__emoji">💔</div>
-      <h1>Out of hearts</h1>
-      <p class="muted">You ran out of hearts this session. Hearts refill over time, or go Premium for unlimited hearts.</p>
+      <h1>Time for a breather</h1>
+      <p class="muted">Hearts are resting — they refill on their own. You can keep practising heart-free right now; nothing you've learned is lost.</p>
       <button class="btn btn--primary" id="practiceBtn">Keep practising (no hearts)</button>
       <button class="btn btn--ghost" id="homeBtn">Back home</button>
       <button class="btn btn--ghost" id="goPremium">⭐ Get unlimited hearts</button>

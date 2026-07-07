@@ -14,6 +14,17 @@ const CHEERS = [
   'Eish, you\'re sharp!',
 ];
 
+// Titles for a miss, framed as LEARNING rather than failure — never "wrong",
+// never a red ✗. The answer (shown beneath) is the payoff of the moment.
+const LEARNS = [
+  'Good try — here\'s the trick 💡', 'Ooh, sneaky one!', 'So close!',
+  'Now you know 💡', 'New one — no stress 🌱', 'Tricky! Let\'s learn it',
+  'Take a look 👀', 'Every miss teaches 🌱',
+];
+export function learnLine(seed = 0) {
+  return LEARNS[Math.abs(seed) % LEARNS.length];
+}
+
 // Praise for a correct answer. `seed` keeps the choice stable for one render
 // (pass an ever-incrementing counter so consecutive answers differ); `combo`
 // is the current run of correct-in-a-row so a streak gets its own escalating

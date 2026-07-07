@@ -269,13 +269,20 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 }
 .opt:active { transform: translateY(1px); }
 .opt--ok { border-color: var(--green); background: #e7f6ec; color: var(--green-dark); }
-.opt--bad { border-color: var(--red); background: #fdeaea; color: var(--red); }
+/* a missed pick is a "look here" cue, not an error — warm amber, never red */
+.opt--bad { border-color: var(--gold); background: #fff6e0; color: #8a5a00; }
+[data-theme="dark"] .opt--ok { background: color-mix(in srgb, var(--green) 18%, var(--bg)); color: var(--green); }
+[data-theme="dark"] .opt--bad { background: color-mix(in srgb, var(--gold) 16%, var(--bg)); color: var(--gold); }
 
 .match { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .match__col { display: grid; gap: 10px; align-content: start; }
 .match-opt--sel { border-color: var(--blue); background: #e8f1fb; }
+[data-theme="dark"] .match-opt--sel { background: color-mix(in srgb, var(--blue) 18%, var(--bg)); }
 .match-opt--done { opacity: .35; }
-.match-opt--wrong { border-color: var(--red); background: #fdeaea; }
+.match-opt--wrong { border-color: var(--gold); background: #fff6e0; animation: wiggle .3s ease-in-out; }
+[data-theme="dark"] .match-opt--wrong { background: color-mix(in srgb, var(--gold) 16%, var(--bg)); }
+@keyframes wiggle { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-3px); } 60% { transform: translateX(3px); } }
+@media (prefers-reduced-motion: reduce) { .match-opt--wrong { animation: none; } }
 
 .play-btn {
   align-self: flex-start; background: var(--blue); color: #fff; border: none; border-radius: 14px;
@@ -284,9 +291,10 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .speak-controls { display: grid; gap: 10px; }
 .speak-status { min-height: 20px; }
 
-/* feedback footer */
+/* feedback footer — a correct answer celebrates in green; a miss becomes a
+   warm amber LEARNING moment (never red, never a ✗) */
 .ex__foot { display: grid; gap: 12px; padding: 16px 0 calc(16px + env(safe-area-inset-bottom)); }
-.ex__foot--ok, .ex__foot--bad {
+.ex__foot--ok, .ex__foot--learn {
   margin: 0 -16px; padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
   border-radius: 22px 22px 0 0;
   animation: fb-rise .3s cubic-bezier(.22, 1, .36, 1) both;
@@ -295,21 +303,30 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   background: linear-gradient(180deg, color-mix(in srgb, var(--green) 16%, #fff), #e7f6ec);
   box-shadow: inset 0 3px 0 var(--green);
 }
-.ex__foot--bad {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--red) 14%, #fff), #fdeaea);
-  box-shadow: inset 0 3px 0 var(--red);
+.ex__foot--learn {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--gold) 22%, #fff), #fff3d6);
+  box-shadow: inset 0 3px 0 var(--gold);
+}
+[data-theme="dark"] .ex__foot--ok {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--green) 26%, var(--bg)), color-mix(in srgb, var(--green) 14%, var(--bg)));
+}
+[data-theme="dark"] .ex__foot--learn {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--gold) 24%, var(--bg)), color-mix(in srgb, var(--gold) 12%, var(--bg)));
 }
 @keyframes fb-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .ex__foot--ok .fb__mascot { animation: fb-pop .42s cubic-bezier(.34, 1.56, .64, 1) .06s both; }
 @keyframes fb-pop { 0% { transform: scale(.4) rotate(-8deg); } 60% { transform: scale(1.12) rotate(3deg); } 100% { transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .ex__foot--ok, .ex__foot--bad, .ex__foot--ok .fb__mascot { animation: none; }
+  .ex__foot--ok, .ex__foot--learn, .ex__foot--ok .fb__mascot { animation: none; }
 }
 .fb__title { font-size: 19px; font-weight: 800; letter-spacing: -.2px; }
 .ex__foot--ok .fb__title { color: var(--green-dark); }
-.ex__foot--bad .fb__title { color: var(--red); }
+.ex__foot--learn .fb__title { color: #8a5a00; }
+[data-theme="dark"] .ex__foot--ok .fb__title { color: var(--green); }
+[data-theme="dark"] .ex__foot--learn .fb__title { color: var(--gold); }
 .fb__answer { margin-top: 4px; }
 .fb__meaning { margin-top: 4px; color: var(--muted); font-style: italic; }
+.fb__again { margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
 
 /* ---------- results ---------- */
 .result { gap: 18px; }
