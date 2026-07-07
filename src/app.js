@@ -226,9 +226,10 @@ async function openLanguage(code) {
   G.ensureDaily(store);
   G.ensureWeek(store);
   G.checkAchievements(store);
-  // First run: give an instant, guaranteed "I just learned something" win
-  // before dropping the learner into the full home screen.
-  if (!store.state.settings.onboarded) return renderFirstWin();
+  // First run: pure LEARNING first — the gentle warm-up teaches the first
+  // words before anything that could be answered wrongly, so an absolute
+  // beginner's opening minutes can't feel like a test they're failing.
+  if (!store.state.settings.onboarded) return startWarmup(true);
   const dr = G.dailyRewardStatus(store);
   if (dr.canClaim) return renderDailyReward();
   renderHome();
@@ -307,76 +308,6 @@ function renderOnboarding(i = 0) {
   mount(node);
 }
 
-// ---------- first-win taster ----------
-// A guaranteed quick success: meet 3 words, then get one right. The dopamine
-// hit before the full app appears is what turns a visitor into a learner.
-function renderFirstWin(step = 0, picks = null) {
-  if (!picks) {
-    const first = allLessons(course)[0];
-    picks = (first.vocab || []).slice(0, 3);
-    if (picks.length < 3) { finishOnboarding(); return; }
-  }
-  // steps 0..2 = flashcard intros, step 3 = a recognition check, step 4 = celebrate
-  if (step <= 2) {
-    const w = picks[step];
-    const node = h(`
-      <div class="screen onb">
-        <p class="muted">Your first words · ${step + 1} of 3</p>
-        <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
-        <div class="wotd-big">
-          <strong>${esc(w.term)}</strong>
-          <span class="wotd-big__phon muted">${esc(w.phonetic || '')}</span>
-          <span class="wotd-big__tr">${esc(w.translation)}</span>
-        </div>
-        <button class="play-btn" id="hear">🔊 Hear it</button>
-        <div class="onb__actions"><button class="btn btn--primary" id="next">${step === 2 ? 'Try it out' : 'Next word'}</button></div>
-      </div>`);
-    node.querySelector('#hear').addEventListener('click', () => tryHear(w.term, course.code));
-    speak(w.term, course.code);
-    node.querySelector('#next').addEventListener('click', () => { sound.tap(); renderFirstWin(step + 1, picks); });
-    mount(node);
-    return;
-  }
-  if (step === 3) {
-    const w = picks[0];
-    const others = picks.slice(1).map((p) => p.translation);
-    const options = shuffle([w.translation, ...others]);
-    const node = h(`
-      <div class="screen onb">
-        <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
-        <h2 class="ex__q">What does “${esc(w.term)}” mean?</h2>
-        <div class="opts">${options.map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
-      </div>`);
-    node.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
-      const ok = normalize(b.dataset.val) === normalize(w.translation);
-      node.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
-      b.classList.add(ok ? 'opt--ok' : 'opt--bad');
-      if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic([10, 40, 10]); }
-      // introduce the 3 words into the real SRS schedule so this counts
-      picks.forEach((p) => { srsReview(store.item(p.id), gradeFor(true, 'multiple_choice'), 'multiple_choice'); });
-      store.save();
-      setTimeout(() => renderFirstWin(4, picks), 800);
-    }));
-    mount(node);
-    return;
-  }
-  // celebrate
-  confetti();
-  sound.complete();
-  haptic([15, 30, 15]);
-  const chips = picks.map((p) => `<span class="win-word">${esc(p.term)}</span>`).join('');
-  const node = h(`
-    <div class="screen onb">
-      <div class="onb__art">${mascotImg(currentBuddy(), { size: 150, className: 'mascot-img--cheer' })}</div>
-      <h1 class="onb__title">You just learned 3 words! 🎉</h1>
-      <div class="win-words">${chips}</div>
-      <p class="onb__body">That's how it works — short, real, and it sticks. Ready for your first full lesson?</p>
-      <div class="onb__actions"><button class="btn btn--primary" id="go">Start learning</button></div>
-    </div>`);
-  node.querySelector('#go').addEventListener('click', () => { sound.tap(); promptReminders(); });
-  mount(node);
-}
-
 // Offer daily reminders once, right after the first win (peak motivation).
 function promptReminders() {
   if (!Notify.supported() || Notify.permission() !== 'default') return finishOnboarding();
@@ -416,6 +347,13 @@ function renderHome() {
   const due = store.dueItems().length;
 
   const lessons = allLessons(course);
+  // Progressive disclosure: a brand-new learner sees ONE thing to do — the
+  // path — under a friendly hello. Extra widgets appear as lessons complete,
+  // so the screen grows with the learner instead of shouting at a beginner.
+  const lessonsDone = L.completedLessons.length;
+  const showPlanReview = lessonsDone >= 1;  // 90-day plan + review button
+  const showPractice = lessonsDone >= 2;    // practice tools grid
+  const showMinis = lessonsDone >= 3;       // quests/league + word of the day
   // which units are already fully complete (so we only offer "test out" on the rest)
   const unitComplete = {};
   for (const u of course.units) unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
@@ -443,7 +381,7 @@ function renderHome() {
     const active = !done && !locked && !activeMarked;
     if (active) activeMarked = true;
     const unitHeader = l.unitTitle !== lastUnit
-      ? `<div class="unit-head"><span>${esc(l.unitTitle)}</span><div class="unit-head__right"><small>${esc(l.level)}</small>${!unitComplete[l.unitId] ? `<button class="testout-btn" data-testout="${esc(l.unitId)}">Test out</button>` : ''}</div></div>`
+      ? `<div class="unit-head"><span>${esc(l.unitTitle)}</span><div class="unit-head__right"><small>${esc(l.level)}</small>${!unitComplete[l.unitId] && lessonsDone >= 1 ? `<button class="testout-btn" data-testout="${esc(l.unitId)}">Test out</button>` : ''}</div></div>`
       : '';
     lastUnit = l.unitTitle;
     const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
@@ -486,8 +424,8 @@ function renderHome() {
       <header class="topbar">
         <button class="topbar__lang" id="switchLang">${esc(meta.name)} ▾</button>
         <div class="topbar__stats">
-          <span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
-          <span class="stat stat--gems" id="gemsBtn" role="button" tabindex="0" aria-label="${G.gems(store)} gems. Open shop.">💎 ${G.gems(store)}</span>
+          ${showPlanReview ? `<span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
+          <span class="stat stat--gems" id="gemsBtn" role="button" tabindex="0" aria-label="${G.gems(store)} gems. Open shop.">💎 ${G.gems(store)}</span>` : ''}
           <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
           <button class="stat" id="settingsBtn" aria-label="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
         </div>
@@ -505,15 +443,15 @@ function renderHome() {
         </div>
       </section>
 
-      ${L.plan
+      ${showPlanReview ? (L.plan
     ? `<button class="plan-card" id="planBtn"><span class="plan-card__l">📅 <b>Day ${L.plan.day}/90</b> · today's loop</span><span class="plan-card__r">${Object.values(L.plan.done).filter(Boolean).length}/4 ›</span></button>`
-    : '<button class="plan-card plan-card--start" id="planBtn"><span class="plan-card__l">📅 <b>Start your 90-day plan</b></span><span class="plan-card__r">guided daily path ›</span></button>'}
+    : '<button class="plan-card plan-card--start" id="planBtn"><span class="plan-card__l">📅 <b>Start your 90-day plan</b></span><span class="plan-card__r">guided daily path ›</span></button>') : ''}
 
-      <button class="btn btn--review" id="reviewBtn" ${due ? '' : 'disabled'}>
-        🔁 Review ${due ? `<span class="badge">${due} due</span>` : '<span class="muted">none due</span>'}
-      </button>
+      ${showPlanReview && due ? `<button class="btn btn--review" id="reviewBtn">
+        🔁 Review <span class="badge">${due} due</span>
+      </button>` : ''}
 
-      <div class="mini-row">
+      ${showMinis ? `<div class="mini-row">
         <button class="mini" id="questsBtn">
           <span class="mini__top">🎯 Quests <b>${questsDone}/${quests.length}</b></span>
           <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
@@ -522,13 +460,13 @@ function renderHome() {
           <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} <b>#${lgRank.rank}</b></span>
           <span class="qbar qbar--gold"><span style="width:${Math.round(((G.LEAGUE_SIZE - lgRank.rank + 1) / G.LEAGUE_SIZE) * 100)}%"></span></span>
         </button>
-      </div>
+      </div>` : ''}
 
-      ${wotd ? `<button class="wotd-strip" id="wotdBtn">
+      ${showMinis && wotd ? `<button class="wotd-strip" id="wotdBtn">
         🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
       </button>` : ''}
 
-      <h3 class="sec sec--home">Practice</h3>
+      ${showPractice ? `<h3 class="sec sec--home">Practice</h3>
       <div class="act-grid">
         ${(course.grammar || []).length ? `<button class="act act--grammar" id="grammarBtn">
           <span class="act__ic">🧩</span><span class="act__l"><b>Grammar</b><small>patterns</small></span></button>` : ''}
@@ -542,8 +480,9 @@ function renderHome() {
           <span class="act__ic">⚡</span><span class="act__l"><b>Lightning</b><small>fast recall</small></span></button>
         <button class="act act--words" id="glossaryBtn">
           <span class="act__ic">📒</span><span class="act__l"><b>Word list</b><small>all ${Object.keys(vocabIndex(course)).length} words</small></span></button>
-      </div>
+      </div>` : ''}
 
+      ${lessonsDone >= 1 && !showMinis ? '<p class="footnote">More tools unlock as you learn 🔓</p>' : ''}
       <div class="path">${path}</div>
       <nav class="bottombar" aria-label="Main">
         <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
@@ -560,26 +499,28 @@ function renderHome() {
     b.addEventListener('click', () => { sound.tap(); startWarmup(); }));
   node.querySelectorAll('[data-testout]').forEach((b) =>
     b.addEventListener('click', (e) => { e.stopPropagation(); confirmTestOut(b.dataset.testout); }));
-  node.querySelector('#switchLang').addEventListener('click', () => renderLanguageSelect(false));
-  node.querySelector('#reviewBtn').addEventListener('click', startReview);
-  node.querySelector('#planBtn').addEventListener('click', renderPlan);
-  node.querySelector('#storiesNav').addEventListener('click', renderLibrary);
-  node.querySelector('#glossaryBtn').addEventListener('click', () => renderGlossary());
-  node.querySelector('#speakBtn').addEventListener('click', startSpeaking);
-  node.querySelector('#listenBtn').addEventListener('click', startListening);
-  node.querySelector('#blitzBtn').addEventListener('click', startBlitz);
-  const gb = node.querySelector('#grammarBtn'); if (gb) gb.addEventListener('click', renderGrammar);
-  const db = node.querySelector('#dialogueBtn'); if (db) db.addEventListener('click', renderDialogues);
-  node.querySelector('#shopNav').addEventListener('click', renderShop);
-  node.querySelector('#questsBtn').addEventListener('click', renderQuests);
-  node.querySelector('#leagueBtn').addEventListener('click', renderLeague);
-  node.querySelector('#achBtn').addEventListener('click', renderAchievements);
-  node.querySelector('#progressBtn2').addEventListener('click', renderProgress);
-  node.querySelector('#gemsBtn').addEventListener('click', renderShop);
-  node.querySelector('#streakBtn').addEventListener('click', renderLeague);
-  node.querySelector('#heartsBtn').addEventListener('click', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
-  node.querySelector('#settingsBtn').addEventListener('click', renderSettings);
-  const wb = node.querySelector('#wotdBtn'); if (wb) wb.addEventListener('click', renderWotd);
+  // several widgets only exist past certain progress — wire whatever rendered
+  const on = (sel, fn) => { const el = node.querySelector(sel); if (el) el.addEventListener('click', fn); };
+  on('#switchLang', () => renderLanguageSelect(false));
+  on('#reviewBtn', startReview);
+  on('#planBtn', renderPlan);
+  on('#storiesNav', renderLibrary);
+  on('#glossaryBtn', () => renderGlossary());
+  on('#speakBtn', startSpeaking);
+  on('#listenBtn', startListening);
+  on('#blitzBtn', startBlitz);
+  on('#grammarBtn', renderGrammar);
+  on('#dialogueBtn', renderDialogues);
+  on('#shopNav', renderShop);
+  on('#questsBtn', renderQuests);
+  on('#leagueBtn', renderLeague);
+  on('#achBtn', renderAchievements);
+  on('#progressBtn2', renderProgress);
+  on('#gemsBtn', renderShop);
+  on('#streakBtn', renderLeague);
+  on('#heartsBtn', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
+  on('#settingsBtn', renderSettings);
+  on('#wotdBtn', renderWotd);
   wireKeyActivation(node);
   mount(node);
   // keep the reminder state fresh for the service worker, and arm a same-session
@@ -592,6 +533,10 @@ function renderHome() {
 // The buddy's own voice carries the warmth (see mascotGreeting); this line keeps
 // the learner oriented: what's due, the streak, or XP left to the daily goal.
 function homeStatus(L, due, pct, goal) {
+  // brand-new learner: one clear pointer, no jargon about streaks or reviews
+  if (!L.completedLessons.length) {
+    return L.warmupDone ? 'Your first lesson is ready below 👇' : 'Start with the warm-up below 👇';
+  }
   if (pct >= 100) return 'Done for today — well played! 🎉';
   if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔒`;
   if ((L.streak || 0) >= 3) return `🔥 ${L.streak}-day streak — keep it going!`;
@@ -1420,29 +1365,41 @@ function startGrammar(gid) {
   renderExercise();
 }
 
-// ---------- gentle warm-up (step 0, before Lesson 1) ----------
+// ---------- gentle warm-up (learning mode — before anything test-like) ----------
 // For someone starting from absolutely nothing, even Lesson 1 can feel like a
-// test. The warm-up teaches each word FIRST (see it, hear it, read the meaning)
-// and only then asks one friendly tap about it — no hearts, no typing, nothing
-// to fail. Words still enter the real review schedule, graded honestly.
+// test. The warm-up is LEARNING first: each word is taught (see it, hear it,
+// read the meaning) before one friendly tap about it — no hearts, no typing,
+// and a miss gets a warm "no stress" note instead of a buzzer, because at this
+// stage nothing has been learned yet, so nothing can be failed. Words still
+// enter the real review schedule, graded honestly. With firstRun=true it IS
+// the first-run experience (straight after picking a language).
 const WARMUP_WORDS = 5;
 
-function startWarmup() {
+function startWarmup(firstRun = false) {
   const first = allLessons(course)[0];
   const words = (first.vocab || []).slice(0, WARMUP_WORDS);
-  if (words.length < 3) return startLesson(first.id); // nothing to warm up with
-  renderWarmupStep({ words, i: 0, firstLessonId: first.id });
+  if (words.length < 3) return firstRun ? finishOnboarding() : startLesson(first.id);
+  renderWarmupStep({ words, i: 0, firstLessonId: first.id, firstRun });
+}
+
+function quitWarmup(w) {
+  // leaving mid-way is fine — on a first run, still land somewhere sensible
+  if (w.firstRun) return finishOnboarding();
+  renderHome();
 }
 
 function renderWarmupStep(w) {
   const { words, i } = w;
   if (i >= words.length) return renderWarmupDone(w);
   const word = words[i];
+  const lead = w.firstRun && i === 0
+    ? 'Nothing to get wrong here — just meet the word and try saying it out loud.'
+    : 'Just meet the word — try saying it out loud once.';
   const node = h(`
     <div class="screen onb">
       <header class="ex__top" style="align-self:stretch">
         <button class="ex__quit" id="quitBtn" aria-label="Quit warm-up">✕</button>
-        <span class="muted">Warm-up · word ${i + 1} of ${words.length}</span>
+        <span class="muted">${w.firstRun ? 'Your first words' : 'Warm-up'} · ${i + 1} of ${words.length}</span>
       </header>
       <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
       <div class="wotd-big">
@@ -1451,10 +1408,10 @@ function renderWarmupStep(w) {
         <span class="wotd-big__tr">${esc(word.translation)}</span>
       </div>
       <button class="play-btn" id="hear">🔊 Hear it</button>
-      <p class="onb__body">Just meet the word — try saying it out loud once.</p>
+      <p class="onb__body">${lead}</p>
       <div class="onb__actions"><button class="btn btn--primary" id="next">Got it →</button></div>
     </div>`);
-  node.querySelector('#quitBtn').addEventListener('click', renderHome);
+  node.querySelector('#quitBtn').addEventListener('click', () => quitWarmup(w));
   node.querySelector('#hear').addEventListener('click', () => tryHear(word.term, course.code));
   speak(word.term, course.code);
   node.querySelector('#next').addEventListener('click', () => { sound.tap(); renderWarmupCheck(w); });
@@ -1470,24 +1427,34 @@ function renderWarmupCheck(w) {
     <div class="screen onb">
       <header class="ex__top" style="align-self:stretch">
         <button class="ex__quit" id="quitBtn" aria-label="Quit warm-up">✕</button>
-        <span class="muted">Warm-up · word ${i + 1} of ${words.length}</span>
+        <span class="muted">${w.firstRun ? 'Your first words' : 'Warm-up'} · ${i + 1} of ${words.length}</span>
       </header>
       <h2 class="ex__q">Quick tap — what does “${esc(word.term)}” mean?</h2>
       <div class="opts" style="width:100%">${options.map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+      <p class="onb__body" id="gentle" hidden></p>
     </div>`);
-  node.querySelector('#quitBtn').addEventListener('click', renderHome);
+  node.querySelector('#quitBtn').addEventListener('click', () => quitWarmup(w));
   node.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
     const ok = normalize(b.dataset.val) === normalize(word.translation);
     node.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
-    b.classList.add(ok ? 'opt--ok' : 'opt--bad');
-    if (!ok) node.querySelectorAll('.opt').forEach((x) => { if (normalize(x.dataset.val) === normalize(word.translation)) x.classList.add('opt--ok'); });
-    if (ok) { sound.correct(); haptic(15); } else { sound.wrong(); haptic([10, 40, 10]); }
-    announce(ok ? 'Correct!' : `It means ${word.translation}`);
+    if (ok) {
+      b.classList.add('opt--ok');
+      sound.correct(); haptic(15);
+      announce('Correct!');
+    } else {
+      // learning mode: no buzzer, no red X — just kindly show the answer
+      node.querySelectorAll('.opt').forEach((x) => { if (normalize(x.dataset.val) === normalize(word.translation)) x.classList.add('opt--ok'); });
+      const g = node.querySelector('#gentle');
+      g.textContent = `💛 No stress — “${word.term}” means “${word.translation}”. You'll meet it again.`;
+      g.hidden = false;
+      sound.tap(); haptic(8);
+      announce(`No stress — it means ${word.translation}`);
+    }
     // honest crediting: the word enters the real schedule graded by this try
     srsReview(store.item(word.id), gradeFor(ok, 'multiple_choice'), 'multiple_choice');
     store.save();
     const seq = mountSeq;
-    setTimeout(() => { if (mountSeq === seq) renderWarmupStep({ ...w, i: i + 1 }); }, ok ? 900 : 2200);
+    setTimeout(() => { if (mountSeq === seq) renderWarmupStep({ ...w, i: i + 1 }); }, ok ? 900 : 2400);
   }));
   mount(node);
 }
@@ -1498,19 +1465,29 @@ function renderWarmupDone(w) {
   store.save();
   confetti({ count: 70, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
   const chips = w.words.map((p) => `<span class="win-word">${esc(p.term)}</span>`).join('');
+  const body = w.firstRun
+    ? 'That\'s the whole trick — see it, hear it, tap it. A lesson is just a little more of this.'
+    : 'You\'ve met your first words, so Lesson 1 will feel familiar. Ready?';
   const node = h(`
     <div class="screen onb">
       <div class="onb__art">${mascotImg(currentBuddy(), { size: 140, className: 'mascot-img--cheer' })}</div>
-      <h1 class="onb__title">Warmed up! 🌱</h1>
+      <h1 class="onb__title">You just learned ${w.words.length} words! 🎉</h1>
       <div class="win-words">${chips}</div>
-      <p class="onb__body">You've met your first words, so Lesson 1 will feel familiar. Ready?</p>
+      <p class="onb__body">${body}</p>
       <div class="onb__actions">
-        <button class="btn btn--primary" id="go">Start Lesson 1</button>
-        <button class="btn btn--ghost" id="home">Back home</button>
+        ${w.firstRun
+          ? '<button class="btn btn--primary" id="go">Keep going →</button>'
+          : `<button class="btn btn--primary" id="go">Start Lesson 1</button>
+        <button class="btn btn--ghost" id="home">Back home</button>`}
       </div>
     </div>`);
-  node.querySelector('#go').addEventListener('click', () => { sound.tap(); startLesson(w.firstLessonId); });
-  node.querySelector('#home').addEventListener('click', renderHome);
+  node.querySelector('#go').addEventListener('click', () => {
+    sound.tap();
+    if (w.firstRun) promptReminders();
+    else startLesson(w.firstLessonId);
+  });
+  const hb = node.querySelector('#home');
+  if (hb) hb.addEventListener('click', renderHome);
   mount(node);
 }
 
@@ -1518,8 +1495,50 @@ function renderWarmupDone(w) {
 function startLesson(lessonId) {
   if (store.lang().hearts <= 0) return renderHeartsModal();
   const lesson = findLesson(course, lessonId);
+  // Teach before testing: words this learner has never met are shown as cards
+  // first, so no exercise ever asks about something that was never taught —
+  // getting quizzed on the unknown is what makes beginners feel bad.
+  const items = store.lang().items;
+  const fresh = (lesson.vocab || []).filter((v) => { const it = items[v.id]; return !it || (!it.seen && !it.encountered); });
+  if (fresh.length) return renderLessonIntro(lesson, fresh, 0);
+  beginLesson(lesson);
+}
+
+function beginLesson(lesson) {
   session = { mode: 'lesson', lesson, queue: buildLessonSession(lesson, course, store.dueItems()), idx: 0, mistakes: 0, total: 0 };
   renderExercise();
+}
+
+// A quick teaching card per new word — see it, hear it, read the meaning —
+// before the lesson's exercises begin. Skippable for confident learners.
+function renderLessonIntro(lesson, words, i) {
+  if (i >= words.length) return beginLesson(lesson);
+  const w = words[i];
+  const node = h(`
+    <div class="screen onb">
+      <header class="ex__top" style="align-self:stretch">
+        <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
+        <span class="muted">New words · ${i + 1} of ${words.length}</span>
+      </header>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
+      <div class="wotd-big">
+        <strong>${esc(w.term)}</strong>
+        <span class="wotd-big__phon muted">${esc(w.phonetic || '')}</span>
+        <span class="wotd-big__tr">${esc(w.translation)}</span>
+        ${w.note ? `<span class="muted">(${esc(w.note)})</span>` : ''}
+      </div>
+      <button class="play-btn" id="hear">🔊 Hear it</button>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="next">${i === words.length - 1 ? 'Start practising →' : 'Next word →'}</button>
+        <button class="btn btn--ghost" id="skip">Skip to practice</button>
+      </div>
+    </div>`);
+  node.querySelector('#quitBtn').addEventListener('click', renderHome);
+  node.querySelector('#hear').addEventListener('click', () => tryHear(w.term, course.code));
+  speak(w.term, course.code);
+  node.querySelector('#next').addEventListener('click', () => { sound.tap(); renderLessonIntro(lesson, words, i + 1); });
+  node.querySelector('#skip').addEventListener('click', () => { sound.tap(); beginLesson(lesson); });
+  mount(node);
 }
 
 function startReview() {
@@ -1917,7 +1936,7 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
       </div>
       ${questHtml}
       ${achHtml}
-      <p class="muted">Words you missed are scheduled for review so they actually stick.</p>
+      ${session.mistakes ? '<p class="muted">Words you missed are scheduled for review so they actually stick.</p>' : ''}
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
   node.querySelector('#doneBtn').addEventListener('click', () => { sound.tap(); afterActivityNav(); });
