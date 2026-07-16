@@ -1,7 +1,15 @@
 // store.js — offline-first state, progress and persistence (localStorage)
 import { newItem } from './srs.js';
 
-const KEY = 'mzansilingo.v1';
+// Per-learner storage. A device (e.g. a shared school tablet) can hold several
+// profiles, each with its own progress under its own key. The original
+// single-user save lives under the bare KEY_BASE and becomes the "default"
+// profile, so existing learners keep everything with no migration step.
+const KEY_BASE = 'mzansilingo.v1';
+const PROFILES_KEY = 'mzansilingo.profiles';
+const AVATARS = ['🦫', '🦁', '🐘', '🦓', '🦌', '🐧', '🦏', '🐝', '🌟', '⚽', '🎨', '📚'];
+const keyFor = (id) => (id === 'default' ? KEY_BASE : `${KEY_BASE}__${id}`);
+
 const HEART_REFILL_MS = 30 * 60 * 1000; // one heart every 30 minutes (free tier)
 const MAX_HEARTS = 5;
 
@@ -36,6 +44,9 @@ function freshLang() {
     readingsCompleted: 0,
     completedReadings: [],
     wotd: null,              // { day, learned } — word-of-the-day state
+    grammar: {},             // patternId -> srs record (grammar patterns are spaced too)
+    completedDialogues: [],  // dialogue ids the learner has finished
+    plan: null,              // 90-day guided curriculum: { started, day, done:{...} }
   };
 }
 
@@ -44,7 +55,7 @@ function freshState() {
     version: 1,
     activeLang: null,
     premium: false,
-    settings: { dailyGoalXP: 30, soundOn: true },
+    settings: { dailyGoalXP: 30, soundOn: true, onboarded: false, remindersOn: false, desiredRetention: 0.9 },
     langs: {},
     // account-wide gamification
     gems: 0,
@@ -59,26 +70,95 @@ function freshState() {
   };
 }
 
+function loadProfiles() {
+  try {
+    const p = JSON.parse(localStorage.getItem(PROFILES_KEY));
+    if (p && Array.isArray(p.list) && p.list.length) return p;
+  } catch (e) { /* none yet */ }
+  return { active: 'default', list: [{ id: 'default', name: 'Me', avatar: '🦫' }] };
+}
+function saveProfiles(p) { try { localStorage.setItem(PROFILES_KEY, JSON.stringify(p)); } catch (e) { /* ignore */ } }
+
 class Store {
   constructor() {
+    this.reg = loadProfiles();
+    this.profileId = this.reg.active || 'default';
+    if (!this.reg.list.some((p) => p.id === this.profileId)) this.profileId = this.reg.list[0].id;
     this.state = this.load();
   }
 
   load() {
     try {
-      const raw = localStorage.getItem(KEY);
+      const raw = localStorage.getItem(keyFor(this.profileId));
       if (raw) return Object.assign(freshState(), JSON.parse(raw));
     } catch (e) { /* corrupt or unavailable storage — start fresh */ }
     return freshState();
   }
 
   save() {
-    try { localStorage.setItem(KEY, JSON.stringify(this.state)); } catch (e) { /* ignore quota */ }
+    try { localStorage.setItem(keyFor(this.profileId), JSON.stringify(this.state)); } catch (e) { /* ignore quota */ }
   }
 
   reset() {
     this.state = freshState();
     this.save();
+  }
+
+  // --- learner profiles ---------------------------------------------------
+  profiles() { return this.reg.list; }
+  activeProfile() { return this.reg.list.find((p) => p.id === this.profileId) || this.reg.list[0]; }
+  avatarChoices() { return AVATARS; }
+
+  switchProfile(id) {
+    if (id === this.profileId || !this.reg.list.some((p) => p.id === id)) return false;
+    this.save();                       // persist the learner we're leaving
+    this.profileId = id;
+    this.reg.active = id;
+    saveProfiles(this.reg);
+    this.state = this.load();          // load the learner we're entering
+    return true;
+  }
+
+  // Ensure a profile with a specific id exists and is active (used by the demo
+  // account system: each account's id doubles as its progress-profile id).
+  ensureProfile(id, name, avatar) {
+    if (id === this.profileId) return true;
+    if (!this.reg.list.some((p) => p.id === id)) {
+      this.save();                       // persist whoever is active now
+      this.reg.list.push({ id, name: (name || 'Learner').trim().slice(0, 20) || 'Learner', avatar: avatar || '🙂' });
+      this.reg.active = id;
+      saveProfiles(this.reg);
+      this.profileId = id;
+      this.state = freshState();
+      this.save();
+      return true;
+    }
+    return this.switchProfile(id);
+  }
+
+  createProfile(name, avatar) {
+    this.save();                       // persist current learner first
+    const id = `p${Date.now().toString(36)}${Math.floor(Math.random() * 1e4)}`;
+    this.reg.list.push({ id, name: (name || 'Learner').trim().slice(0, 20) || 'Learner', avatar: avatar || '🙂' });
+    this.reg.active = id;
+    saveProfiles(this.reg);
+    this.profileId = id;
+    this.state = freshState();         // a fresh start for the new learner
+    this.save();
+    return id;
+  }
+
+  deleteProfile(id) {
+    if (id === 'default' || this.reg.list.length <= 1) return false; // keep at least the original
+    this.reg.list = this.reg.list.filter((p) => p.id !== id);
+    try { localStorage.removeItem(keyFor(id)); } catch (e) { /* ignore */ }
+    if (this.profileId === id) {
+      this.profileId = this.reg.list[0].id;
+      this.reg.active = this.profileId;
+      this.state = this.load();
+    }
+    saveProfiles(this.reg);
+    return true;
   }
 
   // --- language selection -------------------------------------------------
@@ -186,6 +266,35 @@ class Store {
     return Object.entries(L.items)
       .filter(([, it]) => it.due <= now && it.seen > 0)
       .map(([id]) => id);
+  }
+
+  // --- 90-day guided plan --------------------------------------------------
+  startPlan(code = this.state.activeLang) {
+    const L = this.lang(code);
+    L.plan = { started: todayKey(), day: 1, done: { review: false, lesson: false, input: false, output: false } };
+    this.save();
+    return L.plan;
+  }
+
+  // --- grammar patterns (spaced like vocab, kept in their own map) ----------
+  grammarItem(patternId, code = this.state.activeLang) {
+    const L = this.lang(code);
+    if (!L.grammar) L.grammar = {};
+    if (!L.grammar[patternId]) L.grammar[patternId] = newItem();
+    return L.grammar[patternId];
+  }
+
+  grammarState(patternId, code = this.state.activeLang) {
+    const L = this.lang(code);
+    const it = L.grammar && L.grammar[patternId];
+    if (!it || !it.seen) return 'new';
+    return it.mastered ? 'mastered' : 'learning';
+  }
+
+  dueGrammar(code = this.state.activeLang, now = Date.now()) {
+    const L = this.lang(code);
+    if (!L.grammar) return [];
+    return Object.entries(L.grammar).filter(([, it]) => it.due <= now && it.seen > 0).map(([id]) => id);
   }
 
   // --- lessons ------------------------------------------------------------

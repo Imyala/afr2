@@ -1,0 +1,29 @@
+{
+  "code": "af",
+  "units": [
+    { "title": "Unit 8: In the Kitchen", "level": "Travel", "lessons": [
+      { "title": "Food extras", "note": "Everyday kitchen staples you'll hear at any Afrikaans table.",
+        "vocab": [ ["kaas","cheese","kaas"], ["eier","egg","AY-er"], ["botter","butter","BOT-ter"], ["rys","rice","rays"], ["suiker","sugar","SOEY-ker"], ["vis","fish","fis"] ] } ] },
+    { "title": "Unit 9: Around the House", "level": "Travel", "lessons": [
+      { "title": "House things", "note": "Naming what's in and around the home.",
+        "vocab": [ ["kas","cupboard","kus"], ["sleutel","key","SLUH-tel"], ["mat","mat","mut"], ["lig","light","likh"], ["muur","wall","meer"], ["vloer","floor","floor"] ] } ] },
+    { "title": "Unit 10: Weather", "level": "Travel", "lessons": [
+      { "title": "The weather", "note": "Small talk about the weather is universal.",
+        "vocab": [ ["reen","rain","RAY-en"], ["son","sun","son"], ["wolk","cloud","volk"], ["wind","wind","vint"], ["warm","warm","vurm"], ["sneeu","snow","SNEE-oo"] ] } ] },
+    { "title": "Unit 11: Describing Things", "level": "Work", "lessons": [
+      { "title": "Common adjectives", "note": "Adjectives come before the noun, like English: 'n groot huis (a big house).",
+        "vocab": [ ["groot","big","khroot"], ["klein","small","klayn"], ["goed","good","khoot"], ["sleg","bad","slekh"], ["mooi","pretty","moy"], ["nuut","new","neet"], ["oud","old","oht"], ["vinnig","fast","FIN-nikh"] ] } ] },
+    { "title": "Unit 12: More Verbs", "level": "Work", "lessons": [
+      { "title": "Everyday actions", "note": "Remember: Afrikaans verbs don't change with the subject.",
+        "vocab": [ ["staan","to stand","staan"], ["sit","to sit","sit"], ["slaap","to sleep","slaap"], ["lees","to read","leys"], ["skryf","to write","skrayf"], ["betaal","to pay","beh-TAAL"], ["neem","to take","neym"], ["maak","to make","maak"] ] } ] },
+    { "title": "Unit 13: Time & Frequency", "level": "Work", "lessons": [
+      { "title": "When things happen", "note": "Words to place things in time.",
+        "vocab": [ ["uur","hour","eer"], ["week","week","vek"], ["maand","month","maant"], ["jaar","year","yaar"], ["altyd","always","UL-tayt"], ["nooit","never","noyt"], ["soms","sometimes","soms"], ["later","later","LAA-ter"] ] } ] },
+    { "title": "Unit 14: Family", "level": "Family", "lessons": [
+      { "title": "The family", "note": "Warm, everyday family words.",
+        "vocab": [ ["ma","mom","maa"], ["pa","dad","paa"], ["broer","brother","broor"], ["suster","sister","SIS-ter"], ["ouma","grandma","OH-maa"], ["oupa","grandpa","OH-paa"], ["kind","child","kint"] ] } ] },
+    { "title": "Unit 15: More Colours", "level": "Family", "lessons": [
+      { "title": "More colours", "note": "Rounding out the palette.",
+        "vocab": [ ["pers","purple","pers"], ["grys","grey","khrays"], ["bruin","brown","broeyn"], ["pienk","pink","peenk"], ["oranje","orange","oh-RUN-yeh"] ] } ] }
+  ]
+}

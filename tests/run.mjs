@@ -5,28 +5,39 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { newItem, review, gradeFor } from '../src/srs.js';
-import { normalize, checkAnswer, buildLessonSession, exerciseVocabIds } from '../src/lessons.js';
+import { normalize, checkAnswer, buildLessonSession, exerciseVocabIds, checkTyped, editDistance } from '../src/lessons.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let pass = 0, fail = 0;
 const ok = (c, m) => { if (c) pass++; else { fail++; console.log('  ✗', m); } };
 
-// --- SRS engine ---
+// --- SRS engine (FSRS-style target-retention scheduler) ---
 let it = newItem();
-review(it, gradeFor(true, 'translate'), 'translate'); // learning step
-review(it, gradeFor(true, 'translate'), 'translate'); // graduate
-review(it, gradeFor(true, 'translate'), 'translate'); // reps 2, interval 6
-ok(it.mastered === true, 'masters after 3 production corrects');
-ok(it.intervalDays >= 6, 'interval grows to >= 6 days');
+let prevInterval = 0, monotonic = true;
+for (let i = 0; i < 6; i++) {
+  review(it, gradeFor(true, 'translate'), 'translate');
+  if (it.learning === null) { if (it.intervalDays < prevInterval) monotonic = false; prevInterval = it.intervalDays; }
+}
+ok(it.mastered === true, 'masters after enough production corrects');
+ok(it.stability >= 7, 'stability grows past the mastery threshold');
+ok(monotonic, 'intervals grow monotonically across successful reviews');
+ok(it.intervalDays >= 6, 'interval grows to several days');
 
 let it2 = newItem();
-for (let i = 0; i < 3; i++) review(it2, gradeFor(true, 'multiple_choice'), 'multiple_choice');
+for (let i = 0; i < 8; i++) review(it2, gradeFor(true, 'multiple_choice'), 'multiple_choice');
 ok(it2.mastered === false, 'recognition-only does NOT master (needs production)');
 
-let it3 = newItem(); it3.learning = null; it3.reps = 3; it3.intervalDays = 20; it3.ease = 2.5;
+// higher desired retention => shorter interval for the same stability
+let itA = newItem(); for (let i = 0; i < 5; i++) review(itA, gradeFor(true, 'translate'), 'translate', Date.now(), 0.85);
+let itB = newItem(); for (let i = 0; i < 5; i++) review(itB, gradeFor(true, 'translate'), 'translate', Date.now(), 0.95);
+ok(itB.intervalDays < itA.intervalDays, 'higher desired retention schedules sooner');
+
+let it3 = newItem(); it3.learning = null; it3.reps = 3; it3.stability = 20; it3.difficulty = 4; it3.intervalDays = 20;
 review(it3, gradeFor(false, 'translate'), 'translate');
-ok(it3.intervalDays === 0 && it3.reps === 0, 'lapse resets interval and reps');
-ok(it3.ease < 2.5, 'lapse lowers ease factor');
+ok(it3.reps === 0 && it3.intervalDays === 0, 'lapse resets reps and interval');
+ok(it3.stability < 20, 'lapse shrinks stability');
+ok(it3.difficulty > 4, 'lapse raises difficulty');
+ok(it3.mastered === false, 'lapse clears mastery');
 
 // --- answer checking ---
 ok(checkAnswer({ type: 'translate', answer: 'Ngiyaphila', accept: ['ngiyaphila'] }, '  ngiyaphila '), 'translate trims/normalizes');
@@ -38,11 +49,32 @@ ok(checkAnswer({ type: 'speak', text: 'Ngiyaphila wena' }, ['ngiyaphila wena']),
 ok(checkAnswer({ type: 'speak', text: 'x' }, true), 'speak self-rating');
 ok(normalize('Wéna?') === 'wena', 'normalize strips accents + punctuation');
 
+// --- typo tolerance (typed answers) ---
+ok(editDistance('ngiyaphila', 'ngiyaphila') === 0, 'edit distance 0 for identical');
+ok(editDistance('ngiyaphilla', 'ngiyaphila', 2) === 1, 'edit distance counts one extra letter');
+ok(checkTyped({ type: 'translate', answer: 'ngiyaphila', accept: [] }, 'ngiyaphila').correct === true, 'exact typed answer is correct, not flagged as typo');
+ok(checkTyped({ type: 'translate', answer: 'ngiyaphila', accept: [] }, 'ngiyaphila').typo === false, 'exact answer is not a typo');
+const near = checkTyped({ type: 'translate', answer: 'ngiyaphila', accept: [] }, 'ngiyaphilla');
+ok(near.correct === true && near.typo === true, 'one-letter slip on a long word is accepted but flagged');
+ok(checkTyped({ type: 'translate', answer: 'kune', accept: [] }, 'kunye').correct === false, 'short minimal pairs (four vs one) are NOT auto-corrected');
+ok(checkTyped({ type: 'translate', answer: 'amanzi', accept: [] }, 'water').correct === false, 'a totally wrong word is still wrong');
+ok(checkAnswer({ type: 'translate', answer: 'sawubona', accept: [] }, 'sawubna'), 'checkAnswer(translate) accepts a near-miss');
+
+// --- word bank (sentence building) ---
+const wb = { type: 'word_bank', answer: 'Igama lami nguThabo' };
+ok(checkAnswer(wb, 'Igama lami nguThabo') === true, 'word bank correct in right order');
+ok(checkAnswer(wb, 'lami Igama nguThabo') === false, 'word bank wrong order fails');
+ok(exerciseVocabIds({ type: 'word_bank', answer: 'umama uyahamba' }, { vocab: [{ id: 'zu-umama', term: 'umama' }] }).includes('zu-umama'), 'word bank credits a lesson word it contains');
+
 // --- content integrity ---
 for (const c of ['zu', 'xh', 'af']) {
   const course = JSON.parse(fs.readFileSync(path.join(root, `data/courses/${c}.json`), 'utf8'));
   const vocabIds = new Set();
-  for (const u of course.units) for (const l of u.lessons) for (const v of (l.vocab || [])) vocabIds.add(v.id);
+  const allIds = [];
+  for (const u of course.units) for (const l of u.lessons) for (const v of (l.vocab || [])) { vocabIds.add(v.id); allIds.push(v.id); }
+  // every vocab id must be unique across the whole course — a duplicate id would
+  // silently merge two words' SRS state and skew the "words mastered" count.
+  ok(allIds.length === vocabIds.size, `${c} has no duplicate vocab ids (${allIds.length - vocabIds.size} dup)`);
   for (const u of course.units) for (const l of u.lessons) {
     ok(l.vocab && l.vocab.length > 0, `${l.id} has vocab`);
     for (const v of l.vocab) ok(v.phonetic, `${v.id} has phonetics (offline fallback)`);
@@ -96,6 +128,37 @@ for (const c of ['zu', 'xh', 'af']) {
       if (q.type === 'translate') ok(q.answer, `${r.id} translate question has answer`);
       if (q.vocabId) ok(vocabIds.has(q.vocabId), `${r.id} question vocabId ${q.vocabId} resolves`);
     }
+  }
+  // grammar pattern integrity
+  const gids = (course.grammar || []).map((g) => g.id);
+  ok(gids.length === new Set(gids).size, `${c} grammar ids are unique`);
+  for (const g of (course.grammar || [])) {
+    ok(g.id && g.title && g.tip, `${g.id} has id/title/tip`);
+    ok(Array.isArray(g.drills) && g.drills.length >= 1, `${g.id} has drills`);
+    for (const d of g.drills) {
+      ok(d.answer && d.prompt, `${g.id} drill has answer + prompt`);
+      if (d.options) {
+        ok(d.options.map(normalize).includes(normalize(d.answer)), `${g.id} drill answer in options`);
+        ok(new Set(d.options.map(normalize)).size === d.options.length, `${g.id} drill options unique`);
+      }
+    }
+  }
+  // dialogue integrity
+  const dids = (course.dialogues || []).map((x) => x.id);
+  ok(dids.length === new Set(dids).size, `${c} dialogue ids are unique`);
+  for (const dia of (course.dialogues || [])) {
+    ok(dia.id && dia.title && dia.goal && Array.isArray(dia.turns) && dia.turns.length >= 2, `${dia.id} has id/title/goal/turns`);
+    let youTurns = 0;
+    for (const t of dia.turns) {
+      if (t.speaker === 'npc') { ok(t.t && t.en, `${dia.id} npc turn has t+en`); }
+      else if (t.speaker === 'you') {
+        youTurns += 1;
+        ok(Array.isArray(t.options) && t.options.length >= 2, `${dia.id} you-turn has options`);
+        ok(t.options.filter((o) => o.ok).length === 1, `${dia.id} you-turn has exactly one correct reply`);
+        for (const o of t.options) ok(o.t && o.en, `${dia.id} option has t+en`);
+      } else ok(false, `${dia.id} turn has a valid speaker`);
+    }
+    ok(youTurns >= 1, `${dia.id} has at least one learner turn`);
   }
 }
 

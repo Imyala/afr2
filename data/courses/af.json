@@ -13,20 +13,118 @@
           "title": "Greetings",
           "culturalNote": "Afrikaans greetings change with the time of day: \"Goeie môre\" (good morning), \"Goeie middag\" (good afternoon), \"Goeie naand\" (good evening). \"Hoe gaan dit?\" literally means \"How goes it?\".",
           "vocab": [
-            {"id": "af-hallo", "term": "Hallo", "translation": "Hello", "phonetic": "HAH-loh"},
-            {"id": "af-goeiemore", "term": "Goeie môre", "translation": "Good morning", "phonetic": "KHOO-yuh MAW-ruh"},
-            {"id": "af-hoegaandit", "term": "Hoe gaan dit?", "translation": "How are you?", "phonetic": "hoo khaan dit"},
-            {"id": "af-goeddankie", "term": "Goed dankie", "translation": "Good, thank you", "phonetic": "khoot DAHN-kee"},
-            {"id": "af-enmetjou", "term": "En met jou?", "translation": "And with you?", "phonetic": "en met yoh"},
-            {"id": "af-totsiens", "term": "Totsiens", "translation": "Goodbye", "phonetic": "tot-SEENS"}
+            {
+              "id": "af-hallo",
+              "term": "Hallo",
+              "translation": "Hello",
+              "phonetic": "HAH-loh"
+            },
+            {
+              "id": "af-goeiemore",
+              "term": "Goeie môre",
+              "translation": "Good morning",
+              "phonetic": "KHOO-yuh MAW-ruh"
+            },
+            {
+              "id": "af-hoegaandit",
+              "term": "Hoe gaan dit?",
+              "translation": "How are you?",
+              "phonetic": "hoo khaan dit"
+            },
+            {
+              "id": "af-goeddankie",
+              "term": "Goed dankie",
+              "translation": "Good, thank you",
+              "phonetic": "khoot DAHN-kee"
+            },
+            {
+              "id": "af-enmetjou",
+              "term": "En met jou?",
+              "translation": "And with you?",
+              "phonetic": "en met yoh"
+            },
+            {
+              "id": "af-totsiens",
+              "term": "Totsiens",
+              "translation": "Goodbye",
+              "phonetic": "tot-SEENS"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["Hallo", "Hello"], ["Hoe gaan dit?", "How are you?"], ["Goed dankie", "Good, thank you"], ["Totsiens", "Goodbye"]]},
-            {"type": "multiple_choice", "prompt": "\"Goeie môre\" means:", "answer": "Good morning", "options": ["Good night", "Good morning", "Goodbye", "Thank you"], "vocabId": "af-goeiemore"},
-            {"type": "translate", "prompt": "Good, thank you", "answer": "Goed dankie", "accept": ["goed dankie"], "vocabId": "af-goeddankie"},
-            {"type": "fill_blank", "sentence": "____ gaan dit?", "answer": "Hoe", "options": ["Hoe", "Goed", "Hallo", "Met"], "meaning": "How are you?", "vocabId": "af-hoegaandit"},
-            {"type": "listen", "prompt": "Tap what you hear", "answer": "Totsiens", "options": ["Totsiens", "Hallo", "Dankie", "Goed"], "lang": "af", "vocabId": "af-totsiens"},
-            {"type": "speak", "text": "Goed dankie, en met jou?", "meaning": "Good thanks, and with you?", "lang": "af"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Hallo",
+                  "Hello"
+                ],
+                [
+                  "Hoe gaan dit?",
+                  "How are you?"
+                ],
+                [
+                  "Goed dankie",
+                  "Good, thank you"
+                ],
+                [
+                  "Totsiens",
+                  "Goodbye"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "\"Goeie môre\" means:",
+              "answer": "Good morning",
+              "options": [
+                "Good night",
+                "Good morning",
+                "Goodbye",
+                "Thank you"
+              ],
+              "vocabId": "af-goeiemore"
+            },
+            {
+              "type": "translate",
+              "prompt": "Good, thank you",
+              "answer": "Goed dankie",
+              "accept": [
+                "goed dankie"
+              ],
+              "vocabId": "af-goeddankie"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "____ gaan dit?",
+              "answer": "Hoe",
+              "options": [
+                "Hoe",
+                "Goed",
+                "Hallo",
+                "Met"
+              ],
+              "meaning": "How are you?",
+              "vocabId": "af-hoegaandit"
+            },
+            {
+              "type": "listen",
+              "prompt": "Tap what you hear",
+              "answer": "Totsiens",
+              "options": [
+                "Totsiens",
+                "Hallo",
+                "Dankie",
+                "Goed"
+              ],
+              "lang": "af",
+              "vocabId": "af-totsiens"
+            },
+            {
+              "type": "speak",
+              "text": "Goed dankie, en met jou?",
+              "meaning": "Good thanks, and with you?",
+              "lang": "af"
+            }
           ]
         },
         {
@@ -34,18 +132,99 @@
           "title": "Yes, No & Politeness",
           "culturalNote": "\"Asseblief\" (please) and \"dankie\" (thank you) are used everywhere. \"Jammer\" means \"sorry\". Adding \"asseblief\" to any request makes it polite.",
           "vocab": [
-            {"id": "af-ja", "term": "Ja", "translation": "Yes", "phonetic": "yah"},
-            {"id": "af-nee", "term": "Nee", "translation": "No", "phonetic": "neeh"},
-            {"id": "af-asseblief", "term": "Asseblief", "translation": "Please", "phonetic": "ah-suh-BLEEF"},
-            {"id": "af-dankie", "term": "Dankie", "translation": "Thank you", "phonetic": "DAHN-kee"},
-            {"id": "af-jammer", "term": "Jammer", "translation": "Sorry", "phonetic": "YAH-mer"}
+            {
+              "id": "af-ja",
+              "term": "Ja",
+              "translation": "Yes",
+              "phonetic": "yah"
+            },
+            {
+              "id": "af-nee",
+              "term": "Nee",
+              "translation": "No",
+              "phonetic": "neeh"
+            },
+            {
+              "id": "af-asseblief",
+              "term": "Asseblief",
+              "translation": "Please",
+              "phonetic": "ah-suh-BLEEF"
+            },
+            {
+              "id": "af-dankie",
+              "term": "Dankie",
+              "translation": "Thank you",
+              "phonetic": "DAHN-kee"
+            },
+            {
+              "id": "af-jammer",
+              "term": "Jammer",
+              "translation": "Sorry",
+              "phonetic": "YAH-mer"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["Ja", "Yes"], ["Nee", "No"], ["Asseblief", "Please"], ["Dankie", "Thank you"]]},
-            {"type": "multiple_choice", "prompt": "How do you say \"please\"?", "answer": "Asseblief", "options": ["Dankie", "Asseblief", "Jammer", "Nee"], "vocabId": "af-asseblief"},
-            {"type": "translate", "prompt": "Thank you", "answer": "Dankie", "accept": ["dankie"], "vocabId": "af-dankie"},
-            {"type": "fill_blank", "sentence": "Water ____, asseblief.", "answer": "Ja", "options": ["Ja", "Nee", "Jammer", "Dankie"], "meaning": "Yes water, please.", "vocabId": "af-ja"},
-            {"type": "speak", "text": "Dankie, jammer", "meaning": "Thank you, sorry", "lang": "af"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Ja",
+                  "Yes"
+                ],
+                [
+                  "Nee",
+                  "No"
+                ],
+                [
+                  "Asseblief",
+                  "Please"
+                ],
+                [
+                  "Dankie",
+                  "Thank you"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say \"please\"?",
+              "answer": "Asseblief",
+              "options": [
+                "Dankie",
+                "Asseblief",
+                "Jammer",
+                "Nee"
+              ],
+              "vocabId": "af-asseblief"
+            },
+            {
+              "type": "translate",
+              "prompt": "Thank you",
+              "answer": "Dankie",
+              "accept": [
+                "dankie"
+              ],
+              "vocabId": "af-dankie"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "Water ____, asseblief.",
+              "answer": "Ja",
+              "options": [
+                "Ja",
+                "Nee",
+                "Jammer",
+                "Dankie"
+              ],
+              "meaning": "Yes water, please.",
+              "vocabId": "af-ja"
+            },
+            {
+              "type": "speak",
+              "text": "Dankie, jammer",
+              "meaning": "Thank you, sorry",
+              "lang": "af"
+            }
           ]
         },
         {
@@ -53,20 +232,118 @@
           "title": "Family",
           "culturalNote": "Afrikaans family words are warm and short. Children often call their parents \"Ma\" and \"Pa\". Grandparents are \"Ouma\" and \"Oupa\".",
           "vocab": [
-            {"id": "af-ma", "term": "ma", "translation": "mother", "phonetic": "mah"},
-            {"id": "af-pa", "term": "pa", "translation": "father", "phonetic": "pah"},
-            {"id": "af-suster", "term": "suster", "translation": "sister", "phonetic": "SUS-ter"},
-            {"id": "af-broer", "term": "broer", "translation": "brother", "phonetic": "broor"},
-            {"id": "af-ouma", "term": "ouma", "translation": "grandmother", "phonetic": "OH-mah"},
-            {"id": "af-oupa", "term": "oupa", "translation": "grandfather", "phonetic": "OH-pah"},
-            {"id": "af-kind", "term": "kind", "translation": "child", "phonetic": "kint"}
+            {
+              "id": "af-ma",
+              "term": "ma",
+              "translation": "mother",
+              "phonetic": "mah"
+            },
+            {
+              "id": "af-pa",
+              "term": "pa",
+              "translation": "father",
+              "phonetic": "pah"
+            },
+            {
+              "id": "af-suster",
+              "term": "suster",
+              "translation": "sister",
+              "phonetic": "SUS-ter"
+            },
+            {
+              "id": "af-broer",
+              "term": "broer",
+              "translation": "brother",
+              "phonetic": "broor"
+            },
+            {
+              "id": "af-ouma",
+              "term": "ouma",
+              "translation": "grandmother",
+              "phonetic": "OH-mah"
+            },
+            {
+              "id": "af-oupa",
+              "term": "oupa",
+              "translation": "grandfather",
+              "phonetic": "OH-pah"
+            },
+            {
+              "id": "af-kind",
+              "term": "kind",
+              "translation": "child",
+              "phonetic": "kint"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["ma", "mother"], ["pa", "father"], ["ouma", "grandmother"], ["kind", "child"]]},
-            {"type": "multiple_choice", "prompt": "\"broer\" means:", "answer": "brother", "options": ["sister", "brother", "father", "child"], "vocabId": "af-broer"},
-            {"type": "translate", "prompt": "grandfather", "answer": "oupa", "accept": ["oupa"], "vocabId": "af-oupa"},
-            {"type": "fill_blank", "sentence": "My ____ is vyf jaar oud.", "answer": "kind", "options": ["kind", "ouma", "pa", "suster"], "meaning": "My child is five years old.", "vocabId": "af-kind"},
-            {"type": "listen", "prompt": "Tap what you hear", "answer": "suster", "options": ["suster", "broer", "ouma", "oupa"], "lang": "af", "vocabId": "af-suster"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ma",
+                  "mother"
+                ],
+                [
+                  "pa",
+                  "father"
+                ],
+                [
+                  "ouma",
+                  "grandmother"
+                ],
+                [
+                  "kind",
+                  "child"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "\"broer\" means:",
+              "answer": "brother",
+              "options": [
+                "sister",
+                "brother",
+                "father",
+                "child"
+              ],
+              "vocabId": "af-broer"
+            },
+            {
+              "type": "translate",
+              "prompt": "grandfather",
+              "answer": "oupa",
+              "accept": [
+                "oupa"
+              ],
+              "vocabId": "af-oupa"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "My ____ is vyf jaar oud.",
+              "answer": "kind",
+              "options": [
+                "kind",
+                "ouma",
+                "pa",
+                "suster"
+              ],
+              "meaning": "My child is five years old.",
+              "vocabId": "af-kind"
+            },
+            {
+              "type": "listen",
+              "prompt": "Tap what you hear",
+              "answer": "suster",
+              "options": [
+                "suster",
+                "broer",
+                "ouma",
+                "oupa"
+              ],
+              "lang": "af",
+              "vocabId": "af-suster"
+            }
           ]
         },
         {
@@ -74,21 +351,124 @@
           "title": "Numbers 1–10",
           "culturalNote": "Afrikaans numbers are close to Dutch and German. Notice \"sewe\" (seven) and \"agt\" (eight).",
           "vocab": [
-            {"id": "af-een", "term": "een", "translation": "one", "phonetic": "eeyn"},
-            {"id": "af-twee", "term": "twee", "translation": "two", "phonetic": "tveeh"},
-            {"id": "af-drie", "term": "drie", "translation": "three", "phonetic": "dree"},
-            {"id": "af-vier", "term": "vier", "translation": "four", "phonetic": "feer"},
-            {"id": "af-vyf", "term": "vyf", "translation": "five", "phonetic": "fayf"},
-            {"id": "af-ses", "term": "ses", "translation": "six", "phonetic": "ses"},
-            {"id": "af-sewe", "term": "sewe", "translation": "seven", "phonetic": "SEH-vuh"},
-            {"id": "af-tien", "term": "tien", "translation": "ten", "phonetic": "teen"}
+            {
+              "id": "af-een",
+              "term": "een",
+              "translation": "one",
+              "phonetic": "eeyn"
+            },
+            {
+              "id": "af-twee",
+              "term": "twee",
+              "translation": "two",
+              "phonetic": "tveeh"
+            },
+            {
+              "id": "af-drie",
+              "term": "drie",
+              "translation": "three",
+              "phonetic": "dree"
+            },
+            {
+              "id": "af-vier",
+              "term": "vier",
+              "translation": "four",
+              "phonetic": "feer"
+            },
+            {
+              "id": "af-vyf",
+              "term": "vyf",
+              "translation": "five",
+              "phonetic": "fayf"
+            },
+            {
+              "id": "af-ses",
+              "term": "ses",
+              "translation": "six",
+              "phonetic": "ses"
+            },
+            {
+              "id": "af-sewe",
+              "term": "sewe",
+              "translation": "seven",
+              "phonetic": "SEH-vuh"
+            },
+            {
+              "id": "af-tien",
+              "term": "tien",
+              "translation": "ten",
+              "phonetic": "teen"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["een", "one"], ["twee", "two"], ["drie", "three"], ["vyf", "five"]]},
-            {"type": "multiple_choice", "prompt": "How do you say \"seven\"?", "answer": "sewe", "options": ["ses", "sewe", "vyf", "tien"], "vocabId": "af-sewe"},
-            {"type": "translate", "prompt": "four", "answer": "vier", "accept": ["vier"], "vocabId": "af-vier"},
-            {"type": "fill_blank", "sentence": "Ek wil ____ brode hê.", "answer": "twee", "options": ["twee", "een", "tien", "vyf"], "meaning": "I want two breads.", "vocabId": "af-twee"},
-            {"type": "listen", "prompt": "Tap the number you hear", "answer": "tien", "options": ["tien", "een", "drie", "ses"], "lang": "af", "vocabId": "af-tien"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "een",
+                  "one"
+                ],
+                [
+                  "twee",
+                  "two"
+                ],
+                [
+                  "drie",
+                  "three"
+                ],
+                [
+                  "vyf",
+                  "five"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say \"seven\"?",
+              "answer": "sewe",
+              "options": [
+                "ses",
+                "sewe",
+                "vyf",
+                "tien"
+              ],
+              "vocabId": "af-sewe"
+            },
+            {
+              "type": "translate",
+              "prompt": "four",
+              "answer": "vier",
+              "accept": [
+                "vier"
+              ],
+              "vocabId": "af-vier"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "Ek wil ____ brode hê.",
+              "answer": "twee",
+              "options": [
+                "twee",
+                "een",
+                "tien",
+                "vyf"
+              ],
+              "meaning": "I want two breads.",
+              "vocabId": "af-twee"
+            },
+            {
+              "type": "listen",
+              "prompt": "Tap the number you hear",
+              "answer": "tien",
+              "options": [
+                "tien",
+                "een",
+                "drie",
+                "ses"
+              ],
+              "lang": "af",
+              "vocabId": "af-tien"
+            }
           ]
         },
         {
@@ -96,19 +476,105 @@
           "title": "Food & Drink",
           "culturalNote": "South African food culture is rich in Afrikaans words: \"braai\" (barbecue), \"biltong\" (dried meat), and \"koeksister\" (a sweet treat). Here are the basics.",
           "vocab": [
-            {"id": "af-kos", "term": "kos", "translation": "food", "phonetic": "kos"},
-            {"id": "af-water", "term": "water", "translation": "water", "phonetic": "VAH-ter"},
-            {"id": "af-brood", "term": "brood", "translation": "bread", "phonetic": "broht"},
-            {"id": "af-melk", "term": "melk", "translation": "milk", "phonetic": "melk"},
-            {"id": "af-tee", "term": "tee", "translation": "tea", "phonetic": "teeh"},
-            {"id": "af-vleis", "term": "vleis", "translation": "meat", "phonetic": "flayss"}
+            {
+              "id": "af-kos",
+              "term": "kos",
+              "translation": "food",
+              "phonetic": "kos"
+            },
+            {
+              "id": "af-water",
+              "term": "water",
+              "translation": "water",
+              "phonetic": "VAH-ter"
+            },
+            {
+              "id": "af-brood",
+              "term": "brood",
+              "translation": "bread",
+              "phonetic": "broht"
+            },
+            {
+              "id": "af-melk",
+              "term": "melk",
+              "translation": "milk",
+              "phonetic": "melk"
+            },
+            {
+              "id": "af-tee",
+              "term": "tee",
+              "translation": "tea",
+              "phonetic": "teeh"
+            },
+            {
+              "id": "af-vleis",
+              "term": "vleis",
+              "translation": "meat",
+              "phonetic": "flayss"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["water", "water"], ["brood", "bread"], ["melk", "milk"], ["vleis", "meat"]]},
-            {"type": "multiple_choice", "prompt": "\"kos\" means:", "answer": "food", "options": ["food", "drink", "bread", "meat"], "vocabId": "af-kos"},
-            {"type": "translate", "prompt": "water", "answer": "water", "accept": ["water"], "vocabId": "af-water"},
-            {"type": "fill_blank", "sentence": "Ek wil ____ en brood hê.", "answer": "tee", "options": ["tee", "vleis", "kind", "ses"], "meaning": "I want tea and bread.", "vocabId": "af-tee"},
-            {"type": "speak", "text": "Water asseblief", "meaning": "Water please", "lang": "af"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "water",
+                  "water"
+                ],
+                [
+                  "brood",
+                  "bread"
+                ],
+                [
+                  "melk",
+                  "milk"
+                ],
+                [
+                  "vleis",
+                  "meat"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "\"kos\" means:",
+              "answer": "food",
+              "options": [
+                "food",
+                "drink",
+                "bread",
+                "meat"
+              ],
+              "vocabId": "af-kos"
+            },
+            {
+              "type": "translate",
+              "prompt": "water",
+              "answer": "water",
+              "accept": [
+                "water"
+              ],
+              "vocabId": "af-water"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "Ek wil ____ en brood hê.",
+              "answer": "tee",
+              "options": [
+                "tee",
+                "vleis",
+                "kind",
+                "ses"
+              ],
+              "meaning": "I want tea and bread.",
+              "vocabId": "af-tee"
+            },
+            {
+              "type": "speak",
+              "text": "Water asseblief",
+              "meaning": "Water please",
+              "lang": "af"
+            }
           ]
         },
         {
@@ -116,19 +582,3492 @@
           "title": "Directions",
           "culturalNote": "Start a request for directions with \"Verskoon my\" (excuse me). \"Regs\" is right and \"links\" is left — easy to remember as left = links.",
           "vocab": [
-            {"id": "af-vorentoe", "term": "vorentoe", "translation": "forward", "phonetic": "FOH-ren-too"},
-            {"id": "af-agtertoe", "term": "agtertoe", "translation": "backward", "phonetic": "AKH-ter-too"},
-            {"id": "af-regs", "term": "regs", "translation": "right", "phonetic": "rekhs"},
-            {"id": "af-links", "term": "links", "translation": "left", "phonetic": "links"},
-            {"id": "af-hier", "term": "hier", "translation": "here", "phonetic": "heer"},
-            {"id": "af-naby", "term": "naby", "translation": "near", "phonetic": "NAH-bay"},
-            {"id": "af-ver", "term": "ver", "translation": "far", "phonetic": "fer"}
+            {
+              "id": "af-vorentoe",
+              "term": "vorentoe",
+              "translation": "forward",
+              "phonetic": "FOH-ren-too"
+            },
+            {
+              "id": "af-agtertoe",
+              "term": "agtertoe",
+              "translation": "backward",
+              "phonetic": "AKH-ter-too"
+            },
+            {
+              "id": "af-regs",
+              "term": "regs",
+              "translation": "right",
+              "phonetic": "rekhs"
+            },
+            {
+              "id": "af-links",
+              "term": "links",
+              "translation": "left",
+              "phonetic": "links"
+            },
+            {
+              "id": "af-hier",
+              "term": "hier",
+              "translation": "here",
+              "phonetic": "heer"
+            },
+            {
+              "id": "af-naby",
+              "term": "naby",
+              "translation": "near",
+              "phonetic": "NAH-bay"
+            },
+            {
+              "id": "af-ver",
+              "term": "ver",
+              "translation": "far",
+              "phonetic": "fer"
+            }
           ],
           "exercises": [
-            {"type": "match", "pairs": [["regs", "right"], ["links", "left"], ["naby", "near"], ["ver", "far"]]},
-            {"type": "multiple_choice", "prompt": "How do you say \"turn left\"? (left =)", "answer": "links", "options": ["regs", "links", "vorentoe", "hier"], "vocabId": "af-links"},
-            {"type": "translate", "prompt": "here", "answer": "hier", "accept": ["hier"], "vocabId": "af-hier"},
-            {"type": "fill_blank", "sentence": "Die winkel is baie ____.", "answer": "ver", "options": ["ver", "naby", "hier", "regs"], "meaning": "The shop is very far.", "vocabId": "af-ver"}
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "regs",
+                  "right"
+                ],
+                [
+                  "links",
+                  "left"
+                ],
+                [
+                  "naby",
+                  "near"
+                ],
+                [
+                  "ver",
+                  "far"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say \"turn left\"? (left =)",
+              "answer": "links",
+              "options": [
+                "regs",
+                "links",
+                "vorentoe",
+                "hier"
+              ],
+              "vocabId": "af-links"
+            },
+            {
+              "type": "translate",
+              "prompt": "here",
+              "answer": "hier",
+              "accept": [
+                "hier"
+              ],
+              "vocabId": "af-hier"
+            },
+            {
+              "type": "fill_blank",
+              "sentence": "Die winkel is baie ____.",
+              "answer": "ver",
+              "options": [
+                "ver",
+                "naby",
+                "hier",
+                "regs"
+              ],
+              "meaning": "The shop is very far.",
+              "vocabId": "af-ver"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can greet people and use basic courtesies (hello, please, thank you, yes/no)."
+    },
+    {
+      "id": "af-u2",
+      "title": "Unit 2: Conversation",
+      "level": "Basic Conversation",
+      "lessons": [
+        {
+          "id": "af-u2-l1",
+          "title": "Introducing Yourself",
+          "culturalNote": "Afrikaans is warm and direct. 'My naam is...' means 'My name is...'. 'Aangename kennis' is a polite 'Nice to meet you'.",
+          "vocab": [
+            {
+              "id": "af-mynaam",
+              "term": "My naam is...",
+              "translation": "My name is...",
+              "phonetic": "may naahm is"
+            },
+            {
+              "id": "af-watisjou",
+              "term": "Wat is jou naam?",
+              "translation": "What is your name?",
+              "phonetic": "vat is yoh naam"
+            },
+            {
+              "id": "af-aangename",
+              "term": "Aangename kennis",
+              "translation": "Nice to meet you",
+              "phonetic": "AAHN-kheh-nah-meh KEH-nis"
+            },
+            {
+              "id": "af-waarvandaan",
+              "term": "Waarvandaan kom jy?",
+              "translation": "Where are you from?",
+              "phonetic": "VAAR-fun-daan kom yay"
+            },
+            {
+              "id": "af-ekkomvan",
+              "term": "Ek kom van...",
+              "translation": "I come from...",
+              "phonetic": "ek kom fun"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "My naam is...",
+                  "My name is..."
+                ],
+                [
+                  "Wat is jou naam?",
+                  "What is your name?"
+                ],
+                [
+                  "Aangename kennis",
+                  "Nice to meet you"
+                ],
+                [
+                  "Waarvandaan kom jy?",
+                  "Where are you from?"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“My naam is...” means:",
+              "answer": "My name is...",
+              "options": [
+                "My name is...",
+                "What is your name?",
+                "Nice to meet you",
+                "Where are you from?"
+              ],
+              "vocabId": "af-mynaam"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “What is your name?”?",
+              "answer": "Wat is jou naam?",
+              "options": [
+                "Wat is jou naam?",
+                "My naam is...",
+                "Aangename kennis",
+                "Waarvandaan kom jy?"
+              ],
+              "vocabId": "af-watisjou"
+            },
+            {
+              "type": "translate",
+              "prompt": "Nice to meet you",
+              "answer": "Aangename kennis",
+              "accept": [
+                "aangename kennis"
+              ],
+              "vocabId": "af-aangename"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "My naam is Pieter",
+              "en": "My name is Pieter"
+            },
+            {
+              "t": "Ek kom van Kaapstad",
+              "en": "I come from Cape Town"
+            }
+          ]
+        },
+        {
+          "id": "af-u2-l2",
+          "title": "At the Shop",
+          "culturalNote": "Shopping phrases you'll use daily. 'Hoeveel kos dit?' asks the price; 'Asseblief' (please) is everywhere.",
+          "vocab": [
+            {
+              "id": "af-hoeveel",
+              "term": "Hoeveel kos dit?",
+              "translation": "How much does it cost?",
+              "phonetic": "HOO-fril kos dit"
+            },
+            {
+              "id": "af-ekwilhe",
+              "term": "Ek wil hê...",
+              "translation": "I want...",
+              "phonetic": "ek vil heh"
+            },
+            {
+              "id": "af-geld",
+              "term": "geld",
+              "translation": "money",
+              "phonetic": "khelt"
+            },
+            {
+              "id": "af-winkel",
+              "term": "winkel",
+              "translation": "shop",
+              "phonetic": "VIN-kel"
+            },
+            {
+              "id": "af-asseblief-u2",
+              "term": "Asseblief",
+              "translation": "Please",
+              "phonetic": "ah-seh-BLEEF"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Hoeveel kos dit?",
+                  "How much does it cost?"
+                ],
+                [
+                  "Ek wil hê...",
+                  "I want..."
+                ],
+                [
+                  "geld",
+                  "money"
+                ],
+                [
+                  "winkel",
+                  "shop"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“Hoeveel kos dit?” means:",
+              "answer": "How much does it cost?",
+              "options": [
+                "How much does it cost?",
+                "I want...",
+                "money",
+                "shop"
+              ],
+              "vocabId": "af-hoeveel"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “I want...”?",
+              "answer": "Ek wil hê...",
+              "options": [
+                "Ek wil hê...",
+                "Hoeveel kos dit?",
+                "geld",
+                "winkel"
+              ],
+              "vocabId": "af-ekwilhe"
+            },
+            {
+              "type": "translate",
+              "prompt": "money",
+              "answer": "geld",
+              "accept": [
+                "geld"
+              ],
+              "vocabId": "af-geld"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek hou van koffie",
+              "en": "I like coffee"
+            }
+          ]
+        },
+        {
+          "id": "af-u2-l3",
+          "title": "Numbers 1–10",
+          "culturalNote": "Afrikaans numbers are close to Dutch and English roots — 'twee' (two), 'drie' (three), 'tien' (ten).",
+          "vocab": [
+            {
+              "id": "af-een-u2",
+              "term": "een",
+              "translation": "one",
+              "phonetic": "eyn"
+            },
+            {
+              "id": "af-twee-u2",
+              "term": "twee",
+              "translation": "two",
+              "phonetic": "tvey"
+            },
+            {
+              "id": "af-drie-u2",
+              "term": "drie",
+              "translation": "three",
+              "phonetic": "dree"
+            },
+            {
+              "id": "af-vier-u2",
+              "term": "vier",
+              "translation": "four",
+              "phonetic": "feer"
+            },
+            {
+              "id": "af-vyf-u2",
+              "term": "vyf",
+              "translation": "five",
+              "phonetic": "fayf"
+            },
+            {
+              "id": "af-tien-u2",
+              "term": "tien",
+              "translation": "ten",
+              "phonetic": "teen"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "een",
+                  "one"
+                ],
+                [
+                  "twee",
+                  "two"
+                ],
+                [
+                  "drie",
+                  "three"
+                ],
+                [
+                  "vier",
+                  "four"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“een” means:",
+              "answer": "one",
+              "options": [
+                "one",
+                "two",
+                "three",
+                "four"
+              ],
+              "vocabId": "af-een-u2"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “two”?",
+              "answer": "twee",
+              "options": [
+                "twee",
+                "een",
+                "drie",
+                "vier"
+              ],
+              "vocabId": "af-twee-u2"
+            },
+            {
+              "type": "translate",
+              "prompt": "three",
+              "answer": "drie",
+              "accept": [
+                "drie"
+              ],
+              "vocabId": "af-drie-u2"
+            }
+          ]
+        },
+        {
+          "id": "af-u2-l4",
+          "title": "Food & Drink",
+          "culturalNote": "Food brings people together. Offer a guest 'koffie' (coffee) and 'brood' (bread) — it's a sign of hospitality.",
+          "vocab": [
+            {
+              "id": "af-brood-u2",
+              "term": "brood",
+              "translation": "bread",
+              "phonetic": "broht"
+            },
+            {
+              "id": "af-water-u2",
+              "term": "water",
+              "translation": "water",
+              "phonetic": "VAH-ter"
+            },
+            {
+              "id": "af-melk-u2",
+              "term": "melk",
+              "translation": "milk",
+              "phonetic": "melk"
+            },
+            {
+              "id": "af-vleis-u2",
+              "term": "vleis",
+              "translation": "meat",
+              "phonetic": "flays"
+            },
+            {
+              "id": "af-koffie",
+              "term": "koffie",
+              "translation": "coffee",
+              "phonetic": "KOF-fee"
+            },
+            {
+              "id": "af-appel",
+              "term": "appel",
+              "translation": "apple",
+              "phonetic": "AH-pel"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "brood",
+                  "bread"
+                ],
+                [
+                  "water",
+                  "water"
+                ],
+                [
+                  "melk",
+                  "milk"
+                ],
+                [
+                  "vleis",
+                  "meat"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“brood” means:",
+              "answer": "bread",
+              "options": [
+                "bread",
+                "water",
+                "milk",
+                "meat"
+              ],
+              "vocabId": "af-brood-u2"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “water”?",
+              "answer": "water",
+              "options": [
+                "water",
+                "brood",
+                "melk",
+                "vleis"
+              ],
+              "vocabId": "af-water-u2"
+            },
+            {
+              "type": "translate",
+              "prompt": "milk",
+              "answer": "melk",
+              "accept": [
+                "melk"
+              ],
+              "vocabId": "af-melk-u2"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek wil water hê",
+              "en": "I want water"
+            },
+            {
+              "t": "Ek drink water",
+              "en": "I drink water"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can introduce myself, say where I'm from, shop, and ask for help."
+    },
+    {
+      "id": "af-u3",
+      "title": "Unit 3: Everyday Life",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u3-l1",
+          "title": "Days of the Week",
+          "culturalNote": "Afrikaans day names are close to Dutch and German. The week runs Maandag (Monday) to Sondag (Sunday).",
+          "vocab": [
+            {
+              "id": "af-maandag",
+              "term": "Maandag",
+              "translation": "Monday",
+              "phonetic": "MAAN-dakh"
+            },
+            {
+              "id": "af-dinsdag",
+              "term": "Dinsdag",
+              "translation": "Tuesday",
+              "phonetic": "DINS-dakh"
+            },
+            {
+              "id": "af-woensdag",
+              "term": "Woensdag",
+              "translation": "Wednesday",
+              "phonetic": "VOONS-dakh"
+            },
+            {
+              "id": "af-donderdag",
+              "term": "Donderdag",
+              "translation": "Thursday",
+              "phonetic": "DON-der-dakh"
+            },
+            {
+              "id": "af-vrydag",
+              "term": "Vrydag",
+              "translation": "Friday",
+              "phonetic": "FRAY-dakh"
+            },
+            {
+              "id": "af-saterdag",
+              "term": "Saterdag",
+              "translation": "Saturday",
+              "phonetic": "SAH-ter-dakh"
+            },
+            {
+              "id": "af-sondag",
+              "term": "Sondag",
+              "translation": "Sunday",
+              "phonetic": "SON-dakh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "Maandag",
+                  "Monday"
+                ],
+                [
+                  "Dinsdag",
+                  "Tuesday"
+                ],
+                [
+                  "Woensdag",
+                  "Wednesday"
+                ],
+                [
+                  "Donderdag",
+                  "Thursday"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“Maandag” means:",
+              "answer": "Monday",
+              "options": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday"
+              ],
+              "vocabId": "af-maandag"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “Tuesday”?",
+              "answer": "Dinsdag",
+              "options": [
+                "Dinsdag",
+                "Maandag",
+                "Woensdag",
+                "Donderdag"
+              ],
+              "vocabId": "af-dinsdag"
+            },
+            {
+              "type": "translate",
+              "prompt": "Wednesday",
+              "answer": "Woensdag",
+              "accept": [
+                "woensdag"
+              ],
+              "vocabId": "af-woensdag"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Vandag is Maandag",
+              "en": "Today is Monday"
+            },
+            {
+              "t": "Vandag is Vrydag",
+              "en": "Today is Friday"
+            }
+          ]
+        },
+        {
+          "id": "af-u3-l2",
+          "title": "Colours",
+          "culturalNote": "Colours in Afrikaans are short and handy: 'rooi' (red), 'blou' (blue), 'groen' (green). They come before the noun, like English.",
+          "vocab": [
+            {
+              "id": "af-rooi",
+              "term": "rooi",
+              "translation": "red",
+              "phonetic": "roy"
+            },
+            {
+              "id": "af-wit",
+              "term": "wit",
+              "translation": "white",
+              "phonetic": "vit"
+            },
+            {
+              "id": "af-swart",
+              "term": "swart",
+              "translation": "black",
+              "phonetic": "svart"
+            },
+            {
+              "id": "af-groen",
+              "term": "groen",
+              "translation": "green",
+              "phonetic": "khroon"
+            },
+            {
+              "id": "af-blou",
+              "term": "blou",
+              "translation": "blue",
+              "phonetic": "bloh"
+            },
+            {
+              "id": "af-geel",
+              "term": "geel",
+              "translation": "yellow",
+              "phonetic": "kheyl"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "rooi",
+                  "red"
+                ],
+                [
+                  "wit",
+                  "white"
+                ],
+                [
+                  "swart",
+                  "black"
+                ],
+                [
+                  "groen",
+                  "green"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“rooi” means:",
+              "answer": "red",
+              "options": [
+                "red",
+                "white",
+                "black",
+                "green"
+              ],
+              "vocabId": "af-rooi"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “white”?",
+              "answer": "wit",
+              "options": [
+                "wit",
+                "rooi",
+                "swart",
+                "groen"
+              ],
+              "vocabId": "af-wit"
+            },
+            {
+              "type": "translate",
+              "prompt": "black",
+              "answer": "swart",
+              "accept": [
+                "swart"
+              ],
+              "vocabId": "af-swart"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Die kat is swart",
+              "en": "The cat is black"
+            }
+          ]
+        },
+        {
+          "id": "af-u3-l3",
+          "title": "Feelings",
+          "culturalNote": "Tell people how you feel: 'Ek is bly' (I'm happy), 'Ek is moeg' (I'm tired), 'Ek is honger' (I'm hungry).",
+          "vocab": [
+            {
+              "id": "af-bly",
+              "term": "bly",
+              "translation": "happy",
+              "phonetic": "blay"
+            },
+            {
+              "id": "af-moeg",
+              "term": "moeg",
+              "translation": "tired",
+              "phonetic": "mookh"
+            },
+            {
+              "id": "af-honger",
+              "term": "honger",
+              "translation": "hungry",
+              "phonetic": "HON-ger"
+            },
+            {
+              "id": "af-dors",
+              "term": "dors",
+              "translation": "thirsty",
+              "phonetic": "dors"
+            },
+            {
+              "id": "af-dankbaar",
+              "term": "dankbaar",
+              "translation": "grateful",
+              "phonetic": "DUNK-baar"
+            },
+            {
+              "id": "af-kwaad",
+              "term": "kwaad",
+              "translation": "angry",
+              "phonetic": "kvaat"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bly",
+                  "happy"
+                ],
+                [
+                  "moeg",
+                  "tired"
+                ],
+                [
+                  "honger",
+                  "hungry"
+                ],
+                [
+                  "dors",
+                  "thirsty"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“bly” means:",
+              "answer": "happy",
+              "options": [
+                "happy",
+                "tired",
+                "hungry",
+                "thirsty"
+              ],
+              "vocabId": "af-bly"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “tired”?",
+              "answer": "moeg",
+              "options": [
+                "moeg",
+                "bly",
+                "honger",
+                "dors"
+              ],
+              "vocabId": "af-moeg"
+            },
+            {
+              "type": "translate",
+              "prompt": "hungry",
+              "answer": "honger",
+              "accept": [
+                "honger"
+              ],
+              "vocabId": "af-honger"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek is bly",
+              "en": "I am happy"
+            }
+          ]
+        },
+        {
+          "id": "af-u3-l4",
+          "title": "The Body",
+          "culturalNote": "Body words are useful at the doctor: 'My kop is seer' (My head is sore). 'Oë' (eyes) and 'oor' (ear) are common ones to know.",
+          "vocab": [
+            {
+              "id": "af-kop",
+              "term": "kop",
+              "translation": "head",
+              "phonetic": "kop"
+            },
+            {
+              "id": "af-hand",
+              "term": "hand",
+              "translation": "hand",
+              "phonetic": "hunt"
+            },
+            {
+              "id": "af-voet",
+              "term": "voet",
+              "translation": "foot",
+              "phonetic": "foot"
+            },
+            {
+              "id": "af-oe",
+              "term": "oë",
+              "translation": "eyes",
+              "phonetic": "OO-uh"
+            },
+            {
+              "id": "af-oor",
+              "term": "oor",
+              "translation": "ear",
+              "phonetic": "oor"
+            },
+            {
+              "id": "af-mond",
+              "term": "mond",
+              "translation": "mouth",
+              "phonetic": "mont"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kop",
+                  "head"
+                ],
+                [
+                  "hand",
+                  "hand"
+                ],
+                [
+                  "voet",
+                  "foot"
+                ],
+                [
+                  "oë",
+                  "eyes"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kop” means:",
+              "answer": "head",
+              "options": [
+                "head",
+                "hand",
+                "foot",
+                "eyes"
+              ],
+              "vocabId": "af-kop"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hand”?",
+              "answer": "hand",
+              "options": [
+                "hand",
+                "kop",
+                "voet",
+                "oë"
+              ],
+              "vocabId": "af-hand"
+            },
+            {
+              "type": "translate",
+              "prompt": "foot",
+              "answer": "voet",
+              "accept": [
+                "voet"
+              ],
+              "vocabId": "af-voet"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can talk about days, colours, weather, feelings and the body."
+    },
+    {
+      "id": "af-u4",
+      "title": "Unit 4: Out & About",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u4-l1",
+          "title": "Time & Routine",
+          "culturalNote": "'Môre' means both 'tomorrow' and 'morning' — context tells them apart. 'Vandag' (today) and 'gister' (yesterday) complete the set.",
+          "vocab": [
+            {
+              "id": "af-vandag",
+              "term": "vandag",
+              "translation": "today",
+              "phonetic": "fun-DAKH"
+            },
+            {
+              "id": "af-gister",
+              "term": "gister",
+              "translation": "yesterday",
+              "phonetic": "KHIS-ter"
+            },
+            {
+              "id": "af-more",
+              "term": "môre",
+              "translation": "tomorrow",
+              "phonetic": "MAW-reh"
+            },
+            {
+              "id": "af-nou",
+              "term": "nou",
+              "translation": "now",
+              "phonetic": "noh"
+            },
+            {
+              "id": "af-oggend",
+              "term": "oggend",
+              "translation": "morning",
+              "phonetic": "OKH-ent"
+            },
+            {
+              "id": "af-aand",
+              "term": "aand",
+              "translation": "evening",
+              "phonetic": "aahnt"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "vandag",
+                  "today"
+                ],
+                [
+                  "gister",
+                  "yesterday"
+                ],
+                [
+                  "môre",
+                  "tomorrow"
+                ],
+                [
+                  "nou",
+                  "now"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“vandag” means:",
+              "answer": "today",
+              "options": [
+                "today",
+                "yesterday",
+                "tomorrow",
+                "now"
+              ],
+              "vocabId": "af-vandag"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “yesterday”?",
+              "answer": "gister",
+              "options": [
+                "gister",
+                "vandag",
+                "môre",
+                "nou"
+              ],
+              "vocabId": "af-gister"
+            },
+            {
+              "type": "translate",
+              "prompt": "tomorrow",
+              "answer": "môre",
+              "accept": [
+                "môre"
+              ],
+              "vocabId": "af-more"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Môre is Saterdag",
+              "en": "Tomorrow is Saturday"
+            }
+          ]
+        },
+        {
+          "id": "af-u4-l2",
+          "title": "Animals",
+          "culturalNote": "Afrikaans animal names are short and fun: 'hond' (dog), 'kat' (cat), 'voël' (bird).",
+          "vocab": [
+            {
+              "id": "af-hond",
+              "term": "hond",
+              "translation": "dog",
+              "phonetic": "hont"
+            },
+            {
+              "id": "af-kat",
+              "term": "kat",
+              "translation": "cat",
+              "phonetic": "kut"
+            },
+            {
+              "id": "af-koei",
+              "term": "koei",
+              "translation": "cow",
+              "phonetic": "koy"
+            },
+            {
+              "id": "af-perd",
+              "term": "perd",
+              "translation": "horse",
+              "phonetic": "pert"
+            },
+            {
+              "id": "af-hoender",
+              "term": "hoender",
+              "translation": "chicken",
+              "phonetic": "HOON-der"
+            },
+            {
+              "id": "af-voel",
+              "term": "voël",
+              "translation": "bird",
+              "phonetic": "fool"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "hond",
+                  "dog"
+                ],
+                [
+                  "kat",
+                  "cat"
+                ],
+                [
+                  "koei",
+                  "cow"
+                ],
+                [
+                  "perd",
+                  "horse"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“hond” means:",
+              "answer": "dog",
+              "options": [
+                "dog",
+                "cat",
+                "cow",
+                "horse"
+              ],
+              "vocabId": "af-hond"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cat”?",
+              "answer": "kat",
+              "options": [
+                "kat",
+                "hond",
+                "koei",
+                "perd"
+              ],
+              "vocabId": "af-kat"
+            },
+            {
+              "type": "translate",
+              "prompt": "cow",
+              "answer": "koei",
+              "accept": [
+                "koei"
+              ],
+              "vocabId": "af-koei"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek sien 'n hond",
+              "en": "I see a dog"
+            }
+          ]
+        },
+        {
+          "id": "af-u4-l3",
+          "title": "Around Town",
+          "culturalNote": "Useful places to name: 'skool' (school), 'hospitaal' (hospital), 'winkel' (shop). Ask 'Waar is...?' (Where is...?).",
+          "vocab": [
+            {
+              "id": "af-skool",
+              "term": "skool",
+              "translation": "school",
+              "phonetic": "skohl"
+            },
+            {
+              "id": "af-hospitaal",
+              "term": "hospitaal",
+              "translation": "hospital",
+              "phonetic": "hos-pee-TAAL"
+            },
+            {
+              "id": "af-bank",
+              "term": "bank",
+              "translation": "bank",
+              "phonetic": "bunk"
+            },
+            {
+              "id": "af-huis",
+              "term": "huis",
+              "translation": "house",
+              "phonetic": "hoeys"
+            },
+            {
+              "id": "af-pad",
+              "term": "pad",
+              "translation": "road",
+              "phonetic": "put"
+            },
+            {
+              "id": "af-stasie",
+              "term": "stasie",
+              "translation": "station",
+              "phonetic": "STAH-see"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "skool",
+                  "school"
+                ],
+                [
+                  "hospitaal",
+                  "hospital"
+                ],
+                [
+                  "bank",
+                  "bank"
+                ],
+                [
+                  "huis",
+                  "house"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“skool” means:",
+              "answer": "school",
+              "options": [
+                "school",
+                "hospital",
+                "bank",
+                "house"
+              ],
+              "vocabId": "af-skool"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “hospital”?",
+              "answer": "hospitaal",
+              "options": [
+                "hospitaal",
+                "skool",
+                "bank",
+                "huis"
+              ],
+              "vocabId": "af-hospitaal"
+            },
+            {
+              "type": "translate",
+              "prompt": "bank",
+              "answer": "bank",
+              "accept": [
+                "bank"
+              ],
+              "vocabId": "af-bank"
+            }
+          ]
+        },
+        {
+          "id": "af-u4-l4",
+          "title": "Useful Verbs",
+          "culturalNote": "A handful of verbs unlocks real sentences: 'Ek wil eet' (I want to eat), 'Ek gaan' (I go).",
+          "vocab": [
+            {
+              "id": "af-eet",
+              "term": "eet",
+              "translation": "to eat",
+              "phonetic": "eyt"
+            },
+            {
+              "id": "af-drink",
+              "term": "drink",
+              "translation": "to drink",
+              "phonetic": "drink"
+            },
+            {
+              "id": "af-gaan",
+              "term": "gaan",
+              "translation": "to go",
+              "phonetic": "khaan"
+            },
+            {
+              "id": "af-kom",
+              "term": "kom",
+              "translation": "to come",
+              "phonetic": "kom"
+            },
+            {
+              "id": "af-sien",
+              "term": "sien",
+              "translation": "to see",
+              "phonetic": "seen"
+            },
+            {
+              "id": "af-praat",
+              "term": "praat",
+              "translation": "to talk",
+              "phonetic": "praat"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "eet",
+                  "to eat"
+                ],
+                [
+                  "drink",
+                  "to drink"
+                ],
+                [
+                  "gaan",
+                  "to go"
+                ],
+                [
+                  "kom",
+                  "to come"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“eet” means:",
+              "answer": "to eat",
+              "options": [
+                "to eat",
+                "to drink",
+                "to go",
+                "to come"
+              ],
+              "vocabId": "af-eet"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to drink”?",
+              "answer": "drink",
+              "options": [
+                "drink",
+                "eet",
+                "gaan",
+                "kom"
+              ],
+              "vocabId": "af-drink"
+            },
+            {
+              "type": "translate",
+              "prompt": "to go",
+              "answer": "gaan",
+              "accept": [
+                "gaan"
+              ],
+              "vocabId": "af-gaan"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can talk about time, animals, places in town, and getting help."
+    },
+    {
+      "id": "af-u5",
+      "title": "Unit 5: Home & Community",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u5-l1",
+          "title": "In the Home",
+          "culturalNote": "Name the rooms and furniture: 'deur' (door), 'venster' (window), 'kombuis' (kitchen). Handy for describing where things are.",
+          "vocab": [
+            {
+              "id": "af-deur",
+              "term": "deur",
+              "translation": "door",
+              "phonetic": "deer"
+            },
+            {
+              "id": "af-venster",
+              "term": "venster",
+              "translation": "window",
+              "phonetic": "FEN-ster"
+            },
+            {
+              "id": "af-kombuis",
+              "term": "kombuis",
+              "translation": "kitchen",
+              "phonetic": "kom-BOEYS"
+            },
+            {
+              "id": "af-stoel",
+              "term": "stoel",
+              "translation": "chair",
+              "phonetic": "stool"
+            },
+            {
+              "id": "af-tafel",
+              "term": "tafel",
+              "translation": "table",
+              "phonetic": "TAH-fel"
+            },
+            {
+              "id": "af-bed",
+              "term": "bed",
+              "translation": "bed",
+              "phonetic": "bet"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "deur",
+                  "door"
+                ],
+                [
+                  "venster",
+                  "window"
+                ],
+                [
+                  "kombuis",
+                  "kitchen"
+                ],
+                [
+                  "stoel",
+                  "chair"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“deur” means:",
+              "answer": "door",
+              "options": [
+                "door",
+                "window",
+                "kitchen",
+                "chair"
+              ],
+              "vocabId": "af-deur"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “window”?",
+              "answer": "venster",
+              "options": [
+                "venster",
+                "deur",
+                "kombuis",
+                "stoel"
+              ],
+              "vocabId": "af-venster"
+            },
+            {
+              "type": "translate",
+              "prompt": "kitchen",
+              "answer": "kombuis",
+              "accept": [
+                "kombuis"
+              ],
+              "vocabId": "af-kombuis"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Waar is die kombuis",
+              "en": "Where is the kitchen?"
+            }
+          ]
+        },
+        {
+          "id": "af-u5-l2",
+          "title": "Clothing",
+          "culturalNote": "Clothes are short and handy in Afrikaans: 'hemp' (shirt), 'broek' (trousers), 'skoene' (shoes).",
+          "vocab": [
+            {
+              "id": "af-hemp",
+              "term": "hemp",
+              "translation": "shirt",
+              "phonetic": "hemp"
+            },
+            {
+              "id": "af-broek",
+              "term": "broek",
+              "translation": "trousers",
+              "phonetic": "brook"
+            },
+            {
+              "id": "af-skoene",
+              "term": "skoene",
+              "translation": "shoes",
+              "phonetic": "SKOO-neh"
+            },
+            {
+              "id": "af-hoed",
+              "term": "hoed",
+              "translation": "hat",
+              "phonetic": "hoot"
+            },
+            {
+              "id": "af-rok",
+              "term": "rok",
+              "translation": "dress",
+              "phonetic": "rok"
+            },
+            {
+              "id": "af-baadjie",
+              "term": "baadjie",
+              "translation": "jacket",
+              "phonetic": "BAA-kee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "hemp",
+                  "shirt"
+                ],
+                [
+                  "broek",
+                  "trousers"
+                ],
+                [
+                  "skoene",
+                  "shoes"
+                ],
+                [
+                  "hoed",
+                  "hat"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“hemp” means:",
+              "answer": "shirt",
+              "options": [
+                "shirt",
+                "trousers",
+                "shoes",
+                "hat"
+              ],
+              "vocabId": "af-hemp"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “trousers”?",
+              "answer": "broek",
+              "options": [
+                "broek",
+                "hemp",
+                "skoene",
+                "hoed"
+              ],
+              "vocabId": "af-broek"
+            },
+            {
+              "type": "translate",
+              "prompt": "shoes",
+              "answer": "skoene",
+              "accept": [
+                "skoene"
+              ],
+              "vocabId": "af-skoene"
+            }
+          ]
+        },
+        {
+          "id": "af-u5-l3",
+          "title": "Nature & Places",
+          "culturalNote": "The Cape has it all: 'berg' (mountain), 'see' (sea), 'rivier' (river). 'Dorp' (town) and 'plaas' (farm) describe where people live.",
+          "vocab": [
+            {
+              "id": "af-berg",
+              "term": "berg",
+              "translation": "mountain",
+              "phonetic": "berkh"
+            },
+            {
+              "id": "af-rivier",
+              "term": "rivier",
+              "translation": "river",
+              "phonetic": "ree-FEER"
+            },
+            {
+              "id": "af-see",
+              "term": "see",
+              "translation": "sea",
+              "phonetic": "sey"
+            },
+            {
+              "id": "af-boom",
+              "term": "boom",
+              "translation": "tree",
+              "phonetic": "boom"
+            },
+            {
+              "id": "af-dorp",
+              "term": "dorp",
+              "translation": "town",
+              "phonetic": "dorp"
+            },
+            {
+              "id": "af-plaas",
+              "term": "plaas",
+              "translation": "farm",
+              "phonetic": "plaas"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "berg",
+                  "mountain"
+                ],
+                [
+                  "rivier",
+                  "river"
+                ],
+                [
+                  "see",
+                  "sea"
+                ],
+                [
+                  "boom",
+                  "tree"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“berg” means:",
+              "answer": "mountain",
+              "options": [
+                "mountain",
+                "river",
+                "sea",
+                "tree"
+              ],
+              "vocabId": "af-berg"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “river”?",
+              "answer": "rivier",
+              "options": [
+                "rivier",
+                "berg",
+                "see",
+                "boom"
+              ],
+              "vocabId": "af-rivier"
+            },
+            {
+              "type": "translate",
+              "prompt": "sea",
+              "answer": "see",
+              "accept": [
+                "see"
+              ],
+              "vocabId": "af-see"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Die see is blou",
+              "en": "The sea is blue"
+            }
+          ]
+        },
+        {
+          "id": "af-u5-l4",
+          "title": "Question Words",
+          "culturalNote": "The question words: 'wie' (who), 'wat' (what), 'waar' (where), 'hoekom' (why). Pair them with verbs to ask anything.",
+          "vocab": [
+            {
+              "id": "af-wie",
+              "term": "wie",
+              "translation": "who",
+              "phonetic": "vee"
+            },
+            {
+              "id": "af-wat",
+              "term": "wat",
+              "translation": "what",
+              "phonetic": "vut"
+            },
+            {
+              "id": "af-waar",
+              "term": "waar",
+              "translation": "where",
+              "phonetic": "vaar"
+            },
+            {
+              "id": "af-wanneer",
+              "term": "wanneer",
+              "translation": "when",
+              "phonetic": "vun-NEER"
+            },
+            {
+              "id": "af-hoekom",
+              "term": "hoekom",
+              "translation": "why",
+              "phonetic": "HOO-kom"
+            },
+            {
+              "id": "af-hoe",
+              "term": "hoe",
+              "translation": "how",
+              "phonetic": "hoo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "wie",
+                  "who"
+                ],
+                [
+                  "wat",
+                  "what"
+                ],
+                [
+                  "waar",
+                  "where"
+                ],
+                [
+                  "wanneer",
+                  "when"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“wie” means:",
+              "answer": "who",
+              "options": [
+                "who",
+                "what",
+                "where",
+                "when"
+              ],
+              "vocabId": "af-wie"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “what”?",
+              "answer": "wat",
+              "options": [
+                "wat",
+                "wie",
+                "waar",
+                "wanneer"
+              ],
+              "vocabId": "af-wat"
+            },
+            {
+              "type": "translate",
+              "prompt": "where",
+              "answer": "waar",
+              "accept": [
+                "waar"
+              ],
+              "vocabId": "af-waar"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can describe my home, clothing and surroundings, and ask questions."
+    },
+    {
+      "id": "af-u6",
+      "title": "Unit 6: Saying More",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u6-l1",
+          "title": "Action Verbs",
+          "culturalNote": "Core verbs unlock sentences: 'Ek hou van...' (I like...), 'Ek wil...' (I want...), 'Ek weet' (I know).",
+          "vocab": [
+            {
+              "id": "af-houvan",
+              "term": "hou van",
+              "translation": "to like",
+              "phonetic": "hoh fun"
+            },
+            {
+              "id": "af-wil",
+              "term": "wil",
+              "translation": "to want",
+              "phonetic": "vil"
+            },
+            {
+              "id": "af-weet",
+              "term": "weet",
+              "translation": "to know",
+              "phonetic": "veyt"
+            },
+            {
+              "id": "af-gee",
+              "term": "gee",
+              "translation": "to give",
+              "phonetic": "kheh"
+            },
+            {
+              "id": "af-koop",
+              "term": "koop",
+              "translation": "to buy",
+              "phonetic": "kwoop"
+            },
+            {
+              "id": "af-help",
+              "term": "help",
+              "translation": "to help",
+              "phonetic": "help"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "hou van",
+                  "to like"
+                ],
+                [
+                  "wil",
+                  "to want"
+                ],
+                [
+                  "weet",
+                  "to know"
+                ],
+                [
+                  "gee",
+                  "to give"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“hou van” means:",
+              "answer": "to like",
+              "options": [
+                "to like",
+                "to want",
+                "to know",
+                "to give"
+              ],
+              "vocabId": "af-houvan"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to want”?",
+              "answer": "wil",
+              "options": [
+                "wil",
+                "hou van",
+                "weet",
+                "gee"
+              ],
+              "vocabId": "af-wil"
+            },
+            {
+              "type": "translate",
+              "prompt": "to know",
+              "answer": "weet",
+              "accept": [
+                "weet"
+              ],
+              "vocabId": "af-weet"
+            }
+          ]
+        },
+        {
+          "id": "af-u6-l2",
+          "title": "Fruit & Veg",
+          "culturalNote": "Fresh from the mark: 'piesang' (banana), 'lemoen' (orange), 'aartappel' (potato).",
+          "vocab": [
+            {
+              "id": "af-piesang",
+              "term": "piesang",
+              "translation": "banana",
+              "phonetic": "pee-SUNG"
+            },
+            {
+              "id": "af-lemoen",
+              "term": "lemoen",
+              "translation": "orange",
+              "phonetic": "leh-MOON"
+            },
+            {
+              "id": "af-aartappel",
+              "term": "aartappel",
+              "translation": "potato",
+              "phonetic": "AART-up-el"
+            },
+            {
+              "id": "af-ui",
+              "term": "ui",
+              "translation": "onion",
+              "phonetic": "oey"
+            },
+            {
+              "id": "af-wortel",
+              "term": "wortel",
+              "translation": "carrot",
+              "phonetic": "VOR-tel"
+            },
+            {
+              "id": "af-groente",
+              "term": "groente",
+              "translation": "vegetables",
+              "phonetic": "KHROON-teh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "piesang",
+                  "banana"
+                ],
+                [
+                  "lemoen",
+                  "orange"
+                ],
+                [
+                  "aartappel",
+                  "potato"
+                ],
+                [
+                  "ui",
+                  "onion"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“piesang” means:",
+              "answer": "banana",
+              "options": [
+                "banana",
+                "orange",
+                "potato",
+                "onion"
+              ],
+              "vocabId": "af-piesang"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “orange”?",
+              "answer": "lemoen",
+              "options": [
+                "lemoen",
+                "piesang",
+                "aartappel",
+                "ui"
+              ],
+              "vocabId": "af-lemoen"
+            },
+            {
+              "type": "translate",
+              "prompt": "potato",
+              "answer": "aartappel",
+              "accept": [
+                "aartappel"
+              ],
+              "vocabId": "af-aartappel"
+            }
+          ]
+        },
+        {
+          "id": "af-u6-l3",
+          "title": "In the Kitchen",
+          "culturalNote": "Set the table: 'bord' (plate), 'koppie' (cup), 'mes' (knife), 'vurk' (fork), 'lepel' (spoon).",
+          "vocab": [
+            {
+              "id": "af-bord",
+              "term": "bord",
+              "translation": "plate",
+              "phonetic": "bort"
+            },
+            {
+              "id": "af-koppie",
+              "term": "koppie",
+              "translation": "cup",
+              "phonetic": "KOP-pee"
+            },
+            {
+              "id": "af-mes",
+              "term": "mes",
+              "translation": "knife",
+              "phonetic": "mes"
+            },
+            {
+              "id": "af-vurk",
+              "term": "vurk",
+              "translation": "fork",
+              "phonetic": "feerk"
+            },
+            {
+              "id": "af-lepel",
+              "term": "lepel",
+              "translation": "spoon",
+              "phonetic": "LEH-pel"
+            },
+            {
+              "id": "af-sout",
+              "term": "sout",
+              "translation": "salt",
+              "phonetic": "soht"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bord",
+                  "plate"
+                ],
+                [
+                  "koppie",
+                  "cup"
+                ],
+                [
+                  "mes",
+                  "knife"
+                ],
+                [
+                  "vurk",
+                  "fork"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“bord” means:",
+              "answer": "plate",
+              "options": [
+                "plate",
+                "cup",
+                "knife",
+                "fork"
+              ],
+              "vocabId": "af-bord"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “cup”?",
+              "answer": "koppie",
+              "options": [
+                "koppie",
+                "bord",
+                "mes",
+                "vurk"
+              ],
+              "vocabId": "af-koppie"
+            },
+            {
+              "type": "translate",
+              "prompt": "knife",
+              "answer": "mes",
+              "accept": [
+                "mes"
+              ],
+              "vocabId": "af-mes"
+            }
+          ]
+        },
+        {
+          "id": "af-u6-l4",
+          "title": "Bigger Numbers",
+          "culturalNote": "Counting higher: 'elf' (eleven), 'twintig' (twenty), 'honderd' (hundred), 'duisend' (thousand).",
+          "vocab": [
+            {
+              "id": "af-elf",
+              "term": "elf",
+              "translation": "eleven",
+              "phonetic": "elf"
+            },
+            {
+              "id": "af-twintig",
+              "term": "twintig",
+              "translation": "twenty",
+              "phonetic": "TVIN-takh"
+            },
+            {
+              "id": "af-honderd",
+              "term": "honderd",
+              "translation": "hundred",
+              "phonetic": "HON-dert"
+            },
+            {
+              "id": "af-duisend",
+              "term": "duisend",
+              "translation": "thousand",
+              "phonetic": "DOEY-sent"
+            },
+            {
+              "id": "af-baie",
+              "term": "baie",
+              "translation": "many / very",
+              "phonetic": "BUY-eh"
+            },
+            {
+              "id": "af-vyftig",
+              "term": "vyftig",
+              "translation": "fifty",
+              "phonetic": "FAYF-takh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "elf",
+                  "eleven"
+                ],
+                [
+                  "twintig",
+                  "twenty"
+                ],
+                [
+                  "honderd",
+                  "hundred"
+                ],
+                [
+                  "duisend",
+                  "thousand"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“elf” means:",
+              "answer": "eleven",
+              "options": [
+                "eleven",
+                "twenty",
+                "hundred",
+                "thousand"
+              ],
+              "vocabId": "af-elf"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “twenty”?",
+              "answer": "twintig",
+              "options": [
+                "twintig",
+                "elf",
+                "honderd",
+                "duisend"
+              ],
+              "vocabId": "af-twintig"
+            },
+            {
+              "type": "translate",
+              "prompt": "hundred",
+              "answer": "honderd",
+              "accept": [
+                "honderd"
+              ],
+              "vocabId": "af-honderd"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can use action verbs, name food and kitchen items, and count higher."
+    },
+    {
+      "id": "af-u7",
+      "title": "Unit 7: Getting Around & People",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u7-l1",
+          "title": "Transport",
+          "culturalNote": "Ways to travel: 'motor' (car), 'bus' (bus), 'trein' (train), 'fiets' (bicycle).",
+          "vocab": [
+            {
+              "id": "af-motor",
+              "term": "motor",
+              "translation": "car",
+              "phonetic": "MOH-tor"
+            },
+            {
+              "id": "af-bus",
+              "term": "bus",
+              "translation": "bus",
+              "phonetic": "bis"
+            },
+            {
+              "id": "af-trein",
+              "term": "trein",
+              "translation": "train",
+              "phonetic": "trayn"
+            },
+            {
+              "id": "af-fiets",
+              "term": "fiets",
+              "translation": "bicycle",
+              "phonetic": "feets"
+            },
+            {
+              "id": "af-vliegtuig",
+              "term": "vliegtuig",
+              "translation": "airplane",
+              "phonetic": "FLEEKH-toykh"
+            },
+            {
+              "id": "af-boot",
+              "term": "boot",
+              "translation": "boat",
+              "phonetic": "boot"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "motor",
+                  "car"
+                ],
+                [
+                  "bus",
+                  "bus"
+                ],
+                [
+                  "trein",
+                  "train"
+                ],
+                [
+                  "fiets",
+                  "bicycle"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“motor” means:",
+              "answer": "car",
+              "options": [
+                "car",
+                "bus",
+                "train",
+                "bicycle"
+              ],
+              "vocabId": "af-motor"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “bus”?",
+              "answer": "bus",
+              "options": [
+                "bus",
+                "motor",
+                "trein",
+                "fiets"
+              ],
+              "vocabId": "af-bus"
+            },
+            {
+              "type": "translate",
+              "prompt": "train",
+              "answer": "trein",
+              "accept": [
+                "trein"
+              ],
+              "vocabId": "af-trein"
+            }
+          ]
+        },
+        {
+          "id": "af-u7-l2",
+          "title": "People & Family",
+          "culturalNote": "The wider family: 'vriend' (friend), 'oom' (uncle), 'tante' (aunt). 'Man' is husband/man; 'vrou' is wife/woman.",
+          "vocab": [
+            {
+              "id": "af-vriend",
+              "term": "vriend",
+              "translation": "friend",
+              "phonetic": "freent"
+            },
+            {
+              "id": "af-baba",
+              "term": "baba",
+              "translation": "baby",
+              "phonetic": "BAH-bah"
+            },
+            {
+              "id": "af-man",
+              "term": "man",
+              "translation": "husband / man",
+              "phonetic": "mun"
+            },
+            {
+              "id": "af-vrou",
+              "term": "vrou",
+              "translation": "wife / woman",
+              "phonetic": "froh"
+            },
+            {
+              "id": "af-oom",
+              "term": "oom",
+              "translation": "uncle",
+              "phonetic": "oom"
+            },
+            {
+              "id": "af-tante",
+              "term": "tante",
+              "translation": "aunt",
+              "phonetic": "TUN-teh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "vriend",
+                  "friend"
+                ],
+                [
+                  "baba",
+                  "baby"
+                ],
+                [
+                  "man",
+                  "husband / man"
+                ],
+                [
+                  "vrou",
+                  "wife / woman"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“vriend” means:",
+              "answer": "friend",
+              "options": [
+                "friend",
+                "baby",
+                "husband / man",
+                "wife / woman"
+              ],
+              "vocabId": "af-vriend"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “baby”?",
+              "answer": "baba",
+              "options": [
+                "baba",
+                "vriend",
+                "man",
+                "vrou"
+              ],
+              "vocabId": "af-baba"
+            },
+            {
+              "type": "translate",
+              "prompt": "husband / man",
+              "answer": "man",
+              "accept": [
+                "man"
+              ],
+              "vocabId": "af-man"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek hou van my vriend",
+              "en": "I like my friend"
+            }
+          ]
+        },
+        {
+          "id": "af-u7-l3",
+          "title": "Sports & Fun",
+          "culturalNote": "Time to play: 'bal' (ball), 'speel' (to play), 'sing' (to sing), 'dans' (to dance), 'musiek' (music).",
+          "vocab": [
+            {
+              "id": "af-bal",
+              "term": "bal",
+              "translation": "ball",
+              "phonetic": "bul"
+            },
+            {
+              "id": "af-speel",
+              "term": "speel",
+              "translation": "to play",
+              "phonetic": "speyl"
+            },
+            {
+              "id": "af-hardloop",
+              "term": "hardloop",
+              "translation": "to run",
+              "phonetic": "HUT-loop"
+            },
+            {
+              "id": "af-sing",
+              "term": "sing",
+              "translation": "to sing",
+              "phonetic": "sing"
+            },
+            {
+              "id": "af-dans",
+              "term": "dans",
+              "translation": "to dance",
+              "phonetic": "duns"
+            },
+            {
+              "id": "af-musiek",
+              "term": "musiek",
+              "translation": "music",
+              "phonetic": "moo-SEEK"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bal",
+                  "ball"
+                ],
+                [
+                  "speel",
+                  "to play"
+                ],
+                [
+                  "hardloop",
+                  "to run"
+                ],
+                [
+                  "sing",
+                  "to sing"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“bal” means:",
+              "answer": "ball",
+              "options": [
+                "ball",
+                "to play",
+                "to run",
+                "to sing"
+              ],
+              "vocabId": "af-bal"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to play”?",
+              "answer": "speel",
+              "options": [
+                "speel",
+                "bal",
+                "hardloop",
+                "sing"
+              ],
+              "vocabId": "af-speel"
+            },
+            {
+              "type": "translate",
+              "prompt": "to run",
+              "answer": "hardloop",
+              "accept": [
+                "hardloop"
+              ],
+              "vocabId": "af-hardloop"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek hou van musiek",
+              "en": "I like music"
+            }
+          ]
+        },
+        {
+          "id": "af-u7-l4",
+          "title": "Helpful Phrases",
+          "culturalNote": "Handy phrases: 'Jammer' (sorry), 'Ek verstaan nie' (I don't understand), 'Praat jy Engels?' (Do you speak English?).",
+          "vocab": [
+            {
+              "id": "af-jammer-u7",
+              "term": "jammer",
+              "translation": "sorry",
+              "phonetic": "YUM-mer"
+            },
+            {
+              "id": "af-geenprobleem",
+              "term": "geen probleem",
+              "translation": "no problem",
+              "phonetic": "kheyn proh-BLEEM"
+            },
+            {
+              "id": "af-stadig",
+              "term": "stadig",
+              "translation": "slowly",
+              "phonetic": "STAH-dikh"
+            },
+            {
+              "id": "af-ekverstaannie",
+              "term": "ek verstaan nie",
+              "translation": "I don't understand",
+              "phonetic": "ek fer-STAAN nee"
+            },
+            {
+              "id": "af-praatjyengels",
+              "term": "praat jy Engels?",
+              "translation": "do you speak English?",
+              "phonetic": "praat yay EHNG-els"
+            },
+            {
+              "id": "af-helpmyasseblief",
+              "term": "help my asseblief",
+              "translation": "please help me",
+              "phonetic": "help may ah-seh-BLEEF"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "jammer",
+                  "sorry"
+                ],
+                [
+                  "geen probleem",
+                  "no problem"
+                ],
+                [
+                  "stadig",
+                  "slowly"
+                ],
+                [
+                  "ek verstaan nie",
+                  "I don't understand"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“jammer” means:",
+              "answer": "sorry",
+              "options": [
+                "sorry",
+                "no problem",
+                "slowly",
+                "I don't understand"
+              ],
+              "vocabId": "af-jammer-u7"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “no problem”?",
+              "answer": "geen probleem",
+              "options": [
+                "geen probleem",
+                "jammer",
+                "stadig",
+                "ek verstaan nie"
+              ],
+              "vocabId": "af-geenprobleem"
+            },
+            {
+              "type": "translate",
+              "prompt": "slowly",
+              "answer": "stadig",
+              "accept": [
+                "stadig"
+              ],
+              "vocabId": "af-stadig"
+            }
+          ]
+        }
+      ],
+      "canDo": "I can talk about transport, people and sport, and use helpful phrases."
+    },
+    {
+      "id": "af-u8",
+      "title": "Unit 8: In the Kitchen",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u8-l1",
+          "title": "Food extras",
+          "culturalNote": "Everyday kitchen staples you'll hear at any Afrikaans table.",
+          "vocab": [
+            {
+              "id": "af-kaas",
+              "term": "kaas",
+              "translation": "cheese",
+              "phonetic": "kaas"
+            },
+            {
+              "id": "af-eier",
+              "term": "eier",
+              "translation": "egg",
+              "phonetic": "AY-er"
+            },
+            {
+              "id": "af-botter",
+              "term": "botter",
+              "translation": "butter",
+              "phonetic": "BOT-ter"
+            },
+            {
+              "id": "af-rys",
+              "term": "rys",
+              "translation": "rice",
+              "phonetic": "rays"
+            },
+            {
+              "id": "af-suiker",
+              "term": "suiker",
+              "translation": "sugar",
+              "phonetic": "SOEY-ker"
+            },
+            {
+              "id": "af-vis",
+              "term": "vis",
+              "translation": "fish",
+              "phonetic": "fis"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kaas",
+                  "cheese"
+                ],
+                [
+                  "eier",
+                  "egg"
+                ],
+                [
+                  "botter",
+                  "butter"
+                ],
+                [
+                  "rys",
+                  "rice"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kaas” means:",
+              "answer": "cheese",
+              "options": [
+                "cheese",
+                "egg",
+                "butter",
+                "rice"
+              ],
+              "vocabId": "af-kaas"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “egg”?",
+              "answer": "eier",
+              "options": [
+                "eier",
+                "kaas",
+                "botter",
+                "rys"
+              ],
+              "vocabId": "af-eier"
+            },
+            {
+              "type": "translate",
+              "prompt": "butter",
+              "answer": "botter",
+              "accept": [
+                "botter"
+              ],
+              "vocabId": "af-botter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u9",
+      "title": "Unit 9: Around the House",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u9-l1",
+          "title": "House things",
+          "culturalNote": "Naming what's in and around the home.",
+          "vocab": [
+            {
+              "id": "af-kas",
+              "term": "kas",
+              "translation": "cupboard",
+              "phonetic": "kus"
+            },
+            {
+              "id": "af-sleutel",
+              "term": "sleutel",
+              "translation": "key",
+              "phonetic": "SLUH-tel"
+            },
+            {
+              "id": "af-mat",
+              "term": "mat",
+              "translation": "mat",
+              "phonetic": "mut"
+            },
+            {
+              "id": "af-lig",
+              "term": "lig",
+              "translation": "light",
+              "phonetic": "likh"
+            },
+            {
+              "id": "af-muur",
+              "term": "muur",
+              "translation": "wall",
+              "phonetic": "meer"
+            },
+            {
+              "id": "af-vloer",
+              "term": "vloer",
+              "translation": "floor",
+              "phonetic": "floor"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kas",
+                  "cupboard"
+                ],
+                [
+                  "sleutel",
+                  "key"
+                ],
+                [
+                  "mat",
+                  "mat"
+                ],
+                [
+                  "lig",
+                  "light"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kas” means:",
+              "answer": "cupboard",
+              "options": [
+                "cupboard",
+                "key",
+                "mat",
+                "light"
+              ],
+              "vocabId": "af-kas"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “key”?",
+              "answer": "sleutel",
+              "options": [
+                "sleutel",
+                "kas",
+                "mat",
+                "lig"
+              ],
+              "vocabId": "af-sleutel"
+            },
+            {
+              "type": "translate",
+              "prompt": "mat",
+              "answer": "mat",
+              "accept": [
+                "mat"
+              ],
+              "vocabId": "af-mat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u10",
+      "title": "Unit 10: Weather",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u10-l1",
+          "title": "The weather",
+          "culturalNote": "Small talk about the weather is universal.",
+          "vocab": [
+            {
+              "id": "af-reen",
+              "term": "reen",
+              "translation": "rain",
+              "phonetic": "RAY-en"
+            },
+            {
+              "id": "af-son",
+              "term": "son",
+              "translation": "sun",
+              "phonetic": "son"
+            },
+            {
+              "id": "af-wolk",
+              "term": "wolk",
+              "translation": "cloud",
+              "phonetic": "volk"
+            },
+            {
+              "id": "af-wind",
+              "term": "wind",
+              "translation": "wind",
+              "phonetic": "vint"
+            },
+            {
+              "id": "af-warm",
+              "term": "warm",
+              "translation": "warm",
+              "phonetic": "vurm"
+            },
+            {
+              "id": "af-sneeu",
+              "term": "sneeu",
+              "translation": "snow",
+              "phonetic": "SNEE-oo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "reen",
+                  "rain"
+                ],
+                [
+                  "son",
+                  "sun"
+                ],
+                [
+                  "wolk",
+                  "cloud"
+                ],
+                [
+                  "wind",
+                  "wind"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“reen” means:",
+              "answer": "rain",
+              "options": [
+                "rain",
+                "sun",
+                "cloud",
+                "wind"
+              ],
+              "vocabId": "af-reen"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “sun”?",
+              "answer": "son",
+              "options": [
+                "son",
+                "reen",
+                "wolk",
+                "wind"
+              ],
+              "vocabId": "af-son"
+            },
+            {
+              "type": "translate",
+              "prompt": "cloud",
+              "answer": "wolk",
+              "accept": [
+                "wolk"
+              ],
+              "vocabId": "af-wolk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u11",
+      "title": "Unit 11: Describing Things",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u11-l1",
+          "title": "Common adjectives",
+          "culturalNote": "Adjectives come before the noun, like English: 'n groot huis (a big house).",
+          "vocab": [
+            {
+              "id": "af-groot",
+              "term": "groot",
+              "translation": "big",
+              "phonetic": "khroot"
+            },
+            {
+              "id": "af-klein",
+              "term": "klein",
+              "translation": "small",
+              "phonetic": "klayn"
+            },
+            {
+              "id": "af-goed",
+              "term": "goed",
+              "translation": "good",
+              "phonetic": "khoot"
+            },
+            {
+              "id": "af-sleg",
+              "term": "sleg",
+              "translation": "bad",
+              "phonetic": "slekh"
+            },
+            {
+              "id": "af-mooi",
+              "term": "mooi",
+              "translation": "pretty",
+              "phonetic": "moy"
+            },
+            {
+              "id": "af-nuut",
+              "term": "nuut",
+              "translation": "new",
+              "phonetic": "neet"
+            },
+            {
+              "id": "af-oud",
+              "term": "oud",
+              "translation": "old",
+              "phonetic": "oht"
+            },
+            {
+              "id": "af-vinnig",
+              "term": "vinnig",
+              "translation": "fast",
+              "phonetic": "FIN-nikh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "groot",
+                  "big"
+                ],
+                [
+                  "klein",
+                  "small"
+                ],
+                [
+                  "goed",
+                  "good"
+                ],
+                [
+                  "sleg",
+                  "bad"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“groot” means:",
+              "answer": "big",
+              "options": [
+                "big",
+                "small",
+                "good",
+                "bad"
+              ],
+              "vocabId": "af-groot"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “small”?",
+              "answer": "klein",
+              "options": [
+                "klein",
+                "groot",
+                "goed",
+                "sleg"
+              ],
+              "vocabId": "af-klein"
+            },
+            {
+              "type": "translate",
+              "prompt": "good",
+              "answer": "goed",
+              "accept": [
+                "goed"
+              ],
+              "vocabId": "af-goed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u12",
+      "title": "Unit 12: More Verbs",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u12-l1",
+          "title": "Everyday actions",
+          "culturalNote": "Remember: Afrikaans verbs don't change with the subject.",
+          "vocab": [
+            {
+              "id": "af-staan",
+              "term": "staan",
+              "translation": "to stand",
+              "phonetic": "staan"
+            },
+            {
+              "id": "af-sit",
+              "term": "sit",
+              "translation": "to sit",
+              "phonetic": "sit"
+            },
+            {
+              "id": "af-slaap",
+              "term": "slaap",
+              "translation": "to sleep",
+              "phonetic": "slaap"
+            },
+            {
+              "id": "af-lees",
+              "term": "lees",
+              "translation": "to read",
+              "phonetic": "leys"
+            },
+            {
+              "id": "af-skryf",
+              "term": "skryf",
+              "translation": "to write",
+              "phonetic": "skrayf"
+            },
+            {
+              "id": "af-betaal",
+              "term": "betaal",
+              "translation": "to pay",
+              "phonetic": "beh-TAAL"
+            },
+            {
+              "id": "af-neem",
+              "term": "neem",
+              "translation": "to take",
+              "phonetic": "neym"
+            },
+            {
+              "id": "af-maak",
+              "term": "maak",
+              "translation": "to make",
+              "phonetic": "maak"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "staan",
+                  "to stand"
+                ],
+                [
+                  "sit",
+                  "to sit"
+                ],
+                [
+                  "slaap",
+                  "to sleep"
+                ],
+                [
+                  "lees",
+                  "to read"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“staan” means:",
+              "answer": "to stand",
+              "options": [
+                "to stand",
+                "to sit",
+                "to sleep",
+                "to read"
+              ],
+              "vocabId": "af-staan"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to sit”?",
+              "answer": "sit",
+              "options": [
+                "sit",
+                "staan",
+                "slaap",
+                "lees"
+              ],
+              "vocabId": "af-sit"
+            },
+            {
+              "type": "translate",
+              "prompt": "to sleep",
+              "answer": "slaap",
+              "accept": [
+                "slaap"
+              ],
+              "vocabId": "af-slaap"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u13",
+      "title": "Unit 13: Time & Frequency",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u13-l1",
+          "title": "When things happen",
+          "culturalNote": "Words to place things in time.",
+          "vocab": [
+            {
+              "id": "af-uur",
+              "term": "uur",
+              "translation": "hour",
+              "phonetic": "eer"
+            },
+            {
+              "id": "af-week",
+              "term": "week",
+              "translation": "week",
+              "phonetic": "vek"
+            },
+            {
+              "id": "af-maand",
+              "term": "maand",
+              "translation": "month",
+              "phonetic": "maant"
+            },
+            {
+              "id": "af-jaar",
+              "term": "jaar",
+              "translation": "year",
+              "phonetic": "yaar"
+            },
+            {
+              "id": "af-altyd",
+              "term": "altyd",
+              "translation": "always",
+              "phonetic": "UL-tayt"
+            },
+            {
+              "id": "af-nooit",
+              "term": "nooit",
+              "translation": "never",
+              "phonetic": "noyt"
+            },
+            {
+              "id": "af-soms",
+              "term": "soms",
+              "translation": "sometimes",
+              "phonetic": "soms"
+            },
+            {
+              "id": "af-later",
+              "term": "later",
+              "translation": "later",
+              "phonetic": "LAA-ter"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "uur",
+                  "hour"
+                ],
+                [
+                  "week",
+                  "week"
+                ],
+                [
+                  "maand",
+                  "month"
+                ],
+                [
+                  "jaar",
+                  "year"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“uur” means:",
+              "answer": "hour",
+              "options": [
+                "hour",
+                "week",
+                "month",
+                "year"
+              ],
+              "vocabId": "af-uur"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “week”?",
+              "answer": "week",
+              "options": [
+                "week",
+                "uur",
+                "maand",
+                "jaar"
+              ],
+              "vocabId": "af-week"
+            },
+            {
+              "type": "translate",
+              "prompt": "month",
+              "answer": "maand",
+              "accept": [
+                "maand"
+              ],
+              "vocabId": "af-maand"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u14",
+      "title": "Unit 14: Family",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u14-l1",
+          "title": "The family",
+          "culturalNote": "Warm, everyday family words.",
+          "vocab": [
+            {
+              "id": "af-ma-2",
+              "term": "ma",
+              "translation": "mom",
+              "phonetic": "maa"
+            },
+            {
+              "id": "af-pa-2",
+              "term": "pa",
+              "translation": "dad",
+              "phonetic": "paa"
+            },
+            {
+              "id": "af-broer-2",
+              "term": "broer",
+              "translation": "brother",
+              "phonetic": "broor"
+            },
+            {
+              "id": "af-suster-2",
+              "term": "suster",
+              "translation": "sister",
+              "phonetic": "SIS-ter"
+            },
+            {
+              "id": "af-ouma-2",
+              "term": "ouma",
+              "translation": "grandma",
+              "phonetic": "OH-maa"
+            },
+            {
+              "id": "af-oupa-2",
+              "term": "oupa",
+              "translation": "grandpa",
+              "phonetic": "OH-paa"
+            },
+            {
+              "id": "af-kind-2",
+              "term": "kind",
+              "translation": "child",
+              "phonetic": "kint"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ma",
+                  "mom"
+                ],
+                [
+                  "pa",
+                  "dad"
+                ],
+                [
+                  "broer",
+                  "brother"
+                ],
+                [
+                  "suster",
+                  "sister"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ma” means:",
+              "answer": "mom",
+              "options": [
+                "mom",
+                "dad",
+                "brother",
+                "sister"
+              ],
+              "vocabId": "af-ma-2"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “dad”?",
+              "answer": "pa",
+              "options": [
+                "pa",
+                "ma",
+                "broer",
+                "suster"
+              ],
+              "vocabId": "af-pa-2"
+            },
+            {
+              "type": "translate",
+              "prompt": "brother",
+              "answer": "broer",
+              "accept": [
+                "broer"
+              ],
+              "vocabId": "af-broer-2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u15",
+      "title": "Unit 15: More Colours",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u15-l1",
+          "title": "More colours",
+          "culturalNote": "Rounding out the palette.",
+          "vocab": [
+            {
+              "id": "af-pers",
+              "term": "pers",
+              "translation": "purple",
+              "phonetic": "pers"
+            },
+            {
+              "id": "af-grys",
+              "term": "grys",
+              "translation": "grey",
+              "phonetic": "khrays"
+            },
+            {
+              "id": "af-bruin",
+              "term": "bruin",
+              "translation": "brown",
+              "phonetic": "broeyn"
+            },
+            {
+              "id": "af-pienk",
+              "term": "pienk",
+              "translation": "pink",
+              "phonetic": "peenk"
+            },
+            {
+              "id": "af-oranje",
+              "term": "oranje",
+              "translation": "orange",
+              "phonetic": "oh-RUN-yeh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "pers",
+                  "purple"
+                ],
+                [
+                  "grys",
+                  "grey"
+                ],
+                [
+                  "bruin",
+                  "brown"
+                ],
+                [
+                  "pienk",
+                  "pink"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“pers” means:",
+              "answer": "purple",
+              "options": [
+                "purple",
+                "grey",
+                "brown",
+                "pink"
+              ],
+              "vocabId": "af-pers"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “grey”?",
+              "answer": "grys",
+              "options": [
+                "grys",
+                "pers",
+                "bruin",
+                "pienk"
+              ],
+              "vocabId": "af-grys"
+            },
+            {
+              "type": "translate",
+              "prompt": "brown",
+              "answer": "bruin",
+              "accept": [
+                "bruin"
+              ],
+              "vocabId": "af-bruin"
+            }
           ]
         }
       ]
@@ -141,16 +4080,349 @@
       "level": "Beginner",
       "intro": "Two friends say hello. Tap any line to hear it.",
       "lines": [
-        {"t": "Hallo, my naam is Pieter.", "en": "Hello, my name is Pieter."},
-        {"t": "Hallo Pieter. My naam is Anja.", "en": "Hello Pieter. My name is Anja."},
-        {"t": "Hoe gaan dit met jou?", "en": "How are you?"},
-        {"t": "Goed dankie. En met jou?", "en": "Good, thank you. And with you?"},
-        {"t": "Ook goed. Totsiens!", "en": "Also good. Goodbye!"}
+        {
+          "t": "Hallo, my naam is Pieter.",
+          "en": "Hello, my name is Pieter."
+        },
+        {
+          "t": "Hallo Pieter. My naam is Anja.",
+          "en": "Hello Pieter. My name is Anja."
+        },
+        {
+          "t": "Hoe gaan dit met jou?",
+          "en": "How are you?"
+        },
+        {
+          "t": "Goed dankie. En met jou?",
+          "en": "Good, thank you. And with you?"
+        },
+        {
+          "t": "Ook goed. Totsiens!",
+          "en": "Also good. Goodbye!"
+        }
       ],
       "questions": [
-        {"type": "multiple_choice", "prompt": "What is the boy's name?", "answer": "Pieter", "options": ["Pieter", "Anja", "Jan", "Ma"]},
-        {"type": "multiple_choice", "prompt": "\"Totsiens\" means:", "answer": "Goodbye", "options": ["Goodbye", "Hello", "Please", "Thank you"], "vocabId": "af-totsiens"},
-        {"type": "translate", "prompt": "Good, thank you", "answer": "Goed dankie", "accept": ["goed dankie"], "vocabId": "af-goeddankie"}
+        {
+          "type": "multiple_choice",
+          "prompt": "What is the boy's name?",
+          "answer": "Pieter",
+          "options": [
+            "Pieter",
+            "Anja",
+            "Jan",
+            "Ma"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "\"Totsiens\" means:",
+          "answer": "Goodbye",
+          "options": [
+            "Goodbye",
+            "Hello",
+            "Please",
+            "Thank you"
+          ],
+          "vocabId": "af-totsiens"
+        },
+        {
+          "type": "translate",
+          "prompt": "Good, thank you",
+          "answer": "Goed dankie",
+          "accept": [
+            "goed dankie"
+          ],
+          "vocabId": "af-goeddankie"
+        }
+      ]
+    },
+    {
+      "id": "af-r2",
+      "title": "Goeie môre!",
+      "level": "Basic Conversation",
+      "intro": "A friendly morning greeting. Tap any line to hear it.",
+      "lines": [
+        {
+          "t": "Goeie môre! My naam is Pieter.",
+          "en": "Good morning! My name is Pieter."
+        },
+        {
+          "t": "Goeie môre, Pieter. Ek is Lerato.",
+          "en": "Good morning, Pieter. I am Lerato."
+        },
+        {
+          "t": "Hoe gaan dit?",
+          "en": "How are you?"
+        },
+        {
+          "t": "Goed dankie, en jy?",
+          "en": "Well thanks, and you?"
+        },
+        {
+          "t": "Ook goed. Totsiens!",
+          "en": "Also well. Goodbye!"
+        }
+      ],
+      "questions": [
+        {
+          "type": "multiple_choice",
+          "prompt": "What is the man's name?",
+          "answer": "Pieter",
+          "options": [
+            "Pieter",
+            "Lerato",
+            "Jan",
+            "Sipho"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "“Totsiens” means:",
+          "answer": "Goodbye",
+          "options": [
+            "Goodbye",
+            "Hello",
+            "Thank you",
+            "Please"
+          ]
+        },
+        {
+          "type": "multiple_choice",
+          "prompt": "How does Lerato feel?",
+          "answer": "Well",
+          "options": [
+            "Well",
+            "Angry",
+            "Tired",
+            "Sick"
+          ]
+        }
+      ]
+    }
+  ],
+  "grammar": [
+    {
+      "id": "af-g1",
+      "title": "Verbs don't change",
+      "level": "Beginner",
+      "tip": "Good news: Afrikaans verbs do NOT change with the subject. 'loop' (walk) stays 'loop' for everyone — ek loop, jy loop, hy loop, ons loop, hulle loop.",
+      "drills": [
+        {
+          "prompt": "we walk (loop)",
+          "answer": "ons loop",
+          "options": [
+            "ons loop",
+            "ons lope",
+            "ons loper",
+            "ons loopt"
+          ]
+        },
+        {
+          "prompt": "they eat (eet)",
+          "answer": "hulle eet",
+          "options": [
+            "hulle eet",
+            "hulle eten",
+            "hulle eter",
+            "hulle eets"
+          ]
+        },
+        {
+          "prompt": "she drinks (drink)",
+          "answer": "sy drink",
+          "options": [
+            "sy drink",
+            "sy drinkt",
+            "sy drinker",
+            "sy drinks"
+          ]
+        },
+        {
+          "prompt": "I walk (loop)",
+          "answer": "ek loop",
+          "options": [
+            "ek loop",
+            "ek loup",
+            "ek lope",
+            "ek looper"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-g2",
+      "title": "Making plurals (-e / -s)",
+      "level": "Beginner",
+      "tip": "Most Afrikaans plurals add -e or -s: kat → katte, boom → bome, appel → appels.",
+      "drills": [
+        {
+          "prompt": "kat (cat) → cats",
+          "answer": "katte",
+          "options": [
+            "katte",
+            "kats",
+            "katten",
+            "kate"
+          ]
+        },
+        {
+          "prompt": "boom (tree) → trees",
+          "answer": "bome",
+          "options": [
+            "bome",
+            "booms",
+            "bomen",
+            "boome"
+          ]
+        },
+        {
+          "prompt": "hond (dog) → dogs",
+          "answer": "honde",
+          "options": [
+            "honde",
+            "honds",
+            "honden",
+            "hondes"
+          ]
+        },
+        {
+          "prompt": "appel (apple) → apples",
+          "answer": "appels",
+          "options": [
+            "appels",
+            "appele",
+            "appelen",
+            "appeles"
+          ]
+        },
+        {
+          "prompt": "stoel (chair) → chairs",
+          "answer": "stoele",
+          "options": [
+            "stoele",
+            "stoels",
+            "stoelen",
+            "stoeles"
+          ]
+        }
+      ]
+    }
+  ],
+  "dialogues": [
+    {
+      "id": "af-d1",
+      "title": "At the shop",
+      "goal": "Buy bread and ask the price",
+      "level": "Beginner",
+      "turns": [
+        {
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Hallo!",
+          "en": "Hello!"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Greet back",
+          "options": [
+            {
+              "t": "Hallo!",
+              "en": "Hello!",
+              "ok": true
+            },
+            {
+              "t": "Totsiens",
+              "en": "Goodbye",
+              "ok": false
+            },
+            {
+              "t": "Nee",
+              "en": "No",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Hoe kan ek help?",
+          "en": "How can I help?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Say you want bread",
+          "options": [
+            {
+              "t": "Ek wil brood hê",
+              "en": "I want bread",
+              "ok": true
+            },
+            {
+              "t": "Ek wil water hê",
+              "en": "I want water",
+              "ok": false
+            },
+            {
+              "t": "Dankie",
+              "en": "Thank you",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Ja. Nog iets?",
+          "en": "Yes. Anything else?"
+        },
+        {
+          "speaker": "you",
+          "prompt": "Ask the price",
+          "options": [
+            {
+              "t": "Hoeveel kos dit?",
+              "en": "How much does it cost?",
+              "ok": true
+            },
+            {
+              "t": "Waarvandaan kom jy?",
+              "en": "Where are you from?",
+              "ok": false
+            },
+            {
+              "t": "Hoe gaan dit?",
+              "en": "How are you?",
+              "ok": false
+            }
+          ]
+        },
+        {
+          "speaker": "npc",
+          "name": "Winkelier",
+          "t": "Vyf rand.",
+          "en": "Five rand."
+        },
+        {
+          "speaker": "you",
+          "prompt": "Thank them and say goodbye",
+          "options": [
+            {
+              "t": "Dankie, totsiens!",
+              "en": "Thank you, goodbye!",
+              "ok": true
+            },
+            {
+              "t": "Ek is honger",
+              "en": "I'm hungry",
+              "ok": false
+            },
+            {
+              "t": "Help my",
+              "en": "Help me",
+              "ok": false
+            }
+          ]
+        }
       ]
     }
   ]
