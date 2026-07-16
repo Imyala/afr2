@@ -1859,7 +1859,7 @@ function baselineSample() {
   const fillers = all.filter((v) => !anchorSet.has(v.id));
   const monthKey = new Date().toISOString().slice(0, 7);
   let start = 0;
-  for (let i = 0; i < monthKey.length; i++) start = (start * 31 + monthKey.charCodeAt(i)) >>> 0;
+  for (let i = 0; i < monthKey.length; i++) start = (start * 31 + monthKey.charCodeAt(i)) >>> 0; // 31 = small prime used in simple string hashes
   const picked = [];
   for (let i = 0; i < fillers.length && picked.length < 4; i++) picked.push(fillers[(start + i) % fillers.length]);
   return [...anchors.slice(0, 6), ...picked].slice(0, 10);
@@ -2471,7 +2471,7 @@ function renderProgress() {
         <div><span>Baseline (${esc(baseline.date)})</span><div class="pbar"><div style="width:${b}%"></div></div><b>${b}%</b></div>
         <div><span>Re-test (${esc(retest.date)})</span><div class="pbar pbar--green"><div style="width:${r}%"></div></div><b>${r}%</b></div>
       </div>
-      <p class="${delta >= 0 ? 'gain' : 'muted'}">${delta >= 0 ? `📈 +${delta}% improvement — measured on the same anchor items plus a few rotating fillers.` : `${delta}% — keep reviewing daily.`}</p>
+      <p class="${delta >= 0 ? 'gain' : 'muted'}">${delta >= 0 ? `📈 ▲ +${delta}% improvement — measured on the same anchor items plus a few rotating fillers.` : `📉 ▼ ${Math.abs(delta)}% right now — keep reviewing daily.`}</p>
     </div>`;
   } else if (baseline) {
     compare = `<div class="proof">

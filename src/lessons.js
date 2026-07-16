@@ -184,6 +184,7 @@ export function checkAnswer(ex, response) {
 // ---------------------------------------------------------------------------
 
 const shuffle = (a) => a.map((v) => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
+const REPAIR_BOOSTER_ACCURACY_THRESHOLD = 0.8;
 
 function distractors(target, pool, n, key) {
   const seen = new Set([normalize(target[key])]);
@@ -360,11 +361,11 @@ function allPhraseEns(course) {
 function skillNeeds(recentTypes = []) {
   const total = recentTypes.length || 1;
   const count = (types) => recentTypes.filter((t) => types.includes(t)).length;
-  const passive = count(['multiple_choice', 'fill_blank', 'translate']);
+  const passiveRecall = count(['multiple_choice', 'fill_blank', 'translate']);
   const listening = count(['listen']);
   const speaking = count(['speak']);
   const sentence = count(['word_bank']);
-  const overReliant = passive / total >= 0.65;
+  const overReliant = passiveRecall / total >= 0.65;
   return {
     listen: overReliant && listening / total < 0.12,
     speak: overReliant && speaking / total < 0.12,
@@ -477,7 +478,7 @@ export function buildReviewSession(course, dueIds, max = 15, opts = {}) {
   });
   const boosterIds = repairMode
     ? shuffle(Object.entries(itemStats)
-      .filter(([id, it]) => !dueSet.has(id) && byId[id] && it && it.seen > 0 && (it.mastered || (it.correct / Math.max(1, it.seen)) >= 0.8))
+      .filter(([id, it]) => !dueSet.has(id) && byId[id] && it && it.seen > 0 && (it.mastered || (it.correct / Math.max(1, it.seen)) >= REPAIR_BOOSTER_ACCURACY_THRESHOLD))
       .map(([id]) => id))
       .slice(0, Math.max(2, max - dueLimit))
     : [];

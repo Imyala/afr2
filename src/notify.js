@@ -46,7 +46,7 @@ function reminderCopy(state) {
       type: 'win_back',
       title: 'A gentle restart is ready 🌱',
       body: state.dueCount
-        ? `No pressure — just do a small confidence-building review and pick the habit back up.`
+        ? 'No pressure - just do a small confidence-building review and pick the habit back up.'
         : 'A few calm minutes today will get the habit moving again.',
     };
   }
