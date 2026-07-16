@@ -1853,9 +1853,10 @@ function baselineSample() {
   let anchorIds = anchorsByLang[code];
   if (!anchorIds || !anchorIds.length) {
     const want = Math.min(6, all.length);
+    const step = want > 1 ? (all.length - 1) / (want - 1) : 0;
     anchorIds = [];
     for (let i = 0; i < want; i++) {
-      anchorIds.push(all[Math.floor((i * all.length) / want)].id);
+      anchorIds.push(all[Math.round(i * step)].id);
     }
     anchorsByLang[code] = [...new Set(anchorIds)];
     store.save();
@@ -1863,9 +1864,9 @@ function baselineSample() {
   const anchorSet = new Set(anchorIds);
   const anchors = anchorIds.map((id) => idx[id]).filter(Boolean);
   const fillers = all.filter((v) => !anchorSet.has(v.id));
-  const seed = new Date().toISOString().slice(0, 7);
+  const monthKey = new Date().toISOString().slice(0, 7);
   let start = 0;
-  for (let i = 0; i < seed.length; i++) start = (start * 31 + seed.charCodeAt(i)) >>> 0;
+  for (let i = 0; i < monthKey.length; i++) start = (start * 31 + monthKey.charCodeAt(i)) >>> 0;
   const picked = [];
   for (let i = 0; i < fillers.length && picked.length < 4; i++) picked.push(fillers[(start + i) % fillers.length]);
   return [...anchors.slice(0, 6), ...picked].slice(0, 10);
@@ -2132,7 +2133,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // "Continue" button is ALWAYS present so nobody is racing a timer to read
   // the feedback — tapping it just jumps the queued auto-advance forward.
   const instant = ok && !typoNote;
-  const delay = feedbackDelay(instant ? 1100 : ok ? 1800 : 2800, `${title} ${correctText || ''} ${ex.meaning || ''}`);
+  const autoAdvanceDelay = feedbackDelay(instant ? 1100 : ok ? 1800 : 2800, `${title} ${correctText || ''} ${ex.meaning || ''}`);
   foot.innerHTML = `
     <div class="fb">
       <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52 })}</span>
@@ -2152,7 +2153,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
     advanced = true;
     advance(ok, ex);
   };
-  setTimeout(go, delay);
+  setTimeout(go, autoAdvanceDelay);
   const cont = foot.querySelector('#continueBtn');
   if (cont) cont.addEventListener('click', () => { sound.tap(); go(); });
   // lock inputs

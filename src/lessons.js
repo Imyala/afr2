@@ -446,6 +446,7 @@ export function buildReviewSession(course, dueIds, max = 15, opts = {}) {
   const phrases = phraseIndex(course);
   const pool = Object.values(byId);
   const enPool = allPhraseEns(course);
+  const dueSet = new Set(dueIds);
   const needs = skillNeeds(opts.recentTypes || []);
   const itemStats = opts.itemStats || {};
   const repairMode = !!opts.repairMode;
@@ -476,7 +477,7 @@ export function buildReviewSession(course, dueIds, max = 15, opts = {}) {
   });
   const boosterIds = repairMode
     ? shuffle(Object.entries(itemStats)
-      .filter(([id, it]) => !dueIds.includes(id) && byId[id] && it && it.seen > 0 && (it.mastered || (it.correct / Math.max(1, it.seen)) >= 0.8))
+      .filter(([id, it]) => !dueSet.has(id) && byId[id] && it && it.seen > 0 && (it.mastered || (it.correct / Math.max(1, it.seen)) >= 0.8))
       .map(([id]) => id))
       .slice(0, Math.max(2, max - dueLimit))
     : [];
