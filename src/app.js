@@ -1906,9 +1906,10 @@ function renderWordBank(ex) {
 // Feynman technique: "teach it back". No typing to grade — self-rated
 // honestly, like Speaking, and never costs a heart, so it stays low-stakes.
 function renderExplain(ex) {
-  return `<h2 class="ex__q">🦫 Teach Themba</h2>
+  return `<h2 class="ex__q"><span aria-hidden="true">🦫</span> Teach Themba</h2>
     <p class="ex__hint muted">Themba half-remembers <strong>${esc(ex.prompt)}</strong> — explain it in your own words. When would you use it? What does it remind you of?</p>
     <textarea class="ex__input ex__textarea" id="explainInput" rows="3" placeholder="Explain it to Themba…"></textarea>
+    <p class="ex__hint muted" id="explainNudge" hidden>Write a sentence or two first — then we'll ask you to rate it.</p>
     <button class="btn btn--primary" id="explainSubmit">I'm done explaining</button>
     <div class="explain-rate" id="explainRate" hidden>
       <p class="muted">Be honest — could you really explain it?</p>
@@ -1970,9 +1971,11 @@ function wireExercise(ex, node) {
     const input = node.querySelector('#explainInput');
     const submitBtn = node.querySelector('#explainSubmit');
     const rate = node.querySelector('#explainRate');
+    const nudge = node.querySelector('#explainNudge');
     input.focus();
     submitBtn.addEventListener('click', () => {
-      if (!input.value.trim()) return;
+      if (!input.value.trim()) { nudge.hidden = false; input.focus(); return; }
+      nudge.hidden = true;
       sound.tap();
       submitBtn.hidden = true;
       input.disabled = true;

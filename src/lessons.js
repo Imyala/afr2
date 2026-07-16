@@ -229,8 +229,7 @@ export function genExplainPrompt(v) {
 // Returns null if there aren't enough subject/verb combinations to hold back
 // one as the "you try it" item.
 export function genPatternInquiry(frames) {
-  const combos = [];
-  for (const subj of frames.subjects) for (const verb of frames.verbs) combos.push({ subj, verb });
+  const combos = frames.subjects.flatMap((subj) => frames.verbs.map((verb) => ({ subj, verb })));
   if (combos.length < 4) return null;
   const picks = shuffle(combos).slice(0, 4);
   const examples = picks.slice(0, 3).map(({ subj, verb }) => ({ en: `${subj.en} ${verb.en}`, chunk: frameChunk(frames, subj, verb) }));
