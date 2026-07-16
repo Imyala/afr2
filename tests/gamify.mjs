@@ -16,6 +16,7 @@ G.ensureWeek(store);
 const quests = G.questDefs(store);
 ok(quests.length === 3, 'three daily quests generated');
 ok(quests.every((q) => q.text && q.goal >= 1), 'quests have text + goal');
+ok(store.lang().quests.defs.length === 3, 'daily quest definitions are snapshotted for the day');
 
 // earning XP advances the league and any XP quest
 const before = store.lang().league.weeklyXp;
@@ -32,6 +33,9 @@ ok(G.gems(store) >= gemsBefore, 'gems never decrease on a positive event');
 store.completeLesson('zu-u1-l1', 3);
 const unlocked = G.checkAchievements(store);
 ok(store.state.achievements['first_lesson'], 'first_lesson badge unlocks after a lesson');
+store.lang().completedUnits = ['zu-u1'];
+G.checkAchievements(store);
+ok(store.state.achievements['unit_1'], 'unit-based badge unlocks from completed units');
 
 // polyglot: study a second language
 store.setActiveLang('xh');
@@ -65,6 +69,13 @@ store.lang().league.weeklyXp = 999;       // beat the bronze target
 store.lang().league.weekKey = '2000-W01'; // force a stale week so rollover settles
 G.ensureWeek(store);
 ok(store.lang().league.tier === 1, 'league promotes when weekly target is met');
+
+// recovery quest support after a missed day
+store.reset();
+store.setActiveLang('zu');
+store.lang().lastStudyDay = new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
+G.ensureDaily(store);
+ok(G.questDefs(store).some((q) => q.id === 'q_recovery'), 'recovery quest appears after a missed day');
 
 // --- living leaderboard ---
 store.reset();

@@ -135,18 +135,16 @@ for (const c of ['zu', 'xh', 'af']) {
       if (ex.type === 'match') ok(ex.pairs.length >= 3, `${l.id} match has >=3 pairs`);
     }
     // generated sessions (run several times because generation is randomised):
-    // - never contain audio exercises
     // - quiz EVERY vocab word
     // - give each word a recognition exposure before its production exposure
     // - produce valid multiple-choice (answer present, options unique)
     for (let iter = 0; iter < 25; iter++) {
       const session = buildLessonSession(l, course);
-      if (session.some((ex) => ex.type === 'listen' || ex.type === 'speak')) { ok(false, `${l.id} generated audio exercise`); break; }
       const recAt = {}, prodAt = {}, covered = new Set();
       session.forEach((ex, i) => {
         for (const vid of exerciseVocabIds(ex, l)) {
           covered.add(vid);
-          if (ex.type === 'translate') { if (prodAt[vid] === undefined) prodAt[vid] = i; }
+          if (ex.type === 'translate' || ex.type === 'speak') { if (prodAt[vid] === undefined) prodAt[vid] = i; }
           else if (recAt[vid] === undefined) recAt[vid] = i;
         }
         if (ex.type === 'multiple_choice') {
@@ -248,6 +246,24 @@ for (const c of ['zu', 'xh', 'af']) {
   const sp = sentencePool(course);
   ok(sp.length >= 10, `${c} sentence pool has enough sentences (${sp.length})`);
   ok(sp.every((s) => s.t && s.en), `${c} sentence pool entries have t+en`);
+
+  const audioLesson = course.units.flatMap((u) => u.lessons).find((l) => (l.exercises || []).some((e) => e.type === 'listen' || e.type === 'speak'));
+  if (audioLesson) {
+    const balanced = buildLessonSession(audioLesson, course, [], { recentTypes: Array(16).fill('multiple_choice').concat(Array(8).fill('translate')) });
+    ok(balanced.some((ex) => ex.type === 'listen'), `${audioLesson.id} can surface authored listen items`);
+    ok(balanced.some((ex) => ex.type === 'speak'), `${audioLesson.id} can surface authored speak items`);
+  }
+
+  const fakeIds = Array.from(vocabIds).slice(0, 8);
+  const fakeStats = Object.fromEntries(fakeIds.map((id, i) => [id, {
+    seen: 4, correct: i < 6 ? 4 : 2, mastered: i < 2,
+  }]));
+  const repair = buildReviewSession(course, Object.keys(fakeStats).slice(0, 4), 10, {
+    recentTypes: Array(12).fill('multiple_choice'),
+    itemStats: fakeStats,
+    repairMode: true,
+  });
+  ok(repair.some((ex) => ex._repairBoost), `${c} repair mode adds confidence-building boosters`);
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

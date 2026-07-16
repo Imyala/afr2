@@ -178,8 +178,9 @@ export function checkAnswer(ex, response) {
 // in repetition (each word gets a recognition AND a production exposure, spaced
 // apart), and keeps things from feeling scripted (types, question direction,
 // distractors and order are randomised every run). Hand-authored contextual
-// fill-in-the-blank items are mixed in as flavour. On-device speech I/O for SA
-// languages is unreliable, so listen/speak items are never generated.
+// items are mixed in as flavour, and the session builder can bias toward
+// listening, speaking and sentence-building when a learner has leaned too hard
+// on multiple-choice / typing lately.
 // ---------------------------------------------------------------------------
 
 const shuffle = (a) => a.map((v) => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
@@ -206,9 +207,18 @@ function genRecognition(v, pool) {
   return { type: 'multiple_choice', prompt: `How do you say “${v.translation}”?`, answer: v.term, options: opts, vocabId: v.id };
 }
 
+function genListen(v, pool) {
+  const opts = shuffle([v.term, ...distractors(v, pool, 3, 'term').map((d) => d.term)]);
+  return { type: 'listen', prompt: 'Tap what you hear', text: v.term, answer: v.term, options: opts, meaning: v.translation, vocabId: v.id };
+}
+
 // Production: type the target word from its meaning.
 function genProduction(v) {
   return { type: 'translate', prompt: v.translation, answer: v.term, accept: [v.term.toLowerCase()], vocabId: v.id };
+}
+
+function genSpeak(v) {
+  return { type: 'speak', text: v.term, meaning: v.translation, vocabId: v.id };
 }
 
 // Feynman technique: "teach it back". Rather than recognising or typing the
@@ -347,12 +357,28 @@ function allPhraseEns(course) {
   return out;
 }
 
+function skillNeeds(recentTypes = []) {
+  const total = recentTypes.length || 1;
+  const count = (types) => recentTypes.filter((t) => types.includes(t)).length;
+  const passive = count(['multiple_choice', 'fill_blank', 'translate']);
+  const listening = count(['listen']);
+  const speaking = count(['speak']);
+  const sentence = count(['word_bank']);
+  const overReliant = passive / total >= 0.65;
+  return {
+    listen: overReliant && listening / total < 0.12,
+    speak: overReliant && speaking / total < 0.12,
+    sentence: overReliant && sentence / total < 0.12,
+  };
+}
+
 // Build a lesson session: covers every word with recognition + production,
 // optionally warmed up with a couple of due words from earlier lessons.
-export function buildLessonSession(lesson, course = null, dueIds = []) {
+export function buildLessonSession(lesson, course = null, dueIds = [], opts = {}) {
   const vocab = lesson.vocab || [];
   const byId = course ? vocabIndex(course) : Object.fromEntries(vocab.map((v) => [v.id, v]));
   const pool = Object.values(byId);
+  const needs = skillNeeds(opts.recentTypes || []);
 
   // recognition phase: one intro match over a random subset, MC for the rest
   const matchWords = shuffle(vocab).slice(0, Math.min(4, vocab.length));
@@ -364,14 +390,19 @@ export function buildLessonSession(lesson, course = null, dueIds = []) {
   const production = vocab.map((v) => genProduction(v));
 
   // hand-authored contextual items: sample across every renderable type so
-  // authored content actually reaches learners (match/listen/speak authored
-  // items are covered by the generator / disabled audio modes instead)
-  const RENDERABLE = ['multiple_choice', 'fill_blank', 'translate'];
-  const authored = shuffle((lesson.exercises || []).filter((e) => RENDERABLE.includes(e.type))).slice(0, 4);
+  // authored listen/speak content actually reaches learners instead of being
+  // filtered out at build time.
+  const RENDERABLE = ['multiple_choice', 'fill_blank', 'translate', 'listen', 'speak'];
+  const authoredAll = shuffle((lesson.exercises || []).filter((e) => RENDERABLE.includes(e.type)));
+  const required = ['listen', 'speak']
+    .filter((t) => needs[t])
+    .map((t) => authoredAll.find((e) => e.type === t))
+    .filter(Boolean);
+  const authored = [...new Set([...required, ...authoredAll])].slice(0, 4 + (needs.sentence ? 1 : 0));
   // authored typed items are production, so they belong in the production
   // block — keeping the every-word rule "recognition before production"
-  const flavour = authored.filter((e) => e.type !== 'translate');
-  const flavourProd = authored.filter((e) => e.type === 'translate');
+  const flavour = authored.filter((e) => e.type !== 'translate' && e.type !== 'speak');
+  const flavourProd = authored.filter((e) => e.type === 'translate' || e.type === 'speak');
 
   // sentence practice: 1-2 items from any authored phrases, varied across three
   // shapes (build-the-sentence, sentence meaning, sentence fill-the-blank). Kept
@@ -384,8 +415,9 @@ export function buildLessonSession(lesson, course = null, dueIds = []) {
   const enPool = course ? allPhraseEns(course) : phrases.map((p) => p.en);
   const byTerm = {};
   for (const v of pool) if (!/\s/.test(v.term)) byTerm[normalize(v.term)] = v.id;
-  const wordbanks = shuffle(phrases).slice(0, Math.min(2, phrases.length)).map((p) => {
+  const wordbanks = shuffle(phrases).slice(0, Math.min(needs.sentence ? 3 : 2, phrases.length)).map((p) => {
     const r = Math.random();
+    if (needs.sentence && r < 0.5) return genWordBank(p, pool);
     if (r < 0.34) return genWordBank(p, pool);
     if (r < 0.67 && enPool.length >= 2) return genPhraseChoice(p, enPool);
     return genPhraseBlank(p, pool, byTerm);
@@ -409,33 +441,47 @@ export function buildLessonSession(lesson, course = null, dueIds = []) {
 
 // Build a review session from due ids (vocab AND phrase chunks), with
 // randomised, varied items.
-export function buildReviewSession(course, dueIds, max = 15) {
+export function buildReviewSession(course, dueIds, max = 15, opts = {}) {
   const byId = vocabIndex(course);
   const phrases = phraseIndex(course);
   const pool = Object.values(byId);
   const enPool = allPhraseEns(course);
+  const needs = skillNeeds(opts.recentTypes || []);
+  const itemStats = opts.itemStats || {};
+  const repairMode = !!opts.repairMode;
+  const dueLimit = repairMode ? Math.max(6, Math.min(max - 2, Math.ceil(max * 0.55))) : max;
 
   // due phrase chunks: up to a third of the session, reviewed as sentences
   // (build-the-sentence or sentence-meaning), crediting the chunk AND its words
-  const duePhrases = shuffle(dueIds.filter((id) => phrases[id])).slice(0, Math.floor(max / 3));
+  const duePhrases = shuffle(dueIds.filter((id) => phrases[id])).slice(0, Math.floor(dueLimit / 3));
   const phraseExs = duePhrases.map((id) => {
     const p = phrases[id];
     const r = Math.random();
     // three shapes: build-the-sentence, TYPE the sentence (production — the
     // only route to phrase mastery), or sentence meaning
-    const ex = r < 0.4 ? genWordBank(p, pool)
+    const ex = (needs.sentence && r < 0.55) || r < 0.4 ? genWordBank(p, pool)
       : r < 0.7 ? { type: 'translate', prompt: p.en, answer: p.t, accept: [p.t.toLowerCase()] }
         : (enPool.length >= 2 ? genPhraseChoice(p, enPool) : genWordBank(p, pool));
     return { ...ex, phraseId: id, vocabIds: memberVocabIds(p.t, byId), _review: true };
   });
 
-  const picked = shuffle(dueIds.map((id) => byId[id]).filter(Boolean)).slice(0, max - phraseExs.length);
+  const picked = shuffle(dueIds.map((id) => byId[id]).filter(Boolean)).slice(0, dueLimit - phraseExs.length);
   // production is the stronger test, so bias towards it but keep variety
-  const wordExs = picked.map((v) => {
-    const ex = Math.random() < 0.6 ? genProduction(v) : genRecognition(v, pool);
+  const wordExs = picked.map((v, i) => {
+    let ex = null;
+    if (needs.listen && i % 4 === 0) ex = genListen(v, pool);
+    else if (needs.speak && i % 4 === 1) ex = genSpeak(v);
+    else ex = Math.random() < 0.55 ? genProduction(v) : Math.random() < 0.75 ? genRecognition(v, pool) : genListen(v, pool);
     return { ...ex, _review: true };
   });
-  return shuffle([...wordExs, ...phraseExs]);
+  const boosterIds = repairMode
+    ? shuffle(Object.entries(itemStats)
+      .filter(([id, it]) => !dueIds.includes(id) && byId[id] && it && it.seen > 0 && (it.mastered || (it.correct / Math.max(1, it.seen)) >= 0.8))
+      .map(([id]) => id))
+      .slice(0, Math.max(2, max - dueLimit))
+    : [];
+  const boosters = boosterIds.map((id) => ({ ...genRecognition(byId[id], pool), _review: true, _repairBoost: true }));
+  return shuffle([...wordExs, ...phraseExs, ...boosters]).slice(0, max);
 }
 
 // Map exercises to the item ids they exercise (for SRS crediting): explicit

@@ -32,6 +32,8 @@ export const QUEST_POOL = [
   { id: 'q_review', text: 'Finish a review session', goal: 1, event: 'review', gems: 15, icon: '🔁' },
   { id: 'q_perfect', text: 'Get a perfect lesson', goal: 1, event: 'perfect', gems: 15, icon: '🎯' },
   { id: 'q_reading', text: 'Read a story', goal: 1, event: 'reading', gems: 15, icon: '📖' },
+  { id: 'q_listen', text: 'Do a listening session', goal: 1, event: 'listening', gems: 12, icon: '👂' },
+  { id: 'q_speak', text: 'Do a speaking session', goal: 1, event: 'speaking', gems: 12, icon: '🎤' },
 ];
 
 export const ACHIEVEMENTS = [
@@ -44,6 +46,9 @@ export const ACHIEVEMENTS = [
   { id: 'perfect_5', name: 'Sharpshooter', icon: '🎯', desc: '5 perfect lessons', test: (c) => (c.lang.perfectLessons || 0) >= 5 },
   { id: 'reader', name: 'Bookworm', icon: '📖', desc: 'Read your first story', test: (c) => (c.lang.readingsCompleted || 0) >= 1 },
   { id: 'reader_5', name: 'Storyteller', icon: '📚', desc: 'Read 5 stories', test: (c) => (c.lang.readingsCompleted || 0) >= 5 },
+  { id: 'unit_1', name: 'Basics Complete', icon: '🧩', desc: 'Finish your first full unit', test: (c) => (c.lang.completedUnits || []).length >= 1 },
+  { id: 'unit_2', name: 'Conversation Ready', icon: '💬', desc: 'Finish two full units', test: (c) => (c.lang.completedUnits || []).length >= 2 },
+  { id: 'unit_3', name: 'Everyday Explorer', icon: '🗺️', desc: 'Finish three full units', test: (c) => (c.lang.completedUnits || []).length >= 3 },
   { id: 'polyglot', name: 'Polyglot', icon: '🌍', desc: 'Study 2 languages', test: (c) => (c.state.studiedLangs || []).length >= 2 },
   { id: 'xp_500', name: 'Rising Star', icon: '⭐', desc: 'Earn 500 XP', test: (c) => c.lang.xp >= 500 },
   { id: 'xp_1000', name: 'Superstar', icon: '🌟', desc: 'Earn 1000 XP', test: (c) => c.lang.xp >= 1000 },
@@ -127,13 +132,49 @@ export function leagueRank(store, now = Date.now()) {
   return { rank: me.rank, size: LEAGUE_SIZE, zone: me.zone, xp: me.xp };
 }
 
+function missedDays(lastStudyDay) {
+  if (!lastStudyDay) return 0;
+  const diff = Math.floor((new Date(`${todayKey()}T00:00:00Z`) - new Date(`${lastStudyDay}T00:00:00Z`)) / 86400000);
+  return Math.max(0, diff - 1);
+}
+
+function toughestWord(store) {
+  const L = store.lang();
+  const rows = Object.entries(L.items || {})
+    .filter(([, it]) => it.seen >= 2 && (it.correct / it.seen) < 1)
+    .map(([id, it]) => ({ id, acc: it.correct / it.seen }))
+    .sort((a, b) => a.acc - b.acc);
+  return rows[0] || null;
+}
+
+function questPoolFor(store) {
+  const L = store.lang();
+  const pool = [...QUEST_POOL];
+  const due = store.dueItems().length;
+  if (due >= 3) pool.push({ id: 'q_overdue_mastery', text: `Master ${Math.min(3, due)} overdue word${Math.min(3, due) === 1 ? '' : 's'}`, goal: Math.min(3, due), event: 'mastered_due', gems: 18, icon: '🧠' });
+  const hard = toughestWord(store);
+  if (hard) pool.push({ id: 'q_toughest', text: 'Fix your toughest word', goal: 1, event: 'tough_word', gems: 16, icon: '🩹' });
+  if ((L.readingsCompleted || 0) >= 0) pool.push({ id: 'q_story_sharp', text: 'Finish a story with 90%+ accuracy', goal: 1, event: 'story_sharp', gems: 18, icon: '📖' });
+  if (missedDays(L.lastStudyDay) >= 1) pool.push({ id: 'q_recovery', text: 'Recovery mission: do one short review', goal: 1, event: 'recovery', gems: 20, icon: '🌱' });
+  return pool;
+}
+
 // ---------- daily / weekly rollover ----------
 export function ensureDaily(store) {
   const L = store.lang();
   const tk = todayKey();
   if (!L.quests || L.quests.dayKey !== tk) {
-    const picked = seededPick(QUEST_POOL, 3, tk + (store.state.activeLang || ''));
-    L.quests = { dayKey: tk, items: picked.map((q) => ({ id: q.id, progress: 0, claimed: false })) };
+    const pool = questPoolFor(store);
+    const must = [];
+    const recovery = pool.find((q) => q.id === 'q_recovery');
+    if (recovery) must.push(recovery);
+    const rest = pool.filter((q) => !must.some((m) => m.id === q.id));
+    const picked = [...must, ...seededPick(rest, Math.max(0, 3 - must.length), tk + (store.state.activeLang || ''))].slice(0, 3);
+    L.quests = {
+      dayKey: tk,
+      defs: picked,
+      items: picked.map((q) => ({ id: q.id, progress: 0, claimed: false })),
+    };
     store.save();
   }
 }
@@ -158,7 +199,8 @@ export function ensureWeek(store) {
 export function questDefs(store) {
   const L = store.lang();
   if (!L.quests) ensureDaily(store);
-  return L.quests.items.map((it) => ({ ...QUEST_POOL.find((q) => q.id === it.id), ...it }));
+  const defs = (L.quests && L.quests.defs) || [];
+  return L.quests.items.map((it) => ({ ...(defs.find((q) => q.id === it.id) || QUEST_POOL.find((q) => q.id === it.id)), ...it }));
 }
 
 // ---------- event tracking ----------
@@ -175,9 +217,10 @@ export function track(store, event, payload = {}) {
   if (event === 'xp') { L.league.weeklyXp += (payload.amount || 0); }
 
   // advance quests
+  const defs = (L.quests && L.quests.defs) || QUEST_POOL;
   for (const item of L.quests.items) {
     if (item.claimed) continue;
-    const def = QUEST_POOL.find((q) => q.id === item.id);
+    const def = defs.find((q) => q.id === item.id);
     if (!def) continue;
     let matched = def.event === event;
     if (def.event === 'perfect' && event === 'lesson') matched = payload.mistakes === 0;
