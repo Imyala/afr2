@@ -43,7 +43,10 @@ const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 // fill_blank is deliberately NOT here: it is rendered as pick-from-options, so
 // counting it as production would let a word reach "mastered" through multiple
 // choice alone — exactly the dishonesty the README promises against.
-const PRODUCTION = ['translate', 'speak'];
+// "explain" (the Feynman technique — teach it back in your own words) is the
+// deepest recall act of all: generating an explanation requires more than
+// retrieving a word or sentence, so it's graded as production too.
+const PRODUCTION = ['translate', 'speak', 'explain'];
 
 export function newItem(now = Date.now()) {
   return {

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { newItem, review, gradeFor } from '../src/srs.js';
 import {
   normalize, checkAnswer, buildLessonSession, buildReviewSession, exerciseVocabIds, checkTyped, editDistance,
-  phraseIndex, sentencePool, readingCoverage, frameChunk, genFrameDrills,
+  phraseIndex, sentencePool, readingCoverage, frameChunk, genFrameDrills, genExplainPrompt, genPatternInquiry,
 } from '../src/lessons.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -91,6 +91,21 @@ ok(fd.length === 6, 'frame drills sample the requested count');
 ok(fd.every((d) => d.prompt && d.answer), 'every frame drill has prompt+answer');
 ok(fd.filter((d) => d.options).every((d) => d.options.includes(d.answer)), 'frame drill options contain the answer');
 ok(fd.some((d) => !d.options), 'frame drills include typed production (no options)');
+
+// --- Feynman "teach it back" explain prompt ---
+const explainV = { id: 'zu-sawubona', term: 'Sawubona', translation: 'Hello' };
+const ep = genExplainPrompt(explainV);
+ok(ep.type === 'explain', 'explain prompt has type explain');
+ok(ep.vocabId === explainV.id, 'explain prompt is tied to the vocab item');
+ok(ep.prompt === explainV.term && ep.answer === explainV.translation, 'explain prompt shows the term and the answer is the translation');
+ok(gradeFor(true, 'explain') === 5 && gradeFor(false, 'explain') === 1, 'explain is graded as production (deep recall)');
+
+// --- inquiry-based pattern learning ("spot the pattern" before the rule) ---
+const inquiry = genPatternInquiry(zuFrames);
+ok(inquiry && inquiry.examples.length === 3, 'pattern inquiry holds back 3 worked examples');
+ok(inquiry.options.includes(inquiry.answer), 'pattern inquiry options contain the right answer');
+ok(inquiry.examples.every((e) => e.en && e.chunk), 'every worked example has an English gloss and a chunk');
+ok(genPatternInquiry({ subjects: [{ p: 'ngi', en: 'I' }], verbs: [{ stem: 'dla', en: 'eat' }] }) === null, 'pattern inquiry needs at least 4 combinations, else null');
 
 // --- comprehensible-input coverage ---
 const covLines = [{ t: 'umama uyahamba' }, { t: 'ubaba uyadla' }];

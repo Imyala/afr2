@@ -211,6 +211,34 @@ function genProduction(v) {
   return { type: 'translate', prompt: v.translation, answer: v.term, accept: [v.term.toLowerCase()], vocabId: v.id };
 }
 
+// Feynman technique: "teach it back". Rather than recognising or typing the
+// word, the learner explains it in their own words — when they'd use it, what
+// it reminds them of, why it's said that way. Generating an explanation is a
+// deeper, more elaborative act of recall than either recognition or typing,
+// so it's reserved for words the learner already knows well (mature/mastered
+// items) as a periodic "prove you really understand this" check, framed as
+// teaching the mascot rather than being tested.
+export function genExplainPrompt(v) {
+  return { type: 'explain', prompt: v.term, answer: v.translation, vocabId: v.id };
+}
+
+// Inquiry-based learning: instead of stating the grammar rule up front, show
+// three worked examples of a frame pattern and ask the learner to predict a
+// fourth before the rule is explained — noticing the pattern themselves is a
+// stronger, more durable form of higher-order learning than being told it.
+// Returns null if there aren't enough subject/verb combinations to hold back
+// one as the "you try it" item.
+export function genPatternInquiry(frames) {
+  const combos = frames.subjects.flatMap((subj) => frames.verbs.map((verb) => ({ subj, verb })));
+  if (combos.length < 4) return null;
+  const picks = shuffle(combos).slice(0, 4);
+  const examples = picks.slice(0, 3).map(({ subj, verb }) => ({ en: `${subj.en} ${verb.en}`, chunk: frameChunk(frames, subj, verb) }));
+  const target = picks[3];
+  const answer = frameChunk(frames, target.subj, target.verb);
+  const options = shuffle(frames.subjects.map((s) => frameChunk(frames, s, target.verb)));
+  return { examples, prompt: `${target.subj.en} ${target.verb.en}`, answer, options };
+}
+
 function genMatch(words) {
   return { type: 'match', pairs: shuffle(words).map((v) => [v.term, v.translation]) };
 }

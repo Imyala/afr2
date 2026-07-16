@@ -42,6 +42,8 @@ for the full explanation. In short:
 | **Chunks, not words** | Phrase chunks are spaced items of their own, reviewed as whole sentences; the grammar engine generates frame drills (subject prefix + stem) fresh each session from real course verbs. |
 | **Interaction + corrective feedback** | Branching dialogues where every wrong reply explains *why* it doesn't work — the largest effect sizes in SLA research. |
 | **Fluency under time pressure** | The ⚡ Lightning round drills fast recall of words you already know against the clock — the step from "knowing" a word to using it mid-conversation. |
+| **Inquiry-based, higher-order pattern learning** | The first time you open a grammar pattern, **"Spot the pattern"** shows three worked examples and asks you to predict a fourth *before* the rule is revealed — noticing a relationship yourself, not being handed it. |
+| **Feynman technique (teach it back)** | Once a word is mastered, review occasionally asks you to **"Teach Themba"** — explain the word in your own words, then self-rate honestly. Deeper than recall or typing; never costs a heart. |
 | **Mastery-based progress** | The Progress page reports **words mastered**, **retention %**, and **still learning** — honest learning metrics, not just XP. |
 | **Measured outcomes** | A **baseline test** records where you start. After ~1 month of daily practice, a **re-test** shows your exact improvement. This is the "real progress in 1 month" proof. |
 | **Engagement that serves learning** | XP, streaks, hearts and a daily goal keep kids coming back — but they're wrapped around the spaced-repetition core, not a substitute for it. |
@@ -71,6 +73,13 @@ for the full explanation. In short:
   (ngi-/u-/si-/ba- + stem for isiZulu/isiXhosa; pronoun + invariant verb for
   Afrikaans) — whole chunks, drilled as units. Patterns are spaced like
   vocabulary. (Community-reviewed content.)
+- 🔍 **"Spot the pattern"** — the first time you open a grammar pattern, three
+  worked examples are shown and you predict a fourth *before* the rule is
+  revealed — inquiry-based, higher-order learning (notice the relationship,
+  don't just be told it)
+- 🦫 **"Teach Themba" (Feynman technique)** — once a word is mastered, review
+  occasionally asks you to explain it in your own words, then self-rate
+  honestly — a deeper check than recall or typing, never costs a heart
 - 💬 **Task-based conversations** — branching real-life dialogues (spaza shop,
   meeting a friend) where the other person speaks and you choose how to reply.
   Wrong replies get **corrective feedback explaining why**, and different valid

@@ -258,9 +258,17 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .blank { color: var(--gold); }
 .ex__input {
   width: 100%; padding: 16px; font-size: 18px; border: 2px solid var(--line); border-radius: 14px;
-  background: #fff; outline: none;
+  background: var(--card); color: var(--ink); outline: none;
 }
 .ex__input:focus { border-color: var(--green); }
+.ex__textarea { resize: vertical; font-family: inherit; margin-bottom: 12px; }
+.explain-rate { display: grid; gap: 8px; margin-top: 12px; }
+
+.inquiry-list { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 8px; }
+.inquiry-list li {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px;
+  display: flex; justify-content: space-between; gap: 10px; font-size: 15px;
+}
 
 .opts { display: grid; gap: 10px; }
 .opt {
