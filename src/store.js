@@ -12,12 +12,19 @@ const keyFor = (id) => (id === 'default' ? KEY_BASE : `${KEY_BASE}__${id}`);
 
 const HEART_REFILL_MS = 30 * 60 * 1000; // one heart every 30 minutes (free tier)
 const MAX_HEARTS = 5;
+const MAX_RECENT_EXERCISE_TYPES = 40;
 
 export const XP_PER_CORRECT = 10;
 export const XP_LESSON_BONUS = 20;
 
 function todayKey(d = new Date()) {
   return d.toISOString().slice(0, 10);
+}
+
+function missedDaysSince(lastStudyDay, today = todayKey()) {
+  if (!lastStudyDay) return 0;
+  const diff = Math.floor((new Date(`${today}T00:00:00Z`) - new Date(`${lastStudyDay}T00:00:00Z`)) / 86400000);
+  return Math.max(0, diff - 1);
 }
 
 function freshLang() {
@@ -44,10 +51,13 @@ function freshLang() {
     perfectLessons: 0,
     readingsCompleted: 0,
     completedReadings: [],
+    completedUnits: [],
     wotd: null,              // { day, learned } — word-of-the-day state
     grammar: {},             // patternId -> srs record (grammar patterns are spaced too)
     completedDialogues: [],  // dialogue ids the learner has finished
     plan: null,              // 90-day guided curriculum: { started, day, done:{...} }
+    recentExerciseTypes: [],
+    exerciseStats: {},
   };
 }
 
@@ -57,8 +67,14 @@ function freshState() {
     activeLang: null,
     premium: false,
     // theme: 'light' (default) | 'dark' | 'system' — light unless changed in settings
-    settings: { dailyGoalXP: 30, soundOn: true, onboarded: false, remindersOn: false, desiredRetention: 0.9, theme: 'light' },
+    settings: {
+      dailyGoalXP: 30, soundOn: true, onboarded: false, remindersOn: false, desiredRetention: 0.9, theme: 'light',
+      reminderWindow: 'after_school', feedbackPace: 'comfortable',
+    },
     langs: {},
+    learnerProfile: null,    // { goal, dailyTime, confidence, date }
+    onboarding: { setupDone: false, accountPrompted: false },
+    progressSnapshots: {},   // langCode -> [{ week, mastered, retention, introduced }]
     // account-wide gamification
     gems: 0,
     achievements: {},       // achievementId -> unlock date
@@ -92,7 +108,14 @@ class Store {
   load() {
     try {
       const raw = localStorage.getItem(keyFor(this.profileId));
-      if (raw) return Object.assign(freshState(), JSON.parse(raw));
+      if (raw) {
+        const base = freshState();
+        const state = Object.assign(base, JSON.parse(raw));
+        state.settings = Object.assign(base.settings, state.settings || {});
+        state.onboarding = Object.assign(base.onboarding, state.onboarding || {});
+        state.progressSnapshots = state.progressSnapshots || {};
+        return state;
+      }
     } catch (e) { /* corrupt or unavailable storage — start fresh */ }
     return freshState();
   }
@@ -324,6 +347,18 @@ class Store {
   }
 
   // --- progress metrics (the "real proof of learning") --------------------
+  recordExercise(type, correct, code = this.state.activeLang) {
+    const L = this.lang(code);
+    if (!L.exerciseStats) L.exerciseStats = {};
+    if (!L.recentExerciseTypes) L.recentExerciseTypes = [];
+    const st = L.exerciseStats[type] || (L.exerciseStats[type] = { seen: 0, correct: 0 });
+    st.seen += 1;
+    if (correct) st.correct += 1;
+    L.recentExerciseTypes.push(type);
+    if (L.recentExerciseTypes.length > MAX_RECENT_EXERCISE_TYPES) L.recentExerciseTypes = L.recentExerciseTypes.slice(-MAX_RECENT_EXERCISE_TYPES);
+    return st;
+  }
+
   metrics(code = this.state.activeLang) {
     const L = this.lang(code);
     // phrase chunks (ids prefixed "ph:") are tracked separately so the
@@ -336,6 +371,12 @@ class Store {
     const learning = items.filter((i) => !i.mastered && i.seen > 0).length;
     const totalSeen = items.reduce((s, i) => s + i.seen, 0);
     const totalCorrect = items.reduce((s, i) => s + i.correct, 0);
+    const exStats = L.exerciseStats || {};
+    const bucket = (types) => {
+      const seen = types.reduce((sum, t) => sum + ((exStats[t] && exStats[t].seen) || 0), 0);
+      const correct = types.reduce((sum, t) => sum + ((exStats[t] && exStats[t].correct) || 0), 0);
+      return { seen, correct, accuracy: seen ? correct / seen : 0 };
+    };
     return {
       introduced,
       mastered,
@@ -349,9 +390,15 @@ class Store {
       xp: L.xp,
       streak: L.streak,
       bestStreak: L.bestStreak || 0,
+      skills: {
+        recognition: bucket(['multiple_choice', 'fill_blank', 'match']),
+        production: bucket(['translate', 'word_bank', 'explain']),
+        listening: bucket(['listen']),
+        speaking: bucket(['speak']),
+      },
     };
   }
 }
 
 export const store = new Store();
-export { todayKey, MAX_HEARTS };
+export { todayKey, missedDaysSince, MAX_HEARTS };

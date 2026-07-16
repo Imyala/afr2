@@ -1,7 +1,7 @@
 // app.js — MzansiLingo PWA controller (routing, screens, exercise rendering)
-import { store, XP_PER_CORRECT, XP_LESSON_BONUS, MAX_HEARTS } from './store.js';
+import { store, missedDaysSince, XP_PER_CORRECT, XP_LESSON_BONUS, MAX_HEARTS } from './store.js';
 import { review as srsReview, gradeFor, setDesiredRetention } from './srs.js';
-import { speak, recordSupported, startRecording } from './audio.js';
+import { speak, listenOnce, recordSupported, srSupported, startRecording } from './audio.js';
 import {
   loadCourse, loadLanguages, allLessons, findLesson, vocabIndex, phraseIndex,
   checkAnswer, checkTyped, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
@@ -28,6 +28,41 @@ function currentBuddy() {
     let pick = MASCOT_CAST[Math.floor(Math.random() * MASCOT_CAST.length)];
     while (MASCOT_CAST.length > 1 && s.buddy && pick.id === s.buddy.id) {
       pick = MASCOT_CAST[Math.floor(Math.random() * MASCOT_CAST.length)];
+    }
+
+    if (ex.type === 'speak') {
+      const reveal = () => {
+        const card = node.querySelector('#speakReveal');
+        const tools = node.querySelector('#speakTools');
+        const coach = node.querySelector('#speakCoach');
+        if (card) card.hidden = false;
+        if (tools) tools.hidden = false;
+        if (coach) coach.textContent = 'Compare with the model, say it again out loud, then rate yourself honestly.';
+        const foot = footFor(node);
+        foot.innerHTML = `
+          <button class="btn btn--primary" id="speakGood">✓ I said it right</button>
+          <button class="btn btn--ghost" id="speakMiss">🔁 Not yet</button>`;
+        foot.querySelector('#speakGood').addEventListener('click', () => showFeedback(node, true, ex, ex.text));
+        foot.querySelector('#speakMiss').addEventListener('click', () => showFeedback(node, false, ex, ex.text));
+        node.querySelector('#hearModel').addEventListener('click', () => tryHear(ex.text, course.code));
+        wireRecorder(node);
+        speak(ex.text, course.code);
+      };
+      const revealBtn = node.querySelector('#speakRevealBtn');
+      if (revealBtn) revealBtn.addEventListener('click', () => { sound.tap(); reveal(); });
+      const micBtn = node.querySelector('#speakCheck');
+      if (micBtn) micBtn.addEventListener('click', async () => {
+        micBtn.disabled = true;
+        micBtn.textContent = 'Listening…';
+        const heard = await listenOnce(course.code, 5000);
+        if (heard && checkAnswer(ex, heard)) {
+          showFeedback(node, true, ex, ex.text);
+        } else {
+          micBtn.disabled = false;
+          micBtn.textContent = 'Try the mic again';
+          reveal();
+        }
+      });
     }
     s.buddy = { day, id: pick.id };
     store.save();
@@ -73,6 +108,42 @@ function wireKeyActivation(root) {
   }));
 }
 function fmtTime(ms) { const m = Math.ceil(ms / 60000); return `${m} min`; }
+function feedbackDelay(base, text = '') {
+  const pace = (store.state.settings && store.state.settings.feedbackPace) || 'comfortable';
+  const mult = pace === 'quick' ? 0.95 : pace === 'slow' ? 1.8 : 1.35;
+  return Math.round(base * mult + Math.min(900, text.length * 10));
+}
+function learnerProfile() {
+  return store.state.learnerProfile || { goal: 'general', dailyTime: '10', confidence: 'new' };
+}
+function isGuestLearner() {
+  const auth = Auth.getAuth();
+  return !auth || auth.mode === 'guest';
+}
+function syncCompletedUnits() {
+  const L = store.lang();
+  if (!L || !course) return;
+  const completed = course.units
+    .filter((u) => (u.lessons || []).length && u.lessons.every((l) => store.isLessonComplete(l.id)))
+    .map((u) => u.id);
+  L.completedUnits = completed;
+}
+function recordWeeklySnapshot() {
+  if (!course || !store.state.activeLang) return;
+  const d = new Date();
+  const dayNum = (d.getDay() + 6) % 7;
+  d.setDate(d.getDate() - dayNum);
+  const week = d.toISOString().slice(0, 10);
+  const code = store.state.activeLang;
+  const m = store.metrics(code);
+  const all = store.state.progressSnapshots || (store.state.progressSnapshots = {});
+  const list = all[code] || (all[code] = []);
+  const snap = { week, mastered: m.mastered, retention: m.retention, introduced: m.introduced };
+  const last = list[list.length - 1];
+  if (!last || last.week !== week) list.push(snap);
+  else Object.assign(last, snap);
+  all[code] = list.slice(-8);
+}
 // Time until the weekly league resets (next Monday 00:00).
 function weekDaysLeft(now = Date.now()) {
   const d = new Date(now);
@@ -146,17 +217,17 @@ function renderAuthLanding() {
     <div class="screen screen--center">
       <div class="onb__art">${mascotImg(currentBuddy(), { size: 130, className: 'mascot-img--bob' })}</div>
       <h1 class="brand__name">MzansiLingo</h1>
-      <p class="onb__body">Learn real South African languages. Create an account to save your progress — or jump straight in and try it first.</p>
+      <p class="onb__body">Learn real South African languages. Start instantly as a guest, then decide later whether you want an account on this device.</p>
       <div class="onb__actions">
-        <button class="btn btn--primary" id="create">Create account</button>
+        <button class="btn btn--primary" id="guest">Start learning now</button>
+        <button class="btn btn--ghost" id="create">Create account</button>
         <button class="btn btn--ghost" id="login">Log in</button>
-        <button class="btn btn--ghost" id="guest">Try without an account →</button>
       </div>
       <p class="footnote">Demo: accounts are stored on this device only.</p>
     </div>`);
+  node.querySelector('#guest').addEventListener('click', () => { store.ensureProfile('default', 'Me', '🦫'); Auth.setAuth({ mode: 'guest' }); sound.tap(); bootIntoApp(); });
   node.querySelector('#create').addEventListener('click', () => { sound.tap(); renderSignup(); });
   node.querySelector('#login').addEventListener('click', () => { sound.tap(); renderLogin(); });
-  node.querySelector('#guest').addEventListener('click', () => { store.ensureProfile('default', 'Me', '🦫'); Auth.setAuth({ mode: 'guest' }); sound.tap(); bootIntoApp(); });
   mount(node);
 }
 
@@ -223,13 +294,14 @@ async function openLanguage(code) {
   store.rollover(code);
   store.refreshHearts(code);
   course = await loadCourse(code);
+  syncCompletedUnits();
   G.ensureDaily(store);
   G.ensureWeek(store);
   G.checkAchievements(store);
   // First run: pure LEARNING first — the gentle warm-up teaches the first
   // words before anything that could be answered wrongly, so an absolute
   // beginner's opening minutes can't feel like a test they're failing.
-  if (!store.state.settings.onboarded) return startWarmup(true);
+  if (!store.state.settings.onboarded) return renderFirstRunChoice();
   const dr = G.dailyRewardStatus(store);
   if (dr.canClaim) return renderDailyReward();
   renderHome();
@@ -308,6 +380,70 @@ function renderOnboarding(i = 0) {
   mount(node);
 }
 
+function renderFirstRunChoice() {
+  const unit = (course.units || []).find((u) => (u.lessons || []).length);
+  const node = h(`
+    <div class="screen onb">
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 138, className: 'mascot-img--bob' })}</div>
+      <h1 class="onb__title">Let’s make your first minutes feel right</h1>
+      <p class="onb__body">Brand new? Start with a tiny warm-up and get an easy first win. Coming back to the language? Take a quick placement quiz and skip ahead if you already know the basics.</p>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="warmup">Start the warm-up</button>
+        ${unit ? '<button class="btn btn--ghost" id="placement">I know some already</button>' : ''}
+      </div>
+    </div>`);
+  node.querySelector('#warmup').addEventListener('click', () => { sound.tap(); startWarmup(true); });
+  const pb = node.querySelector('#placement');
+  if (pb) pb.addEventListener('click', () => { sound.tap(); confirmTestOut(unit.id, true); });
+  mount(node);
+}
+
+function renderSetupQuestions() {
+  const cur = learnerProfile();
+  const node = h(`
+    <div class="screen onb">
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 126 })}</div>
+      <h1 class="onb__title">Nice first win! One quick setup</h1>
+      <p class="onb__body">Answer three tiny questions and I’ll tune your daily plan to fit you better.</p>
+      <div class="set-list">
+        <div class="set-row">
+          <div class="set-row__label"><b>What’s your main goal?</b><small>We’ll bias your plan around this</small></div>
+          <select id="goalSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[['school', 'School'], ['travel', 'Travel'], ['conversation', 'Conversation'], ['general', 'General']].map(([v, label]) => `<option value="${v}" ${cur.goal === v ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
+        <div class="set-row">
+          <div class="set-row__label"><b>How much time do you usually have?</b><small>Just a rough daily target</small></div>
+          <select id="timeSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[['5', '5 min'], ['10', '10 min'], ['20', '20 min'], ['30', '30+ min']].map(([v, label]) => `<option value="${v}" ${cur.dailyTime === v ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
+        <div class="set-row">
+          <div class="set-row__label"><b>How confident do you feel?</b><small>This helps set the tone</small></div>
+          <select id="confSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[['new', 'Brand new'], ['rusty', 'Rusty but returning'], ['steady', 'Fairly confident']].map(([v, label]) => `<option value="${v}" ${cur.confidence === v ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="save">Save my setup</button>
+      </div>
+    </div>`);
+  node.querySelector('#save').addEventListener('click', () => {
+    store.state.learnerProfile = {
+      goal: node.querySelector('#goalSel').value,
+      dailyTime: node.querySelector('#timeSel').value,
+      confidence: node.querySelector('#confSel').value,
+      date: todayStr(),
+    };
+    store.state.onboarding = { ...(store.state.onboarding || {}), setupDone: true };
+    store.save();
+    sound.reward();
+    promptReminders();
+  });
+  mount(node);
+}
+
 // Offer daily reminders once, right after the first win (peak motivation).
 function promptReminders() {
   if (!Notify.supported() || Notify.permission() !== 'default') return finishOnboarding();
@@ -334,6 +470,56 @@ function finishOnboarding() {
   renderHome();
 }
 
+function renderAccountPrompt(next = renderHome) {
+  store.state.onboarding = { ...(store.state.onboarding || {}), accountPrompted: true };
+  store.save();
+  const node = h(`
+    <div class="screen onb">
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 126, className: 'mascot-img--cheer' })}</div>
+      <h1 class="onb__title">Want to keep this progress?</h1>
+      <p class="onb__body">You can keep learning as a guest, but creating an account makes this learner easier to find again on this device.</p>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="create">Create account</button>
+        <button class="btn btn--ghost" id="later">Maybe later</button>
+      </div>
+    </div>`);
+  node.querySelector('#create').addEventListener('click', () => { sound.tap(); renderSignup(); });
+  node.querySelector('#later').addEventListener('click', () => { sound.tap(); next(); });
+  mount(node);
+}
+
+function recommendedStory() {
+  const readings = course.reading || [];
+  if (!readings.length) return null;
+  const idx = vocabIndex(course);
+  const known = new Set();
+  for (const [id, it] of Object.entries(store.lang().items || {})) {
+    if ((it.seen > 0 || it.encountered) && idx[id]) for (const tok of normalize(idx[id].term).split(' ')) known.add(tok);
+  }
+  return readings
+    .filter((r) => !store.lang().completedReadings.includes(r.id))
+    .sort((a, b) => readingCoverage(b.lines, known).pct - readingCoverage(a.lines, known).pct)[0] || null;
+}
+
+function toughestWordId() {
+  const idx = vocabIndex(course);
+  const rows = Object.entries(store.lang().items || {})
+    .filter(([id, it]) => it.seen >= 2 && idx[id] && (it.correct / it.seen) < 1)
+    .sort((a, b) => (a[1].correct / a[1].seen) - (b[1].correct / b[1].seen));
+  return rows[0] ? rows[0][0] : null;
+}
+
+function nextBestAction(L, due, nextLesson) {
+  const repairPending = due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr();
+  if (repairPending) return { id: 'resumeReview', icon: '🌱', title: 'Ease back in', sub: `Start a shorter confidence-building review (${Math.min(due, 8)} due first)`, action: startReview };
+  if (due > 0) return { id: 'resumeReview', icon: '🔁', title: 'Reviews ready', sub: `${due} review${due === 1 ? '' : 's'} due now`, action: startReview };
+  if (L.plan && Object.values(L.plan.done).some((x) => !x)) return { id: 'resumePlan', icon: '📅', title: 'Resume today’s plan', sub: `${Object.values(L.plan.done).filter(Boolean).length}/4 steps done`, action: renderPlan };
+  if (nextLesson) return { id: 'resumeLesson', icon: '📘', title: 'Next lesson', sub: nextLesson.title, action: () => startLesson(nextLesson.id) };
+  const story = recommendedStory();
+  if (story) return { id: 'resumeStory', icon: '📖', title: 'Best next story', sub: story.title, action: () => renderReadingIntro(story.id) };
+  return { id: 'resumeSpeak', icon: '🎤', title: 'Keep your fluency warm', sub: 'Do a quick speaking practice', action: startSpeaking };
+}
+
 // ---------- home / lesson path ----------
 function renderHome() {
   planLaunch = null; // any loop step we drop back home from is abandoned, not done
@@ -347,6 +533,8 @@ function renderHome() {
   const due = store.dueItems().length;
 
   const lessons = allLessons(course);
+  const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
+  const nextAction = nextBestAction(L, due, nextLesson);
   // Progressive disclosure: a brand-new learner sees ONE thing to do — the
   // path — under a friendly hello. Extra widgets appear as lessons complete,
   // so the screen grows with the learner instead of shouting at a beginner.
@@ -443,6 +631,11 @@ function renderHome() {
         </div>
       </section>
 
+      ${lessonsDone >= 1 ? `<button class="plan-card plan-card--resume" id="${nextAction.id}">
+        <span class="plan-card__l">${nextAction.icon} <b>${esc(nextAction.title)}</b></span>
+        <span class="plan-card__r">${esc(nextAction.sub)} ›</span>
+      </button>` : ''}
+
       ${showPlanReview ? (L.plan
     ? `<button class="plan-card" id="planBtn"><span class="plan-card__l">📅 <b>Day ${L.plan.day}/90</b> · today's loop</span><span class="plan-card__r">${Object.values(L.plan.done).filter(Boolean).length}/4 ›</span></button>`
     : '<button class="plan-card plan-card--start" id="planBtn"><span class="plan-card__l">📅 <b>Start your 90-day plan</b></span><span class="plan-card__r">guided daily path ›</span></button>') : ''}
@@ -503,6 +696,11 @@ function renderHome() {
   const on = (sel, fn) => { const el = node.querySelector(sel); if (el) el.addEventListener('click', fn); };
   on('#switchLang', () => renderLanguageSelect(false));
   on('#reviewBtn', startReview);
+  on('#resumeReview', startReview);
+  on('#resumePlan', renderPlan);
+  on('#resumeLesson', () => startLesson(nextLesson.id));
+  on('#resumeStory', nextAction.action);
+  on('#resumeSpeak', startSpeaking);
   on('#planBtn', renderPlan);
   on('#storiesNav', renderLibrary);
   on('#glossaryBtn', () => renderGlossary());
@@ -533,12 +731,16 @@ function renderHome() {
 // The buddy's own voice carries the warmth (see mascotGreeting); this line keeps
 // the learner oriented: what's due, the streak, or XP left to the daily goal.
 function homeStatus(L, due, pct, goal) {
+  const profile = learnerProfile();
   // brand-new learner: one clear pointer, no jargon about streaks or reviews
   if (!L.completedLessons.length) {
     return L.warmupDone ? 'Your first lesson is ready below 👇' : 'Start with the warm-up below 👇';
   }
   if (pct >= 100) return 'Done for today — well played! 🎉';
+  if (due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr()) return 'Welcome back — start with a short confidence reset 🌱';
   if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔒`;
+  if (profile.goal === 'conversation' || profile.goal === 'travel') return 'Keep speaking and listening — that’s your fastest path now';
+  if (profile.goal === 'school') return 'A little every day makes the school stuff stick';
   if ((L.streak || 0) >= 3) return `🔥 ${L.streak}-day streak — keep it going!`;
   return `${goal - L.xpToday} XP to keep your streak`;
 }
@@ -776,6 +978,7 @@ function renderSpeaking() {
     // honest self-rating: "not quite" is a real lapse signal, and even "got it"
     // never grants production mastery (that still needs typing/real recall)
     for (const id of it.ids) srsReview(store.item(id), gradeFor(good, 'multiple_choice'), 'multiple_choice');
+    store.recordExercise('speak', good);
     if (good) { store.addXp(5); s.done += 1; sound.correct(); haptic(12); } else { sound.wrong(); haptic([10, 40, 10]); }
     store.save();
     s.idx += 1;
@@ -824,6 +1027,7 @@ function wireRecorder(node) {
 function renderSpeakingDone() {
   const done = speakSession ? speakSession.done : 0;
   speakSession = null;
+  G.track(store, 'speaking');
   markPlan('output');
   confetti({ count: 60, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
   const node = h(`
@@ -906,6 +1110,7 @@ function renderListening() {
     if (ok) { sound.correct(); haptic(12); } else { sound.wrong(); haptic([10, 40, 10]); }
     announce(ok ? 'Correct!' : `It was ${it.text}, meaning ${it.answer}`);
     for (const id of it.ids) srsReview(store.item(id), gradeFor(ok, 'multiple_choice'), 'multiple_choice');
+    store.recordExercise('listen', ok);
     if (ok) { store.addXp(5); s.done += 1; }
     store.save();
     // auto-advance, but always give a Continue button so nobody races the timer
@@ -928,6 +1133,7 @@ function renderListening() {
 function renderListeningDone() {
   const done = listenSession ? listenSession.done : 0;
   listenSession = null;
+  G.track(store, 'listening');
   markPlan('input');
   confetti({ count: 60, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
   const node = h(`
@@ -1096,17 +1302,33 @@ function markPlan(type) {
 }
 
 function planActivities() {
+  const profile = learnerProfile();
   const done = store.lang().plan.done;
   const lessons = allLessons(course);
   const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
   const due = store.dueItems().length;
   const hasReading = (course.reading || []).length > 0;
   const hasDialogue = (course.dialogues || []).length > 0;
+  const repairPending = due > 0 && missedDaysSince(store.lang().lastStudyDay, todayStr()) >= 2 && store.lang().lastRepairDay !== todayStr();
+  const timeLabel = profile.dailyTime === '5' ? 'quick' : profile.dailyTime === '30' ? 'deeper' : 'steady';
+  const lessonSub = profile.goal === 'school'
+    ? 'build the next school-ready topic'
+    : profile.goal === 'travel' ? 'pick up useful real-world phrases'
+      : profile.goal === 'conversation' ? 'learn phrases you can actually use'
+        : 'a new lesson';
+  const inputSub = profile.goal === 'school'
+    ? 'read and lock in what you’re learning'
+    : profile.goal === 'travel' ? 'train your ear for real-world listening'
+      : 'understand real language';
+  const outputSub = profile.confidence === 'new'
+    ? 'guided speaking, one small step at a time'
+    : profile.goal === 'conversation' ? 'use it out loud in real replies'
+      : 'use it out loud';
   return [
-    { key: 'review', icon: '🔁', label: 'Warm-up review', sub: due > 0 ? `${due} words are due` : 'nothing due — auto-done', done: done.review, action: due > 0 ? () => startReview() : null },
-    { key: 'lesson', icon: '📘', label: nextLesson ? `Learn: ${nextLesson.title}` : 'Learn: all lessons done!', sub: nextLesson ? 'a new lesson' : 'try grammar or review', done: done.lesson, action: nextLesson ? () => startLesson(nextLesson.id) : () => ((course.grammar || []).length ? renderGrammar() : startReview()) },
-    { key: 'input', icon: '📖', label: 'Input: read or listen', sub: 'understand real language', done: done.input, action: () => (hasReading ? renderLibrary() : startListening()) },
-    { key: 'output', icon: '🗣️', label: 'Output: speak or converse', sub: 'use it out loud', done: done.output, action: () => (hasDialogue ? renderDialogues() : startSpeaking()) },
+    { key: 'review', icon: '🔁', label: repairPending ? 'Confidence reset review' : 'Warm-up review', sub: due > 0 ? `${timeLabel} session · ${due} words due${repairPending ? ' · we’ll start gentle' : ''}` : 'nothing due — auto-done', done: done.review, action: due > 0 ? () => startReview() : null },
+    { key: 'lesson', icon: '📘', label: nextLesson ? `Learn: ${nextLesson.title}` : 'Learn: all lessons done!', sub: nextLesson ? lessonSub : 'try grammar or review', done: done.lesson, action: nextLesson ? () => startLesson(nextLesson.id) : () => ((course.grammar || []).length ? renderGrammar() : startReview()) },
+    { key: 'input', icon: '📖', label: 'Input: read or listen', sub: inputSub, done: done.input, action: () => ((profile.goal === 'travel' || profile.goal === 'conversation') ? startListening() : (hasReading ? renderLibrary() : startListening())) },
+    { key: 'output', icon: '🗣️', label: 'Output: speak or converse', sub: outputSub, done: done.output, action: () => ((profile.goal === 'conversation' || profile.goal === 'travel') ? (hasDialogue ? renderDialogues() : startSpeaking()) : startSpeaking()) },
   ];
 }
 
@@ -1518,7 +1740,7 @@ function renderWarmupDone(w) {
     </div>`);
   node.querySelector('#go').addEventListener('click', () => {
     sound.tap();
-    if (w.firstRun) promptReminders();
+    if (w.firstRun) renderSetupQuestions();
     else startLesson(w.firstLessonId);
   });
   const hb = node.querySelector('#home');
@@ -1540,7 +1762,14 @@ function startLesson(lessonId) {
 }
 
 function beginLesson(lesson) {
-  session = { mode: 'lesson', lesson, queue: buildLessonSession(lesson, course, store.dueItems()), idx: 0, mistakes: 0, total: 0 };
+  session = {
+    mode: 'lesson',
+    lesson,
+    queue: buildLessonSession(lesson, course, store.dueItems(), { recentTypes: store.lang().recentExerciseTypes || [] }),
+    idx: 0,
+    mistakes: 0,
+    total: 0,
+  };
   renderExercise();
 }
 
@@ -1592,17 +1821,53 @@ function withExplainPrompt(queue, dueIds) {
 
 function startReview() {
   if (store.lang().hearts <= 0) return renderHeartsModal();
+  const L = store.lang();
   const due = store.dueItems();
   if (!due.length) return renderHome();
-  const queue = withExplainPrompt(buildReviewSession(course, due), due);
-  session = { mode: 'review', lesson: null, queue, idx: 0, mistakes: 0, total: 0 };
+  const repairMode = missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr();
+  const queue = withExplainPrompt(buildReviewSession(course, due, 15, {
+    recentTypes: L.recentExerciseTypes || [],
+    itemStats: L.items || {},
+    repairMode,
+  }), due);
+  session = {
+    mode: 'review', lesson: null, queue, idx: 0, mistakes: 0, total: 0,
+    repairMode, startedDueIds: due.slice(), toughWordId: toughestWordId(),
+  };
   renderExercise();
 }
 
-function startBaseline(isRetest) {
+function baselineSample() {
   const idx = vocabIndex(course);
-  const all = Object.values(idx);
-  const pick = shuffle(all).slice(0, 10);
+  const all = Object.values(idx).slice().sort((a, b) => a.id.localeCompare(b.id));
+  if (all.length <= 10) return all;
+  const code = store.state.activeLang;
+  const anchorsByLang = store.state.progressAnchors || (store.state.progressAnchors = {});
+  let anchorIds = anchorsByLang[code];
+  if (!anchorIds || !anchorIds.length) {
+    const want = Math.min(6, all.length);
+    const step = want > 1 ? (all.length - 1) / (want - 1) : 0;
+    anchorIds = [];
+    for (let i = 0; i < want; i++) {
+      anchorIds.push(all[Math.round(i * step)].id);
+    }
+    anchorsByLang[code] = [...new Set(anchorIds)];
+    store.save();
+  }
+  const anchorSet = new Set(anchorIds);
+  const anchors = anchorIds.map((id) => idx[id]).filter(Boolean);
+  const fillers = all.filter((v) => !anchorSet.has(v.id));
+  const monthKey = new Date().toISOString().slice(0, 7);
+  let start = 0;
+  for (let i = 0; i < monthKey.length; i++) start = (start * 31 + monthKey.charCodeAt(i)) >>> 0; // 31 = small prime used in simple string hashes
+  const picked = [];
+  for (let i = 0; i < fillers.length && picked.length < 4; i++) picked.push(fillers[(start + i) % fillers.length]);
+  return [...anchors.slice(0, 6), ...picked].slice(0, 10);
+}
+
+function startBaseline(isRetest) {
+  const all = Object.values(vocabIndex(course));
+  const pick = baselineSample();
   const queue = pick.map((v) => {
     const distractors = shuffle(all.filter((o) => o.translation !== v.translation)).slice(0, 3);
     return {
@@ -1617,33 +1882,34 @@ function startBaseline(isRetest) {
 const HEART_MODES = ['lesson', 'review'];
 
 // ---------- adaptive: test out of a unit you already know ----------
-function confirmTestOut(unitId) {
+function confirmTestOut(unitId, onboarding = false) {
   const unit = course.units.find((u) => u.id === unitId);
   if (!unit) return;
   const node = h(`
     <div class="screen screen--center">
       <div class="result__emoji">⏭️</div>
       <h1>Test out of ${esc(unit.title.replace(/^Unit \d+:\s*/, ''))}?</h1>
-      <p class="muted">Already know this? Take a quick quiz. Score 80%+ and we'll mark the whole unit done so you can skip ahead — no time wasted on what you know.</p>
+      <p class="muted">${onboarding ? 'Already know some of this language? Take a quick placement quiz. If you score 80%+ we\'ll skip the basics for you.' : 'Already know this? Take a quick quiz. Score 80%+ and we\'ll mark the whole unit done so you can skip ahead — no time wasted on what you know.'}</p>
       <button class="btn btn--primary" id="go">Start the quiz</button>
       <button class="btn btn--ghost" id="back">Back</button>
     </div>`);
-  node.querySelector('#go').addEventListener('click', () => startTestOut(unitId));
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#go').addEventListener('click', () => startTestOut(unitId, onboarding));
+  node.querySelector('#back').addEventListener('click', onboarding ? renderFirstRunChoice : renderHome);
   mount(node);
 }
 
-function startTestOut(unitId) {
+function startTestOut(unitId, onboarding = false) {
   const unit = course.units.find((u) => u.id === unitId);
   if (!unit) return renderHome();
   const all = Object.values(vocabIndex(course));
   const unitVocab = unit.lessons.flatMap((l) => l.vocab || []);
   const pick = shuffle(unitVocab).slice(0, Math.min(10, unitVocab.length));
-  const queue = pick.map((v) => {
+  const prod = pick.length ? [{ type: 'translate', prompt: pick[0].translation, answer: pick[0].term, accept: [pick[0].term.toLowerCase()], vocabId: pick[0].id, _test: true }] : [];
+  const queue = [...prod, ...pick.slice(prod.length).map((v) => {
     const distractors = shuffle(all.filter((o) => o.translation !== v.translation)).slice(0, 3);
     return { type: 'multiple_choice', prompt: `"${v.term}" means:`, answer: v.translation, options: shuffle([v.translation, ...distractors.map((d) => d.translation)]), vocabId: v.id, _test: true };
-  });
-  session = { mode: 'testout', unitId, lesson: null, queue, idx: 0, mistakes: 0, total: 0, score: 0 };
+  })];
+  session = { mode: 'testout', unitId, lesson: null, queue, idx: 0, mistakes: 0, total: 0, score: 0, onboardingTest: onboarding };
   renderExercise();
 }
 
@@ -1656,6 +1922,7 @@ function finishTestOut() {
       if (!store.isLessonComplete(l.id)) store.completeLesson(l.id, 2);
       for (const v of (l.vocab || [])) { const it = store.item(v.id); if (!it.seen) srsReview(it, gradeFor(true, 'multiple_choice'), 'multiple_choice'); }
     }
+    syncCompletedUnits();
     G.checkAchievements(store);
     store.save();
     confetti({ count: 80 }); sound.complete();
@@ -1668,7 +1935,7 @@ function finishTestOut() {
       <p class="muted">${passed ? `${esc(unit.title)} is marked complete — jump ahead to what's next!` : 'You need 80% to skip this unit. Work through the lessons and you\'ll master it.'}</p>
       <button class="btn btn--primary" id="doneBtn">${passed ? 'Continue' : 'Back to lessons'}</button>
     </div>`);
-  node.querySelector('#doneBtn').addEventListener('click', renderHome);
+  node.querySelector('#doneBtn').addEventListener('click', session.onboardingTest ? renderSetupQuestions : renderHome);
   mount(node);
 }
 
@@ -1678,6 +1945,7 @@ function endSession() {
   if (isTest) {
     const result = { score: session.score, total: session.queue.length, date: new Date().toISOString().slice(0, 10) };
     if (session.mode === 'baseline') store.lang().baseline = result; else store.lang().retest = result;
+    recordWeeklySnapshot();
     store.save();
     return renderTestResult(result);
   }
@@ -1704,10 +1972,15 @@ function endSession() {
   const merge = (r) => { rewards.quests.push(...r.quests); rewards.achievements.push(...r.achievements); rewards.gems += r.gems; };
   if (session.mode === 'lesson') {
     store.completeLesson(session.lesson.id, stars);
+    syncCompletedUnits();
     merge(G.track(store, 'lesson', { mistakes: session.mistakes }));
   } else if (session.mode === 'review') {
     store.lang().reviewsDone += session.total;
+    if (session.repairMode) store.lang().lastRepairDay = todayStr();
     merge(G.track(store, 'review'));
+    if (session.repairMode) merge(G.track(store, 'recovery'));
+    if (session.masteredDueIds && session.masteredDueIds.length) merge(G.track(store, 'mastered_due', { amount: session.masteredDueIds.length }));
+    if (session.fixedToughWord) merge(G.track(store, 'tough_word'));
   } else if (session.mode === 'reading') {
     const r = session.reading;
     if (r && !store.lang().completedReadings.includes(r.id)) store.lang().completedReadings.push(r.id);
@@ -1724,6 +1997,7 @@ function endSession() {
       }
     }
     merge(G.track(store, 'reading'));
+    if (correct / Math.max(1, session.total) >= 0.9) merge(G.track(store, 'story_sharp'));
   } else if (session.mode === 'grammar') {
     // grade the whole pattern by this drill set; spaced like a vocab item
     const git = store.grammarItem(session.grammarId);
@@ -1731,6 +2005,7 @@ function endSession() {
     merge(G.track(store, 'review'));
   }
   merge({ quests: [], achievements: G.checkAchievements(store), gems: 0 });
+  recordWeeklySnapshot();
   store.save();
   // advance the 90-day plan's daily loop
   if (session.mode === 'lesson') markPlan('lesson');
@@ -1743,6 +2018,7 @@ function endSession() {
 function advance(wasCorrect, ex) {
   session.total += 1;
   if (!wasCorrect) session.mistakes += 1;
+  store.recordExercise(ex.type, wasCorrect);
   if (session.mode === 'baseline' || session.mode === 'retest' || session.mode === 'testout') {
     if (wasCorrect) session.score += 1;
   } else {
@@ -1755,8 +2031,14 @@ function advance(wasCorrect, ex) {
     const learningGrace = stillLearningEx(ex);
     for (const vid of exerciseVocabIds(ex, session.lesson)) {
       const it = store.item(vid);
+      const wasMastered = !!it.mastered;
       const itemCorrect = missed ? !(byId[vid] && missed.has(normalize(byId[vid].term))) : wasCorrect;
       srsReview(it, gradeFor(itemCorrect, ex.type), ex.type);
+      if (itemCorrect && session.toughWordId && vid === session.toughWordId) session.fixedToughWord = true;
+      if (!wasMastered && it.mastered && session.startedDueIds && session.startedDueIds.includes(vid)) {
+        if (!session.masteredDueIds) session.masteredDueIds = [];
+        if (!session.masteredDueIds.includes(vid)) session.masteredDueIds.push(vid);
+      }
     }
     // Match is the lesson's first-exposure intro, and mispairs are already
     // corrected in place — it counts against accuracy/stars but not hearts.
@@ -1794,6 +2076,8 @@ function renderExercise() {
     case 'match': body = renderMatch(ex); break;
     case 'multiple_choice': body = renderChoice(ex, ex.prompt); break;
     case 'fill_blank': body = renderFill(ex); break;
+    case 'listen': body = renderListenExercise(ex); break;
+    case 'speak': body = renderSpeakExercise(ex); break;
     case 'translate': body = renderTranslate(ex); break;
     case 'word_bank': body = renderWordBank(ex); break;
     case 'explain': body = renderExplain(ex); break;
@@ -1842,7 +2126,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // "Continue" button is ALWAYS present so nobody is racing a timer to read
   // the feedback — tapping it just jumps the queued auto-advance forward.
   const instant = ok && !typoNote;
-  const delay = instant ? 1500 : ok ? 2200 : 3500;
+  const delay = feedbackDelay(instant ? 1100 : ok ? 1800 : 2800, `${title} ${correctText || ''} ${ex.meaning || ''}`);
   foot.innerHTML = `
     <div class="fb">
       <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52 })}</span>
@@ -1894,6 +2178,29 @@ function renderTranslate(ex) {
     <button class="btn btn--primary check" id="checkBtn">Check</button>`;
 }
 
+function renderListenExercise(ex) {
+  return `<h2 class="ex__q">${esc(ex.prompt || 'Tap what you hear')}</h2>
+    <button class="play-btn" id="playBtn">🔊 Play it</button>
+    <div class="lst-reveal" id="listenReveal" hidden><strong>${esc(ex.answer)}</strong>${ex.meaning ? ` <span class="muted">= ${esc(ex.meaning)}</span>` : ''}</div>
+    <div class="opts">${shuffle(ex.options).map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+    <button class="btn btn--ghost" id="showText">Show the text</button>`;
+}
+
+function renderSpeakExercise(ex) {
+  return `<h2 class="ex__q">Say it in ${esc(course.name)} 🎤</h2>
+    <p class="ex__prompt-big">${esc(ex.meaning)}</p>
+    <div class="lst-reveal" id="speakReveal" hidden><strong>${esc(ex.text)}</strong></div>
+    <p class="ex__hint muted" id="speakCoach">${srSupported() ? 'Try saying it first. You can check with the microphone or rate yourself.' : 'Say it out loud from memory, then rate yourself honestly.'}</p>
+    <div class="spk-rec" id="speakTools" hidden>
+      <button class="play-btn" id="hearModel">🔊 Hear the model</button>
+      ${recordSupported() ? '<button class="btn btn--ghost" id="recBtn">🎤 Record yourself</button>' : ''}
+    </div>
+    <div class="onb__actions">
+      ${srSupported() ? '<button class="btn btn--primary" id="speakCheck">Use mic to check</button>' : ''}
+      <button class="btn btn--ghost" id="speakRevealBtn">Show the answer</button>
+    </div>`;
+}
+
 function renderWordBank(ex) {
   const bank = ex.tokens.map((w, i) => `<button class="wb-tok" data-i="${i}">${esc(w)}</button>`).join('');
   return `<h2 class="ex__q">Build the sentence</h2>
@@ -1927,12 +2234,21 @@ function renderMatch(ex) {
 
 // --- wiring per exercise type ---
 function wireExercise(ex, node) {
-  if (ex.type === 'multiple_choice' || ex.type === 'fill_blank') {
+  if (ex.type === 'multiple_choice' || ex.type === 'fill_blank' || ex.type === 'listen') {
+    if (ex.type === 'listen') {
+      node.querySelector('#playBtn').addEventListener('click', () => tryHear(ex.text || ex.answer, course.code));
+      node.querySelector('#showText').addEventListener('click', () => { const r = node.querySelector('#listenReveal'); if (r) r.hidden = false; });
+      speak(ex.text || ex.answer, course.code);
+    }
     node.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
       const ok = checkAnswer(ex, b.dataset.val);
       node.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
       b.classList.add(ok ? 'opt--ok' : 'opt--bad');
       if (!ok) node.querySelectorAll('.opt').forEach((x) => { if (normalize(x.dataset.val) === normalize(ex.answer)) x.classList.add('opt--ok'); });
+      if (ex.type === 'listen') {
+        const r = node.querySelector('#listenReveal');
+        if (r) r.hidden = false;
+      }
       showFeedback(node, ok, ex, ex.answer);
     }));
   }
@@ -2049,7 +2365,15 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
       ${session.mistakes ? '<p class="muted">💡 The tricky ones will come back at just the right moment — that\'s how they stick.</p>' : ''}
       <button class="btn btn--primary" id="doneBtn">Continue</button>
     </div>`);
-  node.querySelector('#doneBtn').addEventListener('click', () => { sound.tap(); afterActivityNav(); });
+  node.querySelector('#doneBtn').addEventListener('click', () => {
+    sound.tap();
+    const firstLessonGuestWin = session.mode === 'lesson'
+      && isGuestLearner()
+      && !((store.state.onboarding || {}).accountPrompted)
+      && store.lang().completedLessons.length === 1;
+    if (firstLessonGuestWin) return renderAccountPrompt(afterActivityNav);
+    afterActivityNav();
+  });
   mount(node);
   // celebrate: a perfect run gets the big confetti; any finish gets a chime
   sound.complete();
@@ -2096,11 +2420,20 @@ function renderHeartsModal() {
 
 // ---------- progress dashboard (the proof of learning) ----------
 function renderProgress() {
+  recordWeeklySnapshot();
   const m = store.metrics();
   const L = store.lang();
   const totalVocab = Object.keys(vocabIndex(course)).length;
   const masteredPct = totalVocab ? Math.round((m.mastered / totalVocab) * 100) : 0;
   const retPct = Math.round(m.retention * 100);
+  const snaps = ((store.state.progressSnapshots || {})[store.state.activeLang] || []).slice(-8);
+  const trendMax = Math.max(1, ...snaps.map((s) => s.mastered));
+  const skillRows = [
+    ['Recognition', m.skills.recognition],
+    ['Production', m.skills.production],
+    ['Listening', m.skills.listening],
+    ['Speaking', m.skills.speaking],
+  ];
 
   // CEFR-style "can-do" goals, one per unit, achieved when its lessons are done
   let unitsDone = 0;
@@ -2138,21 +2471,47 @@ function renderProgress() {
         <div><span>Baseline (${esc(baseline.date)})</span><div class="pbar"><div style="width:${b}%"></div></div><b>${b}%</b></div>
         <div><span>Re-test (${esc(retest.date)})</span><div class="pbar pbar--green"><div style="width:${r}%"></div></div><b>${r}%</b></div>
       </div>
-      <p class="${delta >= 0 ? 'gain' : 'muted'}">${delta >= 0 ? `📈 +${delta}% improvement — real, measured learning.` : `${delta}% — keep reviewing daily.`}</p>
+      <p class="${delta >= 0 ? 'gain' : 'muted'}">${delta >= 0 ? `📈 ▲ +${delta}% improvement — measured on the same anchor items plus a few rotating fillers.` : `📉 ▼ ${Math.abs(delta)}% right now — keep reviewing daily.`}</p>
     </div>`;
   } else if (baseline) {
     compare = `<div class="proof">
       <h3>Your measured progress</h3>
-      <p class="muted">Baseline recorded (${Math.round((baseline.score / baseline.total) * 100)}%). Come back after ~1 month of daily practice and take the re-test to see your gains.</p>
+      <p class="muted">Baseline recorded (${Math.round((baseline.score / baseline.total) * 100)}%). It uses a stable anchor set so your next re-test is a fair month-on-month comparison.</p>
       <button class="btn btn--ghost" id="retestBtn">Take the 1-month re-test</button>
     </div>`;
   } else {
     compare = `<div class="proof">
       <h3>Prove your progress</h3>
-      <p class="muted">Take a 60-second baseline test now. In a month, re-test to see exactly how much you've learned.</p>
+      <p class="muted">Take a 60-second baseline test now. We keep most items anchored between tests so the next comparison is meaningful, not noisy.</p>
       <button class="btn btn--primary" id="baselineBtn">Take baseline test</button>
     </div>`;
   }
+
+  const trend = snaps.length ? `
+    <div class="proof">
+      <h3>Retention trend</h3>
+      <div class="trend-bars" aria-label="Last ${snaps.length} weekly snapshots">
+        ${snaps.map((s) => `<div class="trend-bar"><span style="height:${Math.max(12, Math.round((s.mastered / trendMax) * 100))}%"></span><small>${esc(s.week.slice(5))}</small></div>`).join('')}
+      </div>
+      <p class="muted">Weekly snapshots of mastered words over the last ${snaps.length} week${snaps.length === 1 ? '' : 's'}.</p>
+    </div>` : '';
+
+  const skillHtml = `
+    <div class="proof">
+      <h3>Skills breakdown</h3>
+      <div class="skill-split">
+        ${skillRows.map(([label, stat]) => `<div class="skill-row"><span>${label}</span><div class="qbar"><div style="width:${Math.round(stat.accuracy * 100)}%"></div></div><b>${stat.seen ? `${Math.round(stat.accuracy * 100)}%` : '&mdash;'}</b></div>`).join('')}
+      </div>
+    </div>`;
+
+  const nextUnit = course.units.find((u) => !(u.lessons || []).every((l) => store.isLessonComplete(l.id)));
+  const milestone = (() => {
+    if (!nextUnit) return 'You’ve completed every current unit in this course. 🎉';
+    const ids = [...new Set(nextUnit.lessons.flatMap((l) => (l.vocab || []).map((v) => v.id)))];
+    const mastered = ids.filter((id) => (store.lang().items[id] || {}).mastered).length;
+    const remain = Math.max(0, ids.length - mastered);
+    return `~${remain} more mastered word${remain === 1 ? '' : 's'} to finish ${nextUnit.title.replace(/^Unit \d+:\s*/, '')}.`;
+  })();
 
   const node = h(`
     <div class="screen">
@@ -2178,10 +2537,17 @@ function renderProgress() {
         <span>${m.mastered} / ${totalVocab} words mastered</span>
       </div>
 
+      <div class="proof">
+        <h3>Next milestone</h3>
+        <p class="muted">${esc(milestone)}</p>
+      </div>
+
       <h3 class="sec">What you can do</h3>
       <p class="muted" style="margin:0 4px">Real-world "can-do" goals — complete a unit's lessons to unlock each.</p>
       <div class="cando-list">${canDoRows}</div>
 
+      ${trend}
+      ${skillHtml}
       ${compare}
 
       <p class="footnote">Mastered = recalled correctly in <em>production</em> (typing/speaking) and survived a spaced review. That's real retention, not just taps.</p>
@@ -2365,6 +2731,12 @@ function renderSettings() {
           <label class="switch"><input type="checkbox" id="remTgl" ${remOn ? 'checked' : ''} ${remSupported && !remDenied ? '' : 'disabled'}><span class="switch__track"></span></label>
         </div>
         <div class="set-row">
+          <div class="set-row__label"><b>Reminder time</b><small>Best time window for your nudge</small></div>
+          <select id="remWindowSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[['morning', 'Morning'], ['after_school', 'After school'], ['evening', 'Evening'], ['anytime', 'Anytime']].map(([v, label]) => `<option value="${v}" ${(store.state.settings.reminderWindow || 'after_school') === v ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
+        <div class="set-row">
           <div class="set-row__label"><b>Daily goal</b><small>XP target per day</small></div>
           <select id="goalSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
             ${[20, 30, 50, 80].map((g) => `<option value="${g}" ${store.state.settings.dailyGoalXP === g ? 'selected' : ''}>${g} XP</option>`).join('')}
@@ -2374,6 +2746,12 @@ function renderSettings() {
           <div class="set-row__label"><b>Review intensity</b><small>How often words come back for review</small></div>
           <select id="retSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
             ${[['0.85', 'Relaxed'], ['0.9', 'Standard'], ['0.95', 'Intense']].map(([v, label]) => `<option value="${v}" ${Math.abs((store.state.settings.desiredRetention || 0.9) - Number(v)) < 0.001 ? 'selected' : ''}>${label}</option>`).join('')}
+          </select>
+        </div>
+        <div class="set-row">
+          <div class="set-row__label"><b>Feedback pace</b><small>How quickly answer feedback fades</small></div>
+          <select id="fbSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
+            ${[['quick', 'Quick'], ['comfortable', 'Comfortable'], ['slow', 'Slow']].map(([v, label]) => `<option value="${v}" ${(store.state.settings.feedbackPace || 'comfortable') === v ? 'selected' : ''}>${label}</option>`).join('')}
           </select>
         </div>
       </div>
@@ -2398,10 +2776,15 @@ function renderSettings() {
     if (e.target.checked) {
       const res = await Notify.enable(store);
       if (res !== 'granted') { e.target.checked = false; flashToast('Enable notifications in your browser to use reminders.'); }
-      else flashToast('Daily reminders on 🔔');
+      else { await Notify.syncState(store); flashToast('Daily reminders on 🔔'); }
     } else {
       await Notify.disable(store);
     }
+  });
+  node.querySelector('#remWindowSel').addEventListener('change', async (e) => {
+    store.state.settings.reminderWindow = e.target.value;
+    store.save();
+    await Notify.syncState(store);
   });
   node.querySelector('#goalSel').addEventListener('change', (e) => {
     store.state.settings.dailyGoalXP = Number(e.target.value);
@@ -2413,6 +2796,10 @@ function renderSettings() {
     setDesiredRetention(r);
     store.save();
     flashToast(r >= 0.95 ? 'More frequent reviews 🔁' : r <= 0.85 ? 'Fewer reviews — lighter load' : 'Standard review schedule');
+  });
+  node.querySelector('#fbSel').addEventListener('change', (e) => {
+    store.state.settings.feedbackPace = e.target.value;
+    store.save();
   });
   node.querySelector('#prem').addEventListener('click', renderPremium);
   node.querySelector('#profBtn').addEventListener('click', renderProfiles);

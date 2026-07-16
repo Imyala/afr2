@@ -1,7 +1,7 @@
 // sw.js — offline-first service worker.
 // Offline use is MzansiLingo's core feature: after the first visit the whole
 // app (shell, code, lesson content, icons) is cached and works with no network.
-const CACHE = 'mzansilingo-v22';
+const CACHE = 'mzansilingo-v23';
 
 const MASCOTS = ['lion', 'elephant', 'zebra', 'giraffe', 'hippo', 'crocodile', 'cheetah',
   'leopard', 'gorilla', 'antelope', 'meerkat', 'mandrill', 'rhino', 'buffalo']
@@ -84,14 +84,13 @@ async function maybeRemind() {
     const s = await res.json();
     const today = new Date().toISOString().slice(0, 10);
     if (s.lastStudyDay === today) return;           // already practised — no nudge
-    if (new Date().getHours() < (s.hour || 18)) return; // not yet evening
-    await self.registration.showNotification('Keep your streak alive! 🔥', {
-      body: s.streak > 0
-        ? `You're on a ${s.streak}-day streak. A quick lesson keeps it going.`
-        : 'A few minutes of practice today builds real progress.',
+    const hour = new Date().getHours();
+    if (hour < (s.hourStart || 18) || hour >= (s.hourEnd || 21)) return;
+    await self.registration.showNotification(s.title || 'A little practice goes a long way', {
+      body: s.body || 'A few minutes of practice today builds real progress.',
       icon: 'assets/icons/icon-192.png',
       badge: 'assets/icons/icon-192.png',
-      tag: 'mz-streak-reminder',
+      tag: `mz-streak-reminder-${s.type || 'generic'}`,
     });
   } catch (e) { /* ignore */ }
 }

@@ -110,10 +110,14 @@ for the full explanation. In short:
 - 🦫 **Themba the meerkat** — a friendly SVG mascot who reacts to your answers, cheers your wins and greets you each day
 - ✨ **Juicy feedback** — generated sound effects, confetti, count-up score animations and haptic buzzes (all offline, zero asset downloads)
 - 👋 **Warm onboarding** — a short welcome and a guaranteed "you just learned 3 words" first win before any commitment
-- 🔔 **Daily streak reminders** — opt-in local notifications (via periodic background sync on installed PWAs) so learners come back
+- 🧭 **Guest-first onboarding + placement** — instant start is the default, a tiny post-win setup tunes the 90-day plan, and returning learners can take an early placement/test-out quiz
+- 🌱 **Repair mode** — after 2+ missed days, the first review session is intentionally smaller and more confidence-building before the full backlog returns
+- 🎚️ **Adaptive practice balance** — lesson/review generation tracks recent exercise-type mix and nudges more listening, speaking, and sentence-building when a learner has over-used taps/typing
+- 📊 **Progress with trend + forecast** — anchored baseline/re-test comparisons, weekly retention snapshots, a skills breakdown, and a "next milestone" forecast tied to real unit mastery
+- 🔔 **Targeted reminders** — opt-in local notifications (via periodic background sync on installed PWAs) with configurable time windows and copy tuned to streak risk, reviews due, unfinished plans, quests, or gentle win-back nudges
 - 🔥 Day streaks with ❄️ **streak freezes** to protect them
-- 🎯 **Daily quests** with 💎 gem rewards
-- 🏅 **Achievement badges** (12 milestones)
+- 🎯 **Daily quests** with 💎 gem rewards, including learner-specific quests like recovery missions, overdue-word mastery, and toughest-word repair
+- 🏅 **Achievement badges** for milestones *and* whole-unit/theme completion
 - 🏆 **Living weekly leaderboard** — a cohort of 15 with named rivals whose XP climbs through the week; top 5 promote, bottom 5 demote (Bronze → Diamond). Fully offline and deterministic, so the race feels alive with no server.
 - 🎁 **Daily login reward** that grows with consecutive days
 - 🗓️ **Word of the Day** (Pod101-inspired) — one tap to add it to your reviews
@@ -211,6 +215,9 @@ list in `sw.js`.
 - Recorded native-speaker audio (current audio uses on-device TTS where
   available, with phonetics as the reliable offline fallback)
 - Units 3+: "Real South Africa" packs (taxi, shop, workplace, church, dating)
-- Teacher dashboard: per-class progress and printable reports
+- Teacher dashboard: per-class progress and printable reports (needs sync/backend)
 - The remaining six official languages
 - Cloud sync (optional) so progress follows a learner across devices
+- Real social / classroom sharing features and subscriptions beyond the current
+  offline demo flows need backend infrastructure and stay intentionally out of
+  scope for this static-PWA pass

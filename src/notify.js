@@ -11,9 +11,17 @@
 // We write the streak state into the Cache Storage so the service worker (which
 // can't read localStorage) can decide whether a reminder is due.
 
+import { todayKey, missedDaysSince } from './store.js';
+
 const REMINDER_URL = './__mz_reminder_state';   // virtual cache entry the SW reads
 const CACHE = 'mz-reminder';
 const TAG = 'mz-streak-reminder';
+const WINDOWS = {
+  morning: { start: 7, end: 10 },
+  after_school: { start: 15, end: 18 },
+  evening: { start: 18, end: 21 },
+  anytime: { start: 10, end: 20 },
+};
 
 export function supported() {
   return typeof Notification !== 'undefined' && 'serviceWorker' in navigator;
@@ -27,14 +35,84 @@ export function isEnabled(store) {
   return !!(store.state.settings && store.state.settings.remindersOn) && permission() === 'granted';
 }
 
+function reminderWindow(store) {
+  const key = (store.state.settings && store.state.settings.reminderWindow) || 'after_school';
+  return { key, ...(WINDOWS[key] || WINDOWS.after_school) };
+}
+
+function reminderCopy(state) {
+  if (state.missedDays >= 2) {
+    return {
+      type: 'win_back',
+      title: 'A gentle restart is ready 🌱',
+      body: state.dueCount
+        ? 'No pressure - just do a small confidence-building review and pick the habit back up.'
+        : 'A few calm minutes today will get the habit moving again.',
+    };
+  }
+  if (state.missedDays >= 1 && state.streak > 0) {
+    return {
+      type: 'streak_risk',
+      title: 'Your streak could use a tiny top-up 🔥',
+      body: `You’re on a ${state.streak}-day streak. Even a 2-minute lesson keeps the rhythm going.`,
+    };
+  }
+  if (state.unfinishedPlan) {
+    return {
+      type: 'unfinished_plan',
+      title: 'Your plan is already underway 📅',
+      body: `You’ve started today’s loop — ${state.planDone}/${state.planTotal} steps done so far.`,
+    };
+  }
+  if (state.dueCount > 0) {
+    return {
+      type: 'reviews_due',
+      title: 'A few reviews are ready 🔁',
+      body: `${state.dueCount} word${state.dueCount === 1 ? '' : 's'} are due. A short review now will make them stick.`,
+    };
+  }
+  if (state.openQuests > 0) {
+    return {
+      type: 'quest_expiring',
+      title: 'A quest is still open 🎯',
+      body: `${state.openQuests} daily quest${state.openQuests === 1 ? '' : 's'} still have rewards waiting if you feel like a short session.`,
+    };
+  }
+  return {
+    type: 'generic',
+    title: 'A little practice goes a long way',
+    body: 'A few minutes today is enough to keep real progress moving.',
+  };
+}
+
 // Mirror the learner's streak status into Cache Storage for the SW to read.
 export async function syncState(store) {
   if (!('caches' in window)) return;
   const L = store.lang() || {};
+  const win = reminderWindow(store);
+  const dueCount = store.state.activeLang ? store.dueItems().length : 0;
+  const unfinishedPlan = !!(L.plan && Object.values(L.plan.done || {}).some((x) => !x));
+  const openQuests = (L.quests && L.quests.items ? L.quests.items.filter((q) => !q.claimed).length : 0);
   const payload = {
     lastStudyDay: L.lastStudyDay || null,
     streak: L.streak || 0,
-    hour: 18,                  // don't nudge before ~6pm local-ish (SW compares UTC roughly)
+    hourStart: win.start,
+    hourEnd: win.end,
+    dueCount,
+    unfinishedPlan,
+    planDone: L.plan ? Object.values(L.plan.done || {}).filter(Boolean).length : 0,
+    planTotal: L.plan ? Object.keys(L.plan.done || {}).length : 0,
+    openQuests,
+    missedDays: missedDaysSince(L.lastStudyDay, todayKey()),
+    ...reminderCopy({
+      streak: L.streak || 0,
+      dueCount,
+      unfinishedPlan,
+      planDone: L.plan ? Object.values(L.plan.done || {}).filter(Boolean).length : 0,
+      planTotal: L.plan ? Object.keys(L.plan.done || {}).length : 0,
+      openQuests,
+      missedDays: missedDaysSince(L.lastStudyDay, todayKey()),
+    }),
     updatedAt: Date.now(),
   };
   try {
@@ -88,17 +166,34 @@ export function armSessionFallback(store) {
   const L = store.lang() || {};
   const today = new Date().toISOString().slice(0, 10);
   if (L.lastStudyDay === today) return; // already studied — no nudge needed
-  // fire in 20 minutes if still idle
+  const win = reminderWindow(store);
+  const now = new Date();
+  const inWindow = now.getHours() >= win.start && now.getHours() < win.end;
+  if (now.getHours() >= win.end) return;
+  const nextAt = inWindow
+    ? Date.now() + 20 * 60 * 1000
+    : new Date(now.getFullYear(), now.getMonth(), now.getDate(), win.start, 0, 0, 0).getTime();
   fallbackTimer = setTimeout(async () => {
     if ((store.lang() || {}).lastStudyDay === today) return;
     try {
+      const L2 = store.lang() || {};
+      const dueCount = store.state.activeLang ? store.dueItems().length : 0;
+      const copy = reminderCopy({
+        streak: L2.streak || 0,
+        dueCount,
+        unfinishedPlan: !!(L2.plan && Object.values(L2.plan.done || {}).some((x) => !x)),
+        planDone: L2.plan ? Object.values(L2.plan.done || {}).filter(Boolean).length : 0,
+        planTotal: L2.plan ? Object.keys(L2.plan.done || {}).length : 0,
+        openQuests: (L2.quests && L2.quests.items ? L2.quests.items.filter((q) => !q.claimed).length : 0),
+        missedDays: missedDaysSince(L2.lastStudyDay, todayKey()),
+      });
       const reg = await navigator.serviceWorker.ready;
-      reg.showNotification('Don\'t lose your streak! 🔥', {
-        body: `You have a ${L.streak || 0}-day streak going. A 2-minute lesson keeps it alive.`,
+      reg.showNotification(copy.title, {
+        body: copy.body,
         icon: 'assets/icons/icon-192.png',
         badge: 'assets/icons/icon-192.png',
-        tag: TAG,
+        tag: `${TAG}-${copy.type}`,
       });
     } catch (e) { /* ignore */ }
-  }, 20 * 60 * 1000);
+  }, Math.max(1000, nextAt - Date.now()));
 }

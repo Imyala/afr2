@@ -363,6 +363,13 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .pbar > div { height: 100%; background: var(--blue); }
 .pbar--green > div { background: var(--green); }
 .gain { color: var(--green-dark); font-weight: 800; }
+.trend-bars { display: grid; grid-template-columns: repeat(auto-fit, minmax(28px, 1fr)); gap: 8px; align-items: end; min-height: 110px; }
+.trend-bar { display: grid; gap: 6px; justify-items: center; align-items: end; }
+.trend-bar span { display: block; width: 100%; min-height: 12px; border-radius: 999px 999px 8px 8px; background: linear-gradient(180deg, var(--blue), var(--green)); }
+.trend-bar small { font-size: 10px; color: var(--muted); }
+.skill-split { display: grid; gap: 10px; }
+.skill-row { display: grid; grid-template-columns: 90px 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
+.skill-row b { font-size: 12px; }
 
 /* ---------- premium ---------- */
 .pay { display: grid; gap: 16px; }
@@ -598,8 +605,9 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   background: linear-gradient(95deg, var(--green), var(--blue)); font-size: 15px;
 }
 .plan-card--start { background: linear-gradient(95deg, var(--gold), var(--green)); color: #1a2e12; }
+.plan-card--resume { background: linear-gradient(95deg, color-mix(in srgb, var(--blue) 88%, #fff), var(--green)); }
 .plan-card b { font-size: 16px; }
-.plan-card__r { font-weight: 800; white-space: nowrap; opacity: .95; }
+.plan-card__r { font-weight: 800; opacity: .95; text-align: right; font-size: 13px; }
 
 /* plan hero — one card carries the day, today's progress, and a friendly cue */
 .plan-hero {
