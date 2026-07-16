@@ -117,16 +117,26 @@ readers — which matches the "prompts disappear too quickly" complaint.
   pattern of respecting reduced-motion for animations elsewhere in
   `main.css`.
 
-## Summary of recommended priority
+## Implemented in this pass
 
-1. Fix `.ex__input` background/colour so typed text is always legible in dark
-   mode (small, high-impact CSS fix).
-2. Always show a dismissible "Continue" control on feedback, even for
-   instant/correct answers, so pacing is user-controlled, not just a fixed
-   timer.
-3. Do a full pass for hardcoded colours (`#fff`, `#000`-based shadows, etc.)
-   that bypass the `--ink`/`--card`/`--bg` theme tokens, to prevent future
-   dark-mode regressions.
-4. Iterate on palette warmth (tinted shadows, less stark white, consistent
-   radius scale, more mascot presence) to push the "friendly and soft"
-   feeling further.
+1. **Feedback pacing is now learner-controlled.** Core exercise feedback keeps
+   the always-visible **Continue** button, and Settings now includes a
+   **Feedback pace** control (`Quick` / `Comfortable` / `Slow`) that stretches
+   the auto-advance timing instead of forcing everyone through the same 1-second
+   rhythm.
+2. **Home now surfaces a single "next best action" card.** Returning learners
+   see one prominent resume card (reviews due, today’s plan, next lesson, best
+   story, or a quick speaking prompt), which reduces decision fatigue as the app
+   accumulates more features.
+3. **Dark-mode input contrast is tracked as resolved in code.** `.ex__input`
+   now uses theme tokens (`var(--card)` / `var(--ink)`), so typed text follows
+   the active scheme instead of sitting on a hardcoded light field.
+
+## Remaining design follow-ups
+
+- Do a full pass for hardcoded colours (`#fff`, `#000`-based shadows, etc.)
+  that bypass the `--ink`/`--card`/`--bg` theme tokens, to prevent future
+  dark-mode regressions.
+- Iterate on palette warmth (tinted shadows, less stark white, consistent
+  radius scale, more mascot presence) to push the "friendly and soft" feeling
+  further.
