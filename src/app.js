@@ -908,7 +908,7 @@ function renderListening() {
     for (const id of it.ids) srsReview(store.item(id), gradeFor(ok, 'multiple_choice'), 'multiple_choice');
     if (ok) { store.addXp(5); s.done += 1; }
     store.save();
-    // auto-advance (a miss lingers so the revealed text + meaning can be read)
+    // auto-advance, but always give a Continue button so nobody races the timer
     const seq = mountSeq;
     let advanced = false;
     const go = () => {
@@ -916,13 +916,11 @@ function renderListening() {
       advanced = true;
       s.idx += 1; renderListening();
     };
-    setTimeout(go, ok ? 1000 : 3000);
-    if (!ok) {
-      const foot = node.querySelector('#foot');
-      foot.innerHTML = '<button class="btn btn--primary" id="next">Continue</button>';
-      foot.querySelector('#next').addEventListener('click', () => { sound.tap(); go(); });
-      foot.querySelector('#next').focus();
-    }
+    setTimeout(go, ok ? 1500 : 3000);
+    const foot = node.querySelector('#foot');
+    foot.innerHTML = '<button class="btn btn--primary" id="next">Continue</button>';
+    foot.querySelector('#next').addEventListener('click', () => { sound.tap(); go(); });
+    foot.querySelector('#next').focus();
   }));
   mount(node);
 }
@@ -1787,11 +1785,11 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   const again = requeues
     ? `<div class="fb__again">🔁 It comes round again in a bit — that's how it sticks${spared ? ' · 🌱 still learning, no heart lost' : ''}</div>`
     : '';
-  // Auto-advance, like the intro taster — no "Continue" tap after every answer.
-  // A clean correct flows straight on; a learning moment (or a spelling nudge)
-  // pauses long enough to actually take the answer in, with a button to skip.
+  // Auto-advance so a clean correct still flows without a forced tap, but a
+  // "Continue" button is ALWAYS present so nobody is racing a timer to read
+  // the feedback — tapping it just jumps the queued auto-advance forward.
   const instant = ok && !typoNote;
-  const delay = instant ? 1000 : ok ? 2200 : 3500;
+  const delay = instant ? 1500 : ok ? 2200 : 3500;
   foot.innerHTML = `
     <div class="fb">
       <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52 })}</span>
@@ -1803,7 +1801,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
         ${again}
       </div>
     </div>
-    ${instant ? '' : '<button class="btn btn--primary" id="continueBtn">Continue</button>'}`;
+    <button class="btn btn--primary" id="continueBtn">Continue</button>`;
   const seq = mountSeq;
   let advanced = false;
   const go = () => {
