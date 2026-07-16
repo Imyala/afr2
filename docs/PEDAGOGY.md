@@ -116,6 +116,36 @@ acquisition research:
    retrieval from deliberate to automatic. It reuses learned content only, so
    it is pure consolidation, and answers still feed the scheduler honestly.
 
+## 6. Inquiry-based, higher-order pattern learning
+
+Grammar isn't taught rule-first. The first time a learner opens a pattern
+that has a generative frame (subject prefixes, verb frames), they meet
+**"Spot the pattern"**: three worked examples (English gloss → the actual
+chunk), then a "now you try" question that asks them to predict a *fourth*
+combination from the same rule, before the formal tip is ever shown
+(`genPatternInquiry` in `src/lessons.js`). Noticing a relationship yourself —
+induction — is a more durable route to higher-order understanding (rules,
+relationships, generalisable structure, not just memorised instances) than
+being handed the rule first. Once a pattern is no longer brand-new, its tip
+is shown directly so the learner isn't re-taught something they already
+worked out.
+
+## 7. The Feynman technique: teach it back
+
+Recognising and typing a word are still shallower than genuinely
+*explaining* it. Once a word has reached **mastered** status, review
+sessions occasionally swap in **"Teach Themba"** (`genExplainPrompt` in
+`src/lessons.js`): the learner writes, in their own words, when they'd use
+the word or what it reminds them of — teaching it to the mascot rather than
+being tested. There's no strict grader for free text, so — exactly like
+Speaking — the learner **self-rates honestly** ("I explained it well" /
+"not really"), and that rating feeds the same spaced-repetition scheduler as
+every other exercise. Because generating an explanation requires deeper,
+more elaborative processing than recall or typing, it's graded as a
+production-strength signal (`gradeFor` in `src/srs.js`). It's reserved for
+already-mastered words and never costs a heart, so it stays a low-stakes
+comprehension check, not a new way to fail.
+
 ## How the game layer supports (not replaces) learning
 
 - **Daily goal + streak**: drive the *daily* practice that spaced repetition

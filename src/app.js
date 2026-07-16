@@ -5,7 +5,7 @@ import { speak, recordSupported, startRecording } from './audio.js';
 import {
   loadCourse, loadLanguages, allLessons, findLesson, vocabIndex, phraseIndex,
   checkAnswer, checkTyped, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
-  sentencePool, readingCoverage, genFrameDrills, memberVocabIds,
+  sentencePool, readingCoverage, genFrameDrills, memberVocabIds, genExplainPrompt, genPatternInquiry,
 } from './lessons.js';
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
@@ -1327,7 +1327,44 @@ function renderGrammar() {
       <p class="footnote">Grammar here is community-reviewed. Spot something off? Help us improve it.</p>
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
-  node.querySelectorAll('[data-g]').forEach((b) => b.addEventListener('click', () => renderGrammarTip(b.dataset.g)));
+  node.querySelectorAll('[data-g]').forEach((b) => b.addEventListener('click', () => {
+    const gid = b.dataset.g;
+    // inquiry-based learning: the FIRST time you meet a pattern, notice it
+    // yourself before being told the rule — noticing a pattern is a stronger,
+    // more durable form of higher-order learning than being handed it.
+    (store.grammarState(gid) === 'new') ? renderGrammarInquiry(gid) : renderGrammarTip(gid);
+  }));
+  mount(node);
+}
+
+// "Spot the pattern": three worked examples, then a "now you try" guess of a
+// fourth, before the formal rule is revealed. Falls back straight to the tip
+// for patterns without a generative frame (nothing to induce from) or without
+// enough combinations to hold one back as the guess.
+function renderGrammarInquiry(gid) {
+  const g = (course.grammar || []).find((x) => x.id === gid);
+  if (!g) return renderGrammar();
+  const inquiry = g.frames ? genPatternInquiry(g.frames) : null;
+  if (!inquiry) return renderGrammarTip(gid);
+  const exRows = inquiry.examples.map((e) => `<li><span class="muted">${esc(e.en)}</span> → <strong>${esc(e.chunk)}</strong></li>`).join('');
+  const opts = shuffle(inquiry.options).map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('');
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Grammar</button><strong>Spot the pattern</strong><span></span></header>
+      <p class="muted">Look at these examples. What's the pattern?</p>
+      <ul class="inquiry-list">${exRows}</ul>
+      <h2 class="ex__q">Now you try: how would you say “${esc(inquiry.prompt)}”?</h2>
+      <div class="opts">${opts}</div>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderGrammar);
+  node.querySelectorAll('.opt').forEach((b) => b.addEventListener('click', () => {
+    const ok = normalize(b.dataset.val) === normalize(inquiry.answer);
+    node.querySelectorAll('.opt').forEach((x) => { x.disabled = true; });
+    b.classList.add(ok ? 'opt--ok' : 'opt--bad');
+    if (!ok) node.querySelectorAll('.opt').forEach((x) => { if (normalize(x.dataset.val) === normalize(inquiry.answer)) x.classList.add('opt--ok'); });
+    ok ? sound.correct() : sound.wrong();
+    setTimeout(() => renderGrammarTip(gid), 1400);
+  }));
   mount(node);
 }
 
@@ -1539,11 +1576,26 @@ function renderLessonIntro(lesson, words, i) {
   mount(node);
 }
 
+// Feynman technique, woven into ordinary review: once in a while, swap in an
+// "explain it" prompt for a word the learner has already MASTERED — proving
+// they can teach it back, not just recognise or type it. Never for words
+// still being learned (they need more straightforward practice first).
+function withExplainPrompt(queue, dueIds) {
+  const idx = vocabIndex(course);
+  const masteredDue = dueIds.filter((id) => { const it = store.item(id); return it && it.mastered && idx[id]; });
+  if (!masteredDue.length || Math.random() > 0.3) return queue;
+  const v = idx[masteredDue[Math.floor(Math.random() * masteredDue.length)]];
+  const ex = { ...genExplainPrompt(v), _review: true };
+  const pos = Math.floor(Math.random() * (queue.length + 1));
+  return [...queue.slice(0, pos), ex, ...queue.slice(pos)];
+}
+
 function startReview() {
   if (store.lang().hearts <= 0) return renderHeartsModal();
   const due = store.dueItems();
   if (!due.length) return renderHome();
-  session = { mode: 'review', lesson: null, queue: buildReviewSession(course, due), idx: 0, mistakes: 0, total: 0 };
+  const queue = withExplainPrompt(buildReviewSession(course, due), due);
+  session = { mode: 'review', lesson: null, queue, idx: 0, mistakes: 0, total: 0 };
   renderExercise();
 }
 
@@ -1708,7 +1760,7 @@ function advance(wasCorrect, ex) {
     }
     // Match is the lesson's first-exposure intro, and mispairs are already
     // corrected in place — it counts against accuracy/stars but not hearts.
-    if (!wasCorrect && HEART_MODES.includes(session.mode) && ex.type !== 'match') {
+    if (!wasCorrect && HEART_MODES.includes(session.mode) && ex.type !== 'match' && ex.type !== 'explain') {
       // hearts guard the recall of things already TAUGHT; missing material
       // you're still learning is part of learning and stays free
       if (!learningGrace) store.loseHeart();
@@ -1744,6 +1796,7 @@ function renderExercise() {
     case 'fill_blank': body = renderFill(ex); break;
     case 'translate': body = renderTranslate(ex); break;
     case 'word_bank': body = renderWordBank(ex); break;
+    case 'explain': body = renderExplain(ex); break;
     default: body = '<p>Unknown exercise</p>';
   }
   const node = h(`<div class="screen ex">${progressBar()}<div class="ex__body">${body}</div><div class="ex__foot" id="foot"></div></div>`);
@@ -1780,7 +1833,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // pronunciation only when it belongs to exactly what's shown as the answer
   const phon = (v && v.phonetic && normalize(v.term) === normalize(correctText)) ? ` <span class="muted">(${esc(v.phonetic)})</span>` : '';
   const answer = ok ? '' : `<div class="fb__answer">${ex.type === 'match' ? esc(correctText) : `It's: <strong>${esc(correctText)}</strong>${phon}`}</div>`;
-  const requeues = !ok && HEART_MODES.includes(session.mode) && ex.type !== 'match';
+  const requeues = !ok && HEART_MODES.includes(session.mode) && ex.type !== 'match' && ex.type !== 'explain';
   const spared = requeues && stillLearningEx(ex);
   const again = requeues
     ? `<div class="fb__again">🔁 It comes round again in a bit — that's how it sticks${spared ? ' · 🌱 still learning, no heart lost' : ''}</div>`
@@ -1850,6 +1903,20 @@ function renderWordBank(ex) {
     <button class="btn btn--primary check" id="checkBtn" disabled>Check</button>`;
 }
 
+// Feynman technique: "teach it back". No typing to grade — self-rated
+// honestly, like Speaking, and never costs a heart, so it stays low-stakes.
+function renderExplain(ex) {
+  return `<h2 class="ex__q">🦫 Teach Themba</h2>
+    <p class="ex__hint muted">Themba half-remembers <strong>${esc(ex.prompt)}</strong> — explain it in your own words. When would you use it? What does it remind you of?</p>
+    <textarea class="ex__input ex__textarea" id="explainInput" rows="3" placeholder="Explain it to Themba…"></textarea>
+    <button class="btn btn--primary" id="explainSubmit">I'm done explaining</button>
+    <div class="explain-rate" id="explainRate" hidden>
+      <p class="muted">Be honest — could you really explain it?</p>
+      <button class="btn btn--primary" id="explainGood">✅ Yes, I explained it well</button>
+      <button class="btn btn--ghost" id="explainMeh">🤔 Not really — review it again</button>
+    </div>`;
+}
+
 function renderMatch(ex) {
   const left = ex.pairs.map((p, i) => `<button class="opt match-opt" data-side="L" data-i="${i}">${esc(p[0])}</button>`).join('');
   const right = shuffle(ex.pairs.map((p, i) => ({ i, t: p[1] }))).map((o) => `<button class="opt match-opt" data-side="R" data-i="${o.i}">${esc(o.t)}</button>`).join('');
@@ -1897,6 +1964,23 @@ function wireExercise(ex, node) {
       const resp = Array.from(build.children).map((c) => c.textContent).join(' ');
       showFeedback(node, checkAnswer(ex, resp), ex, ex.answer);
     });
+  }
+
+  if (ex.type === 'explain') {
+    const input = node.querySelector('#explainInput');
+    const submitBtn = node.querySelector('#explainSubmit');
+    const rate = node.querySelector('#explainRate');
+    input.focus();
+    submitBtn.addEventListener('click', () => {
+      if (!input.value.trim()) return;
+      sound.tap();
+      submitBtn.hidden = true;
+      input.disabled = true;
+      rate.hidden = false;
+      rate.querySelector('#explainGood').focus();
+    });
+    rate.querySelector('#explainGood').addEventListener('click', () => showFeedback(node, true, ex, ex.answer));
+    rate.querySelector('#explainMeh').addEventListener('click', () => showFeedback(node, false, ex, ex.answer));
   }
 
   if (ex.type === 'match') {
