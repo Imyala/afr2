@@ -1,5 +1,5 @@
 // app.js — MzansiLingo PWA controller (routing, screens, exercise rendering)
-import { store, XP_PER_CORRECT, XP_LESSON_BONUS, MAX_HEARTS } from './store.js';
+import { store, missedDaysSince, XP_PER_CORRECT, XP_LESSON_BONUS, MAX_HEARTS } from './store.js';
 import { review as srsReview, gradeFor, setDesiredRetention } from './srs.js';
 import { speak, listenOnce, recordSupported, srSupported, startRecording } from './audio.js';
 import {
@@ -108,13 +108,6 @@ function wireKeyActivation(root) {
   }));
 }
 function fmtTime(ms) { const m = Math.ceil(ms / 60000); return `${m} min`; }
-function daysBetweenIso(a, b) {
-  return Math.floor((new Date(`${b}T00:00:00Z`) - new Date(`${a}T00:00:00Z`)) / 86400000);
-}
-function missedDays(lastStudyDay, today = todayStr()) {
-  if (!lastStudyDay) return 0;
-  return Math.max(0, daysBetweenIso(lastStudyDay, today) - 1);
-}
 function feedbackDelay(base, text = '') {
   const pace = (store.state.settings && store.state.settings.feedbackPace) || 'comfortable';
   const mult = pace === 'quick' ? 0.95 : pace === 'slow' ? 1.8 : 1.35;
@@ -517,7 +510,7 @@ function toughestWordId() {
 }
 
 function nextBestAction(L, due, nextLesson) {
-  const repairPending = due > 0 && missedDays(L.lastStudyDay) >= 2 && L.lastRepairDay !== todayStr();
+  const repairPending = due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr();
   if (repairPending) return { id: 'resumeReview', icon: '🌱', title: 'Ease back in', sub: `Start a shorter confidence-building review (${Math.min(due, 8)} due first)`, action: startReview };
   if (due > 0) return { id: 'resumeReview', icon: '🔁', title: 'Reviews ready', sub: `${due} review${due === 1 ? '' : 's'} due now`, action: startReview };
   if (L.plan && Object.values(L.plan.done).some((x) => !x)) return { id: 'resumePlan', icon: '📅', title: 'Resume today’s plan', sub: `${Object.values(L.plan.done).filter(Boolean).length}/4 steps done`, action: renderPlan };
@@ -744,7 +737,7 @@ function homeStatus(L, due, pct, goal) {
     return L.warmupDone ? 'Your first lesson is ready below 👇' : 'Start with the warm-up below 👇';
   }
   if (pct >= 100) return 'Done for today — well played! 🎉';
-  if (due > 0 && missedDays(L.lastStudyDay) >= 2 && L.lastRepairDay !== todayStr()) return 'Welcome back — start with a short confidence reset 🌱';
+  if (due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr()) return 'Welcome back — start with a short confidence reset 🌱';
   if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔒`;
   if (profile.goal === 'conversation' || profile.goal === 'travel') return 'Keep speaking and listening — that’s your fastest path now';
   if (profile.goal === 'school') return 'A little every day makes the school stuff stick';
@@ -1316,7 +1309,7 @@ function planActivities() {
   const due = store.dueItems().length;
   const hasReading = (course.reading || []).length > 0;
   const hasDialogue = (course.dialogues || []).length > 0;
-  const repairPending = due > 0 && missedDays(store.lang().lastStudyDay) >= 2 && store.lang().lastRepairDay !== todayStr();
+  const repairPending = due > 0 && missedDaysSince(store.lang().lastStudyDay, todayStr()) >= 2 && store.lang().lastRepairDay !== todayStr();
   const timeLabel = profile.dailyTime === '5' ? 'quick' : profile.dailyTime === '30' ? 'deeper' : 'steady';
   const lessonSub = profile.goal === 'school'
     ? 'build the next school-ready topic'
@@ -1831,7 +1824,7 @@ function startReview() {
   const L = store.lang();
   const due = store.dueItems();
   if (!due.length) return renderHome();
-  const repairMode = missedDays(L.lastStudyDay) >= 2 && L.lastRepairDay !== todayStr();
+  const repairMode = missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr();
   const queue = withExplainPrompt(buildReviewSession(course, due, 15, {
     recentTypes: L.recentExerciseTypes || [],
     itemStats: L.items || {},
@@ -2133,7 +2126,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // "Continue" button is ALWAYS present so nobody is racing a timer to read
   // the feedback — tapping it just jumps the queued auto-advance forward.
   const instant = ok && !typoNote;
-  const autoAdvanceDelay = feedbackDelay(instant ? 1100 : ok ? 1800 : 2800, `${title} ${correctText || ''} ${ex.meaning || ''}`);
+  const delay = feedbackDelay(instant ? 1100 : ok ? 1800 : 2800, `${title} ${correctText || ''} ${ex.meaning || ''}`);
   foot.innerHTML = `
     <div class="fb">
       <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52 })}</span>
@@ -2153,7 +2146,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
     advanced = true;
     advance(ok, ex);
   };
-  setTimeout(go, autoAdvanceDelay);
+  setTimeout(go, delay);
   const cont = foot.querySelector('#continueBtn');
   if (cont) cont.addEventListener('click', () => { sound.tap(); go(); });
   // lock inputs
@@ -2507,7 +2500,7 @@ function renderProgress() {
     <div class="proof">
       <h3>Skills breakdown</h3>
       <div class="skill-split">
-        ${skillRows.map(([label, stat]) => `<div class="skill-row"><span>${label}</span><div class="qbar"><div style="width:${Math.round(stat.accuracy * 100)}%"></div></div><b>${stat.seen ? `${Math.round(stat.accuracy * 100)}%` : '—'}</b></div>`).join('')}
+        ${skillRows.map(([label, stat]) => `<div class="skill-row"><span>${label}</span><div class="qbar"><div style="width:${Math.round(stat.accuracy * 100)}%"></div></div><b>${stat.seen ? `${Math.round(stat.accuracy * 100)}%` : '&mdash;'}</b></div>`).join('')}
       </div>
     </div>`;
 

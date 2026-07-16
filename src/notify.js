@@ -11,6 +11,8 @@
 // We write the streak state into the Cache Storage so the service worker (which
 // can't read localStorage) can decide whether a reminder is due.
 
+import { todayKey, missedDaysSince } from './store.js';
+
 const REMINDER_URL = './__mz_reminder_state';   // virtual cache entry the SW reads
 const CACHE = 'mz-reminder';
 const TAG = 'mz-streak-reminder';
@@ -31,12 +33,6 @@ export function permission() {
 
 export function isEnabled(store) {
   return !!(store.state.settings && store.state.settings.remindersOn) && permission() === 'granted';
-}
-
-function missedDays(lastStudyDay) {
-  if (!lastStudyDay) return 0;
-  const diff = Math.floor((new Date(`${todayKey()}T00:00:00Z`) - new Date(`${lastStudyDay}T00:00:00Z`)) / 86400000);
-  return Math.max(0, diff - 1);
 }
 
 function reminderWindow(store) {
@@ -107,7 +103,7 @@ export async function syncState(store) {
     planDone: L.plan ? Object.values(L.plan.done || {}).filter(Boolean).length : 0,
     planTotal: L.plan ? Object.keys(L.plan.done || {}).length : 0,
     openQuests,
-    missedDays: missedDays(L.lastStudyDay),
+    missedDays: missedDaysSince(L.lastStudyDay, todayKey()),
     ...reminderCopy({
       streak: L.streak || 0,
       dueCount,
@@ -115,7 +111,7 @@ export async function syncState(store) {
       planDone: L.plan ? Object.values(L.plan.done || {}).filter(Boolean).length : 0,
       planTotal: L.plan ? Object.keys(L.plan.done || {}).length : 0,
       openQuests,
-      missedDays: missedDays(L.lastStudyDay),
+      missedDays: missedDaysSince(L.lastStudyDay, todayKey()),
     }),
     updatedAt: Date.now(),
   };
@@ -189,7 +185,7 @@ export function armSessionFallback(store) {
         planDone: L2.plan ? Object.values(L2.plan.done || {}).filter(Boolean).length : 0,
         planTotal: L2.plan ? Object.keys(L2.plan.done || {}).length : 0,
         openQuests: (L2.quests && L2.quests.items ? L2.quests.items.filter((q) => !q.claimed).length : 0),
-        missedDays: missedDays(L2.lastStudyDay),
+        missedDays: missedDaysSince(L2.lastStudyDay, todayKey()),
       });
       const reg = await navigator.serviceWorker.ready;
       reg.showNotification(copy.title, {

@@ -3,7 +3,7 @@
 // that brings learners back every day (which is exactly what the spaced-
 // repetition engine needs to work). All of it runs offline.
 
-import { todayKey } from './store.js';
+import { todayKey, missedDaysSince } from './store.js';
 
 // ---------- date helpers ----------
 function weekKey(d = new Date()) {
@@ -132,12 +132,6 @@ export function leagueRank(store, now = Date.now()) {
   return { rank: me.rank, size: LEAGUE_SIZE, zone: me.zone, xp: me.xp };
 }
 
-function missedDays(lastStudyDay) {
-  if (!lastStudyDay) return 0;
-  const diff = Math.floor((new Date(`${todayKey()}T00:00:00Z`) - new Date(`${lastStudyDay}T00:00:00Z`)) / 86400000);
-  return Math.max(0, diff - 1);
-}
-
 function toughestWord(store) {
   const L = store.lang();
   const rows = Object.entries(L.items || {})
@@ -155,7 +149,7 @@ function questPoolFor(store) {
   const hard = toughestWord(store);
   if (hard) pool.push({ id: 'q_toughest', text: 'Fix your toughest word', goal: 1, event: 'tough_word', gems: 16, icon: '🩹' });
   if ((L.readingsCompleted || 0) >= 0) pool.push({ id: 'q_story_sharp', text: 'Finish a story with 90%+ accuracy', goal: 1, event: 'story_sharp', gems: 18, icon: '📖' });
-  if (missedDays(L.lastStudyDay) >= 1) pool.push({ id: 'q_recovery', text: 'Recovery mission: do one short review', goal: 1, event: 'recovery', gems: 20, icon: '🌱' });
+  if (missedDaysSince(L.lastStudyDay, todayKey()) >= 1) pool.push({ id: 'q_recovery', text: 'Recovery mission: do one short review', goal: 1, event: 'recovery', gems: 20, icon: '🌱' });
   return pool;
 }
 

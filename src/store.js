@@ -12,12 +12,19 @@ const keyFor = (id) => (id === 'default' ? KEY_BASE : `${KEY_BASE}__${id}`);
 
 const HEART_REFILL_MS = 30 * 60 * 1000; // one heart every 30 minutes (free tier)
 const MAX_HEARTS = 5;
+const MAX_RECENT_EXERCISE_TYPES = 40;
 
 export const XP_PER_CORRECT = 10;
 export const XP_LESSON_BONUS = 20;
 
 function todayKey(d = new Date()) {
   return d.toISOString().slice(0, 10);
+}
+
+function missedDaysSince(lastStudyDay, today = todayKey()) {
+  if (!lastStudyDay) return 0;
+  const diff = Math.floor((new Date(`${today}T00:00:00Z`) - new Date(`${lastStudyDay}T00:00:00Z`)) / 86400000);
+  return Math.max(0, diff - 1);
 }
 
 function freshLang() {
@@ -348,7 +355,7 @@ class Store {
     st.seen += 1;
     if (correct) st.correct += 1;
     L.recentExerciseTypes.push(type);
-    if (L.recentExerciseTypes.length > 40) L.recentExerciseTypes = L.recentExerciseTypes.slice(-40);
+    if (L.recentExerciseTypes.length > MAX_RECENT_EXERCISE_TYPES) L.recentExerciseTypes = L.recentExerciseTypes.slice(-MAX_RECENT_EXERCISE_TYPES);
     return st;
   }
 
@@ -394,4 +401,4 @@ class Store {
 }
 
 export const store = new Store();
-export { todayKey, MAX_HEARTS };
+export { todayKey, missedDaysSince, MAX_HEARTS };
