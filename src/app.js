@@ -683,11 +683,11 @@ function renderHome() {
       </section>
 
       <section class="home-shortcuts" aria-label="Quick navigation">
-        <button class="quick-nav" id="quickReview">🔁 Review</button>
-        <button class="quick-nav" id="quickStories" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
-        <button class="quick-nav" id="quickProgress">📊 Progress</button>
-        <button class="quick-nav" id="quickRoadmap">🧭 Roadmap</button>
-        <button class="quick-nav" id="quickShop">🛒 Shop</button>
+        <button class="quick-nav" id="quickReview" aria-label="Start due review">🔁 Review</button>
+        <button class="quick-nav" id="quickStories" aria-label="Open stories library" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
+        <button class="quick-nav" id="quickProgress" aria-label="Open progress dashboard">📊 Progress</button>
+        <button class="quick-nav" id="quickRoadmap" aria-label="View fluency roadmap">🧭 Roadmap</button>
+        <button class="quick-nav" id="quickShop" aria-label="Open rewards shop">🛒 Shop</button>
       </section>
 
       ${lessonsDone >= 1 ? `<button class="plan-card plan-card--resume" id="${nextAction.id}">
@@ -830,7 +830,7 @@ const FLUENCY_MILESTONES = [
 const MIN_FLUENCY_PROGRESS_PCT = 4;
 
 function fluencyRoadmap(mastered = 0) {
-  const current = FLUENCY_MILESTONES.find((m) => mastered <= m.cap) || FLUENCY_MILESTONES[FLUENCY_MILESTONES.length - 1];
+  const current = FLUENCY_MILESTONES.find((m) => mastered < m.cap) || FLUENCY_MILESTONES[FLUENCY_MILESTONES.length - 1];
   const idx = FLUENCY_MILESTONES.indexOf(current);
   const prevCap = idx > 0 ? FLUENCY_MILESTONES[idx - 1].cap : 0;
   const span = Math.max(1, current.cap - prevCap);
