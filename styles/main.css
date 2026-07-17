@@ -10,6 +10,12 @@
   --card: #ffffff;
   --muted: #5e6e66;
   --line: #e2e9e4;
+  --badge-new-bg: color-mix(in srgb, var(--green) 12%, transparent);
+  --badge-new-ink: var(--green-dark);
+  --badge-learning-bg: #fff6e0;
+  --badge-learning-ink: #8a5a00;
+  --badge-mastered-bg: color-mix(in srgb, #7c3aed 14%, transparent);
+  --badge-mastered-ink: #6b21a8;
   --radius: 16px;
   --shadow: 0 2px 0 rgba(0,0,0,.08), 0 6px 20px rgba(0,0,0,.06);
   --maxw: 520px;
@@ -145,7 +151,34 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 @media (prefers-reduced-motion: reduce) { .mascot-img--bob, .mascot-img--cheer { animation: none; } }
 .home-hero__greet { font-size: 17px; line-height: 1.2; display: block; }
 .home-hero__sub { margin: 3px 0 0; font-size: 13px; }
+.home-hero__sub--urgent {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
+  padding: 5px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--green) 12%, transparent);
+  color: var(--green-dark); font-weight: 800;
+}
 .goal__ring--hero { width: 66px; height: 66px; }
+
+.home-overview { display: grid; gap: 12px; }
+.home-overview__card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+  padding: 14px 16px; box-shadow: var(--shadow); display: grid; gap: 10px;
+}
+.home-overview__card--warm {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 12%, var(--card)), var(--card));
+}
+.home-overview__head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  font-size: 13px; color: var(--muted);
+}
+.home-overview__head strong { color: var(--ink); font-size: 15px; }
+.home-overview__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.home-overview__stats span {
+  background: color-mix(in srgb, var(--bg) 75%, var(--card)); border-radius: 14px;
+  padding: 10px 8px; text-align: center; display: grid; gap: 2px;
+}
+.home-overview__stats b { font-size: 20px; color: var(--green); }
+.home-overview__stats small, .home-overview__note { color: var(--muted); font-size: 12px; }
 
 /* compact "today" mini cards (quests + league) */
 .mini-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -251,6 +284,13 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .ex__bar-fill { height: 100%; background: var(--green); border-radius: 999px; transition: width .25s; }
 .ex__hearts { letter-spacing: -3px; font-size: 14px; }
 .ex__body { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.ex__srs-badge {
+  align-self: flex-start; margin-top: -6px; padding: 6px 12px; border-radius: 999px;
+  font-size: 12px; font-weight: 800;
+}
+.ex__srs-badge--new { background: var(--badge-new-bg); color: var(--badge-new-ink); }
+.ex__srs-badge--learning { background: var(--badge-learning-bg); color: var(--badge-learning-ink); }
+.ex__srs-badge--mastered { background: var(--badge-mastered-bg); color: var(--badge-mastered-ink); }
 .ex__q { font-size: 21px; }
 .ex__prompt-big { font-size: 26px; font-weight: 800; color: var(--green); }
 .ex__phon { margin: 0; }
@@ -488,6 +528,10 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
     --gold: #f5c33b;
     --blue: #5cabec;        /* bright blue for links/regions */
     --purple: #b794f6;      /* bright purple for gems/rewards on dark */
+    --badge-learning-bg: color-mix(in srgb, var(--gold) 16%, var(--bg));
+    --badge-learning-ink: var(--gold);
+    --badge-mastered-bg: color-mix(in srgb, var(--purple) 16%, var(--bg));
+    --badge-mastered-ink: var(--purple);
 }
 [data-theme="dark"] .opt { box-shadow: 0 2px 0 rgba(0,0,0,.3); }
 [data-theme="dark"] :is(.lang-card, .node, .card, .story, .book, .shop-item, .tier, .kpi, .dcard, .rline) { box-shadow: 0 1px 0 rgba(0,0,0,.3); }
@@ -502,6 +546,13 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 [data-theme="dark"] :is(.boost-badge, .boost-chip) { background: color-mix(in srgb, var(--gold) 18%, transparent); color: var(--gold); }
 [data-theme="dark"] .plan--best { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
 [data-theme="dark"] body { background-image: radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--green) 14%, transparent), transparent 60%); }
+[data-theme="dark"] .home-hero__sub--urgent { color: var(--green); }
+[data-theme="dark"] .home-overview__stats span { background: color-mix(in srgb, var(--bg) 60%, var(--card)); }
+[data-theme="dark"] .retention-note {
+  background: color-mix(in srgb, var(--green) 14%, var(--bg));
+  border-color: color-mix(in srgb, var(--green) 24%, var(--line));
+}
+[data-theme="dark"] .retention-note strong { color: var(--green); }
 
 /* ---------- mascot (Themba) ---------- */
 .mascot { display: block; --accent: var(--green); overflow: visible; }
@@ -555,6 +606,12 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .set-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: var(--card); border-radius: 14px; box-shadow: var(--shadow); }
 .set-row__label b { display: block; }
 .set-row__label small { color: var(--muted); font-size: 13px; }
+.retention-note {
+  display: grid; gap: 4px; padding: 14px 16px; background: color-mix(in srgb, var(--green) 10%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--green) 20%, var(--line)); border-radius: 14px;
+}
+.retention-note strong { color: var(--green-dark); }
+.retention-note span, .retention-note small { color: var(--muted); line-height: 1.4; }
 .switch { position: relative; width: 52px; height: 30px; flex: 0 0 auto; }
 .switch input { opacity: 0; width: 0; height: 0; }
 .switch__track { position: absolute; inset: 0; background: var(--line); border-radius: 999px; transition: background .2s; }
@@ -637,6 +694,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .pstep__body { flex: 1; min-width: 0; display: grid; gap: 2px; }
 .pstep__body strong { font-size: 16px; }
 .pstep__body .muted { font-size: 13px; }
+.pstep__desc { font-size: 12px; color: var(--muted); line-height: 1.35; }
 .pstep__go {
   flex: none; border: none; border-radius: 14px; padding: 12px 22px; font-size: 15px; font-weight: 800;
   color: #fff; background: var(--acc); box-shadow: 0 3px 0 color-mix(in srgb, var(--acc) 55%, #000);
