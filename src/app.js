@@ -654,7 +654,7 @@ function renderHome() {
         </div>
         ${weekly ? `<div class="home-overview__card home-overview__card--warm">
           <div class="home-overview__head"><strong>This week</strong><span>${weekly.retentionPct}% recall</span></div>
-          <p class="home-overview__note">${weekly.hasHistory ? `+${weekly.masteredGain} mastered · +${weekly.introducedGain} new in play` : 'Your weekly rhythm will show up here as you practise.'}</p>
+          <p class="home-overview__note">${weekly.hasHistory ? `+${weekly.masteredGain} mastered · +${weekly.introducedGain} new in play` : 'Your weekly rhythm will show up here as you practice.'}</p>
         </div>` : ''}
       </section>
 
@@ -795,13 +795,14 @@ function planStepHint(key) {
 }
 
 function exerciseStage(ex) {
+  const newLabel = '🌱 New — build the first strong memory';
   const vids = exerciseVocabIds(ex, session.lesson);
   const primary = vids.find(Boolean);
   const item = primary ? store.lang().items[primary] : null;
-  if (!primary || !item) return { label: '🌱 New — build the first strong memory', tone: 'new' };
+  if (!primary || !item) return { label: newLabel, tone: 'new' };
   if (item.mastered) return { label: '⭐ Mastered — keep it fluent under pressure', tone: 'mastered' };
   if (item.seen > 0 || item.encountered) return { label: '🔁 Review — pull it back before it fades', tone: 'learning' };
-  return { label: '🌱 New — build the first strong memory', tone: 'new' };
+  return { label: newLabel, tone: 'new' };
 }
 
 function learningPaceInfo(retention = store.state.settings.desiredRetention || 0.9) {

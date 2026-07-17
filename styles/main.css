@@ -10,6 +10,12 @@
   --card: #ffffff;
   --muted: #5e6e66;
   --line: #e2e9e4;
+  --badge-new-bg: color-mix(in srgb, var(--green) 12%, transparent);
+  --badge-new-ink: var(--green-dark);
+  --badge-learning-bg: #fff6e0;
+  --badge-learning-ink: #8a5a00;
+  --badge-mastered-bg: color-mix(in srgb, #7c3aed 14%, transparent);
+  --badge-mastered-ink: #6b21a8;
   --radius: 16px;
   --shadow: 0 2px 0 rgba(0,0,0,.08), 0 6px 20px rgba(0,0,0,.06);
   --maxw: 520px;
@@ -282,9 +288,9 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   align-self: flex-start; margin-top: -6px; padding: 6px 12px; border-radius: 999px;
   font-size: 12px; font-weight: 800;
 }
-.ex__srs-badge--new { background: color-mix(in srgb, var(--green) 12%, transparent); color: var(--green-dark); }
-.ex__srs-badge--learning { background: #fff6e0; color: #8a5a00; }
-.ex__srs-badge--mastered { background: color-mix(in srgb, #7c3aed 14%, transparent); color: #6b21a8; }
+.ex__srs-badge--new { background: var(--badge-new-bg); color: var(--badge-new-ink); }
+.ex__srs-badge--learning { background: var(--badge-learning-bg); color: var(--badge-learning-ink); }
+.ex__srs-badge--mastered { background: var(--badge-mastered-bg); color: var(--badge-mastered-ink); }
 .ex__q { font-size: 21px; }
 .ex__prompt-big { font-size: 26px; font-weight: 800; color: var(--green); }
 .ex__phon { margin: 0; }
@@ -522,6 +528,10 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
     --gold: #f5c33b;
     --blue: #5cabec;        /* bright blue for links/regions */
     --purple: #b794f6;      /* bright purple for gems/rewards on dark */
+    --badge-learning-bg: color-mix(in srgb, var(--gold) 16%, var(--bg));
+    --badge-learning-ink: var(--gold);
+    --badge-mastered-bg: color-mix(in srgb, var(--purple) 16%, var(--bg));
+    --badge-mastered-ink: var(--purple);
 }
 [data-theme="dark"] .opt { box-shadow: 0 2px 0 rgba(0,0,0,.3); }
 [data-theme="dark"] :is(.lang-card, .node, .card, .story, .book, .shop-item, .tier, .kpi, .dcard, .rline) { box-shadow: 0 1px 0 rgba(0,0,0,.3); }
@@ -538,8 +548,6 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 [data-theme="dark"] body { background-image: radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--green) 14%, transparent), transparent 60%); }
 [data-theme="dark"] .home-hero__sub--urgent { color: var(--green); }
 [data-theme="dark"] .home-overview__stats span { background: color-mix(in srgb, var(--bg) 60%, var(--card)); }
-[data-theme="dark"] .ex__srs-badge--learning { background: color-mix(in srgb, var(--gold) 16%, var(--bg)); color: var(--gold); }
-[data-theme="dark"] .ex__srs-badge--mastered { background: color-mix(in srgb, var(--purple) 16%, var(--bg)); color: var(--purple); }
 [data-theme="dark"] .retention-note {
   background: color-mix(in srgb, var(--green) 14%, var(--bg));
   border-color: color-mix(in srgb, var(--green) 24%, var(--line));
