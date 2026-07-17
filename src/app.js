@@ -74,6 +74,12 @@ const app = document.getElementById('app');
 let LANGS = null;     // languages.json
 let course = null;    // active course
 let session = null;   // active lesson/review session
+const courseVocabTotals = new WeakMap();
+const EXERCISE_STAGE_LABELS = {
+  new: '🌱 New — build the first strong memory',
+  learning: '🔁 Review — pull it back before it fades',
+  mastered: '⭐ Mastered — keep it fluent under pressure',
+};
 
 // ---------- tiny DOM helpers ----------
 const h = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
@@ -534,12 +540,11 @@ function renderHome() {
   store.refreshHearts();
   const L = store.lang();
   const m = store.metrics();
-  recordWeeklySnapshot();
   const meta = LANGS.languages.find((x) => x.code === course.code);
   const goal = store.state.settings.dailyGoalXP;
   const pct = Math.min(100, Math.round((L.xpToday / goal) * 100));
   const due = store.dueItems().length;
-  const totalVocab = Object.keys(vocabIndex(course)).length;
+  const totalVocab = totalCourseVocab();
   const unseen = Math.max(0, totalVocab - m.introduced);
   const weekly = weeklyMomentum();
   const statusClass = due > 0 ? 'home-hero__sub home-hero__sub--urgent' : 'muted home-hero__sub';
@@ -654,7 +659,7 @@ function renderHome() {
         </div>
         ${weekly ? `<div class="home-overview__card home-overview__card--warm">
           <div class="home-overview__head"><strong>This week</strong><span>${weekly.retentionPct}% recall</span></div>
-          <p class="home-overview__note">${weekly.hasHistory ? `+${weekly.masteredGain} mastered · +${weekly.introducedGain} new in play` : 'Your weekly rhythm will show up here as you practice.'}</p>
+          <p class="home-overview__note">${weeklyMomentumNote(weekly)}</p>
         </div>` : ''}
       </section>
 
@@ -772,6 +777,12 @@ function homeStatus(L, due, pct, goal) {
   return `${goal - L.xpToday} XP to keep your streak`;
 }
 
+function totalCourseVocab() {
+  if (!course) return 0;
+  if (!courseVocabTotals.has(course)) courseVocabTotals.set(course, Object.keys(vocabIndex(course)).length);
+  return courseVocabTotals.get(course) || 0;
+}
+
 function weeklyMomentum() {
   const snaps = ((store.state.progressSnapshots || {})[store.state.activeLang] || []).slice(-2);
   const cur = snaps[snaps.length - 1];
@@ -785,6 +796,12 @@ function weeklyMomentum() {
   };
 }
 
+function weeklyMomentumNote(weekly) {
+  return weekly && weekly.hasHistory
+    ? `+${weekly.masteredGain} mastered · +${weekly.introducedGain} new in play`
+    : 'Your weekly rhythm will show up here as you practice.';
+}
+
 function planStepHint(key) {
   return ({
     review: 'Warm up with words your memory is about to drop.',
@@ -795,14 +812,13 @@ function planStepHint(key) {
 }
 
 function exerciseStage(ex) {
-  const newLabel = '🌱 New — build the first strong memory';
   const vids = exerciseVocabIds(ex, session.lesson);
   const primary = vids.find(Boolean);
   const item = primary ? store.lang().items[primary] : null;
-  if (!primary || !item) return { label: newLabel, tone: 'new' };
-  if (item.mastered) return { label: '⭐ Mastered — keep it fluent under pressure', tone: 'mastered' };
-  if (item.seen > 0 || item.encountered) return { label: '🔁 Review — pull it back before it fades', tone: 'learning' };
-  return { label: newLabel, tone: 'new' };
+  if (!primary || !item) return { label: EXERCISE_STAGE_LABELS.new, tone: 'new' };
+  if (item.mastered) return { label: EXERCISE_STAGE_LABELS.mastered, tone: 'mastered' };
+  if (item.seen > 0 || item.encountered) return { label: EXERCISE_STAGE_LABELS.learning, tone: 'learning' };
+  return { label: EXERCISE_STAGE_LABELS.new, tone: 'new' };
 }
 
 function learningPaceInfo(retention = store.state.settings.desiredRetention || 0.9) {
