@@ -80,6 +80,24 @@ const EXERCISE_STAGE_LABELS = {
   learning: '🔁 Review — pull it back before it fades',
   mastered: '⭐ Mastered — keep it fluent under pressure',
 };
+const LEARNING_PACE_OPTIONS = [['0.85', 'Relaxed'], ['0.9', 'Balanced'], ['0.95', 'Challenge']];
+const LEARNING_PACE_INFO = {
+  challenge: {
+    title: 'Challenge pace',
+    body: 'More frequent reviews, stronger retention, and the heaviest daily load.',
+    detail: 'Best when you want the fastest recall growth and can handle more practice touches.',
+  },
+  relaxed: {
+    title: 'Relaxed pace',
+    body: 'Fewer reviews and a lighter day, with slower reinforcement to mastery.',
+    detail: 'Good for busy learners who still want steady progress without as much review volume.',
+  },
+  balanced: {
+    title: 'Balanced pace',
+    body: 'The recommended middle ground: enough review to make words stick without overload.',
+    detail: 'Best for most learners aiming to build conversation skill over the 90-day journey.',
+  },
+};
 
 // ---------- tiny DOM helpers ----------
 const h = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
@@ -798,7 +816,7 @@ function weeklyMomentum() {
 
 function weeklyMomentumNote(weekly) {
   return weekly && weekly.hasHistory
-    ? `+${weekly.masteredGain} mastered · +${weekly.introducedGain} new in play`
+    ? `+${weekly.masteredGain} mastered · +${weekly.introducedGain} introduced this week`
     : 'Your weekly rhythm will show up here as you practice.';
 }
 
@@ -815,32 +833,18 @@ function exerciseStage(ex) {
   const vids = exerciseVocabIds(ex, session.lesson);
   const primary = vids.find(Boolean);
   const item = primary ? store.lang().items[primary] : null;
-  if (!primary || !item) return { label: EXERCISE_STAGE_LABELS.new, tone: 'new' };
-  if (item.mastered) return { label: EXERCISE_STAGE_LABELS.mastered, tone: 'mastered' };
-  if (item.seen > 0 || item.encountered) return { label: EXERCISE_STAGE_LABELS.learning, tone: 'learning' };
-  return { label: EXERCISE_STAGE_LABELS.new, tone: 'new' };
+  let tone = 'new';
+  if (primary && item) {
+    if (item.mastered) tone = 'mastered';
+    else if (item.seen > 0 || item.encountered) tone = 'learning';
+  }
+  return { label: EXERCISE_STAGE_LABELS[tone], tone };
 }
 
 function learningPaceInfo(retention = store.state.settings.desiredRetention || 0.9) {
-  if (retention >= 0.95) {
-    return {
-      title: 'Challenge pace',
-      body: 'More frequent reviews, stronger retention, and the heaviest daily load.',
-      detail: 'Best when you want the fastest recall growth and can handle more practice touches.',
-    };
-  }
-  if (retention <= 0.85) {
-    return {
-      title: 'Relaxed pace',
-      body: 'Fewer reviews and a lighter day, with slower reinforcement to mastery.',
-      detail: 'Good for busy learners who still want steady progress without as much review volume.',
-    };
-  }
-  return {
-    title: 'Balanced pace',
-    body: 'The recommended middle ground: enough review to make words stick without overload.',
-    detail: 'Best for most learners aiming to build conversation skill over the 90-day journey.',
-  };
+  if (retention >= 0.95) return LEARNING_PACE_INFO.challenge;
+  if (retention <= 0.85) return LEARNING_PACE_INFO.relaxed;
+  return LEARNING_PACE_INFO.balanced;
 }
 
 // ---------- word of the day (offline, from the active course vocab) ----------
@@ -2845,7 +2849,7 @@ function renderSettings() {
         <div class="set-row">
           <div class="set-row__label"><b>Learning pace</b><small>How much review support you want before words feel automatic</small></div>
           <select id="retSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
-            ${[['0.85', 'Relaxed'], ['0.9', 'Balanced'], ['0.95', 'Challenge']].map(([v, label]) => `<option value="${v}" ${Math.abs((store.state.settings.desiredRetention || 0.9) - Number(v)) < 0.001 ? 'selected' : ''}>${label}</option>`).join('')}
+            ${LEARNING_PACE_OPTIONS.map(([v, label]) => `<option value="${v}" ${Math.abs((store.state.settings.desiredRetention || 0.9) - Number(v)) < 0.001 ? 'selected' : ''}>${label}</option>`).join('')}
           </select>
         </div>
         <div class="retention-note">
