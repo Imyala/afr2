@@ -29,41 +29,6 @@ function currentBuddy() {
     while (MASCOT_CAST.length > 1 && s.buddy && pick.id === s.buddy.id) {
       pick = MASCOT_CAST[Math.floor(Math.random() * MASCOT_CAST.length)];
     }
-
-    if (ex.type === 'speak') {
-      const reveal = () => {
-        const card = node.querySelector('#speakReveal');
-        const tools = node.querySelector('#speakTools');
-        const coach = node.querySelector('#speakCoach');
-        if (card) card.hidden = false;
-        if (tools) tools.hidden = false;
-        if (coach) coach.textContent = 'Compare with the model, say it again out loud, then rate yourself honestly.';
-        const foot = footFor(node);
-        foot.innerHTML = `
-          <button class="btn btn--primary" id="speakGood">✓ I said it right</button>
-          <button class="btn btn--ghost" id="speakMiss">🔁 Not yet</button>`;
-        foot.querySelector('#speakGood').addEventListener('click', () => showFeedback(node, true, ex, ex.text));
-        foot.querySelector('#speakMiss').addEventListener('click', () => showFeedback(node, false, ex, ex.text));
-        node.querySelector('#hearModel').addEventListener('click', () => tryHear(ex.text, course.code));
-        wireRecorder(node);
-        speak(ex.text, course.code);
-      };
-      const revealBtn = node.querySelector('#speakRevealBtn');
-      if (revealBtn) revealBtn.addEventListener('click', () => { sound.tap(); reveal(); });
-      const micBtn = node.querySelector('#speakCheck');
-      if (micBtn) micBtn.addEventListener('click', async () => {
-        micBtn.disabled = true;
-        micBtn.textContent = 'Listening…';
-        const heard = await listenOnce(course.code, 5000);
-        if (heard && checkAnswer(ex, heard)) {
-          showFeedback(node, true, ex, ex.text);
-        } else {
-          micBtn.disabled = false;
-          micBtn.textContent = 'Try the mic again';
-          reveal();
-        }
-      });
-    }
     s.buddy = { day, id: pick.id };
     store.save();
   }
@@ -2548,6 +2513,41 @@ function wireExercise(ex, node) {
       }
       firstPick = null;
     }));
+  }
+
+  if (ex.type === 'speak') {
+    const reveal = () => {
+      const card = node.querySelector('#speakReveal');
+      const tools = node.querySelector('#speakTools');
+      const coach = node.querySelector('#speakCoach');
+      if (card) card.hidden = false;
+      if (tools) tools.hidden = false;
+      if (coach) coach.textContent = 'Compare with the model, say it again out loud, then rate yourself honestly.';
+      const foot = footFor(node);
+      foot.innerHTML = `
+        <button class="btn btn--primary" id="speakGood">✓ I said it right</button>
+        <button class="btn btn--ghost" id="speakMiss">🔁 Not yet</button>`;
+      foot.querySelector('#speakGood').addEventListener('click', () => showFeedback(node, true, ex, ex.text));
+      foot.querySelector('#speakMiss').addEventListener('click', () => showFeedback(node, false, ex, ex.text));
+      node.querySelector('#hearModel').addEventListener('click', () => tryHear(ex.text, course.code));
+      wireRecorder(node);
+      speak(ex.text, course.code);
+    };
+    const revealBtn = node.querySelector('#speakRevealBtn');
+    if (revealBtn) revealBtn.addEventListener('click', () => { sound.tap(); reveal(); });
+    const micBtn = node.querySelector('#speakCheck');
+    if (micBtn) micBtn.addEventListener('click', async () => {
+      micBtn.disabled = true;
+      micBtn.textContent = 'Listening…';
+      const heard = await listenOnce(course.code, 5000);
+      if (heard && checkAnswer(ex, heard)) {
+        showFeedback(node, true, ex, ex.text);
+      } else {
+        micBtn.disabled = false;
+        micBtn.textContent = 'Try the mic again';
+        reveal();
+      }
+    });
   }
 }
 
