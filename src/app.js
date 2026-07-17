@@ -140,9 +140,16 @@ function recordWeeklySnapshot() {
   const list = all[code] || (all[code] = []);
   const snap = { week, mastered: m.mastered, retention: m.retention, introduced: m.introduced };
   const last = list[list.length - 1];
-  if (!last || last.week !== week) list.push(snap);
-  else Object.assign(last, snap);
+  let changed = false;
+  if (!last || last.week !== week) {
+    list.push(snap);
+    changed = true;
+  } else if (last.mastered !== snap.mastered || last.retention !== snap.retention || last.introduced !== snap.introduced) {
+    Object.assign(last, snap);
+    changed = true;
+  }
   all[code] = list.slice(-8);
+  if (changed) store.save();
 }
 // Time until the weekly league resets (next Monday 00:00).
 function weekDaysLeft(now = Date.now()) {
@@ -527,10 +534,15 @@ function renderHome() {
   store.refreshHearts();
   const L = store.lang();
   const m = store.metrics();
+  recordWeeklySnapshot();
   const meta = LANGS.languages.find((x) => x.code === course.code);
   const goal = store.state.settings.dailyGoalXP;
   const pct = Math.min(100, Math.round((L.xpToday / goal) * 100));
   const due = store.dueItems().length;
+  const totalVocab = Object.keys(vocabIndex(course)).length;
+  const unseen = Math.max(0, totalVocab - m.introduced);
+  const weekly = weeklyMomentum();
+  const statusClass = due > 0 ? 'home-hero__sub home-hero__sub--urgent' : 'muted home-hero__sub';
 
   const lessons = allLessons(course);
   const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
@@ -623,12 +635,27 @@ function renderHome() {
         <span class="home-hero__mascot">${mascotImg(buddy, { size: 84 })}</span>
         <div class="home-hero__text">
           <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed))}</strong>
-          <p class="muted home-hero__sub">${esc(homeStatus(L, due, pct, goal))}</p>
+          <p class="${statusClass}">${esc(homeStatus(L, due, pct, goal))}</p>
           ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
         </div>
         <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
           <span>${L.xpToday}/${goal}</span>
         </div>
+      </section>
+
+      <section class="home-overview">
+        <div class="home-overview__card">
+          <div class="home-overview__head"><strong>Learning now</strong><span>${Math.round(m.retention * 100)}% retention</span></div>
+          <div class="home-overview__stats">
+            <span><b>${m.mastered}</b><small>mastered</small></span>
+            <span><b>${m.learning}</b><small>drilling</small></span>
+            <span><b>${unseen}</b><small>still ahead</small></span>
+          </div>
+        </div>
+        ${weekly ? `<div class="home-overview__card home-overview__card--warm">
+          <div class="home-overview__head"><strong>This week</strong><span>${weekly.retentionPct}% recall</span></div>
+          <p class="home-overview__note">${weekly.hasHistory ? `+${weekly.masteredGain} mastered · +${weekly.introducedGain} new in play` : 'Your weekly rhythm will show up here as you practise.'}</p>
+        </div>` : ''}
       </section>
 
       ${lessonsDone >= 1 ? `<button class="plan-card plan-card--resume" id="${nextAction.id}">
@@ -743,6 +770,60 @@ function homeStatus(L, due, pct, goal) {
   if (profile.goal === 'school') return 'A little every day makes the school stuff stick';
   if ((L.streak || 0) >= 3) return `🔥 ${L.streak}-day streak — keep it going!`;
   return `${goal - L.xpToday} XP to keep your streak`;
+}
+
+function weeklyMomentum() {
+  const snaps = ((store.state.progressSnapshots || {})[store.state.activeLang] || []).slice(-2);
+  const cur = snaps[snaps.length - 1];
+  if (!cur) return null;
+  const prev = snaps[snaps.length - 2];
+  return {
+    masteredGain: Math.max(0, cur.mastered - (prev ? prev.mastered : 0)),
+    introducedGain: Math.max(0, cur.introduced - (prev ? prev.introduced : 0)),
+    retentionPct: Math.round((cur.retention || 0) * 100),
+    hasHistory: !!prev,
+  };
+}
+
+function planStepHint(key) {
+  return ({
+    review: 'Warm up with words your memory is about to drop.',
+    lesson: 'Add a small set of new words and patterns.',
+    input: 'Read or listen where you already know most of the words.',
+    output: 'Say or use the language so it becomes recall, not recognition.',
+  })[key] || '';
+}
+
+function exerciseStage(ex) {
+  const vids = exerciseVocabIds(ex, session.lesson);
+  const primary = vids.find(Boolean);
+  const item = primary ? store.lang().items[primary] : null;
+  if (!primary || !item) return { label: '🌱 New — build the first strong memory', tone: 'new' };
+  if (item.mastered) return { label: '⭐ Mastered — keep it fluent under pressure', tone: 'mastered' };
+  if (item.seen > 0 || item.encountered) return { label: '🔁 Review — pull it back before it fades', tone: 'learning' };
+  return { label: '🌱 New — build the first strong memory', tone: 'new' };
+}
+
+function learningPaceInfo(retention = store.state.settings.desiredRetention || 0.9) {
+  if (retention >= 0.95) {
+    return {
+      title: 'Challenge pace',
+      body: 'More frequent reviews, stronger retention, and the heaviest daily load.',
+      detail: 'Best when you want the fastest recall growth and can handle more practice touches.',
+    };
+  }
+  if (retention <= 0.85) {
+    return {
+      title: 'Relaxed pace',
+      body: 'Fewer reviews and a lighter day, with slower reinforcement to mastery.',
+      detail: 'Good for busy learners who still want steady progress without as much review volume.',
+    };
+  }
+  return {
+    title: 'Balanced pace',
+    body: 'The recommended middle ground: enough review to make words stick without overload.',
+    detail: 'Best for most learners aiming to build conversation skill over the 90-day journey.',
+  };
 }
 
 // ---------- word of the day (offline, from the active course vocab) ----------
@@ -1365,7 +1446,7 @@ function renderPlan() {
   const rows = acts.map((a, i) => `
     <div class="pstep pstep--${a.key} ${a.done ? 'pstep--done' : ''}">
       <span class="pstep__num">${a.done ? '✓' : a.icon}</span>
-      <div class="pstep__body"><strong>${esc(a.label)}</strong><span class="muted">${esc(a.sub)}</span></div>
+      <div class="pstep__body"><strong>${esc(a.label)}</strong><span class="muted">${esc(a.sub)}</span><span class="pstep__desc">${esc(planStepHint(a.key))}</span></div>
       ${a.done ? '<span class="pstep__ok">Done</span>' : `<button class="pstep__go" data-act="${a.key}">Start</button>`}
     </div>`).join('');
   const node = h(`
@@ -2071,6 +2152,7 @@ function progressBar() {
 
 function renderExercise() {
   const ex = session.queue[session.idx];
+  const stage = exerciseStage(ex);
   let body = '';
   switch (ex.type) {
     case 'match': body = renderMatch(ex); break;
@@ -2083,7 +2165,7 @@ function renderExercise() {
     case 'explain': body = renderExplain(ex); break;
     default: body = '<p>Unknown exercise</p>';
   }
-  const node = h(`<div class="screen ex">${progressBar()}<div class="ex__body">${body}</div><div class="ex__foot" id="foot"></div></div>`);
+  const node = h(`<div class="screen ex">${progressBar()}<div class="ex__srs-badge ex__srs-badge--${stage.tone}">${esc(stage.label)}</div><div class="ex__body">${body}</div><div class="ex__foot" id="foot"></div></div>`);
   mount(node);
   node.querySelector('#quitBtn').addEventListener('click', () => { if (confirm('Quit this session? Progress in this session is lost.')) renderHome(); });
   wireExercise(ex, node);
@@ -2698,6 +2780,7 @@ function renderSettings() {
   const remSupported = Notify.supported();
   const remDenied = Notify.permission() === 'denied';
   const acc = Auth.currentAccount();
+  const pace = learningPaceInfo();
   const accountRow = acc
     ? `<div class="set-row">
         <div class="set-row__label"><b>${esc(acc.avatar)} ${esc(acc.name)}</b><small>Signed in · ${esc(acc.email)}</small></div>
@@ -2743,10 +2826,15 @@ function renderSettings() {
           </select>
         </div>
         <div class="set-row">
-          <div class="set-row__label"><b>Review intensity</b><small>How often words come back for review</small></div>
+          <div class="set-row__label"><b>Learning pace</b><small>How much review support you want before words feel automatic</small></div>
           <select id="retSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
-            ${[['0.85', 'Relaxed'], ['0.9', 'Standard'], ['0.95', 'Intense']].map(([v, label]) => `<option value="${v}" ${Math.abs((store.state.settings.desiredRetention || 0.9) - Number(v)) < 0.001 ? 'selected' : ''}>${label}</option>`).join('')}
+            ${[['0.85', 'Relaxed'], ['0.9', 'Balanced'], ['0.95', 'Challenge']].map(([v, label]) => `<option value="${v}" ${Math.abs((store.state.settings.desiredRetention || 0.9) - Number(v)) < 0.001 ? 'selected' : ''}>${label}</option>`).join('')}
           </select>
+        </div>
+        <div class="retention-note">
+          <strong>${esc(pace.title)}</strong>
+          <span>${esc(pace.body)}</span>
+          <small>${esc(pace.detail)}</small>
         </div>
         <div class="set-row">
           <div class="set-row__label"><b>Feedback pace</b><small>How quickly answer feedback fades</small></div>
@@ -2796,6 +2884,7 @@ function renderSettings() {
     setDesiredRetention(r);
     store.save();
     flashToast(r >= 0.95 ? 'More frequent reviews 🔁' : r <= 0.85 ? 'Fewer reviews — lighter load' : 'Standard review schedule');
+    renderSettings();
   });
   node.querySelector('#fbSel').addEventListener('change', (e) => {
     store.state.settings.feedbackPace = e.target.value;
