@@ -249,6 +249,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .quest__prog { font-size: 11px; }
 
 /* ---------- lesson path ---------- */
+.screen--home { padding-bottom: calc(var(--bottombar-offset) + env(safe-area-inset-bottom)); }
 .path { display: flex; flex-direction: column; gap: 10px; padding-bottom: var(--bottombar-offset); }
 .unit-head { display: flex; justify-content: space-between; align-items: center; margin: 16px 4px 4px; }
 .unit-head span { font-weight: 800; color: var(--ink); font-size: 16px; }
@@ -640,7 +641,6 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .onb__title { font-size: 28px; font-weight: 800; margin: 0; }
 .onb__body { color: var(--muted); font-size: 16px; max-width: 320px; margin: 0 auto; line-height: 1.45; }
 
-.screen--home { padding-bottom: calc(var(--bottombar-offset) + env(safe-area-inset-bottom)); }
 .onb__dots { display: flex; gap: 8px; justify-content: center; }
 .onb__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .2s; }
 .onb__dot--on { background: var(--green); width: 22px; border-radius: 999px; }

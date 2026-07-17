@@ -837,7 +837,8 @@ function fluencyRoadmap(mastered = 0) {
   // Defensive fallback in case future milestone edits accidentally create a
   // zero-width band; today every band has positive width.
   const span = Math.max(1, current.cap - prevCap);
-  const progressPct = Math.max(MIN_FLUENCY_PROGRESS_PCT, Math.min(100, Math.round(((mastered - prevCap) / span) * 100)));
+  const rawProgress = Math.round(((mastered - prevCap) / span) * 100);
+  const progressPct = Math.max(MIN_FLUENCY_PROGRESS_PCT, Math.min(100, rawProgress));
   const next = FLUENCY_MILESTONES[idx + 1] || null;
   return {
     current,
