@@ -114,7 +114,14 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .chip { background: #eef3ef; border-radius: 999px; padding: 6px 12px; font-size: 13px; color: var(--muted); }
 
 /* ---------- topbar / stats ---------- */
-.topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  position: sticky; top: 0; z-index: 8;
+  padding: 6px 2px;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+}
 .topbar__lang { background: none; border: none; font-size: 17px; font-weight: 800; color: var(--green); }
 .topbar__stats { display: flex; gap: 10px; align-items: center; }
 .stat { font-weight: 700; font-size: 15px; white-space: nowrap; }
@@ -180,6 +187,15 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .home-overview__stats b { font-size: 20px; color: var(--green); }
 .home-overview__stats small, .home-overview__note { color: var(--muted); font-size: 12px; }
 
+.home-shortcuts {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;
+}
+.quick-nav {
+  border: 1px solid var(--line); background: color-mix(in srgb, var(--card) 88%, var(--bg));
+  border-radius: 12px; padding: 10px 8px; font-size: 13px; font-weight: 700;
+}
+.quick-nav:disabled { opacity: .45; }
+
 /* compact "today" mini cards (quests + league) */
 .mini-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .mini { display: grid; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); text-align: left; }
@@ -189,6 +205,19 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 /* slim word-of-the-day strip */
 .wotd-strip { width: 100%; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; box-shadow: var(--shadow); font-size: 14px; }
 .wotd-strip b { color: var(--green); }
+
+.roadmap-card {
+  width: 100%; text-align: left; border: 1px solid color-mix(in srgb, var(--blue) 28%, var(--line));
+  border-radius: 16px; background: linear-gradient(130deg, color-mix(in srgb, var(--blue) 12%, var(--card)), var(--card));
+  box-shadow: var(--shadow); padding: 12px 14px; display: grid; gap: 8px;
+}
+.roadmap-card__head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  font-size: 13px; color: var(--muted);
+}
+.roadmap-card__head strong { color: var(--ink); font-size: 15px; }
+.roadmap-card__text { margin: 0; font-size: 13px; color: var(--muted); }
+.roadmap-card small { color: var(--muted); font-size: 12px; }
 
 /* home "Practice" activity grid — colourful, scannable tiles */
 .sec--home { margin: 6px 4px -4px; }
@@ -219,7 +248,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .quest__prog { font-size: 11px; }
 
 /* ---------- lesson path ---------- */
-.path { display: flex; flex-direction: column; gap: 10px; padding-bottom: 80px; }
+.path { display: flex; flex-direction: column; gap: 10px; padding-bottom: 116px; }
 .unit-head { display: flex; justify-content: space-between; align-items: center; margin: 16px 4px 4px; }
 .unit-head span { font-weight: 800; color: var(--ink); font-size: 16px; }
 .unit-head small {
@@ -269,12 +298,25 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 
 /* ---------- bottom nav ---------- */
 .bottombar {
-  position: fixed; bottom: 0; left: 0; right: 0; max-width: var(--maxw); margin: 0 auto;
-  background: var(--card); border-top: 1px solid var(--line); display: flex; justify-content: space-around;
-  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  width: min(calc(100% - 16px), var(--maxw));
+  z-index: 30;
+  background: color-mix(in srgb, var(--card) 90%, var(--bg));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  backdrop-filter: blur(8px);
+  display: flex; justify-content: space-around; gap: 2px;
+  padding: 6px;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--ink) 18%, transparent);
 }
-.navbtn { background: none; border: none; font-size: 13px; font-weight: 700; color: var(--muted); padding: 6px 10px; border-radius: 10px; }
-.navbtn--active { color: var(--green); background: #eaf4ee; }
+.navbtn {
+  background: none; border: none; font-size: 12px; font-weight: 700; color: var(--muted);
+  padding: 8px 8px; border-radius: 12px; min-width: 0; flex: 1;
+}
+.navbtn--active { color: var(--green); background: color-mix(in srgb, var(--green) 16%, transparent); }
 
 /* ---------- exercises ---------- */
 .ex { gap: 18px; min-height: 100dvh; }
@@ -486,6 +528,12 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 
 /* word of the day */
 .wotd-card { display: flex; align-items: center; gap: 14px; }
+.roadmap-hero { gap: 8px; }
+.roadmap-card-block { gap: 10px; }
+.roadmap-card-block h3 { margin: 0; font-size: 17px; }
+.roadmap-list { margin: 0; padding-left: 20px; display: grid; gap: 8px; color: var(--muted); font-size: 14px; line-height: 1.38; }
+.roadmap-list b { color: var(--ink); }
+.roadmap-list--compact { grid-template-columns: 1fr 1fr; gap: 6px 14px; padding-left: 18px; }
 .wotd__icon { font-size: 26px; }
 .wotd__body { flex: 1; display: grid; gap: 1px; }
 .wotd__label { font-size: 11px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: .5px; }
@@ -539,6 +587,8 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 [data-theme="dark"] .chip { background: #243a30; border: 1px solid var(--line); color: var(--muted); }
 /* light accent pills/blocks would glare on dark — tint them to the theme */
 [data-theme="dark"] .navbtn--active { background: color-mix(in srgb, var(--green) 18%, transparent); }
+[data-theme="dark"] .topbar { background: color-mix(in srgb, var(--bg) 75%, transparent); }
+[data-theme="dark"] .roadmap-card { background: linear-gradient(130deg, color-mix(in srgb, var(--blue) 14%, var(--card)), var(--card)); }
 [data-theme="dark"] :is(.stat--gems, .quest__reward, .reward-row span, .chest) { color: var(--purple); }
 [data-theme="dark"] .reward-list { background: color-mix(in srgb, var(--purple) 14%, transparent); }
 [data-theme="dark"] .reward-list--ach { background: color-mix(in srgb, var(--gold) 14%, transparent); }
@@ -588,6 +638,8 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .onb__art { display: grid; place-items: center; }
 .onb__title { font-size: 28px; font-weight: 800; margin: 0; }
 .onb__body { color: var(--muted); font-size: 16px; max-width: 320px; margin: 0 auto; line-height: 1.45; }
+
+.screen--home { padding-bottom: calc(116px + env(safe-area-inset-bottom)); }
 .onb__dots { display: flex; gap: 8px; justify-content: center; }
 .onb__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .2s; }
 .onb__dot--on { background: var(--green); width: 22px; border-radius: 999px; }

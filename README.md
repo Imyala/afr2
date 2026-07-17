@@ -98,6 +98,9 @@ for the full explanation. In short:
 - ⏭️ **Test out** of any unit you already know — score 80%+ on a quick quiz
   and the whole unit is marked done, so no time is wasted on known material
 - 📊 Progress dashboard with real retention metrics + baseline/re-test
+- 🧭 **Fluency roadmap** — in-app 3–6 month sprint guidance, high-impact study
+  methods, and vocabulary milestones up to 20,000+ (fluent speaking) and
+  50,000+ (advanced/education contexts)
 
 > **Audio status:** dedicated *listening* and *speaking* exercises are
 > temporarily disabled. On-device text-to-speech / speech-recognition for
@@ -183,6 +186,7 @@ data/
   courses/{zu,xh,af}.json   Course content
 docs/
   PEDAGOGY.md           The learning science behind the app
+  LANGUAGE_FLUENCY_METHODS.md  3–6 month and long-term fluency guidance
   CONTENT_GUIDE.md      How to add lessons/languages
   TESTING.md            How to run the tests
 ```

@@ -640,9 +640,10 @@ function renderHome() {
   const wotd = wordOfTheDay();
   const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
   const boostN = Shop.inventory(store).boosts.double_xp || 0;
+  const fluency = fluencyRoadmap(m.mastered);
 
   const node = h(`
-    <div class="screen">
+    <div class="screen screen--home">
       <h1 class="sr-only">MzansiLingo — ${esc(meta.name)} home</h1>
       <header class="topbar">
         <button class="topbar__lang" id="switchLang">${esc(meta.name)} ▾</button>
@@ -681,6 +682,14 @@ function renderHome() {
         </div>` : ''}
       </section>
 
+      <section class="home-shortcuts" aria-label="Quick navigation">
+        <button class="quick-nav" id="quickReview">🔁 Review</button>
+        <button class="quick-nav" id="quickStories" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
+        <button class="quick-nav" id="quickProgress">📊 Progress</button>
+        <button class="quick-nav" id="quickRoadmap">🧭 Roadmap</button>
+        <button class="quick-nav" id="quickShop">🛒 Shop</button>
+      </section>
+
       ${lessonsDone >= 1 ? `<button class="plan-card plan-card--resume" id="${nextAction.id}">
         <span class="plan-card__l">${nextAction.icon} <b>${esc(nextAction.title)}</b></span>
         <span class="plan-card__r">${esc(nextAction.sub)} ›</span>
@@ -708,6 +717,15 @@ function renderHome() {
       ${showMinis && wotd ? `<button class="wotd-strip" id="wotdBtn">
         🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
       </button>` : ''}
+
+      <button class="roadmap-card" id="roadmapBtn">
+        <div class="roadmap-card__head"><strong>🧭 Fluency roadmap</strong><span>${fluency.current.tag}</span></div>
+        <p class="roadmap-card__text">${fluency.next
+          ? `${fluency.remaining.toLocaleString()} words to ${fluency.next.tag}.`
+          : 'You are in the high academic range. Keep sharpening speaking precision and domain vocabulary.'}</p>
+        <div class="qbar"><span style="width:${fluency.progressPct}%"></span></div>
+        <small>Toward 20,000+ speaking words and 50,000+ high-education words</small>
+      </button>
 
       ${showPractice ? `<h3 class="sec sec--home">Practice</h3>
       <div class="act-grid">
@@ -768,7 +786,13 @@ function renderHome() {
   on('#streakBtn', renderLeague);
   on('#heartsBtn', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
   on('#settingsBtn', renderSettings);
+  on('#quickReview', startReview);
+  on('#quickStories', renderLibrary);
+  on('#quickProgress', renderProgress);
+  on('#quickRoadmap', renderFluencyRoadmap);
+  on('#quickShop', renderShop);
   on('#wotdBtn', renderWotd);
+  on('#roadmapBtn', renderFluencyRoadmap);
   wireKeyActivation(node);
   mount(node);
   // keep the reminder state fresh for the service worker, and arm a same-session
@@ -793,6 +817,29 @@ function homeStatus(L, due, pct, goal) {
   if (profile.goal === 'school') return 'A little every day makes the school stuff stick';
   if ((L.streak || 0) >= 3) return `🔥 ${L.streak}-day streak — keep it going!`;
   return `${goal - L.xpToday} XP to keep your streak`;
+}
+
+const FLUENCY_MILESTONES = [
+  { cap: 500, tag: 'Starter vocabulary' },
+  { cap: 2000, tag: 'Conversation foundations' },
+  { cap: 5000, tag: 'Strong daily speaking' },
+  { cap: 20000, tag: 'Fluent speaking target' },
+  { cap: 50000, tag: 'High-education speaking' },
+];
+
+function fluencyRoadmap(mastered = 0) {
+  const current = FLUENCY_MILESTONES.find((m) => mastered <= m.cap) || FLUENCY_MILESTONES[FLUENCY_MILESTONES.length - 1];
+  const idx = FLUENCY_MILESTONES.indexOf(current);
+  const prevCap = idx > 0 ? FLUENCY_MILESTONES[idx - 1].cap : 0;
+  const span = Math.max(1, current.cap - prevCap);
+  const progressPct = Math.max(4, Math.min(100, Math.round(((mastered - prevCap) / span) * 100)));
+  const next = FLUENCY_MILESTONES[idx + 1] || null;
+  return {
+    current,
+    next,
+    progressPct,
+    remaining: next ? Math.max(0, next.cap - mastered) : 0,
+  };
 }
 
 function totalCourseVocab() {
@@ -895,6 +942,55 @@ function renderWotd() {
     setTimeout(renderHome, 700);
   });
   node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
+}
+
+function renderFluencyRoadmap() {
+  const m = store.metrics();
+  const fluency = fluencyRoadmap(m.mastered);
+  const next = fluency.next ? `${fluency.remaining.toLocaleString()} words left to ${fluency.next.tag}.` : 'You are beyond the 50,000-word high-education target.';
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Fluency roadmap</strong><span></span></header>
+      <div class="card roadmap-hero">
+        <strong>Your current range: ${fluency.current.tag}</strong>
+        <p class="muted">${next}</p>
+        <div class="qbar"><span style="width:${fluency.progressPct}%"></span></div>
+        <small>Toward 20,000+ words for fluent speaking and 50,000+ for advanced education contexts.</small>
+      </div>
+      <div class="card roadmap-card-block">
+        <h3>3–6 month speaking sprint</h3>
+        <ol class="roadmap-list">
+          <li><b>Month 1:</b> Build a daily rhythm: review, one lesson, one short reading/listening, and one speaking rep.</li>
+          <li><b>Month 2:</b> Increase output: more dialogues, phrase chunks, and lightning recall under time pressure.</li>
+          <li><b>Month 3:</b> Shift to conversational depth: stories, tougher grammar patterns, and weekly self-tests.</li>
+        </ol>
+      </div>
+      <div class="card roadmap-card-block">
+        <h3>High-impact study methods</h3>
+        <ul class="roadmap-list">
+          <li>Active recall first: close notes, retrieve, then check.</li>
+          <li>Interleave skills: speaking + listening + reading, not one mode only.</li>
+          <li>Use deep processing: explain patterns in your own words ("teach it back").</li>
+          <li>Keep input comprehensible (~90% known words), then push output every day.</li>
+        </ul>
+      </div>
+      <div class="card roadmap-card-block">
+        <h3>Vocabulary milestones</h3>
+        <ul class="roadmap-list roadmap-list--compact">
+          <li><b>500</b> survival words</li>
+          <li><b>2,000</b> conversational base</li>
+          <li><b>5,000</b> strong daily speaking</li>
+          <li><b>20,000+</b> fluent speaking target</li>
+          <li><b>50,000+</b> high-education speaking target</li>
+        </ul>
+      </div>
+      <button class="btn btn--review" id="review">🔁 Start due review</button>
+      <button class="btn" id="speak">🎤 Practice speaking now</button>
+    </div>`);
+  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#review').addEventListener('click', startReview);
+  node.querySelector('#speak').addEventListener('click', startSpeaking);
   mount(node);
 }
 
@@ -2863,6 +2959,10 @@ function renderSettings() {
             ${[['quick', 'Quick'], ['comfortable', 'Comfortable'], ['slow', 'Slow']].map(([v, label]) => `<option value="${v}" ${(store.state.settings.feedbackPace || 'comfortable') === v ? 'selected' : ''}>${label}</option>`).join('')}
           </select>
         </div>
+        <button class="set-row set-row--btn" id="roadmapGuideBtn" style="width:100%;text-align:left">
+          <div class="set-row__label"><b>Fluency roadmap</b><small>3–6 month plan, methods, and vocabulary milestones</small></div>
+          <span class="muted" style="font-size:22px">›</span>
+        </button>
       </div>
       <h3 class="sec">Premium</h3>
       <button class="card" id="prem" style="text-align:left"><strong>⭐ MzansiLingo Premium</strong><span class="muted">Unlimited hearts, all languages, no ads.</span></button>
@@ -2913,6 +3013,7 @@ function renderSettings() {
   });
   node.querySelector('#prem').addEventListener('click', renderPremium);
   node.querySelector('#profBtn').addEventListener('click', renderProfiles);
+  node.querySelector('#roadmapGuideBtn').addEventListener('click', renderFluencyRoadmap);
   const soBtn = node.querySelector('#signOut');
   if (soBtn) soBtn.addEventListener('click', () => {
     if (confirm('Sign out? Your progress stays saved on this device.')) { Auth.clearAuth(); renderAuthLanding(); }
