@@ -826,13 +826,16 @@ const FLUENCY_MILESTONES = [
   { cap: 20000, tag: 'Fluent speaking target' },
   { cap: 50000, tag: 'High-education speaking' },
 ];
-// Keep the roadmap meter visibly "alive" for beginners who are just starting.
+// 4% keeps a visible sliver in the progress bar so a brand-new learner sees
+// movement instead of an empty track, even at 0 mastered words.
 const MIN_FLUENCY_PROGRESS_PCT = 4;
 
 function fluencyRoadmap(mastered = 0) {
   const current = FLUENCY_MILESTONES.find((m) => mastered < m.cap) || FLUENCY_MILESTONES[FLUENCY_MILESTONES.length - 1];
   const idx = FLUENCY_MILESTONES.indexOf(current);
   const prevCap = idx > 0 ? FLUENCY_MILESTONES[idx - 1].cap : 0;
+  // Defensive fallback in case future milestone edits accidentally create a
+  // zero-width band; today every band has positive width.
   const span = Math.max(1, current.cap - prevCap);
   const progressPct = Math.max(MIN_FLUENCY_PROGRESS_PCT, Math.min(100, Math.round(((mastered - prevCap) / span) * 100)));
   const next = FLUENCY_MILESTONES[idx + 1] || null;
