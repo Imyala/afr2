@@ -826,13 +826,15 @@ const FLUENCY_MILESTONES = [
   { cap: 20000, tag: 'Fluent speaking target' },
   { cap: 50000, tag: 'High-education speaking' },
 ];
+// Keep the roadmap meter visibly "alive" for beginners who are just starting.
+const MIN_FLUENCY_PROGRESS_PCT = 4;
 
 function fluencyRoadmap(mastered = 0) {
   const current = FLUENCY_MILESTONES.find((m) => mastered <= m.cap) || FLUENCY_MILESTONES[FLUENCY_MILESTONES.length - 1];
   const idx = FLUENCY_MILESTONES.indexOf(current);
   const prevCap = idx > 0 ? FLUENCY_MILESTONES[idx - 1].cap : 0;
   const span = Math.max(1, current.cap - prevCap);
-  const progressPct = Math.max(4, Math.min(100, Math.round(((mastered - prevCap) / span) * 100)));
+  const progressPct = Math.max(MIN_FLUENCY_PROGRESS_PCT, Math.min(100, Math.round(((mastered - prevCap) / span) * 100)));
   const next = FLUENCY_MILESTONES[idx + 1] || null;
   return {
     current,
