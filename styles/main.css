@@ -189,7 +189,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .home-overview__stats small, .home-overview__note { color: var(--muted); font-size: 12px; }
 
 .home-shortcuts {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(108px, 1fr)); gap: 8px;
 }
 .quick-nav {
   border: 1px solid var(--line); background: color-mix(in srgb, var(--card) 88%, var(--bg));

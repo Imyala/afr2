@@ -820,15 +820,20 @@ function homeStatus(L, due, pct, goal) {
 }
 
 const FLUENCY_MILESTONES = [
+  // High-frequency base for survival interactions.
   { cap: 500, tag: 'Starter vocabulary' },
+  // Rough threshold for everyday conversational coverage.
   { cap: 2000, tag: 'Conversation foundations' },
+  // Broad day-to-day range across common domains.
   { cap: 5000, tag: 'Strong daily speaking' },
+  // Long-tail fluent speaking target requested in product goals.
   { cap: 20000, tag: 'Fluent speaking target' },
+  // Advanced range for education/professional expression.
   { cap: 50000, tag: 'High-education speaking' },
 ];
 // 4% keeps a visible sliver in the progress bar so a brand-new learner sees
 // movement instead of an empty track, even at 0 mastered words.
-const MIN_FLUENCY_PROGRESS_PCT = 4;
+const MIN_VISIBLE_FLUENCY_PROGRESS_PCT = 4;
 
 function fluencyRoadmap(mastered = 0) {
   const current = FLUENCY_MILESTONES.find((m) => mastered < m.cap) || FLUENCY_MILESTONES[FLUENCY_MILESTONES.length - 1];
@@ -838,7 +843,7 @@ function fluencyRoadmap(mastered = 0) {
   // zero-width band; today every band has positive width.
   const span = Math.max(1, current.cap - prevCap);
   const rawProgress = Math.round(((mastered - prevCap) / span) * 100);
-  const progressPct = Math.max(MIN_FLUENCY_PROGRESS_PCT, Math.min(100, rawProgress));
+  const progressPct = Math.max(MIN_VISIBLE_FLUENCY_PROGRESS_PCT, Math.min(100, rawProgress));
   const next = FLUENCY_MILESTONES[idx + 1] || null;
   return {
     current,
