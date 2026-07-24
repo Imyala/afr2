@@ -3975,6 +3975,857 @@
           ]
         }
       ]
+    },
+    {
+      "id": "zu-u10",
+      "title": "Unit 10: Places & Doing",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "zu-u10-l1",
+          "title": "Saying Where",
+          "culturalNote": "Zulu builds 'at/in a place' right into the noun: e- (or o-) wraps the word and the ending often shifts to -ini. isikole (school) becomes esikoleni (at school) — one word does the work of a whole English phrase.",
+          "vocab": [
+            {
+              "id": "zu-ekhaya",
+              "term": "ekhaya",
+              "translation": "at home",
+              "phonetic": "eh-KHAH-yah"
+            },
+            {
+              "id": "zu-esikoleni",
+              "term": "esikoleni",
+              "translation": "at school",
+              "phonetic": "eh-see-koh-LEH-nee"
+            },
+            {
+              "id": "zu-emsebenzini",
+              "term": "emsebenzini",
+              "translation": "at work",
+              "phonetic": "em-seh-behn-ZEE-nee"
+            },
+            {
+              "id": "zu-edolobheni",
+              "term": "edolobheni",
+              "translation": "in town",
+              "phonetic": "eh-doh-loh-BHEH-nee"
+            },
+            {
+              "id": "zu-esitolo",
+              "term": "esitolo",
+              "translation": "at the shop",
+              "phonetic": "eh-see-TOH-loh"
+            },
+            {
+              "id": "zu-phandle",
+              "term": "phandle",
+              "translation": "outside",
+              "phonetic": "PAHN-dleh"
+            },
+            {
+              "id": "zu-phakathi",
+              "term": "phakathi",
+              "translation": "inside",
+              "phonetic": "pah-KAH-tee"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ekhaya",
+                  "at home"
+                ],
+                [
+                  "esikoleni",
+                  "at school"
+                ],
+                [
+                  "emsebenzini",
+                  "at work"
+                ],
+                [
+                  "edolobheni",
+                  "in town"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“esitolo” means:",
+              "answer": "at the shop",
+              "options": [
+                "at the shop",
+                "at home",
+                "at school",
+                "at work"
+              ],
+              "vocabId": "zu-esitolo"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “outside”?",
+              "answer": "phandle",
+              "options": [
+                "phandle",
+                "ekhaya",
+                "esikoleni",
+                "emsebenzini"
+              ],
+              "vocabId": "zu-phandle"
+            },
+            {
+              "type": "translate",
+              "prompt": "at work",
+              "answer": "emsebenzini",
+              "accept": [
+                "emsebenzini"
+              ],
+              "vocabId": "zu-emsebenzini"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngisebenza ekhaya",
+              "en": "I work at home"
+            },
+            {
+              "t": "Ngiya esikoleni",
+              "en": "I go to school"
+            }
+          ]
+        },
+        {
+          "id": "zu-u10-l2",
+          "title": "More Everyday Verbs",
+          "culturalNote": "These verb stems slot straight into the frames you know: ngi- + lala → Ngiyalala (I am sleeping). Learn the stem, and every subject and tense comes free.",
+          "vocab": [
+            {
+              "id": "zu-ukulala",
+              "term": "ukulala",
+              "translation": "to sleep",
+              "phonetic": "oo-koo-LAH-lah"
+            },
+            {
+              "id": "zu-ukuvuka",
+              "term": "ukuvuka",
+              "translation": "to wake up",
+              "phonetic": "oo-koo-VOO-kah"
+            },
+            {
+              "id": "zu-ukuhlala",
+              "term": "ukuhlala",
+              "translation": "to stay / live",
+              "phonetic": "oo-koo-SHLAH-lah"
+            },
+            {
+              "id": "zu-ukugeza",
+              "term": "ukugeza",
+              "translation": "to wash",
+              "phonetic": "oo-koo-GEH-zah"
+            },
+            {
+              "id": "zu-ukupheka",
+              "term": "ukupheka",
+              "translation": "to cook",
+              "phonetic": "oo-koo-PEH-kah"
+            },
+            {
+              "id": "zu-ukuphuza",
+              "term": "ukuphuza",
+              "translation": "to drink",
+              "phonetic": "oo-koo-POO-zah"
+            },
+            {
+              "id": "zu-ukukhuluma",
+              "term": "ukukhuluma",
+              "translation": "to speak",
+              "phonetic": "oo-koo-koo-LOO-mah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "ukulala",
+                  "to sleep"
+                ],
+                [
+                  "ukuvuka",
+                  "to wake up"
+                ],
+                [
+                  "ukuhlala",
+                  "to stay / live"
+                ],
+                [
+                  "ukugeza",
+                  "to wash"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ukupheka” means:",
+              "answer": "to cook",
+              "options": [
+                "to cook",
+                "to sleep",
+                "to wake up",
+                "to stay / live"
+              ],
+              "vocabId": "zu-ukupheka"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “to drink”?",
+              "answer": "ukuphuza",
+              "options": [
+                "ukuphuza",
+                "ukulala",
+                "ukuvuka",
+                "ukuhlala"
+              ],
+              "vocabId": "zu-ukuphuza"
+            },
+            {
+              "type": "translate",
+              "prompt": "to stay / live",
+              "answer": "ukuhlala",
+              "accept": [
+                "ukuhlala"
+              ],
+              "vocabId": "zu-ukuhlala"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngilala ebusuku",
+              "en": "I sleep at night"
+            },
+            {
+              "t": "Ngihlala ekhaya",
+              "en": "I live at home"
+            }
+          ]
+        },
+        {
+          "id": "zu-u10-l3",
+          "title": "How & How Often",
+          "culturalNote": "Adverbs follow the verb: Ukhuluma kahle — you speak well. ka- makes 'how' words from stems: kahle (well), kabi (badly).",
+          "vocab": [
+            {
+              "id": "zu-kahle",
+              "term": "kahle",
+              "translation": "well / nicely",
+              "phonetic": "KAH-shleh"
+            },
+            {
+              "id": "zu-kabi",
+              "term": "kabi",
+              "translation": "badly",
+              "phonetic": "KAH-bee"
+            },
+            {
+              "id": "zu-njalo",
+              "term": "njalo",
+              "translation": "always",
+              "phonetic": "NJAH-loh"
+            },
+            {
+              "id": "zu-kaningi",
+              "term": "kaningi",
+              "translation": "often",
+              "phonetic": "kah-NEE-ngee"
+            },
+            {
+              "id": "zu-ngokushesha",
+              "term": "ngokushesha",
+              "translation": "quickly",
+              "phonetic": "ngoh-koo-SHEH-shah"
+            },
+            {
+              "id": "zu-phansi",
+              "term": "phansi",
+              "translation": "down / low",
+              "phonetic": "PAHN-see"
+            },
+            {
+              "id": "zu-phezulu",
+              "term": "phezulu",
+              "translation": "up / high",
+              "phonetic": "peh-ZOO-loo"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "kahle",
+                  "well / nicely"
+                ],
+                [
+                  "kabi",
+                  "badly"
+                ],
+                [
+                  "njalo",
+                  "always"
+                ],
+                [
+                  "kaningi",
+                  "often"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ngokushesha” means:",
+              "answer": "quickly",
+              "options": [
+                "quickly",
+                "well / nicely",
+                "badly",
+                "always"
+              ],
+              "vocabId": "zu-ngokushesha"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “down / low”?",
+              "answer": "phansi",
+              "options": [
+                "phansi",
+                "kahle",
+                "kabi",
+                "njalo"
+              ],
+              "vocabId": "zu-phansi"
+            },
+            {
+              "type": "translate",
+              "prompt": "always",
+              "answer": "njalo",
+              "accept": [
+                "njalo"
+              ],
+              "vocabId": "zu-njalo"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ukhuluma kahle",
+              "en": "You speak well"
+            }
+          ]
+        },
+        {
+          "id": "zu-u10-l4",
+          "title": "Seasons & Weather Talk",
+          "culturalNote": "izulu means both 'weather' and 'sky/heaven' — KwaZulu is 'the place of heaven'. Seasons take the locative too: ebusika, in winter.",
+          "vocab": [
+            {
+              "id": "zu-izulu",
+              "term": "izulu",
+              "translation": "weather / sky",
+              "phonetic": "ee-ZOO-loo"
+            },
+            {
+              "id": "zu-ihlobo",
+              "term": "ihlobo",
+              "translation": "summer",
+              "phonetic": "ee-SHLOH-boh"
+            },
+            {
+              "id": "zu-ubusika",
+              "term": "ubusika",
+              "translation": "winter",
+              "phonetic": "oo-boo-SEE-kah"
+            },
+            {
+              "id": "zu-intwasahlobo",
+              "term": "intwasahlobo",
+              "translation": "spring",
+              "phonetic": "een-twah-sah-SHLOH-boh"
+            },
+            {
+              "id": "zu-ikwindla",
+              "term": "ikwindla",
+              "translation": "autumn",
+              "phonetic": "ee-KWEEN-dlah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "izulu",
+                  "weather / sky"
+                ],
+                [
+                  "ihlobo",
+                  "summer"
+                ],
+                [
+                  "ubusika",
+                  "winter"
+                ],
+                [
+                  "intwasahlobo",
+                  "spring"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ikwindla” means:",
+              "answer": "autumn",
+              "options": [
+                "autumn",
+                "weather / sky",
+                "summer",
+                "winter"
+              ],
+              "vocabId": "zu-ikwindla"
+            },
+            {
+              "type": "translate",
+              "prompt": "winter",
+              "answer": "ubusika",
+              "accept": [
+                "ubusika"
+              ],
+              "vocabId": "zu-ubusika"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Kuyabanda ebusika",
+              "en": "It is cold in winter"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u11",
+      "title": "Unit 11: People & Real Talk",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "zu-u11-l1",
+          "title": "People & Community",
+          "culturalNote": "umuntu (a person) → abantu (people): the famous u-/aba- class pair. 'Umuntu ngumuntu ngabantu' — a person is a person through other people.",
+          "vocab": [
+            {
+              "id": "zu-umuntu",
+              "term": "umuntu",
+              "translation": "person",
+              "phonetic": "oo-MOON-too"
+            },
+            {
+              "id": "zu-abantu",
+              "term": "abantu",
+              "translation": "people",
+              "phonetic": "ah-BAHN-too"
+            },
+            {
+              "id": "zu-umfana",
+              "term": "umfana",
+              "translation": "boy",
+              "phonetic": "oom-FAH-nah"
+            },
+            {
+              "id": "zu-intombazane",
+              "term": "intombazane",
+              "translation": "girl",
+              "phonetic": "een-tohm-bah-ZAH-neh"
+            },
+            {
+              "id": "zu-indoda",
+              "term": "indoda",
+              "translation": "man",
+              "phonetic": "een-DOH-dah"
+            },
+            {
+              "id": "zu-umphakathi",
+              "term": "umphakathi",
+              "translation": "community",
+              "phonetic": "oom-pah-KAH-tee"
+            },
+            {
+              "id": "zu-umakhelwane",
+              "term": "umakhelwane",
+              "translation": "neighbour",
+              "phonetic": "oo-mah-kehl-WAH-neh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "umuntu",
+                  "person"
+                ],
+                [
+                  "abantu",
+                  "people"
+                ],
+                [
+                  "umfana",
+                  "boy"
+                ],
+                [
+                  "intombazane",
+                  "girl"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“indoda” means:",
+              "answer": "man",
+              "options": [
+                "man",
+                "person",
+                "people",
+                "boy"
+              ],
+              "vocabId": "zu-indoda"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “community”?",
+              "answer": "umphakathi",
+              "options": [
+                "umphakathi",
+                "umuntu",
+                "abantu",
+                "umfana"
+              ],
+              "vocabId": "zu-umphakathi"
+            },
+            {
+              "type": "translate",
+              "prompt": "boy",
+              "answer": "umfana",
+              "accept": [
+                "umfana"
+              ],
+              "vocabId": "zu-umfana"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Abantu bayasebenza",
+              "en": "The people are working"
+            }
+          ]
+        },
+        {
+          "id": "zu-u11-l2",
+          "title": "Money & Buying",
+          "culturalNote": "Haggling politely is normal at markets. 'Kuyabiza' (it's expensive) with a smile opens the negotiation.",
+          "vocab": [
+            {
+              "id": "zu-intengo",
+              "term": "intengo",
+              "translation": "price",
+              "phonetic": "een-TEHN-goh"
+            },
+            {
+              "id": "zu-ushintshi",
+              "term": "ushintshi",
+              "translation": "change (money)",
+              "phonetic": "oo-SHEEN-chee"
+            },
+            {
+              "id": "zu-kuyabiza",
+              "term": "kuyabiza",
+              "translation": "it is expensive",
+              "phonetic": "koo-yah-BEE-zah"
+            },
+            {
+              "id": "zu-imakethe",
+              "term": "imakethe",
+              "translation": "market",
+              "phonetic": "ee-mah-KEH-teh"
+            },
+            {
+              "id": "zu-isikweletu",
+              "term": "isikweletu",
+              "translation": "debt / credit",
+              "phonetic": "ee-see-kweh-LEH-too"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "intengo",
+                  "price"
+                ],
+                [
+                  "ushintshi",
+                  "change (money)"
+                ],
+                [
+                  "kuyabiza",
+                  "it is expensive"
+                ],
+                [
+                  "imakethe",
+                  "market"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“isikweletu” means:",
+              "answer": "debt / credit",
+              "options": [
+                "debt / credit",
+                "price",
+                "change (money)",
+                "it is expensive"
+              ],
+              "vocabId": "zu-isikweletu"
+            },
+            {
+              "type": "translate",
+              "prompt": "it is expensive",
+              "answer": "kuyabiza",
+              "accept": [
+                "kuyabiza"
+              ],
+              "vocabId": "zu-kuyabiza"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Kuyabiza kakhulu",
+              "en": "It is very expensive"
+            }
+          ]
+        },
+        {
+          "id": "zu-u11-l3",
+          "title": "Questions & Answers",
+          "culturalNote": "mhlawumbe (maybe) softens almost anything. impela (truly) strengthens it. Real conversations live between the two.",
+          "vocab": [
+            {
+              "id": "zu-umbuzo",
+              "term": "umbuzo",
+              "translation": "question",
+              "phonetic": "oom-BOO-zoh"
+            },
+            {
+              "id": "zu-impendulo",
+              "term": "impendulo",
+              "translation": "answer",
+              "phonetic": "eem-pehn-DOO-loh"
+            },
+            {
+              "id": "zu-iqiniso",
+              "term": "iqiniso",
+              "translation": "truth",
+              "phonetic": "ee-qee-NEE-soh",
+              "note": "q is a click"
+            },
+            {
+              "id": "zu-amanga",
+              "term": "amanga",
+              "translation": "lies / untruth",
+              "phonetic": "ah-MAHN-gah"
+            },
+            {
+              "id": "zu-mhlawumbe",
+              "term": "mhlawumbe",
+              "translation": "maybe",
+              "phonetic": "m-shlah-WOOM-beh"
+            },
+            {
+              "id": "zu-impela",
+              "term": "impela",
+              "translation": "truly / indeed",
+              "phonetic": "eem-PEH-lah"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "umbuzo",
+                  "question"
+                ],
+                [
+                  "impendulo",
+                  "answer"
+                ],
+                [
+                  "iqiniso",
+                  "truth"
+                ],
+                [
+                  "amanga",
+                  "lies / untruth"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“mhlawumbe” means:",
+              "answer": "maybe",
+              "options": [
+                "maybe",
+                "question",
+                "answer",
+                "truth"
+              ],
+              "vocabId": "zu-mhlawumbe"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “truly / indeed”?",
+              "answer": "impela",
+              "options": [
+                "impela",
+                "umbuzo",
+                "impendulo",
+                "iqiniso"
+              ],
+              "vocabId": "zu-impela"
+            },
+            {
+              "type": "translate",
+              "prompt": "truth",
+              "answer": "iqiniso",
+              "accept": [
+                "iqiniso"
+              ],
+              "vocabId": "zu-iqiniso"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Mhlawumbe kusasa",
+              "en": "Maybe tomorrow"
+            }
+          ]
+        },
+        {
+          "id": "zu-u11-l4",
+          "title": "The Body II",
+          "culturalNote": "Body words power everyday complaints and care: 'Isisu sibuhlungu' — my stomach hurts — is the sentence every clinic hears first.",
+          "vocab": [
+            {
+              "id": "zu-amazinyo",
+              "term": "amazinyo",
+              "translation": "teeth",
+              "phonetic": "ah-mah-ZEE-nyoh"
+            },
+            {
+              "id": "zu-izinwele",
+              "term": "izinwele",
+              "translation": "hair",
+              "phonetic": "ee-zeen-WEH-leh"
+            },
+            {
+              "id": "zu-umlenze",
+              "term": "umlenze",
+              "translation": "leg",
+              "phonetic": "oom-LEHN-zeh"
+            },
+            {
+              "id": "zu-ingalo",
+              "term": "ingalo",
+              "translation": "arm",
+              "phonetic": "een-GAH-loh"
+            },
+            {
+              "id": "zu-isisu",
+              "term": "isisu",
+              "translation": "stomach",
+              "phonetic": "ee-SEE-soo"
+            },
+            {
+              "id": "zu-umhlane",
+              "term": "umhlane",
+              "translation": "back (body)",
+              "phonetic": "oom-SHLAH-neh"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "amazinyo",
+                  "teeth"
+                ],
+                [
+                  "izinwele",
+                  "hair"
+                ],
+                [
+                  "umlenze",
+                  "leg"
+                ],
+                [
+                  "ingalo",
+                  "arm"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“isisu” means:",
+              "answer": "stomach",
+              "options": [
+                "stomach",
+                "teeth",
+                "hair",
+                "leg"
+              ],
+              "vocabId": "zu-isisu"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “back (body)”?",
+              "answer": "umhlane",
+              "options": [
+                "umhlane",
+                "amazinyo",
+                "izinwele",
+                "umlenze"
+              ],
+              "vocabId": "zu-umhlane"
+            },
+            {
+              "type": "translate",
+              "prompt": "leg",
+              "answer": "umlenze",
+              "accept": [
+                "umlenze"
+              ],
+              "vocabId": "zu-umlenze"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Isisu sibuhlungu",
+              "en": "My stomach hurts"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

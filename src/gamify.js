@@ -34,6 +34,7 @@ export const QUEST_POOL = [
   { id: 'q_reading', text: 'Read a story', goal: 1, event: 'reading', gems: 15, icon: '📖' },
   { id: 'q_listen', text: 'Do a listening session', goal: 1, event: 'listening', gems: 12, icon: '👂' },
   { id: 'q_speak', text: 'Do a speaking session', goal: 1, event: 'speaking', gems: 12, icon: '🎤' },
+  { id: 'q_say', text: 'Build 5 sentences of your own', goal: 5, event: 'sentence', gems: 14, icon: '🗣️' },
 ];
 
 export const ACHIEVEMENTS = [
@@ -52,6 +53,8 @@ export const ACHIEVEMENTS = [
   { id: 'polyglot', name: 'Polyglot', icon: '🌍', desc: 'Study 2 languages', test: (c) => (c.state.studiedLangs || []).length >= 2 },
   { id: 'xp_500', name: 'Rising Star', icon: '⭐', desc: 'Earn 500 XP', test: (c) => c.lang.xp >= 500 },
   { id: 'xp_1000', name: 'Superstar', icon: '🌟', desc: 'Earn 1000 XP', test: (c) => c.lang.xp >= 1000 },
+  { id: 'sentences_25', name: 'Sentence Smith', icon: '🗣️', desc: 'Build 25 sentences of your own', test: (c) => (c.lang.sentencesBuilt || 0) >= 25 },
+  { id: 'sentences_100', name: 'Freestyler', icon: '🎙️', desc: 'Build 100 sentences of your own', test: (c) => (c.lang.sentencesBuilt || 0) >= 100 },
 ];
 
 export const LEAGUES = ['Bronze', 'Silver', 'Gold', 'Sapphire', 'Ruby', 'Diamond'];
@@ -219,7 +222,7 @@ export function track(store, event, payload = {}) {
     let matched = def.event === event;
     if (def.event === 'perfect' && event === 'lesson') matched = payload.mistakes === 0;
     if (!matched) continue;
-    item.progress += def.event === 'xp' ? (payload.amount || 0) : 1;
+    item.progress += def.event === 'xp' ? (payload.amount || 0) : (payload.amount || 1);
     if (item.progress >= def.goal && !item.claimed) {
       item.claimed = true;
       store.state.gems = (store.state.gems || 0) + def.gems;

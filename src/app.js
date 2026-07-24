@@ -6,7 +6,9 @@ import {
   loadCourse, loadLanguages, allLessons, findLesson, vocabIndex, phraseIndex,
   checkAnswer, checkTyped, buildLessonSession, buildReviewSession, exerciseVocabIds, normalize,
   sentencePool, readingCoverage, genFrameDrills, memberVocabIds, genExplainPrompt, genPatternInquiry,
+  genBuildExercises,
 } from './lessons.js';
+import { supportsSentences, assemble, composeSentence, langMeta, TENSES } from './sentences.js';
 import * as G from './gamify.js';
 import * as Shop from './shop.js';
 import { sound, haptic, confetti, countUp, pop, setSoundEnabled } from './fx.js';
@@ -694,6 +696,8 @@ function renderHome() {
 
       ${showPractice ? `<h3 class="sec sec--home">Practice</h3>
       <div class="act-grid">
+        ${supportsSentences(course.code) ? `<button class="act act--say" id="sayBtn">
+          <span class="act__ic">🗣️</span><span class="act__l"><b>Say it</b><small>${(L.sentencesBuilt || 0) ? `${L.sentencesBuilt} sentences made` : 'make your own sentences'}</small></span></button>` : ''}
         ${(course.grammar || []).length ? `<button class="act act--grammar" id="grammarBtn">
           <span class="act__ic">🧩</span><span class="act__l"><b>Grammar</b><small>patterns</small></span></button>` : ''}
         ${(course.dialogues || []).length ? `<button class="act act--convo" id="dialogueBtn">
@@ -737,6 +741,7 @@ function renderHome() {
   on('#planBtn', renderPlan);
   on('#storiesNav', renderLibrary);
   on('#glossaryBtn', () => renderGlossary());
+  on('#sayBtn', renderSentenceStudio);
   on('#speakBtn', startSpeaking);
   on('#listenBtn', startListening);
   on('#blitzBtn', startBlitz);
@@ -1935,11 +1940,22 @@ function startLesson(lessonId) {
   beginLesson(lesson);
 }
 
+// How far along the generative sentence grammar goes: level 1 (present) once
+// the first lesson is done, level 2 (+ future & negatives) after 3 lessons,
+// level 3 (+ past) after 6. Before any lessons: no sentence assembly yet.
+function sentenceLevel() {
+  const done = store.lang().completedLessons.length;
+  return done >= 6 ? 3 : done >= 3 ? 2 : done >= 1 ? 1 : 0;
+}
+
 function beginLesson(lesson) {
   session = {
     mode: 'lesson',
     lesson,
-    queue: buildLessonSession(lesson, course, store.dueItems(), { recentTypes: store.lang().recentExerciseTypes || [] }),
+    queue: buildLessonSession(lesson, course, store.dueItems(), {
+      recentTypes: store.lang().recentExerciseTypes || [],
+      buildLevel: sentenceLevel(),
+    }),
     idx: 0,
     mistakes: 0,
     total: 0,
@@ -2003,11 +2019,165 @@ function startReview() {
     recentTypes: L.recentExerciseTypes || [],
     itemStats: L.items || {},
     repairMode,
+    buildLevel: sentenceLevel(),
   }), due);
   session = {
     mode: 'review', lesson: null, queue, idx: 0, mistakes: 0, total: 0,
     repairMode, startedDueIds: due.slice(), toughWordId: toughestWordId(),
   };
+  renderExercise();
+}
+
+// ---------- Say It Your Way: the generative sentence studio ----------
+// The learner's communicative goal is the prompt ("Say: I want water"); the
+// engine generates a NOVEL sentence to build — and every third one must be
+// SAID out loud, because assembling is knowing and speaking is owning.
+function renderSentenceStudio() {
+  const built = store.lang().sentencesBuilt || 0;
+  const node = h(`
+    <div class="screen screen--center">
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 110, className: 'mascot-img--cheer' })}</div>
+      <h1>Say It Your Way 🗣️</h1>
+      <p class="muted">Build sentences nobody taught you — real ${esc(course.name)} grammar, fresh combinations every time. This is the practice that turns words you know into things you can actually say.</p>
+      ${built ? `<div class="kpi"><span class="kpi__v">${built}</span><span class="kpi__k">sentences you've made on your own</span></div>` : ''}
+      <button class="btn btn--primary" id="go">Start building</button>
+      <button class="btn btn--lab" id="lab">🧪 Sentence Lab — free build</button>
+      <button class="btn btn--ghost" id="back">Back</button>
+    </div>`);
+  node.querySelector('#go').addEventListener('click', () => { sound.tap(); startSentences(); });
+  node.querySelector('#lab').addEventListener('click', () => { sound.tap(); renderSentenceLab(); });
+  node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
+}
+
+// ---------- Sentence Lab: YOU choose, the grammar machine builds ----------
+// The purest "form your own sentence" experience: pick who + tense + verb +
+// what, watch the sentence assemble with its anatomy explained, hear it, then
+// prove it by typing it from memory. Impossible combos are simply disabled —
+// the machine quietly teaches what the language does and doesn't do.
+let labState = null;
+
+function labMeta() { return langMeta(course.code); }
+
+function labCompose(m, st) {
+  const subj = m.subjects[st.subjIdx];
+  const verb = m.verbs[st.verbIdx];
+  const obj = st.objIdx == null ? null : verb.objs[st.objIdx] || null;
+  return composeSentence(course.code, { subj, verb, tense: st.tense, obj });
+}
+
+function renderSentenceLab() {
+  const m = labMeta();
+  if (!m) return renderHome();
+  if (!labState) labState = { subjIdx: 0, verbIdx: 0, tense: 'present', objIdx: null };
+  const st = labState;
+  // keep the chosen object valid for the chosen verb
+  const verb = m.verbs[st.verbIdx];
+  if (st.objIdx != null && !verb.objs[st.objIdx]) st.objIdx = null;
+  let sent = labCompose(m, st);
+  // if the current combo is impossible (e.g. past of a verb with no past),
+  // fall back to present so the lab never shows a dead end
+  if (!sent) { st.tense = 'present'; st.objIdx = st.objIdx != null && verb.objs.length ? 0 : null; sent = labCompose(m, st); }
+
+  const chip = (cls, sel, label, attrs = '') => `<button class="lab-chip ${sel ? 'lab-chip--on' : ''} ${cls}" ${attrs}>${label}</button>`;
+  const subjRow = m.subjects.map((s, i) => chip('', i === st.subjIdx, `${esc(s.p)} <small>${esc(s.en)}</small>`, `data-subj="${i}"`)).join('');
+  const tenseRow = TENSES.map((t) => {
+    const test = composeSentence(course.code, { subj: m.subjects[st.subjIdx], verb, tense: t.id, obj: st.objIdx == null ? null : verb.objs[st.objIdx] })
+      || composeSentence(course.code, { subj: m.subjects[st.subjIdx], verb, tense: t.id });
+    return chip('', t.id === st.tense, `${t.icon} ${esc(t.label)}`, `data-tense="${esc(t.id)}" ${test ? '' : 'disabled'}`);
+  }).join('');
+  const verbRow = m.verbs.map((v, i) => chip('', i === st.verbIdx, `${esc(v.stem)} <small>${esc(v.en)}</small>`, `data-verb="${i}"`)).join('');
+  const objChips = [chip('', st.objIdx == null, '— nothing —', 'data-obj="none"'),
+    ...verb.objs.map((o, i) => {
+      const test = composeSentence(course.code, { subj: m.subjects[st.subjIdx], verb, tense: st.tense, obj: o });
+      return chip('', i === st.objIdx, `${esc(o.t)} <small>${esc(o.en)}</small>`, `data-obj="${i}" ${test ? '' : 'disabled'}`);
+    })].join('');
+
+  const anatomy = sent ? sent.tokens.filter((t) => t.why !== '…')
+    .map((t) => `<span class="anat anat--${esc(t.role)}"><b>${esc(t.t)}</b><small>${esc(t.why)}</small></span>`).join('') : '';
+
+  const node = h(`
+    <div class="screen lab">
+      <header class="ex__top">
+        <button class="ex__quit" id="quitBtn" aria-label="Back">✕</button>
+        <strong>🧪 Sentence Lab</strong>
+        <span class="muted">${(store.lang().sentencesBuilt || 0)} made</span>
+      </header>
+      <p class="ex__hint muted">Pick the pieces — the grammar machine builds it. Combos the language doesn't allow switch themselves off.</p>
+      <div class="lab-sec"><span class="lab-lbl">Who</span><div class="lab-row">${subjRow}</div></div>
+      <div class="lab-sec"><span class="lab-lbl">Form</span><div class="lab-row">${tenseRow}</div></div>
+      <div class="lab-sec"><span class="lab-lbl">Action</span><div class="lab-row lab-row--scroll">${verbRow}</div></div>
+      <div class="lab-sec"><span class="lab-lbl">What / where</span><div class="lab-row">${objChips}</div></div>
+      ${sent ? `
+      <div class="lab-out">
+        <div class="lab-out__text" id="labText">${esc(sent.text)}</div>
+        <div class="lab-out__en muted">${esc(sent.en)}</div>
+        <div class="anatomy">${anatomy}</div>
+        <div class="lab-out__actions">
+          <button class="play-btn" id="labHear">🔊 Hear it</button>
+          <button class="btn btn--primary" id="labQuiz">✍️ Prove it — type it from memory</button>
+        </div>
+        <div class="lab-quiz" id="labQuizBox" hidden>
+          <p class="muted">“${esc(sent.en)}” — from memory:</p>
+          <input class="ex__input" id="labInput" autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <button class="btn btn--primary" id="labCheck">Check</button>
+        </div>
+      </div>` : ''}
+    </div>`);
+  node.querySelector('#quitBtn').addEventListener('click', renderSentenceStudio);
+  node.querySelectorAll('[data-subj]').forEach((b) => b.addEventListener('click', () => { st.subjIdx = Number(b.dataset.subj); sound.tap(); renderSentenceLab(); }));
+  node.querySelectorAll('[data-tense]').forEach((b) => b.addEventListener('click', () => { if (b.disabled) return; st.tense = b.dataset.tense; sound.tap(); renderSentenceLab(); }));
+  node.querySelectorAll('[data-verb]').forEach((b) => b.addEventListener('click', () => { st.verbIdx = Number(b.dataset.verb); sound.tap(); renderSentenceLab(); }));
+  node.querySelectorAll('[data-obj]').forEach((b) => b.addEventListener('click', () => { if (b.disabled) return; st.objIdx = b.dataset.obj === 'none' ? null : Number(b.dataset.obj); sound.tap(); renderSentenceLab(); }));
+  if (sent) {
+    node.querySelector('#labHear').addEventListener('click', () => tryHear(sent.text, course.code));
+    const quizBtn = node.querySelector('#labQuiz');
+    const box = node.querySelector('#labQuizBox');
+    const textEl = node.querySelector('#labText');
+    quizBtn.addEventListener('click', () => {
+      sound.tap();
+      textEl.classList.add('lab-out__text--hidden');
+      quizBtn.hidden = true; box.hidden = false;
+      node.querySelector('#labInput').focus();
+    });
+    const check = () => {
+      const input = node.querySelector('#labInput');
+      const res = checkTyped({ answer: sent.text, accept: [sent.text.toLowerCase()] }, input.value);
+      textEl.classList.remove('lab-out__text--hidden');
+      if (res.correct) {
+        sound.correct(); confetti({ count: 30, duration: 800 });
+        store.lang().sentencesBuilt = (store.lang().sentencesBuilt || 0) + 1;
+        store.addXp(5);
+        G.track(store, 'sentence');
+        store.save();
+        speak(sent.text, course.code);
+        flashToast(res.typo ? `✓ Yours! (watch the spelling: ${sent.text}) +5 XP` : '✓ That sentence is YOURS now · +5 XP');
+        renderSentenceLab();
+      } else {
+        sound.wrong();
+        flashToast(`Almost — it's “${sent.text}”. Look again, then retry.`);
+        box.hidden = true; quizBtn.hidden = false;
+      }
+    };
+    node.querySelector('#labCheck').addEventListener('click', check);
+    const inp = node.querySelector('#labInput');
+    if (inp) inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') check(); });
+    // hearing each fresh creation invites play; keep it quiet on quiz reveal
+    speak(sent.text, course.code);
+  }
+  mount(node);
+}
+
+function startSentences() {
+  const lvl = Math.max(1, sentenceLevel());
+  const builds = genBuildExercises(course, 8, lvl);
+  if (!builds.length) return renderHome();
+  // every third build becomes a SPEAK exercise of a generated sentence — say
+  // a novel sentence out loud, not just arrange its tiles
+  const queue = builds.map((ex, i) => (i % 3 === 2
+    ? { type: 'speak', text: ex.answer, meaning: ex.prompt, _gen: true }
+    : ex));
+  session = { mode: 'sentences', lesson: null, queue, idx: 0, mistakes: 0, total: 0 };
   renderExercise();
 }
 
@@ -2128,15 +2298,16 @@ function endSession() {
   if (session.mistakes >= 1) stars = 2;
   if (session.mistakes >= 3) stars = 1;
 
-  // award XP once at the end (keeps league/quest tracking clean)
-  const baseXp = XP_PER_CORRECT * Math.max(1, correct) + (session.mode === 'lesson' ? XP_LESSON_BONUS : 0);
+  // award XP once at the end (keeps league/quest tracking clean); combo
+  // milestone bonuses earned mid-session land here too
+  const baseXp = XP_PER_CORRECT * Math.max(1, correct) + (session.mode === 'lesson' ? XP_LESSON_BONUS : 0) + (session.comboXp || 0);
   const boost = Shop.applyXpBoost(store, baseXp);
   const earned = boost.amount;
   session.xpBoosted = boost.boosted;
   store.addXp(earned);
 
   // small gem trickle for finishing, so the shop is reachable through play
-  const GEM_REWARD = { lesson: 5, review: 3, reading: 5, grammar: 4 };
+  const GEM_REWARD = { lesson: 5, review: 3, reading: 5, grammar: 4, sentences: 4 };
   const baseGems = GEM_REWARD[session.mode] || 0;
   if (baseGems) store.state.gems = (store.state.gems || 0) + baseGems;
 
@@ -2178,6 +2349,12 @@ function endSession() {
     srsReview(git, gradeFor(session.mistakes <= 1, 'translate'), 'translate');
     merge(G.track(store, 'review'));
   }
+  // sentences the learner built themselves — from ANY mode — feed the
+  // "can say on my own" counter, its quest, and its badges
+  if (session.buildCorrect) {
+    store.lang().sentencesBuilt = (store.lang().sentencesBuilt || 0) + session.buildCorrect;
+    merge(G.track(store, 'sentence', { amount: session.buildCorrect }));
+  }
   merge({ quests: [], achievements: G.checkAchievements(store), gems: 0 });
   recordWeeklySnapshot();
   store.save();
@@ -2185,6 +2362,7 @@ function endSession() {
   if (session.mode === 'lesson') markPlan('lesson');
   else if (session.mode === 'review') markPlan('review');
   else if (session.mode === 'reading') markPlan('input');
+  else if (session.mode === 'sentences') markPlan('output');
   session.earned = earned;
   renderSessionComplete(stars, correct, session.total, rewards);
 }
@@ -2214,9 +2392,14 @@ function advance(wasCorrect, ex) {
         if (!session.masteredDueIds.includes(vid)) session.masteredDueIds.push(vid);
       }
     }
+    // count generative sentence builds — the "sentences you made yourself"
+    // metric that the studio, quests and badges all feed on
+    if (ex.type === 'build' && wasCorrect) session.buildCorrect = (session.buildCorrect || 0) + 1;
     // Match is the lesson's first-exposure intro, and mispairs are already
     // corrected in place — it counts against accuracy/stars but not hearts.
-    if (!wasCorrect && HEART_MODES.includes(session.mode) && ex.type !== 'match' && ex.type !== 'explain') {
+    // Sentence assembly (build) is generative practice of NOVEL grammar, so a
+    // miss there is learning by definition — never a heart.
+    if (!wasCorrect && HEART_MODES.includes(session.mode) && ex.type !== 'match' && ex.type !== 'explain' && ex.type !== 'build') {
       // hearts guard the recall of things already TAUGHT; missing material
       // you're still learning is part of learning and stays free
       if (!learningGrace) store.loseHeart();
@@ -2255,6 +2438,7 @@ function renderExercise() {
     case 'speak': body = renderSpeakExercise(ex); break;
     case 'translate': body = renderTranslate(ex); break;
     case 'word_bank': body = renderWordBank(ex); break;
+    case 'build': body = renderBuild(ex); break;
     case 'explain': body = renderExplain(ex); break;
     default: body = '<p>Unknown exercise</p>';
   }
@@ -2281,10 +2465,27 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   const foot = footFor(node);
   foot.className = `ex__foot ${ok ? 'ex__foot--ok' : 'ex__foot--learn'}`;
   const note = ex.meaning ? `<div class="fb__meaning">${esc(ex.meaning)}</div>` : '';
+  // "why the structure": for generated sentences, show the anatomy — each
+  // piece colored by role with a one-line why — right when curiosity peaks
+  const anatomy = ex.anatomy
+    ? `<div class="anatomy" aria-label="How this sentence is built">${ex.anatomy
+      .filter((t) => t.why !== '…')
+      .map((t) => `<span class="anat anat--${esc(t.role)}"><b>${esc(t.t)}</b><small>${esc(t.why)}</small></span>`).join('')}</div>`
+    : '';
   // a typo-accepted answer gets a gentle spelling nudge instead of a penalty
   const spell = (ok && typoNote) ? `<div class="fb__answer">${esc(typoNote)}</div>` : '';
   // track the correct-in-a-row streak so praise can build instead of resetting
   session.combo = ok ? (session.combo || 0) + 1 : 0;
+  // combo milestones: every 5 in a row earns bonus XP and a little fireworks —
+  // a variable-feeling reward loop layered on top of honest practice
+  const comboMilestone = ok && session.combo >= 5 && session.combo % 5 === 0;
+  if (comboMilestone) {
+    session.comboXp = (session.comboXp || 0) + 5;
+    sound.reward(); haptic([10, 20, 10]);
+    confetti({ count: 40, duration: 900 });
+  }
+  const comboChip = ok && session.combo >= 3
+    ? `<span class="combo-chip${comboMilestone ? ' combo-chip--big' : ''}">🔥 x${session.combo}${comboMilestone ? ' · +5 XP' : ''}</span>` : '';
   // A miss is a LEARNING MOMENT, not a failure: warm title, the answer with
   // its pronunciation, and the promise that it comes back — because it does.
   const title = ok ? (typoNote ? 'Almost perfect!' : cheerLine(session.total, session.combo)) : learnLine(session.total);
@@ -2292,7 +2493,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   // pronunciation only when it belongs to exactly what's shown as the answer
   const phon = (v && v.phonetic && normalize(v.term) === normalize(correctText)) ? ` <span class="muted">(${esc(v.phonetic)})</span>` : '';
   const answer = ok ? '' : `<div class="fb__answer">${ex.type === 'match' ? esc(correctText) : `It's: <strong>${esc(correctText)}</strong>${phon}`}</div>`;
-  const requeues = !ok && HEART_MODES.includes(session.mode) && ex.type !== 'match' && ex.type !== 'explain';
+  const requeues = !ok && HEART_MODES.includes(session.mode) && ex.type !== 'match' && ex.type !== 'explain' && ex.type !== 'build';
   const spared = requeues && stillLearningEx(ex);
   const again = requeues
     ? `<div class="fb__again">🔁 It comes round again in a bit — that's how it sticks${spared ? ' · 🌱 still learning, no heart lost' : ''}</div>`
@@ -2306,10 +2507,11 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
     <div class="fb">
       <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52 })}</span>
       <div class="fb__text">
-        <div class="fb__title">${title}</div>
+        <div class="fb__title">${title}${comboChip}</div>
         ${answer}
         ${spell}
         ${note}
+        ${anatomy}
         ${again}
       </div>
     </div>
@@ -2385,6 +2587,22 @@ function renderWordBank(ex) {
     <button class="btn btn--primary check" id="checkBtn" disabled>Check</button>`;
 }
 
+// Generative sentence assembly: morpheme + word tiles build up a NOVEL
+// sentence live in the preview, so the learner watches "ngi + ya + sebenza"
+// fuse into "Ngiyasebenza" — grammar as a machine they operate, not a rule
+// they memorise. The hint stays behind a tap so retrieval comes first.
+function renderBuild(ex) {
+  const bank = ex.tiles.map((t, i) =>
+    `<button class="wb-tok ${t.glue ? 'wb-tok--glue' : ''}" data-i="${i}">${t.glue ? '<span class="wb-glue" aria-hidden="true">-</span>' : ''}${esc(t.t)}</button>`).join('');
+  return `<h2 class="ex__q">Say it in ${esc(course.name)}</h2>
+    <p class="ex__prompt-big">“${esc(ex.prompt)}”</p>
+    <div class="wb-preview" id="buildPreview" aria-live="polite">Tap the pieces below</div>
+    <div class="wb-build" id="wbBuild" aria-label="Your sentence pieces"></div>
+    <div class="wb-bank" id="wbBank">${bank}</div>
+    ${ex.hint ? `<button class="hint-btn" id="hintBtn">💡 Need a hint?</button><p class="ex__hint muted" id="hintText" hidden>${esc(ex.hint)}</p>` : ''}
+    <button class="btn btn--primary check" id="checkBtn" disabled>Check</button>`;
+}
+
 // Feynman technique: "teach it back". No typing to grade — self-rated
 // honestly, like Speaking, and never costs a heart, so it stays low-stakes.
 function renderExplain(ex) {
@@ -2455,6 +2673,41 @@ function wireExercise(ex, node) {
     check.addEventListener('click', () => {
       const resp = Array.from(build.children).map((c) => c.textContent).join(' ');
       showFeedback(node, checkAnswer(ex, resp), ex, ex.answer);
+    });
+  }
+
+  if (ex.type === 'build') {
+    const bank = node.querySelector('#wbBank');
+    const build = node.querySelector('#wbBuild');
+    const preview = node.querySelector('#buildPreview');
+    const check = node.querySelector('#checkBtn');
+    const hintBtn = node.querySelector('#hintBtn');
+    if (hintBtn) hintBtn.addEventListener('click', () => { sound.tap(); node.querySelector('#hintText').hidden = false; hintBtn.hidden = true; });
+    const placed = []; // [{ t, glue, chip, srcBtn }]
+    const refresh = () => {
+      check.disabled = placed.length === 0;
+      preview.textContent = placed.length ? assemble(placed) : 'Tap the pieces below';
+      preview.classList.toggle('wb-preview--live', placed.length > 0);
+    };
+    bank.querySelectorAll('.wb-tok').forEach((b) => b.addEventListener('click', () => {
+      if (b.disabled) return;
+      const tile = ex.tiles[Number(b.dataset.i)];
+      b.disabled = true; b.classList.add('wb-tok--used');
+      const chip = h(`<button class="wb-tok wb-tok--in ${tile.glue ? 'wb-tok--glue' : ''}">${tile.glue ? '<span class="wb-glue" aria-hidden="true">-</span>' : ''}${esc(tile.t)}</button>`);
+      const entry = { t: tile.t, glue: tile.glue, chip, srcBtn: b };
+      chip.addEventListener('click', () => {
+        chip.remove(); b.disabled = false; b.classList.remove('wb-tok--used');
+        placed.splice(placed.indexOf(entry), 1); refresh();
+      });
+      placed.push(entry);
+      build.appendChild(chip); sound.tap(); refresh();
+    }));
+    check.addEventListener('click', () => {
+      const resp = assemble(placed);
+      const ok = checkAnswer(ex, resp);
+      // hearing your own new sentence said back is the payoff of the build
+      if (ok) speak(ex.answer, course.code);
+      showFeedback(node, ok, ex, ex.answer);
     });
   }
 
@@ -2552,9 +2805,29 @@ function wireExercise(ex, node) {
 }
 
 // ---------- completion screens ----------
+// The best next bite while momentum is hot — the honest version of "just one
+// more": always a different activity than the one just finished, and never
+// offered when hearts are empty (that moment belongs to rest, not upsell).
+function nextChain() {
+  if (!HEART_MODES.includes(session.mode) && session.mode !== 'sentences' && session.mode !== 'grammar' && session.mode !== 'reading') return null;
+  if (store.lang().hearts <= 0) return null;
+  const due = store.dueItems().length;
+  if (session.mode !== 'review' && due >= 3) return { label: `One more? 🔁 Clear ${due} due words`, run: startReview };
+  const nextLesson = allLessons(course).find((l) => !store.isLessonComplete(l.id));
+  if (session.mode !== 'lesson' && nextLesson) return { label: `One more? 📘 ${nextLesson.title}`, run: () => startLesson(nextLesson.id) };
+  if (session.mode !== 'sentences' && supportsSentences(course.code) && sentenceLevel() > 0) {
+    return { label: 'One more? 🗣️ Build your own sentences', run: startSentences };
+  }
+  return { label: 'One more? ⚡ 2-minute Lightning', run: startBlitz };
+}
+
 function renderSessionComplete(stars, correct, total, rewards = { quests: [], achievements: [], gems: 0 }) {
   const acc = Math.round((correct / Math.max(1, total)) * 100);
-  const title = session.mode === 'review' ? 'Review complete!' : session.mode === 'reading' ? 'Story complete!' : session.mode === 'grammar' ? 'Grammar practice!' : 'Lesson complete!';
+  const title = session.mode === 'review' ? 'Review complete!' : session.mode === 'reading' ? 'Story complete!' : session.mode === 'grammar' ? 'Grammar practice!' : session.mode === 'sentences' ? 'You made your own sentences! 🗣️' : 'Lesson complete!';
+  const canSay = session.buildCorrect
+    ? `<p class="cansay-note">🗣️ You can now say <strong>${store.lang().sentencesBuilt || 0}</strong> sentences you built yourself.</p>` : '';
+  // "one more" chain: the tastiest next bite, one tap away while momentum is hot
+  const chain = nextChain();
   const questHtml = rewards.quests.length
     ? `<div class="reward-list"><strong>Quests completed</strong>${rewards.quests.map((q) => `<div class="reward-row">${q.icon} ${esc(q.text)} <span>+💎${q.gems}</span></div>`).join('')}</div>` : '';
   const achHtml = rewards.achievements.length
@@ -2572,9 +2845,13 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
       </div>
       ${questHtml}
       ${achHtml}
+      ${canSay}
       ${session.mistakes ? '<p class="muted">💡 The tricky ones will come back at just the right moment — that\'s how they stick.</p>' : ''}
-      <button class="btn btn--primary" id="doneBtn">Continue</button>
+      ${chain ? `<button class="btn btn--primary" id="chainBtn">${esc(chain.label)}</button>` : ''}
+      <button class="btn ${chain ? 'btn--ghost' : 'btn--primary'}" id="doneBtn">${chain ? 'Done for now' : 'Continue'}</button>
     </div>`);
+  const chainBtn = node.querySelector('#chainBtn');
+  if (chainBtn) chainBtn.addEventListener('click', () => { sound.tap(); chain.run(); });
   node.querySelector('#doneBtn').addEventListener('click', () => {
     sound.tap();
     const firstLessonGuestWin = session.mode === 'lesson'

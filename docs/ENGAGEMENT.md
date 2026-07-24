@@ -19,6 +19,9 @@ engagement layer is built to *serve* the learning, never to replace it.
 | **Hearts/lives** ❤️ | Mild stakes that make learners slow down and think; never block *practice* of old words. | `store.js` |
 | **Repair mode** 🌱 | After a learner misses 2+ days, the first review session shrinks the backlog and mixes in easier wins before returning to the full queue. This keeps re-entry encouraging instead of punishing. | `app.js`, `lessons.js` |
 | **Targeted reminders** 🔔 | Reminder timing is learner-configurable, and the copy changes based on what is actually true: streak at risk, reviews due, unfinished plan, quest still open, or a gentle win-back after a couple of missed days. | `notify.js`, `sw.js` |
+| **Combo meter** 🔥 | Correct-in-a-row streaks get escalating call-outs in the feedback card; every 5th in a row pops +5 bonus XP with mini-fireworks. In-session variable reward, but only ever *on top of* honest answers. | `app.js` → `showFeedback` |
+| **"One more?" chaining** ➕ | Session-complete screens offer the single best next activity (due reviews → next lesson → sentence building → Lightning) one tap away — the honest version of "just one more". Never shown when hearts are empty; "Done for now" is always right there. | `app.js` → `nextChain` |
+| **"Sentences you can say" counter** 🗣️ | Every novel sentence the learner builds themselves increments a permanent counter shown in the studio, on session-complete and on Home — a progress number that *is* the learning goal (self-expression), plus its own daily quest and badges. | `app.js`, `gamify.js` |
 
 Each loop operates on a different timescale — **per-session** (XP, hearts),
 **daily** (quests, streak, login reward), and **weekly** (leagues) — so there's

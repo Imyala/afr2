@@ -689,6 +689,97 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .wb-tok--used { opacity: 0; pointer-events: none; }
 .wb-tok--in { border-color: var(--green); background: color-mix(in srgb, var(--green) 10%, var(--card)); }
 
+/* ---------- generative sentence builder (build) ---------- */
+.wb-preview {
+  min-height: 52px; display: flex; align-items: center; justify-content: center;
+  padding: 10px 14px; border-radius: var(--radius); text-align: center;
+  border: 2px dashed var(--line); background: var(--card);
+  font-size: 15px; color: var(--muted); transition: all .2s ease;
+}
+.wb-preview--live {
+  font-size: 24px; font-weight: 800; color: var(--ink);
+  border-color: var(--blue); border-style: solid;
+  background: color-mix(in srgb, var(--blue) 6%, var(--card));
+}
+.wb-tok--glue { border-style: dashed; }
+.wb-glue { color: var(--muted); font-weight: 800; margin-right: 1px; }
+.hint-btn {
+  align-self: flex-start; background: none; border: none; padding: 4px 0;
+  color: var(--blue); font-weight: 700; font-size: 14px;
+}
+.combo-chip {
+  display: inline-block; margin-left: 8px; padding: 2px 10px; border-radius: 999px;
+  background: var(--gold); color: #4a3200; font-weight: 800; font-size: 13px;
+  vertical-align: middle; animation: comboPop .3s ease;
+}
+.combo-chip--big { background: linear-gradient(95deg, var(--gold), #ff8a3d); color: #3a2600; }
+@keyframes comboPop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .combo-chip { animation: none; } }
+.cansay-note {
+  padding: 10px 14px; border-radius: var(--radius); font-size: 15px;
+  background: color-mix(in srgb, var(--green) 10%, var(--card)); color: var(--ink);
+}
+.act--say { --acc: #d64583; }
+
+/* ---------- sentence anatomy ("why the structure") ---------- */
+.anatomy { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.anat {
+  display: flex; flex-direction: column; gap: 1px; padding: 5px 10px; border-radius: 10px;
+  --acc: var(--muted);
+  background: color-mix(in srgb, var(--acc) 12%, var(--card));
+  border: 1.5px solid color-mix(in srgb, var(--acc) 45%, transparent);
+}
+.anat b { font-size: 15px; color: var(--ink); }
+.anat small { font-size: 10px; color: var(--muted); max-width: 150px; line-height: 1.25; }
+.anat--subj { --acc: var(--green); }
+.anat--tense { --acc: var(--gold); }
+.anat--verb { --acc: var(--blue); }
+.anat--obj { --acc: #8b5cf6; }
+.anat--time { --acc: #14a08f; }
+.anat--neg { --acc: var(--red); }
+.anat--q { --acc: #d64583; }
+
+/* ---------- Sentence Lab ---------- */
+.lab { gap: 12px; }
+.lab-sec { display: grid; gap: 6px; }
+.lab-lbl { font-size: 11px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; color: var(--muted); }
+.lab-row { display: flex; flex-wrap: wrap; gap: 7px; }
+.lab-row--scroll { max-height: 118px; overflow-y: auto; }
+.lab-chip {
+  padding: 8px 12px; border-radius: 999px; border: 2px solid var(--line); background: var(--card);
+  font-size: 14px; font-weight: 700; color: var(--ink); display: inline-flex; gap: 5px; align-items: baseline;
+}
+.lab-chip small { font-weight: 600; color: var(--muted); font-size: 11px; }
+.lab-chip--on { border-color: var(--green); background: color-mix(in srgb, var(--green) 14%, var(--card)); }
+.lab-chip--on small { color: var(--green-dark); }
+.lab-chip:disabled { opacity: .35; }
+.lab-out {
+  display: grid; gap: 8px; padding: 14px; border-radius: var(--radius);
+  background: color-mix(in srgb, var(--blue) 7%, var(--card));
+  border: 2px solid color-mix(in srgb, var(--blue) 35%, transparent); box-shadow: var(--shadow);
+}
+.lab-out__text { font-size: 26px; font-weight: 800; color: var(--ink); transition: filter .15s ease; }
+.lab-out__text--hidden { filter: blur(9px); user-select: none; }
+.lab-out__en { font-size: 15px; }
+.lab-out__actions { display: grid; gap: 8px; }
+.lab-quiz { display: grid; gap: 8px; }
+.btn--lab {
+  background: color-mix(in srgb, #8b5cf6 14%, var(--card)); color: var(--ink);
+  border: 2px solid color-mix(in srgb, #8b5cf6 45%, transparent); box-shadow: none;
+}
+
+/* ---------- polish pass ---------- */
+.btn--primary {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--green) 88%, #fff), var(--green));
+}
+.home-hero {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--green) 9%, var(--card)), var(--card) 58%);
+}
+.act { transition: transform .08s ease, box-shadow .12s ease; }
+.act:hover { box-shadow: 0 4px 14px color-mix(in srgb, var(--acc) 22%, transparent); }
+.lab-chip:not(:disabled):hover, .wb-tok:not(:disabled):hover { border-color: color-mix(in srgb, var(--green) 55%, var(--line)); }
+.play-btn { box-shadow: 0 4px 0 color-mix(in srgb, var(--blue) 55%, #000); }
+
 /* ---------- CEFR level + can-do goals ---------- */
 .level-card {
   display: grid; gap: 2px; padding: 14px 16px; border-radius: var(--radius);

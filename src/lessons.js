@@ -1,5 +1,7 @@
 // lessons.js — course loading, answer grading, and session building
 
+import { supportsSentences, generateSentences, buildExercise } from './sentences.js';
+
 let coursesCache = {};
 
 export async function loadCourse(code) {
@@ -149,6 +151,9 @@ export function checkAnswer(ex, response) {
     }
     case 'word_bank':
       // response is the built sentence; word order matters
+      return normalize(response) === normalize(ex.answer);
+    case 'build':
+      // response is the sentence assembled from morpheme/word tiles
       return normalize(response) === normalize(ex.answer);
     case 'match':
       // response is a boolean indicating all pairs were matched correctly
@@ -351,6 +356,20 @@ export function genFrameDrills(frames, n = 6) {
   return drills;
 }
 
+// Novel generated sentences (the sentence engine): build-from-tiles exercises
+// over sentences the learner has never seen authored anywhere. Credits any
+// course vocab that appears in the sentence, so the SRS hears about real words
+// exercised in real contexts.
+export function genBuildExercises(course, n = 1, level = 1) {
+  if (!course || !supportsSentences(course.code)) return [];
+  const byId = vocabIndex(course);
+  return generateSentences(course.code, n, level).map((s) => {
+    const ex = buildExercise(s);
+    const vids = memberVocabIds(ex.answer, byId);
+    return vids.length ? { ...ex, vocabIds: vids } : ex;
+  });
+}
+
 // All authored phrase meanings in a course (distractor pool for sentence MCs).
 function allPhraseEns(course) {
   const out = [];
@@ -432,9 +451,14 @@ export function buildLessonSession(lesson, course = null, dueIds = [], opts = {}
     .slice(0, 2)
     .map((v) => ({ ...genRecognition(v, pool), _review: true }));
 
+  // generative sentence practice: once a learner is past the first lessons
+  // (opts.buildLevel > 0), every lesson session includes one NOVEL sentence to
+  // assemble from morpheme/word tiles — real grammar, fresh combination.
+  const builds = opts.buildLevel > 0 ? genBuildExercises(course, 1, opts.buildLevel) : [];
+
   const queue = [
     ...warmup,
-    ...shuffle([...recognition, ...flavour, ...wordbanks]),
+    ...shuffle([...recognition, ...flavour, ...wordbanks, ...builds]),
     ...shuffle([...production, ...flavourProd]),
   ];
   return queue.map((ex, i) => ({ ...ex, _i: i }));
@@ -483,7 +507,13 @@ export function buildReviewSession(course, dueIds, max = 15, opts = {}) {
       .slice(0, Math.max(2, max - dueLimit))
     : [];
   const boosters = boosterIds.map((id) => ({ ...genRecognition(byId[id], pool), _review: true, _repairBoost: true }));
-  return shuffle([...wordExs, ...phraseExs, ...boosters]).slice(0, max);
+  // one novel generated sentence per review keeps grammar production warm
+  // without crowding out the due items (skipped in repair mode — a gentle
+  // comeback session isn't the moment for fresh sentence assembly).
+  const builds = (!repairMode && opts.buildLevel > 0)
+    ? genBuildExercises(course, 1, opts.buildLevel).map((ex) => ({ ...ex, _review: true }))
+    : [];
+  return shuffle([...wordExs, ...phraseExs, ...boosters, ...builds]).slice(0, max + builds.length);
 }
 
 // Map exercises to the item ids they exercise (for SRS crediting): explicit

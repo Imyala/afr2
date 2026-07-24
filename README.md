@@ -20,7 +20,7 @@ things that matter most are:
 **Available now (MVP):** isiZulu, isiXhosa, Afrikaans
 **Coming soon:** Sesotho, Setswana, Sepedi, Tshivenda, Xitsonga, isiNdebele, siSwati
 
-The Zulu course ships with ~218 words, Xhosa ~187, and Afrikaans ~236 — real,
+The Zulu course ships with ~268 words, Xhosa ~234, and Afrikaans ~277 — real,
 culturally grounded vocabulary with phonetics and cultural notes (greetings,
 respect terms, taxi phrases, click sounds, days, colours, feelings, body,
 animals, health, time, jobs, school, verbs, home, clothing, nature, question
@@ -40,6 +40,7 @@ for the full explanation. In short:
 | **Active recall / production** | Recognition (multiple choice, fill-in-the-blank, match) is the *weakest* signal. A word only becomes **mastered** once you've produced it from memory *and* it survived a spaced review. Match grades per pair; a mixed-up pair counts as a miss. |
 | **Comprehensible input** | Stories show **how many of their words you already know** and the library recommends the best fit — ~90%+ known is where reading teaches. Words met in input enter the schedule *without* being counted as recalls. |
 | **Chunks, not words** | Phrase chunks are spaced items of their own, reviewed as whole sentences; the grammar engine generates frame drills (subject prefix + stem) fresh each session from real course verbs. |
+| **Generative sentence production** | A sentence engine (`src/sentences.js`) generates **novel, never-authored sentences** from real morphology — Zulu/Xhosa subject concords, tense infixes and negation wrapping; Afrikaans verb-final futures and the double *nie*. Learners assemble them from morpheme tiles (watching *ngi + ya + sebenza* fuse into *Ngiyasebenza*) in lessons, reviews and the **Say It Your Way** studio, where every third sentence is spoken aloud. This is the step from memorising words to saying what you want. |
 | **Interaction + corrective feedback** | Branching dialogues where every wrong reply explains *why* it doesn't work — the largest effect sizes in SLA research. |
 | **Fluency under time pressure** | The ⚡ Lightning round drills fast recall of words you already know against the clock — the step from "knowing" a word to using it mid-conversation. |
 | **Inquiry-based, higher-order pattern learning** | The first time you open a grammar pattern, **"Spot the pattern"** shows three worked examples and asks you to predict a fourth *before* the rule is revealed — noticing a relationship yourself, not being handed it. |
@@ -63,6 +64,27 @@ for the full explanation. In short:
 - ✍️ Translation, multiple choice, match-the-pairs, fill-in-the-blank, plus
   three **sentence-level** exercises — "build the sentence" (word bank),
   "what does it mean?" (sentence comprehension), and sentence fill-in-the-blank
+- 🗣️ **Say It Your Way (generative sentence studio)** — a sentence engine
+  builds **novel sentences from real grammar** (concords + tense markers +
+  negation for isiZulu/isiXhosa; word order, verb-final futures and the double
+  *nie* for Afrikaans). You assemble each one from morpheme/word tiles with a
+  live preview, get a tap-away grammar hint, hear your sentence spoken back,
+  and say every third one out loud. Generated sentences also appear inside
+  lessons and reviews; a **"sentences you can say on your own"** counter,
+  daily quest and badges track this — the app's most honest fluency metric
+- 🧪 **Sentence Lab** — the learner picks who + tense + verb + what from chips
+  and watches the grammar machine build the sentence live; impossible combos
+  simply switch off, quietly teaching what the language does and doesn't do.
+  "Prove it" hides the sentence and asks you to type it from memory
+- 🔬 **Sentence anatomy ("why is it built this way")** — after every generated
+  sentence exercise, each piece is shown color-coded by role (subject, tense
+  marker, verb, object, time, negation) with a one-line *why* — the structure
+  is explained at the exact moment curiosity peaks
+- ❓ **Questions, places and more** — the engine also generates yes/no
+  questions (rising tone in isiZulu/isiXhosa, verb-first inversion in
+  Afrikaans) and locative phrases (ekhaya, esikolweni, by die huis), so
+  learners produce the four sentence acts that carry most conversations:
+  state, ask, negate, locate
 - 🧱 **Phrase chunks as first-class cards** — authored phrases are spaced items
   of their own, reviewed as whole sentences (build it, type it, or pick its
   meaning), because fluent speech is retrieved in multi-word chunks
@@ -118,6 +140,12 @@ for the full explanation. In short:
 - 🎚️ **Adaptive practice balance** — lesson/review generation tracks recent exercise-type mix and nudges more listening, speaking, and sentence-building when a learner has over-used taps/typing
 - 📊 **Progress with trend + forecast** — anchored baseline/re-test comparisons, weekly retention snapshots, a skills breakdown, and a "next milestone" forecast tied to real unit mastery
 - 🔔 **Targeted reminders** — opt-in local notifications (via periodic background sync on installed PWAs) with configurable time windows and copy tuned to streak risk, reviews due, unfinished plans, quests, or gentle win-back nudges
+- 🔥 **Combo meter** — correct-in-a-row streaks earn escalating call-outs, and
+  every 5th in a row pops bonus XP with mini-fireworks (variable rewards on top
+  of honest practice, never instead of it)
+- ➕ **"One more?" chaining** — every session-complete screen offers the single
+  best next bite (due reviews → next lesson → sentence building → Lightning)
+  one tap away while momentum is hot; never offered when hearts are empty
 - 🔥 Day streaks with ❄️ **streak freezes** to protect them
 - 🎯 **Daily quests** with 💎 gem rewards, including learner-specific quests like recovery missions, overdue-word mastery, and toughest-word repair
 - 🏅 **Achievement badges** for milestones *and* whole-unit/theme completion
@@ -177,6 +205,7 @@ src/
   store.js              Progress, hearts, XP, streaks (localStorage)
   srs.js                Spaced-repetition engine (FSRS-style + learning steps)
   lessons.js            Course loading, grading, session building
+  sentences.js          Generative sentence engine (novel sentences from real morphology)
   audio.js              TTS (listening) + speech recognition (speaking)
   fx.js                 Sound (Web Audio), haptics, confetti, count-up — no assets
   mascot.js             Themba, the inline-SVG brand mascot + reactions

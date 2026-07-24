@@ -146,6 +146,33 @@ production-strength signal (`gradeFor` in `src/srs.js`). It's reserved for
 already-mastered words and never costs a heart, so it stays a low-stakes
 comprehension check, not a new way to fail.
 
+## 8. Generative sentence production: say what YOU want
+
+Replaying authored phrases — however well spaced — never teaches a learner to
+say a sentence nobody taught them. That requires internalising the *system*:
+which concord goes with which subject, where the tense marker slots in, what
+negation does to the verb, where Afrikaans sends the verb after "gaan".
+
+The sentence engine (`src/sentences.js`) encodes exactly that morphology and
+**generates novel sentences on demand**: isiZulu/isiXhosa subject concords +
+tense infixes + the a-…-i negative wrap; Afrikaans SVO with verb-final futures
+and pasts and the double *nie*. Each sentence becomes a **build exercise**: the
+learner assembles it from morpheme and word tiles while a live preview fuses
+*ngi + ya + sebenza* into *Ngiyasebenza* — operating the grammar machine, not
+reciting its output. Distractor tiles are the real beginner traps (the wrong
+concord, a -ya- that doesn't belong before an object, a bare stem where the
+ge- form is needed) — and the engine is careful never to offer a tile that
+would let a *correct* alternative sentence be marked wrong.
+
+These exercises appear inside ordinary lessons and reviews (difficulty grows
+with progress: present → future/negatives → past) and in the dedicated
+**Say It Your Way** studio, where every third sentence must be *spoken* aloud
+and every correct build is spoken back by TTS. Because a missed build is
+learning a system rather than forgetting a fact, builds never cost a heart.
+The permanent **"sentences you can say on your own"** counter is arguably the
+app's most honest fluency metric: it counts self-expression, which is the
+actual goal of language learning.
+
 ## How the game layer supports (not replaces) learning
 
 - **Daily goal + streak**: drive the *daily* practice that spaced repetition

@@ -4071,6 +4071,680 @@
           ]
         }
       ]
+    },
+    {
+      "id": "af-u16",
+      "title": "Unit 16: Places & School",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u16-l1",
+          "title": "Places in Town",
+          "culturalNote": "Direction is said with 'toe' AFTER the place: biblioteek toe — to the library. 'By' means at: by die skool — at school.",
+          "vocab": [
+            {
+              "id": "af-biblioteek",
+              "term": "biblioteek",
+              "translation": "library",
+              "phonetic": "bib-lee-oo-TEHK"
+            },
+            {
+              "id": "af-kerk",
+              "term": "kerk",
+              "translation": "church",
+              "phonetic": "KERK"
+            },
+            {
+              "id": "af-mark",
+              "term": "mark",
+              "translation": "market",
+              "phonetic": "MARK"
+            },
+            {
+              "id": "af-apteek",
+              "term": "apteek",
+              "translation": "pharmacy",
+              "phonetic": "ap-TEHK"
+            },
+            {
+              "id": "af-lughawe",
+              "term": "lughawe",
+              "translation": "airport",
+              "phonetic": "LUHG-hah-veh"
+            },
+            {
+              "id": "af-polisiestasie",
+              "term": "polisiestasie",
+              "translation": "police station",
+              "phonetic": "poo-LEE-see-stah-see"
+            },
+            {
+              "id": "af-kafee",
+              "term": "kafee",
+              "translation": "café / corner shop",
+              "phonetic": "kah-FEE"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "biblioteek",
+                  "library"
+                ],
+                [
+                  "kerk",
+                  "church"
+                ],
+                [
+                  "mark",
+                  "market"
+                ],
+                [
+                  "apteek",
+                  "pharmacy"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“lughawe” means:",
+              "answer": "airport",
+              "options": [
+                "airport",
+                "library",
+                "church",
+                "market"
+              ],
+              "vocabId": "af-lughawe"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “police station”?",
+              "answer": "polisiestasie",
+              "options": [
+                "polisiestasie",
+                "biblioteek",
+                "kerk",
+                "mark"
+              ],
+              "vocabId": "af-polisiestasie"
+            },
+            {
+              "type": "translate",
+              "prompt": "market",
+              "answer": "mark",
+              "accept": [
+                "mark"
+              ],
+              "vocabId": "af-mark"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek gaan biblioteek toe",
+              "en": "I go to the library"
+            }
+          ]
+        },
+        {
+          "id": "af-u16-l2",
+          "title": "School & Learning",
+          "culturalNote": "Learners address teachers as Juffrou (Miss) or Meneer (Sir) — using a bare name would be startling in most SA schools.",
+          "vocab": [
+            {
+              "id": "af-boek",
+              "term": "boek",
+              "translation": "book",
+              "phonetic": "BOOK"
+            },
+            {
+              "id": "af-pen",
+              "term": "pen",
+              "translation": "pen",
+              "phonetic": "PEN"
+            },
+            {
+              "id": "af-papier",
+              "term": "papier",
+              "translation": "paper",
+              "phonetic": "pah-PEER"
+            },
+            {
+              "id": "af-juffrou",
+              "term": "juffrou",
+              "translation": "teacher (female) / Miss",
+              "phonetic": "YUH-froh"
+            },
+            {
+              "id": "af-meneer",
+              "term": "meneer",
+              "translation": "sir / Mr",
+              "phonetic": "muh-NEER"
+            },
+            {
+              "id": "af-klas",
+              "term": "klas",
+              "translation": "class",
+              "phonetic": "KLAHS"
+            },
+            {
+              "id": "af-huiswerk",
+              "term": "huiswerk",
+              "translation": "homework",
+              "phonetic": "HUYS-verk"
+            },
+            {
+              "id": "af-leer",
+              "term": "leer",
+              "translation": "to learn",
+              "phonetic": "LEER"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "boek",
+                  "book"
+                ],
+                [
+                  "pen",
+                  "pen"
+                ],
+                [
+                  "papier",
+                  "paper"
+                ],
+                [
+                  "juffrou",
+                  "teacher (female) / Miss"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“meneer” means:",
+              "answer": "sir / Mr",
+              "options": [
+                "sir / Mr",
+                "book",
+                "pen",
+                "paper"
+              ],
+              "vocabId": "af-meneer"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “class”?",
+              "answer": "klas",
+              "options": [
+                "klas",
+                "boek",
+                "pen",
+                "papier"
+              ],
+              "vocabId": "af-klas"
+            },
+            {
+              "type": "translate",
+              "prompt": "paper",
+              "answer": "papier",
+              "accept": [
+                "papier"
+              ],
+              "vocabId": "af-papier"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek doen my huiswerk",
+              "en": "I do my homework"
+            }
+          ]
+        },
+        {
+          "id": "af-u16-l3",
+          "title": "Shopping & Money",
+          "culturalNote": "'Dit is te duur!' (it's too expensive) said with a grin is the start of a bargain, not the end of one.",
+          "vocab": [
+            {
+              "id": "af-prys",
+              "term": "prys",
+              "translation": "price",
+              "phonetic": "PRAYS"
+            },
+            {
+              "id": "af-goedkoop",
+              "term": "goedkoop",
+              "translation": "cheap",
+              "phonetic": "GHOOT-kohp"
+            },
+            {
+              "id": "af-duur",
+              "term": "duur",
+              "translation": "expensive",
+              "phonetic": "DEWR"
+            },
+            {
+              "id": "af-verkoop",
+              "term": "verkoop",
+              "translation": "to sell",
+              "phonetic": "fer-KOHP"
+            },
+            {
+              "id": "af-kleingeld",
+              "term": "kleingeld",
+              "translation": "small change",
+              "phonetic": "KLAYN-ghelt"
+            },
+            {
+              "id": "af-sak",
+              "term": "sak",
+              "translation": "bag / pocket",
+              "phonetic": "SAHK"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "prys",
+                  "price"
+                ],
+                [
+                  "goedkoop",
+                  "cheap"
+                ],
+                [
+                  "duur",
+                  "expensive"
+                ],
+                [
+                  "verkoop",
+                  "to sell"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“kleingeld” means:",
+              "answer": "small change",
+              "options": [
+                "small change",
+                "price",
+                "cheap",
+                "expensive"
+              ],
+              "vocabId": "af-kleingeld"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “bag / pocket”?",
+              "answer": "sak",
+              "options": [
+                "sak",
+                "prys",
+                "goedkoop",
+                "duur"
+              ],
+              "vocabId": "af-sak"
+            },
+            {
+              "type": "translate",
+              "prompt": "expensive",
+              "answer": "duur",
+              "accept": [
+                "duur"
+              ],
+              "vocabId": "af-duur"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Dit is te duur",
+              "en": "It is too expensive"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u17",
+      "title": "Unit 17: Saying It Better",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u17-l1",
+          "title": "Feelings II",
+          "culturalNote": "Afrikaans states feelings with 'is': Ek is bang — I am afraid. No extra verb needed.",
+          "vocab": [
+            {
+              "id": "af-bang",
+              "term": "bang",
+              "translation": "afraid",
+              "phonetic": "BAHNG"
+            },
+            {
+              "id": "af-trots",
+              "term": "trots",
+              "translation": "proud",
+              "phonetic": "TROTS"
+            },
+            {
+              "id": "af-hartseer",
+              "term": "hartseer",
+              "translation": "sad",
+              "phonetic": "HART-seer"
+            },
+            {
+              "id": "af-opgewonde",
+              "term": "opgewonde",
+              "translation": "excited",
+              "phonetic": "op-gheh-VON-deh"
+            },
+            {
+              "id": "af-verbaas",
+              "term": "verbaas",
+              "translation": "surprised",
+              "phonetic": "fer-BAHS"
+            },
+            {
+              "id": "af-rustig",
+              "term": "rustig",
+              "translation": "calm",
+              "phonetic": "RUS-tugh"
+            },
+            {
+              "id": "af-siek",
+              "term": "siek",
+              "translation": "sick",
+              "phonetic": "SEEK"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "bang",
+                  "afraid"
+                ],
+                [
+                  "trots",
+                  "proud"
+                ],
+                [
+                  "hartseer",
+                  "sad"
+                ],
+                [
+                  "opgewonde",
+                  "excited"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“verbaas” means:",
+              "answer": "surprised",
+              "options": [
+                "surprised",
+                "afraid",
+                "proud",
+                "sad"
+              ],
+              "vocabId": "af-verbaas"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “calm”?",
+              "answer": "rustig",
+              "options": [
+                "rustig",
+                "bang",
+                "trots",
+                "hartseer"
+              ],
+              "vocabId": "af-rustig"
+            },
+            {
+              "type": "translate",
+              "prompt": "sad",
+              "answer": "hartseer",
+              "accept": [
+                "hartseer"
+              ],
+              "vocabId": "af-hartseer"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek is baie moeg",
+              "en": "I am very tired"
+            }
+          ]
+        },
+        {
+          "id": "af-u17-l2",
+          "title": "Little Words That Join",
+          "culturalNote": "Connectors chain simple sentences into real speech. NOTE: 'want' (because) keeps normal word order — one of Afrikaans' friendliest rules.",
+          "vocab": [
+            {
+              "id": "af-en",
+              "term": "en",
+              "translation": "and",
+              "phonetic": "EN"
+            },
+            {
+              "id": "af-maar",
+              "term": "maar",
+              "translation": "but",
+              "phonetic": "MAHR"
+            },
+            {
+              "id": "af-of",
+              "term": "of",
+              "translation": "or",
+              "phonetic": "OF"
+            },
+            {
+              "id": "af-want",
+              "term": "want",
+              "translation": "because",
+              "phonetic": "VAHNT"
+            },
+            {
+              "id": "af-ook",
+              "term": "ook",
+              "translation": "also",
+              "phonetic": "OHK"
+            },
+            {
+              "id": "af-dan",
+              "term": "dan",
+              "translation": "then",
+              "phonetic": "DAHN"
+            },
+            {
+              "id": "af-as",
+              "term": "as",
+              "translation": "if / when",
+              "phonetic": "AHS"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "en",
+                  "and"
+                ],
+                [
+                  "maar",
+                  "but"
+                ],
+                [
+                  "of",
+                  "or"
+                ],
+                [
+                  "want",
+                  "because"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“ook” means:",
+              "answer": "also",
+              "options": [
+                "also",
+                "and",
+                "but",
+                "or"
+              ],
+              "vocabId": "af-ook"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “then”?",
+              "answer": "dan",
+              "options": [
+                "dan",
+                "en",
+                "maar",
+                "of"
+              ],
+              "vocabId": "af-dan"
+            },
+            {
+              "type": "translate",
+              "prompt": "or",
+              "answer": "of",
+              "accept": [
+                "of"
+              ],
+              "vocabId": "af-of"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek drink tee en koffie",
+              "en": "I drink tea and coffee"
+            }
+          ]
+        },
+        {
+          "id": "af-u17-l3",
+          "title": "The Body II",
+          "culturalNote": "'My rug is seer' — my back is sore. 'Seer' covers every ache from gym to heartbreak (hartseer: heart-sore = sad).",
+          "vocab": [
+            {
+              "id": "af-tande",
+              "term": "tande",
+              "translation": "teeth",
+              "phonetic": "TAHN-deh"
+            },
+            {
+              "id": "af-hare",
+              "term": "hare",
+              "translation": "hair",
+              "phonetic": "HAH-reh"
+            },
+            {
+              "id": "af-been",
+              "term": "been",
+              "translation": "leg",
+              "phonetic": "BEE-uhn"
+            },
+            {
+              "id": "af-arm",
+              "term": "arm",
+              "translation": "arm",
+              "phonetic": "ARM"
+            },
+            {
+              "id": "af-maag",
+              "term": "maag",
+              "translation": "stomach",
+              "phonetic": "MAHGH"
+            },
+            {
+              "id": "af-rug",
+              "term": "rug",
+              "translation": "back (body)",
+              "phonetic": "RUHGH"
+            }
+          ],
+          "exercises": [
+            {
+              "type": "match",
+              "pairs": [
+                [
+                  "tande",
+                  "teeth"
+                ],
+                [
+                  "hare",
+                  "hair"
+                ],
+                [
+                  "been",
+                  "leg"
+                ],
+                [
+                  "arm",
+                  "arm"
+                ]
+              ]
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "“maag” means:",
+              "answer": "stomach",
+              "options": [
+                "stomach",
+                "teeth",
+                "hair",
+                "leg"
+              ],
+              "vocabId": "af-maag"
+            },
+            {
+              "type": "multiple_choice",
+              "prompt": "How do you say “back (body)”?",
+              "answer": "rug",
+              "options": [
+                "rug",
+                "tande",
+                "hare",
+                "been"
+              ],
+              "vocabId": "af-rug"
+            },
+            {
+              "type": "translate",
+              "prompt": "leg",
+              "answer": "been",
+              "accept": [
+                "been"
+              ],
+              "vocabId": "af-been"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "My rug is seer",
+              "en": "My back is sore"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [

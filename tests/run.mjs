@@ -8,7 +8,9 @@ import { newItem, review, gradeFor } from '../src/srs.js';
 import {
   normalize, checkAnswer, buildLessonSession, buildReviewSession, exerciseVocabIds, checkTyped, editDistance,
   phraseIndex, sentencePool, readingCoverage, frameChunk, genFrameDrills, genExplainPrompt, genPatternInquiry,
+  genBuildExercises,
 } from '../src/lessons.js';
+import { supportsSentences, generateSentences, buildExercise, assemble, composeSentence, langMeta, TENSES } from '../src/sentences.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let pass = 0, fail = 0;
@@ -264,6 +266,112 @@ for (const c of ['zu', 'xh', 'af']) {
     repairMode: true,
   });
   ok(repair.some((ex) => ex._repairBoost), `${c} repair mode adds confidence-building boosters`);
+}
+
+// --- generative sentence engine (novel sentences, real morphology) ---
+ok(assemble([{ t: 'ngi' }, { t: 'ya', glue: true }, { t: 'sebenza', glue: true }]) === 'Ngiyasebenza', 'assemble fuses glue morphemes into one word');
+ok(assemble([{ t: 'ek' }, { t: 'werk' }, { t: 'nie' }]) === 'Ek werk nie', 'assemble keeps separate words apart');
+ok(supportsSentences('zu') && supportsSentences('xh') && supportsSentences('af'), 'engine supports all three MVP languages');
+ok(!supportsSentences('st'), 'unsupported language declines gracefully');
+
+// large sample per language: every sentence must be internally consistent
+const samples = {};
+for (const code of ['zu', 'xh', 'af']) {
+  const sents = [];
+  for (let i = 0; i < 12; i++) sents.push(...generateSentences(code, 10, 3));
+  samples[code] = sents;
+  ok(sents.every((s) => assemble(s.tokens) === s.text), `${code} tokens always assemble to the sentence text`);
+  ok(sents.every((s) => s.en && s.hint && s.pattern), `${code} sentences carry translation + hint + pattern`);
+  ok(new Set(generateSentences(code, 10, 3).map((s) => s.text)).size === 10, `${code} generates unique sentences per batch`);
+  ok(generateSentences(code, 8, 1).every((s) => ['present', 'present_obj', 'present_long'].includes(s.pattern)), `${code} level 1 stays in the present tense`);
+  // build exercises: tiles cover the target, answer checks pass, distractors never duplicate needed tiles
+  for (const s of sents.slice(0, 20)) {
+    const ex = buildExercise(s);
+    const tileTexts = ex.tiles.map((t) => t.t.toLowerCase());
+    const needed = s.tokens.map((t) => t.t.toLowerCase());
+    if (!needed.every((n) => tileTexts.filter((t) => t === n).length >= needed.filter((x) => x === n).length)) { ok(false, `${code} tiles missing needed token for "${s.text}"`); break; }
+    if (!checkAnswer(ex, ex.answer)) { ok(false, `${code} build answer fails own check: "${ex.answer}"`); break; }
+    if (checkAnswer(ex, `${ex.answer} extra`)) { ok(false, `${code} build accepts wrong response`); break; }
+  }
+  ok(true, `${code} build exercises are well-formed`);
+}
+
+// morphology spot checks (the grammar the engine claims to teach)
+const zuBy = (p) => samples.zu.filter((s) => s.pattern === p);
+ok(zuBy('present_long').every((s) => /^(Ngi|U|Si|Ba)ya/.test(s.text)), 'zu long present carries -ya-');
+ok(zuBy('present_obj').every((s) => !/ya/.test(s.text.split(' ')[0].slice(0, 4)) && s.text.includes(' ')), 'zu present with object drops -ya-');
+ok(zuBy('future').every((s) => /^(Ngi|U|Si|Ba)zo/.test(s.text)), 'zu future carries -zo-');
+ok(zuBy('past').every((s) => s.text.split(' ')[0].endsWith('ile')), 'zu past ends in -ile');
+ok(zuBy('neg').every((s) => /^A/.test(s.text) && s.text.split(' ')[0].endsWith('i')), 'zu negative wraps a- … -i');
+ok(zuBy('neg').every((s) => /don't|doesn't/.test(s.en)), 'zu negative translates as a negative');
+
+const xhFut = samples.xh.filter((s) => s.pattern === 'future');
+ok(xhFut.every((s) => /^(Ndi|U|Si|Ba)za$/.test(s.text.split(' ')[0]) && s.text.split(' ')[1].startsWith('ku')), 'xh future is -za + ku-verb (two words)');
+ok(samples.xh.filter((s) => s.pattern === 'neg').every((s) => /^A/.test(s.text) && s.text.split(' ')[0].endsWith('i')), 'xh negative wraps a- … -i');
+
+const afBy = (p) => samples.af.filter((s) => s.pattern === p);
+ok(afBy('neg').filter((s) => s.text.split(' ').length > 3).every((s) => s.text.endsWith('nie') && s.text.split(' ').filter((w) => w === 'nie').length === 2), 'af object negatives use the double nie');
+ok(afBy('past').every((s) => s.text.split(' ')[1] === 'het' && s.text.split(' ').pop().startsWith('ge')), 'af past is het + ge-verb, verb-final');
+ok(afBy('future').every((s) => s.text.split(' ')[1] === 'gaan' && !s.text.split(' ').pop().startsWith('ge')), 'af future is gaan + bare verb, verb-final');
+ok(afBy('future').every((s) => !buildExercise(s).tiles.some((t) => t.t === 'sal')), 'af future never offers "sal" (a correct alternative would be marked wrong)');
+ok(Object.values(samples).flat().every((s) => !/will (want|like)/.test(s.en)), 'no awkward "will want / will like" futures');
+ok(samples.af.filter((s) => ['hy', 'sy'].includes(s.text.split(' ')[0].toLowerCase())).every((s) => /^(He|She) (\w+s|will|doesn't|\w+)/.test(s.en)), 'af third person renders English 3sg');
+
+// questions (level 2+)
+const zuQ = samples.zu.filter((s) => s.pattern === 'question');
+ok(zuQ.length > 0 && zuQ.every((s) => s.text.endsWith('?') && /^(U|Ba)/.test(s.text) && /^Do /.test(s.en)), 'zu questions: same words + ?, only you/they, English uses Do');
+const afQ = samples.af.filter((s) => s.pattern === 'question');
+ok(afQ.length > 0 && afQ.every((s) => s.text.endsWith('?') && /^(Do|Does) /.test(s.en)), 'af questions end with ? and translate as Do/Does');
+ok(afQ.every((s) => !['ek', 'jy', 'hy', 'sy', 'ons', 'hulle'].includes(s.text.split(' ')[0].toLowerCase())), 'af questions put the verb first (inversion)');
+
+// locative places appear as post-verb complements
+ok(samples.zu.some((s) => / (ekhaya|esikoleni|edolobheni)\b/.test(s.text.replace('?', ''))), 'zu generates sentences with locative places');
+ok(samples.af.some((s) => /by die|in die/.test(s.text)), 'af generates sentences with place phrases');
+
+// anatomy: every target token carries a role + why note
+ok(Object.values(samples).flat().every((s) => s.tokens.every((t) => t.role && t.why)), 'every token is tagged with role + why (anatomy)');
+ok(TENSES.length === 5, 'tense menu exposes 5 tenses');
+
+// composeSentence: the deterministic Lab API — and its grammar guardrails
+{
+  const m = langMeta('zu');
+  const I = m.subjects[0]; const you = m.subjects[1];
+  const hlala = m.verbs.find((v) => v.stem === 'hlala');
+  const funa = m.verbs.find((v) => v.stem === 'funa');
+  const sebenza = m.verbs.find((v) => v.stem === 'sebenza');
+  ok(composeSentence('zu', { subj: I, verb: hlala, tense: 'present', obj: hlala.objs[0] }).text === 'Ngihlala ekhaya', 'compose: Ngihlala ekhaya');
+  ok(composeSentence('zu', { subj: I, verb: sebenza, tense: 'present' }).text === 'Ngiyasebenza', 'compose: long-form present when no object');
+  ok(composeSentence('zu', { subj: I, verb: funa, tense: 'neg', obj: funa.objs[0] }).text === 'Angifuni amanzi', 'compose: Angifuni amanzi');
+  ok(composeSentence('zu', { subj: I, verb: sebenza, tense: 'past' }).text === 'Ngisebenzile', 'compose: Ngisebenzile');
+  ok(composeSentence('zu', { subj: you, verb: sebenza, tense: 'question' }).text === 'Uyasebenza?', 'compose: Uyasebenza?');
+  ok(composeSentence('zu', { subj: I, verb: hlala, tense: 'past' }) === null, 'compose: refuses unsupported past');
+  ok(composeSentence('zu', { subj: I, verb: funa, tense: 'future' }) === null, 'compose: refuses "will want"');
+  ok(composeSentence('zu', { subj: I, verb: sebenza, tense: 'question' }) === null, 'compose: refuses "Do I…?" questions');
+  const mx = langMeta('xh');
+  ok(composeSentence('xh', { subj: mx.subjects[0], verb: mx.verbs.find((v) => v.stem === 'sebenza'), tense: 'future' }).text === 'Ndiza kusebenza', 'compose: Ndiza kusebenza');
+  const ma = langMeta('af');
+  const hy = ma.subjects.find((s) => s.p === 'hy');
+  const drink = ma.verbs.find((v) => v.stem === 'drink');
+  const koffie = drink.objs[0];
+  ok(composeSentence('af', { subj: hy, verb: drink, tense: 'neg', obj: koffie }).text === 'Hy drink nie koffie nie', 'compose: double nie');
+  ok(composeSentence('af', { subj: hy, verb: drink, tense: 'neg', obj: koffie }).en === "He doesn't drink coffee", 'compose: 3sg negative English');
+  ok(composeSentence('af', { subj: ma.subjects.find((s) => s.p === 'jy'), verb: ma.verbs.find((v) => v.stem === 'werk'), tense: 'question' }).text === 'Werk jy?', 'compose: Werk jy?');
+  ok(composeSentence('af', { subj: hy, verb: drink, tense: 'future', obj: koffie }).text === 'Hy gaan koffie drink', 'compose: verb-final future');
+  ok(composeSentence('af', { subj: hy, verb: drink, tense: 'past', obj: koffie }).text === 'Hy het koffie gedrink', 'compose: het + ge- past');
+}
+
+// engine → session integration
+for (const c of ['zu', 'xh', 'af']) {
+  const course = JSON.parse(fs.readFileSync(path.join(root, 'data', 'courses', `${c}.json`), 'utf8'));
+  const builds = genBuildExercises(course, 3, 2);
+  ok(builds.length === 3 && builds.every((ex) => ex.type === 'build' && ex.answer && ex.tiles.length >= 3), `${c} genBuildExercises produces build items`);
+  const lesson = course.units[0].lessons[0];
+  const withBuild = buildLessonSession(lesson, course, [], { buildLevel: 1 });
+  ok(withBuild.some((ex) => ex.type === 'build'), `${c} lesson session includes a generated sentence at buildLevel 1`);
+  const noBuild = buildLessonSession(lesson, course, [], {});
+  ok(!noBuild.some((ex) => ex.type === 'build'), `${c} lesson session skips generated sentences before level 1`);
+  const rev = buildReviewSession(course, Object.keys(phraseIndex(course)).slice(0, 4), 10, { buildLevel: 2 });
+  ok(rev.some((ex) => ex.type === 'build'), `${c} review session includes a generated sentence`);
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
