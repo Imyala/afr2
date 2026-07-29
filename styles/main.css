@@ -966,3 +966,151 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 
 /* --- lightning round --- */
 .ex__bar-fill--blitz { background: var(--gold); transition: width .1s linear; }
+
+/* ========================================================
+   TABLET & DESKTOP IMPROVEMENTS  (≥ 768 px)
+   ─ bottom nav → left sidebar
+   ─ wider content column
+   ─ larger touch targets throughout
+   ─ better grid layouts for bigger screens
+   ======================================================== */
+
+/* Minimum 44 px tap-target height on all key interactive elements */
+.btn, .opt, .navbtn, .quick-nav { min-height: 44px; }
+
+@media (min-width: 768px) {
+
+  /* Wider content, larger sidebar variable */
+  :root {
+    --sidebar-w: 210px;
+    --maxw: 680px;
+  }
+
+  /* Shift the app canvas right so content sits beside the sidebar.
+     Only applies when the sidebar nav is actually in the DOM
+     (home screen). :has() keeps non-home screens centred normally. */
+  .app:has(.bottombar) { padding-left: var(--sidebar-w); }
+
+  /* ---------- sidebar nav: override all mobile-bar rules ---------- */
+  .bottombar {
+    /* Reset pill-at-bottom positioning */
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-w);
+    transform: none;
+    border-radius: 0 20px 20px 0;
+    border: none;
+    border-right: 1px solid var(--line);
+    box-shadow: 3px 0 28px color-mix(in srgb, var(--ink) 10%, transparent);
+
+    /* Vertical stacking */
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 4px;
+    padding: 70px 12px 24px;
+  }
+
+  /* App name at top of the sidebar */
+  .bottombar::before {
+    content: "MzansiLingo";
+    position: absolute;
+    top: 20px;
+    left: 18px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--green);
+    letter-spacing: -.2px;
+    pointer-events: none;
+  }
+
+  /* Sidebar buttons: left-aligned, generous touch targets */
+  .navbtn {
+    flex: 0 0 auto;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 13px 16px;
+    border-radius: 14px;
+    text-align: left;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    letter-spacing: -.1px;
+  }
+
+  .navbtn--active { font-size: 16px; }
+
+  /* Remove bottom-screen padding — sidebar is on the left, not the bottom */
+  .screen--home { padding-bottom: 24px; }
+  .path { padding-bottom: 0; }
+
+  /* Toast: centre inside the content area, not the full viewport */
+  body:has(.bottombar) .toast {
+    left: calc(var(--sidebar-w) / 2 + 50vw);
+  }
+
+  /* ---------- layout improvements for wider screens ---------- */
+
+  /* More breathing room in every screen */
+  .screen { padding: 20px 24px 24px; gap: 18px; }
+
+  /* Practice activities: 3-column grid */
+  .act-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Quick-nav strip: all 5 shortcuts in one row */
+  .home-shortcuts { grid-template-columns: repeat(5, 1fr); }
+
+  /* Lesson path: 2 columns so more nodes are visible at once */
+  .path { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+  /* Unit section headers span both columns */
+  .unit-head { grid-column: 1 / -1; }
+
+  /* Badge grid: 3 across */
+  .badge-grid { grid-template-columns: repeat(3, 1fr); }
+
+  /* Dashboard stat cards: 4 across */
+  .dash { grid-template-columns: repeat(4, 1fr); }
+
+  /* ---------- exercise elements ---------- */
+
+  /* Larger multiple-choice options for stylus / mouse */
+  .opt { padding: 18px 20px; font-size: 18px; }
+
+  /* Bigger question text */
+  .ex__q { font-size: 24px; }
+  .ex__prompt-big { font-size: 30px; }
+
+  /* Bigger text input */
+  .ex__input { font-size: 20px; padding: 18px; }
+
+  /* Audio play button */
+  .play-btn { padding: 16px 28px; font-size: 20px; }
+
+  /* ---------- home screen ---------- */
+
+  /* Hero: bigger mascot, larger greeting */
+  .home-hero { padding: 16px 20px 16px 12px; }
+  .home-hero .mascot-img { max-width: 120px; }
+  .home-hero__greet { font-size: 19px; }
+
+  /* Topbar: bigger touch targets */
+  .topbar { padding: 10px 4px; }
+  .topbar__lang { font-size: 19px; padding: 6px 10px; }
+  .stat { font-size: 17px; }
+}
+
+/* Dark theme: match sidebar shadow to dark palette */
+[data-theme="dark"] .bottombar {
+  box-shadow: 3px 0 28px rgba(0, 0, 0, .45);
+}
+
+/* Wide desktop: slightly wider content and sidebar */
+@media (min-width: 1024px) {
+  :root {
+    --maxw: 760px;
+    --sidebar-w: 230px;
+  }
+}
