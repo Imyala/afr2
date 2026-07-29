@@ -4113,7 +4113,7 @@
           "culturalNote": "Knowing body part vocabulary helps you describe illness to a health worker. In isiXhosa, body terms often use the prefix 'in-', 'im-', or 'i-'.",
           "vocab": [
             {
-              "id": "xh-intloko",
+              "id": "xh-intloko2",
               "term": "intloko",
               "translation": "head",
               "phonetic": "in-TLOH-koh"
@@ -4125,7 +4125,7 @@
               "phonetic": "ee-LEE-soh"
             },
             {
-              "id": "xh-indlebe",
+              "id": "xh-indlebe2",
               "term": "indlebe",
               "translation": "ear",
               "phonetic": "in-DLEH-beh"
@@ -4137,13 +4137,13 @@
               "phonetic": "im-POOM-loh"
             },
             {
-              "id": "xh-umlomo",
+              "id": "xh-umlomo2",
               "term": "umlomo",
               "translation": "mouth",
               "phonetic": "oom-LOH-moh"
             },
             {
-              "id": "xh-amazinyo",
+              "id": "xh-amazinyo2",
               "term": "amazinyo",
               "translation": "teeth",
               "phonetic": "ah-mah-ZEE-nyoh"
@@ -4161,37 +4161,37 @@
               "phonetic": "ee-GXA"
             },
             {
-              "id": "xh-ingalo",
+              "id": "xh-ingalo2",
               "term": "ingalo",
               "translation": "arm",
               "phonetic": "in-GAH-loh"
             },
             {
-              "id": "xh-isandla",
+              "id": "xh-isandla2",
               "term": "isandla",
               "translation": "hand",
               "phonetic": "ee-SAND-lah"
             },
             {
-              "id": "xh-umlenze",
+              "id": "xh-umlenze2",
               "term": "umlenze",
               "translation": "leg",
               "phonetic": "oom-LEN-zeh"
             },
             {
-              "id": "xh-unyawo",
+              "id": "xh-unyawo2",
               "term": "unyawo",
               "translation": "foot",
               "phonetic": "oo-NYAH-woh"
             },
             {
-              "id": "xh-umqolo",
+              "id": "xh-umqolo2",
               "term": "umqolo",
               "translation": "back",
               "phonetic": "oom-QOH-loh"
             },
             {
-              "id": "xh-isisu",
+              "id": "xh-isisu2",
               "term": "isisu",
               "translation": "stomach",
               "phonetic": "ee-SEE-soo"
@@ -4260,7 +4260,7 @@
               "phonetic": "oo-GQEER-hah"
             },
             {
-              "id": "xh-isibhedlele",
+              "id": "xh-isibhedlele2",
               "term": "isibhedlele",
               "translation": "hospital",
               "phonetic": "ee-see-BHED-leh-leh"
@@ -4316,13 +4316,13 @@
           "culturalNote": "Spaza shops are small community stores found throughout townships. In isiXhosa-speaking areas, they are central to daily life.",
           "vocab": [
             {
-              "id": "xh-ivenkile",
+              "id": "xh-ivenkile2",
               "term": "ivenkile",
               "translation": "shop / store",
               "phonetic": "ee-ven-KEE-leh"
             },
             {
-              "id": "xh-imali",
+              "id": "xh-imali2",
               "term": "imali",
               "translation": "money",
               "phonetic": "ee-MAH-lee"
@@ -4334,7 +4334,7 @@
               "phonetic": "ee-hah-BEE-soh"
             },
             {
-              "id": "xh-ukuthenga",
+              "id": "xh-ukuthenga2",
               "term": "ukuthenga",
               "translation": "to buy",
               "phonetic": "oo-koo-THEN-gah"
@@ -4438,7 +4438,7 @@
           "culturalNote": "Education is highly valued in Xhosa culture. Nelson Mandela himself emphasised the importance of learning in his famous quote about education.",
           "vocab": [
             {
-              "id": "xh-isikolo",
+              "id": "xh-isikolo2",
               "term": "isikolo",
               "translation": "school",
               "phonetic": "ee-see-KOH-loh"
@@ -4498,7 +4498,7 @@
               "phonetic": "oo-LWEE-mee"
             },
             {
-              "id": "xh-ukufunda",
+              "id": "xh-ukufunda2",
               "term": "ukufunda",
               "translation": "to learn / to study",
               "phonetic": "oo-koo-FOON-dah"
@@ -4601,7 +4601,7 @@
               "phonetic": "in-GXE-loh"
             },
             {
-              "id": "xh-ukusebenza",
+              "id": "xh-ukusebenza2",
               "term": "ukusebenza",
               "translation": "to work",
               "phonetic": "oo-koo-seh-BEN-zah"
@@ -4647,7 +4647,7 @@
               "phonetic": "ee-TEK-see"
             },
             {
-              "id": "xh-ibhasi",
+              "id": "xh-ibhasi2",
               "term": "ibhasi",
               "translation": "bus",
               "phonetic": "ee-BHAH-see"
@@ -4665,7 +4665,7 @@
               "phonetic": "in-QWEH-loh"
             },
             {
-              "id": "xh-ibhayisekile",
+              "id": "xh-ibhayisekile2",
               "term": "ibhayisekile",
               "translation": "bicycle",
               "phonetic": "ee-bhah-ee-seh-KEE-leh"
@@ -4683,7 +4683,7 @@
               "phonetic": "ee-see-TEE-shee"
             },
             {
-              "id": "xh-inqwelomoya",
+              "id": "xh-inqwelomoya2",
               "term": "inqwelomoya",
               "translation": "aeroplane",
               "phonetic": "in-qweh-loh-MOH-yah"
@@ -4701,7 +4701,7 @@
               "phonetic": "oo-koo-FEE-kah"
             },
             {
-              "id": "xh-ukuhamba",
+              "id": "xh-ukuhamba2",
               "term": "ukuhamba",
               "translation": "to go / travel",
               "phonetic": "oo-koo-HAM-bah"
@@ -4763,7 +4763,7 @@
           "culturalNote": "Traditional Xhosa food includes umngqusho (samp and beans), umvubo (sour milk and pap), and uluthi (sugarcane). These remain culturally significant.",
           "vocab": [
             {
-              "id": "xh-ukutya",
+              "id": "xh-ukutya2",
               "term": "ukutya",
               "translation": "food",
               "phonetic": "oo-koo-TYAH"
@@ -4793,31 +4793,31 @@
               "phonetic": "ee-SEE-dloh sah-ngoh-KHLOO-wah"
             },
             {
-              "id": "xh-inyama",
+              "id": "xh-inyama2",
               "term": "inyama",
               "translation": "meat",
               "phonetic": "ee-NYAH-mah"
             },
             {
-              "id": "xh-inkukhu",
+              "id": "xh-inkukhu2",
               "term": "inkukhu",
               "translation": "chicken",
               "phonetic": "in-KOO-khoo"
             },
             {
-              "id": "xh-isonka",
+              "id": "xh-isonka2",
               "term": "isonka",
               "translation": "bread",
               "phonetic": "ee-SON-kah"
             },
             {
-              "id": "xh-ubisi",
+              "id": "xh-ubisi2",
               "term": "ubisi",
               "translation": "milk",
               "phonetic": "oo-BEE-see"
             },
             {
-              "id": "xh-amanzi",
+              "id": "xh-amanzi2",
               "term": "amanzi",
               "translation": "water",
               "phonetic": "ah-MAN-zee"
@@ -4878,19 +4878,19 @@
           "culturalNote": "The Eastern Cape has stunning landscapes - from the Wild Coast to the Drakensberg. Many Xhosa proverbs draw on nature imagery.",
           "vocab": [
             {
-              "id": "xh-intaba",
+              "id": "xh-intaba2",
               "term": "intaba",
               "translation": "mountain",
               "phonetic": "in-TAH-bah"
             },
             {
-              "id": "xh-ulwandle",
+              "id": "xh-ulwandle2",
               "term": "ulwandle",
               "translation": "ocean / sea",
               "phonetic": "oo-LWAN-dleh"
             },
             {
-              "id": "xh-umlambo",
+              "id": "xh-umlambo2",
               "term": "umlambo",
               "translation": "river",
               "phonetic": "oom-LAM-boh"
@@ -4908,7 +4908,7 @@
               "phonetic": "ee-HLAH-tee"
             },
             {
-              "id": "xh-umthi",
+              "id": "xh-umthi2",
               "term": "umthi",
               "translation": "tree",
               "phonetic": "oom-THEE"
@@ -4926,13 +4926,13 @@
               "phonetic": "in-GCA"
             },
             {
-              "id": "xh-intaka",
+              "id": "xh-intaka2",
               "term": "intaka",
               "translation": "bird",
               "phonetic": "in-TAH-kah"
             },
             {
-              "id": "xh-ihashe",
+              "id": "xh-ihashe2",
               "term": "ihashe",
               "translation": "horse",
               "phonetic": "ee-HAH-sheh"
@@ -5038,7 +5038,7 @@
               "phonetic": "oo-koo-SOH-loh-koh"
             },
             {
-              "id": "xh-uxolo",
+              "id": "xh-uxolo2",
               "term": "uxolo",
               "translation": "peace / sorry",
               "phonetic": "oo-HOH-loh"
@@ -5261,7 +5261,7 @@
           "culturalNote": "Soccer is widely played in township communities. Traditional stick fighting (ulwazi) and cattle herding are also part of Xhosa culture.",
           "vocab": [
             {
-              "id": "xh-ibhola",
+              "id": "xh-ibhola2",
               "term": "ibhola",
               "translation": "soccer / ball",
               "phonetic": "ee-BHOH-lah"
@@ -5315,7 +5315,7 @@
               "phonetic": "oo-koo-khoh-HLEL-wah"
             },
             {
-              "id": "xh-ukudlala",
+              "id": "xh-ukudlala2",
               "term": "ukudlala",
               "translation": "to play",
               "phonetic": "oo-koo-DLAH-lah"
@@ -5342,7 +5342,7 @@
           "culturalNote": "Traditional Xhosa music and dance are central to ceremonies. Modern youth also embrace hip-hop, which often incorporates isiXhosa lyrics.",
           "vocab": [
             {
-              "id": "xh-umculo",
+              "id": "xh-umculo2",
               "term": "umculo",
               "translation": "music",
               "phonetic": "oom-KOO-loh"
@@ -5354,13 +5354,13 @@
               "phonetic": "oo-koo-GEE-dah"
             },
             {
-              "id": "xh-ukucula",
+              "id": "xh-ukucula2",
               "term": "ukucula",
               "translation": "to sing",
               "phonetic": "oo-koo-KOO-lah"
             },
             {
-              "id": "xh-ukupheka",
+              "id": "xh-ukupheka2",
               "term": "ukupheka",
               "translation": "to cook",
               "phonetic": "oo-koo-PHEH-kah"
@@ -5575,19 +5575,19 @@
               "phonetic": "eh-MEE-nee"
             },
             {
-              "id": "xh-izolo",
+              "id": "xh-izolo2",
               "term": "izolo",
               "translation": "yesterday",
               "phonetic": "ee-ZOH-loh"
             },
             {
-              "id": "xh-namhlanje",
+              "id": "xh-namhlanje2",
               "term": "namhlanje",
               "translation": "today",
               "phonetic": "nam-HLAH-nyeh"
             },
             {
-              "id": "xh-ngomso",
+              "id": "xh-ngomso2",
               "term": "ngomso",
               "translation": "tomorrow",
               "phonetic": "ngom-SOH"
@@ -5637,7 +5637,7 @@
           "culturalNote": "Xhosa idioms often reflect wisdom about community, respect and perseverance. Ubuntu philosophy is central.",
           "vocab": [
             {
-              "id": "xh-ubuntu",
+              "id": "xh-ubuntu2",
               "term": "ubuntu",
               "translation": "humanity / I am because we are",
               "phonetic": "oo-BOON-too"
@@ -5649,7 +5649,7 @@
               "phonetic": "in-KOH-loh"
             },
             {
-              "id": "xh-ithemba",
+              "id": "xh-ithemba2",
               "term": "ithemba",
               "translation": "hope",
               "phonetic": "ee-THEM-bah"
@@ -5685,7 +5685,7 @@
               "phonetic": "in-koo-loo-LEH-koh"
             },
             {
-              "id": "xh-uthando",
+              "id": "xh-uthando2",
               "term": "uthando",
               "translation": "love",
               "phonetic": "oo-THAN-doh"
@@ -5806,7 +5806,7 @@
               "phonetic": "oo-KAN-goh"
             },
             {
-              "id": "xh-ifestile",
+              "id": "xh-ifestile2",
               "term": "ifestile",
               "translation": "window",
               "phonetic": "ee-feh-STEE-leh"
@@ -5880,7 +5880,7 @@
               "phonetic": "oo-koo-BOO-yah"
             },
             {
-              "id": "xh-ukulinda",
+              "id": "xh-ukulinda2",
               "term": "ukulinda",
               "translation": "to wait",
               "phonetic": "oo-koo-LIN-dah"
@@ -5922,7 +5922,7 @@
               "phonetic": "oo-koo-QHA-gam-sheh-lah"
             },
             {
-              "id": "xh-ukucinga",
+              "id": "xh-ukucinga2",
               "term": "ukucinga",
               "translation": "to think / consider",
               "phonetic": "oo-koo-SING-gah"
@@ -5958,7 +5958,7 @@
               "phonetic": "oo-koo-zee-MEH-lah"
             },
             {
-              "id": "xh-ukufumana",
+              "id": "xh-ukufumana2",
               "term": "ukufumana",
               "translation": "to get / find / receive",
               "phonetic": "oo-koo-foo-MAH-nah"
@@ -6061,7 +6061,7 @@
               "phonetic": "ee-see-TYAH-loh"
             },
             {
-              "id": "xh-intyatyambo",
+              "id": "xh-intyatyambo2",
               "term": "intyatyambo",
               "translation": "flower",
               "phonetic": "in-tyah-TYAM-boh"

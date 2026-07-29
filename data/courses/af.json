@@ -4757,7 +4757,7 @@
           "culturalNote": "Knowing body part vocabulary is essential for describing illness or injury at a clinic or hospital.",
           "vocab": [
             {
-              "id": "af-kop",
+              "id": "af-kop2",
               "term": "kop",
               "translation": "head",
               "phonetic": "kop"
@@ -4769,7 +4769,7 @@
               "phonetic": "ohkh"
             },
             {
-              "id": "af-oor",
+              "id": "af-oor2",
               "term": "oor",
               "translation": "ear",
               "phonetic": "ohr"
@@ -4781,7 +4781,7 @@
               "phonetic": "nuhss"
             },
             {
-              "id": "af-mond",
+              "id": "af-mond2",
               "term": "mond",
               "translation": "mouth",
               "phonetic": "mont"
@@ -4805,7 +4805,7 @@
               "phonetic": "SKOH-er"
             },
             {
-              "id": "af-arm",
+              "id": "af-arm2",
               "term": "arm",
               "translation": "arm",
               "phonetic": "urm"
@@ -4817,25 +4817,25 @@
               "phonetic": "hant"
             },
             {
-              "id": "af-been",
+              "id": "af-been2",
               "term": "been",
               "translation": "leg",
               "phonetic": "beyn"
             },
             {
-              "id": "af-voet",
+              "id": "af-voet2",
               "term": "voet",
               "translation": "foot",
               "phonetic": "foot"
             },
             {
-              "id": "af-rug",
+              "id": "af-rug2",
               "term": "rug",
               "translation": "back",
               "phonetic": "rukh"
             },
             {
-              "id": "af-maag",
+              "id": "af-maag2",
               "term": "maag",
               "translation": "stomach",
               "phonetic": "maakh"
@@ -4868,7 +4868,7 @@
           "culturalNote": "South Africa's public clinics use both Afrikaans and English. These words help you describe symptoms clearly.",
           "vocab": [
             {
-              "id": "af-siek",
+              "id": "af-siek2",
               "term": "siek",
               "translation": "sick / ill",
               "phonetic": "seek"
@@ -4904,7 +4904,7 @@
               "phonetic": "DOK-ter"
             },
             {
-              "id": "af-hospitaal",
+              "id": "af-hospitaal2",
               "term": "hospitaal",
               "translation": "hospital",
               "phonetic": "hos-pih-TAAL"
@@ -4960,19 +4960,19 @@
           "culturalNote": "South Africa uses the rand (R). Always ask 'Hoeveel kos dit?' (How much does it cost?) when unsure.",
           "vocab": [
             {
-              "id": "af-winkel",
+              "id": "af-winkel2",
               "term": "winkel",
               "translation": "shop / store",
               "phonetic": "VIN-kel"
             },
             {
-              "id": "af-prys",
+              "id": "af-prys2",
               "term": "prys",
               "translation": "price",
               "phonetic": "prays"
             },
             {
-              "id": "af-geld",
+              "id": "af-geld2",
               "term": "geld",
               "translation": "money",
               "phonetic": "khelt"
@@ -4984,25 +4984,25 @@
               "phonetic": "runt"
             },
             {
-              "id": "af-koop",
+              "id": "af-koop2",
               "term": "koop",
               "translation": "to buy",
               "phonetic": "kohp"
             },
             {
-              "id": "af-verkoop",
+              "id": "af-verkoop2",
               "term": "verkoop",
               "translation": "to sell",
               "phonetic": "fer-KOHP"
             },
             {
-              "id": "af-goedkoop",
+              "id": "af-goedkoop2",
               "term": "goedkoop",
               "translation": "cheap",
               "phonetic": "KHOOT-kohp"
             },
             {
-              "id": "af-duur",
+              "id": "af-duur2",
               "term": "duur",
               "translation": "expensive",
               "phonetic": "dyhr"
@@ -5032,7 +5032,7 @@
               "phonetic": "BUNK-kaart"
             },
             {
-              "id": "af-sak",
+              "id": "af-sak2",
               "term": "sak",
               "translation": "bag",
               "phonetic": "suck"
@@ -5088,7 +5088,7 @@
               "phonetic": "skohl"
             },
             {
-              "id": "af-klas",
+              "id": "af-klas2",
               "term": "klas",
               "translation": "class",
               "phonetic": "klus"
@@ -5112,7 +5112,7 @@
               "phonetic": "book"
             },
             {
-              "id": "af-pen",
+              "id": "af-pen2",
               "term": "pen",
               "translation": "pen",
               "phonetic": "pen"
@@ -5130,13 +5130,13 @@
               "phonetic": "ek-SAH-men"
             },
             {
-              "id": "af-huiswerk",
+              "id": "af-huiswerk2",
               "term": "huiswerk",
               "translation": "homework",
               "phonetic": "HAYS-verk"
             },
             {
-              "id": "af-biblioteek",
+              "id": "af-biblioteek2",
               "term": "biblioteek",
               "translation": "library",
               "phonetic": "bib-lee-oh-TEYK"
@@ -5166,7 +5166,7 @@
               "phonetic": "fer-STAAN"
             },
             {
-              "id": "af-weet",
+              "id": "af-weet2",
               "term": "weet",
               "translation": "to know",
               "phonetic": "veyt"
@@ -5431,7 +5431,7 @@
               "phonetic": "svem"
             },
             {
-              "id": "af-hardloop",
+              "id": "af-hardloop2",
               "term": "hardloop",
               "translation": "to run",
               "phonetic": "HURD-lohp"
@@ -5461,7 +5461,7 @@
               "phonetic": "fer-LOHR"
             },
             {
-              "id": "af-speel",
+              "id": "af-speel2",
               "term": "speel",
               "translation": "to play",
               "phonetic": "speel"
@@ -5488,19 +5488,19 @@
           "culturalNote": "South Africans love braais and outdoor activities. The word 'braai' is used across all languages and cultures.",
           "vocab": [
             {
-              "id": "af-musiek",
+              "id": "af-musiek2",
               "term": "musiek",
               "translation": "music",
               "phonetic": "myh-SEEK"
             },
             {
-              "id": "af-dans",
+              "id": "af-dans2",
               "term": "dans",
               "translation": "to dance",
               "phonetic": "duns"
             },
             {
-              "id": "af-sing",
+              "id": "af-sing2",
               "term": "sing",
               "translation": "to sing",
               "phonetic": "sing"
@@ -5576,37 +5576,37 @@
           "culturalNote": "'Ek is lief vir jou' (I love you) is widely used between family members and close friends in Afrikaans.",
           "vocab": [
             {
-              "id": "af-bly",
+              "id": "af-bly2",
               "term": "bly",
               "translation": "happy",
               "phonetic": "blay"
             },
             {
-              "id": "af-hartseer",
+              "id": "af-hartseer2",
               "term": "hartseer",
               "translation": "sad",
               "phonetic": "HURT-seyr"
             },
             {
-              "id": "af-kwaad",
+              "id": "af-kwaad2",
               "term": "kwaad",
               "translation": "angry",
               "phonetic": "kvaad"
             },
             {
-              "id": "af-bang",
+              "id": "af-bang2",
               "term": "bang",
               "translation": "scared / afraid",
               "phonetic": "bung"
             },
             {
-              "id": "af-opgewonde",
+              "id": "af-opgewonde2",
               "term": "opgewonde",
               "translation": "excited",
               "phonetic": "op-khuh-VON-duh"
             },
             {
-              "id": "af-moeg",
+              "id": "af-moeg2",
               "term": "moeg",
               "translation": "tired",
               "phonetic": "moohkh"
@@ -5618,7 +5618,7 @@
               "phonetic": "leef"
             },
             {
-              "id": "af-trots",
+              "id": "af-trots2",
               "term": "trots",
               "translation": "proud",
               "phonetic": "trots"
@@ -5630,7 +5630,7 @@
               "phonetic": "buh-KOM-mert"
             },
             {
-              "id": "af-rustig",
+              "id": "af-rustig2",
               "term": "rustig",
               "translation": "calm / relaxed",
               "phonetic": "RUS-tikh"
@@ -5704,13 +5704,13 @@
               "phonetic": "berkh"
             },
             {
-              "id": "af-see",
+              "id": "af-see2",
               "term": "see",
               "translation": "sea / ocean",
               "phonetic": "say"
             },
             {
-              "id": "af-rivier",
+              "id": "af-rivier2",
               "term": "rivier",
               "translation": "river",
               "phonetic": "rih-FEER"
@@ -5758,7 +5758,7 @@
               "phonetic": "khrus"
             },
             {
-              "id": "af-voel",
+              "id": "af-voel2",
               "term": "voel",
               "translation": "bird",
               "phonetic": "fool"
@@ -5850,13 +5850,13 @@
               "phonetic": "AAND-AY-tuh"
             },
             {
-              "id": "af-vleis",
+              "id": "af-vleis2",
               "term": "vleis",
               "translation": "meat",
               "phonetic": "flays"
             },
             {
-              "id": "af-hoender",
+              "id": "af-hoender2",
               "term": "hoender",
               "translation": "chicken",
               "phonetic": "HOON-der"
@@ -5892,7 +5892,7 @@
               "phonetic": "tay"
             },
             {
-              "id": "af-sout",
+              "id": "af-sout2",
               "term": "sout",
               "translation": "salt",
               "phonetic": "sowt"
@@ -5948,19 +5948,19 @@
               "phonetic": "TUK-see"
             },
             {
-              "id": "af-bus",
+              "id": "af-bus2",
               "term": "bus",
               "translation": "bus",
               "phonetic": "bus"
             },
             {
-              "id": "af-trein",
+              "id": "af-trein2",
               "term": "trein",
               "translation": "train",
               "phonetic": "trayn"
             },
             {
-              "id": "af-vliegtuig",
+              "id": "af-vliegtuig2",
               "term": "vliegtuig",
               "translation": "aeroplane",
               "phonetic": "FLEEKH-tayukh"
@@ -5972,25 +5972,25 @@
               "phonetic": "MOH-tor"
             },
             {
-              "id": "af-fiets",
+              "id": "af-fiets2",
               "term": "fiets",
               "translation": "bicycle",
               "phonetic": "feets"
             },
             {
-              "id": "af-pad",
+              "id": "af-pad2",
               "term": "pad",
               "translation": "road / path",
               "phonetic": "put"
             },
             {
-              "id": "af-stasie",
+              "id": "af-stasie2",
               "term": "stasie",
               "translation": "station",
               "phonetic": "STAA-see"
             },
             {
-              "id": "af-lughawe",
+              "id": "af-lughawe2",
               "term": "lughawe",
               "translation": "airport",
               "phonetic": "LUKH-haa-vuh"
@@ -6070,7 +6070,7 @@
               "phonetic": "khuh-MEYN-skap"
             },
             {
-              "id": "af-kerk",
+              "id": "af-kerk2",
               "term": "kerk",
               "translation": "church",
               "phonetic": "kerk"
@@ -6237,7 +6237,7 @@
           "culturalNote": "These expressions are essential for polite everyday communication in Afrikaans-speaking settings.",
           "vocab": [
             {
-              "id": "af-asseblief",
+              "id": "af-asseblief2",
               "term": "asseblief",
               "translation": "please",
               "phonetic": "us-suh-BLEEF"
@@ -6398,7 +6398,7 @@
               "phonetic": "mih-NYHT"
             },
             {
-              "id": "af-oggend",
+              "id": "af-oggend2",
               "term": "oggend",
               "translation": "morning",
               "phonetic": "OH-khent"
@@ -6410,7 +6410,7 @@
               "phonetic": "MID-ukh"
             },
             {
-              "id": "af-aand",
+              "id": "af-aand2",
               "term": "aand",
               "translation": "evening / night",
               "phonetic": "aant"

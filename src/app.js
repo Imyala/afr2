@@ -702,6 +702,8 @@ function renderHome() {
           <span class="act__ic">🧩</span><span class="act__l"><b>Grammar</b><small>patterns</small></span></button>` : ''}
         ${(course.dialogues || []).length ? `<button class="act act--convo" id="dialogueBtn">
           <span class="act__ic">💬</span><span class="act__l"><b>Conversations</b><small>real chats</small></span></button>` : ''}
+        <button class="act act--write" id="writingLabBtn">
+          <span class="act__ic">✍️</span><span class="act__l"><b>Writing Lab</b><small>${(() => { const ws = L.writingLabScore; return ws && ws.total ? `${ws.correct}/${ws.total} today` : 'translate & get graded'; })()}</small></span></button>
         <button class="act act--speak" id="speakBtn">
           <span class="act__ic">🎤</span><span class="act__l"><b>Speaking</b><small>out loud</small></span></button>
         <button class="act act--listen" id="listenBtn">
@@ -742,6 +744,7 @@ function renderHome() {
   on('#storiesNav', renderLibrary);
   on('#glossaryBtn', () => renderGlossary());
   on('#sayBtn', renderSentenceStudio);
+  on('#writingLabBtn', () => { sound.tap(); renderWritingLab(); });
   on('#speakBtn', startSpeaking);
   on('#listenBtn', startListening);
   on('#blitzBtn', startBlitz);
@@ -2048,6 +2051,126 @@ function renderSentenceStudio() {
   node.querySelector('#lab').addEventListener('click', () => { sound.tap(); renderSentenceLab(); });
   node.querySelector('#back').addEventListener('click', renderHome);
   mount(node);
+}
+
+// ---------- Writing Lab: learner writes, app grades + corrects ----------
+// Shows a random English sentence from the course pool. Learner types the
+// translation. checkTyped grades it with typo tolerance.
+function renderWritingLab() {
+  const pool = sentencePool(course);
+  if (!pool.length) {
+    alert('No sentences available yet. Complete some lessons first!');
+    return;
+  }
+
+  const L = store.lang();
+  const score = L.writingLabScore || { correct: 0, total: 0 };
+
+  // Pick a random sentence, biasing toward ones not seen today
+  const seen = new Set(L.writingLabSeen || []);
+  const unseen = pool.filter((s) => !seen.has(normalize(s.t)));
+  const candidates = unseen.length ? unseen : pool;
+  const sentence = candidates[Math.floor(Math.random() * candidates.length)];
+
+  function render(result) {
+    const scoreText = score.total
+      ? `${score.correct}/${score.total} today`
+      : 'Start writing!';
+
+    const node = h(`
+      <div class="screen wlab">
+        <header class="topbar">
+          <button class="btn--ghost" id="backBtn" style="width:auto;padding:6px 14px;font-size:14px">← Back</button>
+          <span style="font-weight:800;font-size:15px;color:var(--muted)">Writing Lab</span>
+          <span style="width:80px"></span>
+        </header>
+
+        <div class="wlab__hero">
+          <div class="wlab__icon">✍️</div>
+          <h2>Write it out</h2>
+          <p>Type the ${esc(course.name)} translation for the English sentence below.</p>
+          <div class="wlab__score">📝 ${esc(scoreText)}</div>
+        </div>
+
+        <div class="wlab__card">
+          <div class="wlab__prompt-label">Translate to ${esc(course.name)}</div>
+          <div class="wlab__prompt">${esc(sentence.en)}</div>
+          ${!result ? `<div class="wlab__hint">Take your time — small typos are forgiven.</div>` : ''}
+
+          ${result ? `
+            <div class="wlab__result wlab__result--${result.type}">
+              <div class="wlab__result-head">
+                <span>${result.type === 'correct' ? '✅' : result.type === 'typo' ? '💛' : '❌'}</span>
+                <span>${result.type === 'correct' ? 'Correct!' : result.type === 'typo' ? 'Almost — watch the spelling' : 'Not quite'}</span>
+              </div>
+              <div class="wlab__result-answer">
+                <strong>${esc(sentence.t)}</strong>
+                ${result.type === 'typo' ? `<span style="color:var(--muted);font-size:13px">You wrote: "${esc(result.response)}"</span>` : ''}
+                ${result.type === 'wrong' ? `<span style="color:var(--muted);font-size:13px">You wrote: "${esc(result.response)}"</span>` : ''}
+              </div>
+              ${result.xp ? `<div class="wlab__xp-pill">+${result.xp} XP</div>` : ''}
+            </div>
+            <div class="wlab__actions">
+              <button class="btn btn--ghost" id="retryBtn">Try again</button>
+              <button class="btn btn--primary" id="nextBtn">Next →</button>
+            </div>
+          ` : `
+            <div class="wlab__input-wrap">
+              <textarea class="wlab__textarea" id="answerInput" placeholder="Type your answer here…" rows="3" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+              <button class="wlab__btn-check" id="checkBtn" disabled>Check ✓</button>
+            </div>
+          `}
+        </div>
+      </div>`);
+
+    node.querySelector('#backBtn').addEventListener('click', () => { sound.tap(); renderHome(); });
+
+    if (!result) {
+      const textarea = node.querySelector('#answerInput');
+      const checkBtn = node.querySelector('#checkBtn');
+      textarea.addEventListener('input', () => {
+        checkBtn.disabled = !textarea.value.trim();
+      });
+      checkBtn.addEventListener('click', () => {
+        const response = textarea.value.trim();
+        if (!response) return;
+        sound.tap();
+        const ex = { answer: sentence.t, accept: [] };
+        const { correct, typo } = checkTyped(ex, response);
+        const type = correct ? (typo ? 'typo' : 'correct') : 'wrong';
+        const xp = correct ? (typo ? 5 : 10) : 0;
+
+        // Update store directly (same pattern as wotd, etc.)
+        const lang = store.lang();
+        if (!lang.writingLabScore) lang.writingLabScore = { correct: 0, total: 0 };
+        lang.writingLabScore.total += 1;
+        if (correct) {
+          lang.writingLabScore.correct += 1;
+          store.addXp(xp);
+        }
+        const seen2 = new Set(lang.writingLabSeen || []);
+        seen2.add(normalize(sentence.t));
+        lang.writingLabSeen = [...seen2].slice(-200);
+        store.save();
+
+        if (correct) { sound.correct(); haptic(12); confetti({ count: 40, duration: 800 }); }
+        else { sound.wrong(); haptic([10, 40, 10]); }
+
+        score.total += 1;
+        if (correct) score.correct += 1;
+
+        render({ type, response, xp: correct ? xp : 0 });
+      });
+      setTimeout(() => textarea.focus(), 80);
+    } else {
+      node.querySelector('#nextBtn')?.addEventListener('click', () => { sound.tap(); renderWritingLab(); });
+      node.querySelector('#retryBtn')?.addEventListener('click', () => { sound.tap(); render(null); });
+    }
+
+    mount(node);
+  }
+
+  render(null);
 }
 
 // ---------- Sentence Lab: YOU choose, the grammar machine builds ----------

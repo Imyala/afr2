@@ -4838,7 +4838,7 @@
           "culturalNote": "Health care in Zulu culture integrates both traditional healing (izinyanga) and modern medicine.",
           "vocab": [
             {
-              "id": "zu-ikhanda",
+              "id": "zu-ikhanda2",
               "term": "ikhanda",
               "translation": "head",
               "phonetic": "ee-KHAN-dah"
@@ -4850,7 +4850,7 @@
               "phonetic": "ee-SOH"
             },
             {
-              "id": "zu-indlebe",
+              "id": "zu-indlebe2",
               "term": "indlebe",
               "translation": "ear",
               "phonetic": "in-DLEH-beh"
@@ -4862,13 +4862,13 @@
               "phonetic": "ee-KHAH-lah"
             },
             {
-              "id": "zu-umlomo",
+              "id": "zu-umlomo2",
               "term": "umlomo",
               "translation": "mouth",
               "phonetic": "oom-LOH-moh"
             },
             {
-              "id": "zu-amazinyo",
+              "id": "zu-amazinyo2",
               "term": "amazinyo",
               "translation": "teeth",
               "phonetic": "ah-mah-ZEE-nyoh"
@@ -4892,13 +4892,13 @@
               "phonetic": "ee-gxah-LAH-bah"
             },
             {
-              "id": "zu-ingalo",
+              "id": "zu-ingalo2",
               "term": "ingalo",
               "translation": "arm",
               "phonetic": "in-GAH-loh"
             },
             {
-              "id": "zu-isandla",
+              "id": "zu-isandla2",
               "term": "isandla",
               "translation": "hand",
               "phonetic": "ee-SAN-dlah"
@@ -4910,19 +4910,19 @@
               "phonetic": "ee-see-FOO-bah"
             },
             {
-              "id": "zu-isisu",
+              "id": "zu-isisu2",
               "term": "isisu",
               "translation": "stomach / belly",
               "phonetic": "ee-SEE-soo"
             },
             {
-              "id": "zu-umlenze",
+              "id": "zu-umlenze2",
               "term": "umlenze",
               "translation": "leg",
               "phonetic": "oom-LEN-zeh"
             },
             {
-              "id": "zu-unyawo",
+              "id": "zu-unyawo2",
               "term": "unyawo",
               "translation": "foot",
               "phonetic": "oo-NYAH-woh"
@@ -4949,13 +4949,13 @@
           "culturalNote": "Public clinics (izibhedlela) are common in townships. Zulu people also consult traditional healers called izinyanga.",
           "vocab": [
             {
-              "id": "zu-isibhedlela",
+              "id": "zu-isibhedlela2",
               "term": "isibhedlela",
               "translation": "hospital / clinic",
               "phonetic": "ee-see-bheh-DLEH-lah"
             },
             {
-              "id": "zu-udokotela",
+              "id": "zu-udokotela2",
               "term": "udokotela",
               "translation": "doctor",
               "phonetic": "oo-doh-koh-TEH-lah"
@@ -4967,7 +4967,7 @@
               "phonetic": "oom-hlen-gee-KAH-zee"
             },
             {
-              "id": "zu-umuthi",
+              "id": "zu-umuthi2",
               "term": "umuthi",
               "translation": "medicine / traditional remedy",
               "phonetic": "oo-MOO-tee"
@@ -4979,7 +4979,7 @@
               "phonetic": "oo-koo-GOO-lah"
             },
             {
-              "id": "zu-ubuhlungu",
+              "id": "zu-ubuhlungu2",
               "term": "ubuhlungu",
               "translation": "pain",
               "phonetic": "oo-boo-HLOO-ngoo"
@@ -5041,7 +5041,7 @@
           "culturalNote": "Street markets (izitolo zomthombo) are common throughout KwaZulu-Natal. Bargaining is part of the culture.",
           "vocab": [
             {
-              "id": "zu-isitolo",
+              "id": "zu-isitolo2",
               "term": "isitolo",
               "translation": "shop / store",
               "phonetic": "ee-see-TOH-loh"
@@ -5053,13 +5053,13 @@
               "phonetic": "ee-MAH-lee"
             },
             {
-              "id": "zu-intengo",
+              "id": "zu-intengo2",
               "term": "intengo",
               "translation": "price",
               "phonetic": "in-TEN-goh"
             },
             {
-              "id": "zu-ukuthenga",
+              "id": "zu-ukuthenga2",
               "term": "ukuthenga",
               "translation": "to buy",
               "phonetic": "oo-koo-THEN-gah"
@@ -5174,7 +5174,7 @@
               "phonetic": "ee-see-KEE-bah"
             },
             {
-              "id": "zu-ibhulukwe",
+              "id": "zu-ibhulukwe2",
               "term": "ibhulukwe",
               "translation": "trousers / pants",
               "phonetic": "ee-BHOO-loo-kweh"
@@ -5192,7 +5192,7 @@
               "phonetic": "ee-see-KAH-thoo-loh"
             },
             {
-              "id": "zu-isigqoko",
+              "id": "zu-isigqoko2",
               "term": "isigqoko",
               "translation": "hat",
               "phonetic": "ee-see-GQOH-koh"
@@ -5280,7 +5280,7 @@
               "phonetic": "ee-PHEH-phah"
             },
             {
-              "id": "zu-ukubhala",
+              "id": "zu-ukubhala2",
               "term": "ukubhala",
               "translation": "to write",
               "phonetic": "oo-koo-BHAH-lah"
@@ -5672,7 +5672,7 @@
               "phonetic": "ee-RUG-bee"
             },
             {
-              "id": "zu-ukugijima",
+              "id": "zu-ukugijima2",
               "term": "ukugijima",
               "translation": "to run",
               "phonetic": "oo-koo-gee-JEE-mah"
@@ -5781,13 +5781,13 @@
               "phonetic": "oo-koo-GEE-dah"
             },
             {
-              "id": "zu-ukucula",
+              "id": "zu-ukucula2",
               "term": "ukucula",
               "translation": "to sing",
               "phonetic": "oo-koo-KOO-lah"
             },
             {
-              "id": "zu-umgwaqo",
+              "id": "zu-umgwaqo2",
               "term": "umgwaqo",
               "translation": "beat / rhythm / road",
               "phonetic": "oom-GWAH-qoh"
@@ -5984,7 +5984,7 @@
               "phonetic": "in-DLOV-oo"
             },
             {
-              "id": "zu-umkhumbi",
+              "id": "zu-umkhumbi2",
               "term": "umkhumbi",
               "translation": "hippo",
               "phonetic": "oom-KHOOM-bee"
@@ -6205,7 +6205,7 @@
               "phonetic": "ee-SEE-zweh"
             },
             {
-              "id": "zu-umuntu",
+              "id": "zu-umuntu2",
               "term": "umuntu",
               "translation": "person",
               "phonetic": "oo-MOON-too"
@@ -6315,7 +6315,7 @@
               "phonetic": "in-NYAH-mah"
             },
             {
-              "id": "zu-izambane",
+              "id": "zu-izambane2",
               "term": "izambane",
               "translation": "potato",
               "phonetic": "ee-ZAM-bah-neh"
@@ -6339,7 +6339,7 @@
               "phonetic": "oo-BEE-see"
             },
             {
-              "id": "zu-itiye",
+              "id": "zu-itiye2",
               "term": "itiye",
               "translation": "tea",
               "phonetic": "ee-TEE-yeh"
@@ -6482,13 +6482,13 @@
               "phonetic": "ee-MEN-yoo"
             },
             {
-              "id": "zu-umpheki",
+              "id": "zu-umpheki2",
               "term": "umpheki",
               "translation": "cook / chef",
               "phonetic": "oom-PHEH-kee"
             },
             {
-              "id": "zu-usizo",
+              "id": "zu-usizo2",
               "term": "usizo",
               "translation": "waiter / service",
               "phonetic": "oo-SEE-zoh"
@@ -6556,7 +6556,7 @@
               "phonetic": "ee-MOH-toh"
             },
             {
-              "id": "zu-isitimela",
+              "id": "zu-isitimela2",
               "term": "isitimela",
               "translation": "train",
               "phonetic": "ee-see-tee-MEH-lah"
@@ -6568,7 +6568,7 @@
               "phonetic": "in-QOHL-ah"
             },
             {
-              "id": "zu-ibhayisikili",
+              "id": "zu-ibhayisikili2",
               "term": "ibhayisikili",
               "translation": "bicycle",
               "phonetic": "ee-BHAH-yee-see-kee-lee"
@@ -6592,7 +6592,7 @@
               "phonetic": "ee-see-KHOON-dlah"
             },
             {
-              "id": "zu-umgwaqo2",
+              "id": "zu-umgwaqo22",
               "term": "umgwaqo",
               "translation": "road / street",
               "phonetic": "oom-GWAH-qoh"
