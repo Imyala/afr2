@@ -4745,6 +4745,1849 @@
           ]
         }
       ]
+    },
+    {
+      "id": "af-u18",
+      "title": "Unit 18: Health & Body",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u18-l1",
+          "title": "Parts of the body",
+          "culturalNote": "Knowing body part vocabulary is essential for describing illness or injury at a clinic or hospital.",
+          "vocab": [
+            {
+              "id": "af-kop2",
+              "term": "kop",
+              "translation": "head",
+              "phonetic": "kop"
+            },
+            {
+              "id": "af-oog",
+              "term": "oog",
+              "translation": "eye",
+              "phonetic": "ohkh"
+            },
+            {
+              "id": "af-oor2",
+              "term": "oor",
+              "translation": "ear",
+              "phonetic": "ohr"
+            },
+            {
+              "id": "af-neus",
+              "term": "neus",
+              "translation": "nose",
+              "phonetic": "nuhss"
+            },
+            {
+              "id": "af-mond2",
+              "term": "mond",
+              "translation": "mouth",
+              "phonetic": "mont"
+            },
+            {
+              "id": "af-tand",
+              "term": "tand",
+              "translation": "tooth",
+              "phonetic": "tant"
+            },
+            {
+              "id": "af-nek",
+              "term": "nek",
+              "translation": "neck",
+              "phonetic": "neck"
+            },
+            {
+              "id": "af-skouer",
+              "term": "skouer",
+              "translation": "shoulder",
+              "phonetic": "SKOH-er"
+            },
+            {
+              "id": "af-arm2",
+              "term": "arm",
+              "translation": "arm",
+              "phonetic": "urm"
+            },
+            {
+              "id": "af-hand-body",
+              "term": "hand",
+              "translation": "hand",
+              "phonetic": "hant"
+            },
+            {
+              "id": "af-been2",
+              "term": "been",
+              "translation": "leg",
+              "phonetic": "beyn"
+            },
+            {
+              "id": "af-voet2",
+              "term": "voet",
+              "translation": "foot",
+              "phonetic": "foot"
+            },
+            {
+              "id": "af-rug2",
+              "term": "rug",
+              "translation": "back",
+              "phonetic": "rukh"
+            },
+            {
+              "id": "af-maag2",
+              "term": "maag",
+              "translation": "stomach",
+              "phonetic": "maakh"
+            },
+            {
+              "id": "af-hart",
+              "term": "hart",
+              "translation": "heart",
+              "phonetic": "hurt"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "My kop is seer.",
+              "en": "My head hurts."
+            },
+            {
+              "t": "Sy oog is rooi.",
+              "en": "His/her eye is red."
+            },
+            {
+              "t": "Ek het pyn in my rug.",
+              "en": "I have pain in my back."
+            }
+          ]
+        },
+        {
+          "id": "af-u18-l2",
+          "title": "At the clinic",
+          "culturalNote": "South Africa's public clinics use both Afrikaans and English. These words help you describe symptoms clearly.",
+          "vocab": [
+            {
+              "id": "af-siek2",
+              "term": "siek",
+              "translation": "sick / ill",
+              "phonetic": "seek"
+            },
+            {
+              "id": "af-pyn",
+              "term": "pyn",
+              "translation": "pain",
+              "phonetic": "payn"
+            },
+            {
+              "id": "af-koors",
+              "term": "koors",
+              "translation": "fever",
+              "phonetic": "kohrs"
+            },
+            {
+              "id": "af-hoes",
+              "term": "hoes",
+              "translation": "cough",
+              "phonetic": "hoos"
+            },
+            {
+              "id": "af-medisyne",
+              "term": "medisyne",
+              "translation": "medicine",
+              "phonetic": "meh-dih-SAY-nuh"
+            },
+            {
+              "id": "af-dokter",
+              "term": "dokter",
+              "translation": "doctor",
+              "phonetic": "DOK-ter"
+            },
+            {
+              "id": "af-hospitaal2",
+              "term": "hospitaal",
+              "translation": "hospital",
+              "phonetic": "hos-pih-TAAL"
+            },
+            {
+              "id": "af-kliniek",
+              "term": "kliniek",
+              "translation": "clinic",
+              "phonetic": "klih-NEEK"
+            },
+            {
+              "id": "af-seer",
+              "term": "seer",
+              "translation": "sore / painful",
+              "phonetic": "seyr"
+            },
+            {
+              "id": "af-gesond",
+              "term": "gesond",
+              "translation": "healthy / well",
+              "phonetic": "khuh-SONT"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek is siek.",
+              "en": "I am sick."
+            },
+            {
+              "t": "Ek het koors.",
+              "en": "I have a fever."
+            },
+            {
+              "t": "Waar is die kliniek?",
+              "en": "Where is the clinic?"
+            },
+            {
+              "t": "Ek het medisyne nodig.",
+              "en": "I need medicine."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u19",
+      "title": "Unit 19: Shopping & Money",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u19-l1",
+          "title": "At the shop",
+          "culturalNote": "South Africa uses the rand (R). Always ask 'Hoeveel kos dit?' (How much does it cost?) when unsure.",
+          "vocab": [
+            {
+              "id": "af-winkel2",
+              "term": "winkel",
+              "translation": "shop / store",
+              "phonetic": "VIN-kel"
+            },
+            {
+              "id": "af-prys2",
+              "term": "prys",
+              "translation": "price",
+              "phonetic": "prays"
+            },
+            {
+              "id": "af-geld2",
+              "term": "geld",
+              "translation": "money",
+              "phonetic": "khelt"
+            },
+            {
+              "id": "af-rand",
+              "term": "rand",
+              "translation": "rand (currency)",
+              "phonetic": "runt"
+            },
+            {
+              "id": "af-koop2",
+              "term": "koop",
+              "translation": "to buy",
+              "phonetic": "kohp"
+            },
+            {
+              "id": "af-verkoop2",
+              "term": "verkoop",
+              "translation": "to sell",
+              "phonetic": "fer-KOHP"
+            },
+            {
+              "id": "af-goedkoop2",
+              "term": "goedkoop",
+              "translation": "cheap",
+              "phonetic": "KHOOT-kohp"
+            },
+            {
+              "id": "af-duur2",
+              "term": "duur",
+              "translation": "expensive",
+              "phonetic": "dyhr"
+            },
+            {
+              "id": "af-kassier",
+              "term": "kassier",
+              "translation": "cashier",
+              "phonetic": "kuh-SEER"
+            },
+            {
+              "id": "af-wissel",
+              "term": "wissel",
+              "translation": "change (money)",
+              "phonetic": "VIS-sel"
+            },
+            {
+              "id": "af-kontant",
+              "term": "kontant",
+              "translation": "cash",
+              "phonetic": "kon-TANT"
+            },
+            {
+              "id": "af-bankkaart",
+              "term": "bankkaart",
+              "translation": "bank card",
+              "phonetic": "BUNK-kaart"
+            },
+            {
+              "id": "af-sak2",
+              "term": "sak",
+              "translation": "bag",
+              "phonetic": "suck"
+            },
+            {
+              "id": "af-rekening",
+              "term": "rekening",
+              "translation": "receipt / bill",
+              "phonetic": "RAY-kuh-ning"
+            },
+            {
+              "id": "af-spaar",
+              "term": "spaar",
+              "translation": "to save (money)",
+              "phonetic": "spaar"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Hoeveel kos dit?",
+              "en": "How much does it cost?"
+            },
+            {
+              "t": "Ek wil dit koop.",
+              "en": "I want to buy this."
+            },
+            {
+              "t": "Dit is te duur.",
+              "en": "It is too expensive."
+            },
+            {
+              "t": "Kan ek met kaart betaal?",
+              "en": "Can I pay by card?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u20",
+      "title": "Unit 20: Education & Work",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u20-l1",
+          "title": "At school",
+          "culturalNote": "Afrikaans is widely used in schools across the Western Cape.",
+          "vocab": [
+            {
+              "id": "af-skool2",
+              "term": "skool",
+              "translation": "school",
+              "phonetic": "skohl"
+            },
+            {
+              "id": "af-klas2",
+              "term": "klas",
+              "translation": "class",
+              "phonetic": "klus"
+            },
+            {
+              "id": "af-onderwyser",
+              "term": "onderwyser",
+              "translation": "teacher",
+              "phonetic": "ON-der-vay-ser"
+            },
+            {
+              "id": "af-leerling",
+              "term": "leerling",
+              "translation": "learner / pupil",
+              "phonetic": "LEYR-ling"
+            },
+            {
+              "id": "af-boek2",
+              "term": "boek",
+              "translation": "book",
+              "phonetic": "book"
+            },
+            {
+              "id": "af-pen2",
+              "term": "pen",
+              "translation": "pen",
+              "phonetic": "pen"
+            },
+            {
+              "id": "af-potlood",
+              "term": "potlood",
+              "translation": "pencil",
+              "phonetic": "POT-loht"
+            },
+            {
+              "id": "af-eksamen",
+              "term": "eksamen",
+              "translation": "exam",
+              "phonetic": "ek-SAH-men"
+            },
+            {
+              "id": "af-huiswerk2",
+              "term": "huiswerk",
+              "translation": "homework",
+              "phonetic": "HAYS-verk"
+            },
+            {
+              "id": "af-biblioteek2",
+              "term": "biblioteek",
+              "translation": "library",
+              "phonetic": "bib-lee-oh-TEYK"
+            },
+            {
+              "id": "af-vraag",
+              "term": "vraag",
+              "translation": "question",
+              "phonetic": "fraakh"
+            },
+            {
+              "id": "af-antwoord",
+              "term": "antwoord",
+              "translation": "answer",
+              "phonetic": "UNT-voort"
+            },
+            {
+              "id": "af-leer-v",
+              "term": "leer",
+              "translation": "to learn",
+              "phonetic": "leyr"
+            },
+            {
+              "id": "af-verstaan",
+              "term": "verstaan",
+              "translation": "to understand",
+              "phonetic": "fer-STAAN"
+            },
+            {
+              "id": "af-weet2",
+              "term": "weet",
+              "translation": "to know",
+              "phonetic": "veyt"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek verstaan nie.",
+              "en": "I don't understand."
+            },
+            {
+              "t": "Kan jy dit herhaal?",
+              "en": "Can you repeat that?"
+            },
+            {
+              "t": "Die eksamen is more.",
+              "en": "The exam is tomorrow."
+            },
+            {
+              "t": "Ek doen my huiswerk.",
+              "en": "I am doing my homework."
+            }
+          ]
+        },
+        {
+          "id": "af-u20-l2",
+          "title": "At work",
+          "culturalNote": "Many workplaces in South Africa use Afrikaans, especially in the Western Cape and Northern Cape.",
+          "vocab": [
+            {
+              "id": "af-werk2",
+              "term": "werk",
+              "translation": "work / job",
+              "phonetic": "verk"
+            },
+            {
+              "id": "af-baas",
+              "term": "baas",
+              "translation": "boss / manager",
+              "phonetic": "baas"
+            },
+            {
+              "id": "af-kollega",
+              "term": "kollega",
+              "translation": "colleague",
+              "phonetic": "koh-LEY-khuh"
+            },
+            {
+              "id": "af-kantoor",
+              "term": "kantoor",
+              "translation": "office",
+              "phonetic": "kun-TOHR"
+            },
+            {
+              "id": "af-vergadering",
+              "term": "vergadering",
+              "translation": "meeting",
+              "phonetic": "fer-KHAH-der-ing"
+            },
+            {
+              "id": "af-salaris",
+              "term": "salaris",
+              "translation": "salary",
+              "phonetic": "suh-LAH-ris"
+            },
+            {
+              "id": "af-verlof",
+              "term": "verlof",
+              "translation": "leave / holiday",
+              "phonetic": "fer-LOF"
+            },
+            {
+              "id": "af-projek",
+              "term": "projek",
+              "translation": "project",
+              "phonetic": "proh-YEK"
+            },
+            {
+              "id": "af-opdrag",
+              "term": "opdrag",
+              "translation": "task / assignment",
+              "phonetic": "OP-drakH"
+            },
+            {
+              "id": "af-verslag",
+              "term": "verslag",
+              "translation": "report",
+              "phonetic": "fer-SLAKH"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek werk hier.",
+              "en": "I work here."
+            },
+            {
+              "t": "Wanneer is die vergadering?",
+              "en": "When is the meeting?"
+            },
+            {
+              "t": "My baas is vriendelik.",
+              "en": "My boss is friendly."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u21",
+      "title": "Unit 21: Technology & Communication",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u21-l1",
+          "title": "Phones and internet",
+          "culturalNote": "South Africans are heavy smartphone users. WhatsApp is dominant and 'selfoon' (cell phone) is widely understood.",
+          "vocab": [
+            {
+              "id": "af-selfoon",
+              "term": "selfoon",
+              "translation": "cell phone",
+              "phonetic": "SELF-fohn"
+            },
+            {
+              "id": "af-rekenaar2",
+              "term": "rekenaar",
+              "translation": "computer",
+              "phonetic": "RAY-kuh-naar"
+            },
+            {
+              "id": "af-internet",
+              "term": "internet",
+              "translation": "internet",
+              "phonetic": "IN-ter-net"
+            },
+            {
+              "id": "af-epos",
+              "term": "e-pos",
+              "translation": "email",
+              "phonetic": "EE-pos"
+            },
+            {
+              "id": "af-toepassing",
+              "term": "toepassing",
+              "translation": "app / application",
+              "phonetic": "TOO-pus-sing"
+            },
+            {
+              "id": "af-boodskap",
+              "term": "boodskap",
+              "translation": "message",
+              "phonetic": "BOHT-skap"
+            },
+            {
+              "id": "af-skakel",
+              "term": "skakel",
+              "translation": "to call / link",
+              "phonetic": "SKAH-kel"
+            },
+            {
+              "id": "af-laai-af",
+              "term": "laai af",
+              "translation": "to download",
+              "phonetic": "laa-ee UFF"
+            },
+            {
+              "id": "af-wagwoord",
+              "term": "wagwoord",
+              "translation": "password",
+              "phonetic": "VUKH-voort"
+            },
+            {
+              "id": "af-kamera",
+              "term": "kamera",
+              "translation": "camera",
+              "phonetic": "KAH-muh-ruh"
+            },
+            {
+              "id": "af-battery",
+              "term": "battery",
+              "translation": "battery",
+              "phonetic": "BAT-uh-ree"
+            },
+            {
+              "id": "af-laai-op",
+              "term": "laai op",
+              "translation": "to charge (battery)",
+              "phonetic": "laa-ee OP"
+            },
+            {
+              "id": "af-foto",
+              "term": "foto",
+              "translation": "photo",
+              "phonetic": "FOH-toh"
+            },
+            {
+              "id": "af-stuur",
+              "term": "stuur",
+              "translation": "to send",
+              "phonetic": "styhr"
+            },
+            {
+              "id": "af-data",
+              "term": "data",
+              "translation": "data / mobile data",
+              "phonetic": "DAY-tuh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Stuur vir my die boodskap.",
+              "en": "Send me the message."
+            },
+            {
+              "t": "My selfoon se battery is pap.",
+              "en": "My phone's battery is flat."
+            },
+            {
+              "t": "Wat is die wagwoord?",
+              "en": "What is the password?"
+            },
+            {
+              "t": "Ek het die foto gestuur.",
+              "en": "I sent the photo."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u22",
+      "title": "Unit 22: Sports & Hobbies",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u22-l1",
+          "title": "Sports",
+          "culturalNote": "South Africa is passionate about sport. The Springboks (rugby) are a source of national pride.",
+          "vocab": [
+            {
+              "id": "af-rugby",
+              "term": "rugby",
+              "translation": "rugby",
+              "phonetic": "RUKH-bee"
+            },
+            {
+              "id": "af-sokker",
+              "term": "sokker",
+              "translation": "soccer",
+              "phonetic": "SOK-ker"
+            },
+            {
+              "id": "af-krieket",
+              "term": "krieket",
+              "translation": "cricket",
+              "phonetic": "KREE-ket"
+            },
+            {
+              "id": "af-swem",
+              "term": "swem",
+              "translation": "to swim",
+              "phonetic": "svem"
+            },
+            {
+              "id": "af-hardloop2",
+              "term": "hardloop",
+              "translation": "to run",
+              "phonetic": "HURD-lohp"
+            },
+            {
+              "id": "af-span",
+              "term": "span",
+              "translation": "team",
+              "phonetic": "spun"
+            },
+            {
+              "id": "af-wedstryd",
+              "term": "wedstryd",
+              "translation": "match / competition",
+              "phonetic": "VET-strayt"
+            },
+            {
+              "id": "af-wen",
+              "term": "wen",
+              "translation": "to win",
+              "phonetic": "ven"
+            },
+            {
+              "id": "af-verloor",
+              "term": "verloor",
+              "translation": "to lose",
+              "phonetic": "fer-LOHR"
+            },
+            {
+              "id": "af-speel2",
+              "term": "speel",
+              "translation": "to play",
+              "phonetic": "speel"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek speel rugby.",
+              "en": "I play rugby."
+            },
+            {
+              "t": "Ons span het gewen.",
+              "en": "Our team won."
+            },
+            {
+              "t": "Ek hou van sokker.",
+              "en": "I like soccer."
+            }
+          ]
+        },
+        {
+          "id": "af-u22-l2",
+          "title": "Hobbies and free time",
+          "culturalNote": "South Africans love braais and outdoor activities. The word 'braai' is used across all languages and cultures.",
+          "vocab": [
+            {
+              "id": "af-musiek2",
+              "term": "musiek",
+              "translation": "music",
+              "phonetic": "myh-SEEK"
+            },
+            {
+              "id": "af-dans2",
+              "term": "dans",
+              "translation": "to dance",
+              "phonetic": "duns"
+            },
+            {
+              "id": "af-sing2",
+              "term": "sing",
+              "translation": "to sing",
+              "phonetic": "sing"
+            },
+            {
+              "id": "af-kook",
+              "term": "kook",
+              "translation": "to cook",
+              "phonetic": "kohk"
+            },
+            {
+              "id": "af-braai",
+              "term": "braai",
+              "translation": "barbecue / to grill",
+              "phonetic": "braa-ee"
+            },
+            {
+              "id": "af-lees2",
+              "term": "lees",
+              "translation": "to read",
+              "phonetic": "leys"
+            },
+            {
+              "id": "af-teken",
+              "term": "teken",
+              "translation": "to draw",
+              "phonetic": "TAY-ken"
+            },
+            {
+              "id": "af-reis2",
+              "term": "reis",
+              "translation": "to travel",
+              "phonetic": "rays"
+            },
+            {
+              "id": "af-kuier",
+              "term": "kuier",
+              "translation": "to visit / socialise",
+              "phonetic": "KAY-er"
+            },
+            {
+              "id": "af-televisie",
+              "term": "televisie",
+              "translation": "television",
+              "phonetic": "tey-luh-VEE-see"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek hou van musiek.",
+              "en": "I like music."
+            },
+            {
+              "t": "Ons gaan braai vanaand.",
+              "en": "We are going to braai tonight."
+            },
+            {
+              "t": "Ek kuier by my vriende.",
+              "en": "I am visiting my friends."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u23",
+      "title": "Unit 23: Emotions & Feelings",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u23-l1",
+          "title": "How you feel",
+          "culturalNote": "'Ek is lief vir jou' (I love you) is widely used between family members and close friends in Afrikaans.",
+          "vocab": [
+            {
+              "id": "af-bly2",
+              "term": "bly",
+              "translation": "happy",
+              "phonetic": "blay"
+            },
+            {
+              "id": "af-hartseer2",
+              "term": "hartseer",
+              "translation": "sad",
+              "phonetic": "HURT-seyr"
+            },
+            {
+              "id": "af-kwaad2",
+              "term": "kwaad",
+              "translation": "angry",
+              "phonetic": "kvaad"
+            },
+            {
+              "id": "af-bang2",
+              "term": "bang",
+              "translation": "scared / afraid",
+              "phonetic": "bung"
+            },
+            {
+              "id": "af-opgewonde2",
+              "term": "opgewonde",
+              "translation": "excited",
+              "phonetic": "op-khuh-VON-duh"
+            },
+            {
+              "id": "af-moeg2",
+              "term": "moeg",
+              "translation": "tired",
+              "phonetic": "moohkh"
+            },
+            {
+              "id": "af-lief",
+              "term": "lief",
+              "translation": "loving / dear",
+              "phonetic": "leef"
+            },
+            {
+              "id": "af-trots2",
+              "term": "trots",
+              "translation": "proud",
+              "phonetic": "trots"
+            },
+            {
+              "id": "af-bekommerd",
+              "term": "bekommerd",
+              "translation": "worried",
+              "phonetic": "buh-KOM-mert"
+            },
+            {
+              "id": "af-rustig2",
+              "term": "rustig",
+              "translation": "calm / relaxed",
+              "phonetic": "RUS-tikh"
+            },
+            {
+              "id": "af-verras",
+              "term": "verras",
+              "translation": "surprised",
+              "phonetic": "fer-RUS"
+            },
+            {
+              "id": "af-verlang",
+              "term": "verlang",
+              "translation": "to miss / long for",
+              "phonetic": "fer-LUNG"
+            },
+            {
+              "id": "af-geniet",
+              "term": "geniet",
+              "translation": "to enjoy",
+              "phonetic": "khuh-NEET"
+            },
+            {
+              "id": "af-liefde",
+              "term": "liefde",
+              "translation": "love (noun)",
+              "phonetic": "LEEF-duh"
+            },
+            {
+              "id": "af-hoop",
+              "term": "hoop",
+              "translation": "hope",
+              "phonetic": "hohp"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek is baie bly.",
+              "en": "I am very happy."
+            },
+            {
+              "t": "Ek is moeg.",
+              "en": "I am tired."
+            },
+            {
+              "t": "Ek is lief vir jou.",
+              "en": "I love you."
+            },
+            {
+              "t": "Ek verlang na jou.",
+              "en": "I miss you."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u24",
+      "title": "Unit 24: Nature & Environment",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u24-l1",
+          "title": "Nature",
+          "culturalNote": "South Africa has extraordinary biodiversity. Many Afrikaans nature words appear in place names across the country.",
+          "vocab": [
+            {
+              "id": "af-berg2",
+              "term": "berg",
+              "translation": "mountain",
+              "phonetic": "berkh"
+            },
+            {
+              "id": "af-see2",
+              "term": "see",
+              "translation": "sea / ocean",
+              "phonetic": "say"
+            },
+            {
+              "id": "af-rivier2",
+              "term": "rivier",
+              "translation": "river",
+              "phonetic": "rih-FEER"
+            },
+            {
+              "id": "af-strand",
+              "term": "strand",
+              "translation": "beach",
+              "phonetic": "strunt"
+            },
+            {
+              "id": "af-woud",
+              "term": "woud",
+              "translation": "forest / bush",
+              "phonetic": "vowt"
+            },
+            {
+              "id": "af-veld",
+              "term": "veld",
+              "translation": "open land / savanna",
+              "phonetic": "felt"
+            },
+            {
+              "id": "af-dier",
+              "term": "dier",
+              "translation": "animal",
+              "phonetic": "deer"
+            },
+            {
+              "id": "af-boom2",
+              "term": "boom",
+              "translation": "tree",
+              "phonetic": "bohm"
+            },
+            {
+              "id": "af-blom",
+              "term": "blom",
+              "translation": "flower",
+              "phonetic": "blom"
+            },
+            {
+              "id": "af-gras",
+              "term": "gras",
+              "translation": "grass",
+              "phonetic": "khrus"
+            },
+            {
+              "id": "af-voel2",
+              "term": "voel",
+              "translation": "bird",
+              "phonetic": "fool"
+            },
+            {
+              "id": "af-vis2",
+              "term": "vis",
+              "translation": "fish",
+              "phonetic": "fis"
+            },
+            {
+              "id": "af-leeu",
+              "term": "leeu",
+              "translation": "lion",
+              "phonetic": "LEE-oh"
+            },
+            {
+              "id": "af-olifant",
+              "term": "olifant",
+              "translation": "elephant",
+              "phonetic": "OH-lih-funt"
+            },
+            {
+              "id": "af-lug",
+              "term": "lug",
+              "translation": "air / sky",
+              "phonetic": "lukh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Die berg is mooi.",
+              "en": "The mountain is beautiful."
+            },
+            {
+              "t": "Ons gaan strand toe.",
+              "en": "We are going to the beach."
+            },
+            {
+              "t": "Ek sien 'n voel.",
+              "en": "I see a bird."
+            },
+            {
+              "t": "Die veld is groen.",
+              "en": "The veld is green."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u25",
+      "title": "Unit 25: Food & Meals",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "af-u25-l1",
+          "title": "Meals and kitchen",
+          "culturalNote": "Afrikaans cooking is rich: koeksisters, bobotie, malva pudding. The kitchen is central to many Afrikaans households.",
+          "vocab": [
+            {
+              "id": "af-kos2",
+              "term": "kos",
+              "translation": "food",
+              "phonetic": "kos"
+            },
+            {
+              "id": "af-ete",
+              "term": "ete",
+              "translation": "meal",
+              "phonetic": "AY-tuh"
+            },
+            {
+              "id": "af-ontbyt",
+              "term": "ontbyt",
+              "translation": "breakfast",
+              "phonetic": "ONT-bayt"
+            },
+            {
+              "id": "af-middagete",
+              "term": "middagete",
+              "translation": "lunch",
+              "phonetic": "MID-ukh-AY-tuh"
+            },
+            {
+              "id": "af-aandete",
+              "term": "aandete",
+              "translation": "dinner / supper",
+              "phonetic": "AAND-AY-tuh"
+            },
+            {
+              "id": "af-vleis2",
+              "term": "vleis",
+              "translation": "meat",
+              "phonetic": "flays"
+            },
+            {
+              "id": "af-hoender2",
+              "term": "hoender",
+              "translation": "chicken",
+              "phonetic": "HOON-der"
+            },
+            {
+              "id": "af-brood2",
+              "term": "brood",
+              "translation": "bread",
+              "phonetic": "broht"
+            },
+            {
+              "id": "af-melk2",
+              "term": "melk",
+              "translation": "milk",
+              "phonetic": "melk"
+            },
+            {
+              "id": "af-water2",
+              "term": "water",
+              "translation": "water",
+              "phonetic": "VAA-ter"
+            },
+            {
+              "id": "af-koffie2",
+              "term": "koffie",
+              "translation": "coffee",
+              "phonetic": "KOF-fee"
+            },
+            {
+              "id": "af-tee2",
+              "term": "tee",
+              "translation": "tea",
+              "phonetic": "tay"
+            },
+            {
+              "id": "af-sout2",
+              "term": "sout",
+              "translation": "salt",
+              "phonetic": "sowt"
+            },
+            {
+              "id": "af-peper",
+              "term": "peper",
+              "translation": "pepper",
+              "phonetic": "PAY-per"
+            },
+            {
+              "id": "af-olie",
+              "term": "olie",
+              "translation": "oil",
+              "phonetic": "OH-lee"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Wat eet ons vanaand?",
+              "en": "What are we eating tonight?"
+            },
+            {
+              "t": "Ek is honger.",
+              "en": "I am hungry."
+            },
+            {
+              "t": "Die kos ruik lekker.",
+              "en": "The food smells good."
+            },
+            {
+              "t": "Gee vir my 'n bietjie sout.",
+              "en": "Give me a little salt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u26",
+      "title": "Unit 26: Travel & Transport",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "af-u26-l1",
+          "title": "Getting around",
+          "culturalNote": "The minibus taxi industry is central to South African transport.",
+          "vocab": [
+            {
+              "id": "af-taxi",
+              "term": "taxi",
+              "translation": "taxi / minibus taxi",
+              "phonetic": "TUK-see"
+            },
+            {
+              "id": "af-bus2",
+              "term": "bus",
+              "translation": "bus",
+              "phonetic": "bus"
+            },
+            {
+              "id": "af-trein2",
+              "term": "trein",
+              "translation": "train",
+              "phonetic": "trayn"
+            },
+            {
+              "id": "af-vliegtuig2",
+              "term": "vliegtuig",
+              "translation": "aeroplane",
+              "phonetic": "FLEEKH-tayukh"
+            },
+            {
+              "id": "af-motor2",
+              "term": "motor",
+              "translation": "car",
+              "phonetic": "MOH-tor"
+            },
+            {
+              "id": "af-fiets2",
+              "term": "fiets",
+              "translation": "bicycle",
+              "phonetic": "feets"
+            },
+            {
+              "id": "af-pad2",
+              "term": "pad",
+              "translation": "road / path",
+              "phonetic": "put"
+            },
+            {
+              "id": "af-stasie2",
+              "term": "stasie",
+              "translation": "station",
+              "phonetic": "STAA-see"
+            },
+            {
+              "id": "af-lughawe2",
+              "term": "lughawe",
+              "translation": "airport",
+              "phonetic": "LUKH-haa-vuh"
+            },
+            {
+              "id": "af-kaartjie",
+              "term": "kaartjie",
+              "translation": "ticket",
+              "phonetic": "KAART-yee"
+            },
+            {
+              "id": "af-bestemming",
+              "term": "bestemming",
+              "translation": "destination",
+              "phonetic": "buh-STEM-ing"
+            },
+            {
+              "id": "af-vertrek",
+              "term": "vertrek",
+              "translation": "to depart / departure",
+              "phonetic": "fer-TREK"
+            },
+            {
+              "id": "af-aankom",
+              "term": "aankom",
+              "translation": "to arrive",
+              "phonetic": "AAN-kom"
+            },
+            {
+              "id": "af-kaart2",
+              "term": "kaart",
+              "translation": "map",
+              "phonetic": "kaart"
+            },
+            {
+              "id": "af-rigting",
+              "term": "rigting",
+              "translation": "direction",
+              "phonetic": "RIkh-ting"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Waar is die bushalte?",
+              "en": "Where is the bus stop?"
+            },
+            {
+              "t": "Ek ry met die taxi.",
+              "en": "I travel by taxi."
+            },
+            {
+              "t": "Hoe laat vertrek die trein?",
+              "en": "What time does the train leave?"
+            },
+            {
+              "t": "Ek het 'n kaartjie nodig.",
+              "en": "I need a ticket."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u27",
+      "title": "Unit 27: Community & Advanced Verbs",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u27-l1",
+          "title": "Community life",
+          "culturalNote": "Many Afrikaans-speaking communities have strong ties to church, sport clubs, and neighbourhood organisations.",
+          "vocab": [
+            {
+              "id": "af-gemeenskap",
+              "term": "gemeenskap",
+              "translation": "community",
+              "phonetic": "khuh-MEYN-skap"
+            },
+            {
+              "id": "af-kerk2",
+              "term": "kerk",
+              "translation": "church",
+              "phonetic": "kerk"
+            },
+            {
+              "id": "af-bure",
+              "term": "bure",
+              "translation": "neighbours",
+              "phonetic": "BYH-ruh"
+            },
+            {
+              "id": "af-hulp",
+              "term": "hulp",
+              "translation": "help",
+              "phonetic": "hulp"
+            },
+            {
+              "id": "af-deel",
+              "term": "deel",
+              "translation": "to share",
+              "phonetic": "deyl"
+            },
+            {
+              "id": "af-saam",
+              "term": "saam",
+              "translation": "together",
+              "phonetic": "saam"
+            },
+            {
+              "id": "af-respek",
+              "term": "respek",
+              "translation": "respect",
+              "phonetic": "reh-SPEK"
+            },
+            {
+              "id": "af-vrede",
+              "term": "vrede",
+              "translation": "peace",
+              "phonetic": "FRAY-duh"
+            },
+            {
+              "id": "af-stem",
+              "term": "stem",
+              "translation": "to vote / voice",
+              "phonetic": "stem"
+            },
+            {
+              "id": "af-reg",
+              "term": "reg",
+              "translation": "right (entitlement)",
+              "phonetic": "rekh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ons werk saam.",
+              "en": "We work together."
+            },
+            {
+              "t": "Hulp is altyd welkom.",
+              "en": "Help is always welcome."
+            },
+            {
+              "t": "Die gemeenskap is sterk.",
+              "en": "The community is strong."
+            }
+          ]
+        },
+        {
+          "id": "af-u27-l2",
+          "title": "Advanced verbs",
+          "culturalNote": "These verbs help you describe actions in more detail, useful for storytelling and natural conversation.",
+          "vocab": [
+            {
+              "id": "af-verduidelik",
+              "term": "verduidelik",
+              "translation": "to explain",
+              "phonetic": "fer-DAY-duh-lik"
+            },
+            {
+              "id": "af-besluit",
+              "term": "besluit",
+              "translation": "to decide",
+              "phonetic": "buh-SLAYT"
+            },
+            {
+              "id": "af-probeer",
+              "term": "probeer",
+              "translation": "to try",
+              "phonetic": "proh-BEYR"
+            },
+            {
+              "id": "af-vergeet",
+              "term": "vergeet",
+              "translation": "to forget",
+              "phonetic": "fer-KHEYT"
+            },
+            {
+              "id": "af-onthou",
+              "term": "onthou",
+              "translation": "to remember",
+              "phonetic": "ont-HOH"
+            },
+            {
+              "id": "af-dink",
+              "term": "dink",
+              "translation": "to think",
+              "phonetic": "dink"
+            },
+            {
+              "id": "af-glo",
+              "term": "glo",
+              "translation": "to believe",
+              "phonetic": "khloh"
+            },
+            {
+              "id": "af-wag",
+              "term": "wag",
+              "translation": "to wait",
+              "phonetic": "vukh"
+            },
+            {
+              "id": "af-sorg",
+              "term": "sorg",
+              "translation": "to care / look after",
+              "phonetic": "sorkh"
+            },
+            {
+              "id": "af-kies",
+              "term": "kies",
+              "translation": "to choose",
+              "phonetic": "kees"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ek probeer my bes.",
+              "en": "I try my best."
+            },
+            {
+              "t": "Kan jy verduidelik?",
+              "en": "Can you explain?"
+            },
+            {
+              "t": "Ek het vergeet.",
+              "en": "I forgot."
+            },
+            {
+              "t": "Onthou jy?",
+              "en": "Do you remember?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u28",
+      "title": "Unit 28: Expressions & Daily Life",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u28-l1",
+          "title": "Useful expressions",
+          "culturalNote": "These expressions are essential for polite everyday communication in Afrikaans-speaking settings.",
+          "vocab": [
+            {
+              "id": "af-asseblief2",
+              "term": "asseblief",
+              "translation": "please",
+              "phonetic": "us-suh-BLEEF"
+            },
+            {
+              "id": "af-dankie2",
+              "term": "dankie",
+              "translation": "thank you",
+              "phonetic": "DUN-kee"
+            },
+            {
+              "id": "af-ekskuus",
+              "term": "ekskuus",
+              "translation": "excuse me / sorry",
+              "phonetic": "ek-SKYHS"
+            },
+            {
+              "id": "af-lekker2",
+              "term": "lekker",
+              "translation": "nice / delicious / cool",
+              "phonetic": "LEK-ker"
+            },
+            {
+              "id": "af-eintlik",
+              "term": "eintlik",
+              "translation": "actually / really",
+              "phonetic": "AYN-tlik"
+            },
+            {
+              "id": "af-seker",
+              "term": "seker",
+              "translation": "sure / certainly",
+              "phonetic": "SAY-ker"
+            },
+            {
+              "id": "af-maar2",
+              "term": "maar",
+              "translation": "but / just / well",
+              "phonetic": "maar"
+            },
+            {
+              "id": "af-bietjie",
+              "term": "bietjie",
+              "translation": "a little bit",
+              "phonetic": "BEET-yee"
+            },
+            {
+              "id": "af-baie2",
+              "term": "baie",
+              "translation": "very / many",
+              "phonetic": "BAA-ee"
+            },
+            {
+              "id": "af-oulik",
+              "term": "oulik",
+              "translation": "cute / sweet",
+              "phonetic": "OW-lik"
+            },
+            {
+              "id": "af-slim",
+              "term": "slim",
+              "translation": "clever / smart",
+              "phonetic": "slim"
+            },
+            {
+              "id": "af-sterk",
+              "term": "sterk",
+              "translation": "strong",
+              "phonetic": "sterk"
+            },
+            {
+              "id": "af-maklik",
+              "term": "maklik",
+              "translation": "easy",
+              "phonetic": "MUK-lik"
+            },
+            {
+              "id": "af-moeilik",
+              "term": "moeilik",
+              "translation": "difficult / hard",
+              "phonetic": "MOO-ih-lik"
+            },
+            {
+              "id": "af-skielik",
+              "term": "skielik",
+              "translation": "suddenly",
+              "phonetic": "SKEE-lik"
+            },
+            {
+              "id": "af-gewoonlik",
+              "term": "gewoonlik",
+              "translation": "usually",
+              "phonetic": "khuh-VOHN-lik"
+            },
+            {
+              "id": "af-darem",
+              "term": "darem",
+              "translation": "at least / come on",
+              "phonetic": "DAH-rem"
+            },
+            {
+              "id": "af-nogal",
+              "term": "nogal",
+              "translation": "quite / rather",
+              "phonetic": "NOH-khul"
+            },
+            {
+              "id": "af-steeds",
+              "term": "steeds",
+              "translation": "still / always",
+              "phonetic": "stayts"
+            },
+            {
+              "id": "af-dus",
+              "term": "dus",
+              "translation": "so / therefore",
+              "phonetic": "dyhs"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Dis lekker warm vandag.",
+              "en": "It is nicely warm today."
+            },
+            {
+              "t": "Kan jy asseblief help?",
+              "en": "Can you please help?"
+            },
+            {
+              "t": "Dit is nogal moeilik.",
+              "en": "It is quite difficult."
+            },
+            {
+              "t": "Ek is dit steeds leer.",
+              "en": "I am still learning it."
+            },
+            {
+              "t": "Eintlik weet ek nie.",
+              "en": "Actually I don't know."
+            }
+          ]
+        },
+        {
+          "id": "af-u28-l2",
+          "title": "Time and schedule",
+          "culturalNote": "Afrikaans uses the 12-hour clock in everyday speech. 'Halftwee' means half past one (1:30), not half past two as it might seem.",
+          "vocab": [
+            {
+              "id": "af-uur2",
+              "term": "uur",
+              "translation": "hour / o'clock",
+              "phonetic": "yhr"
+            },
+            {
+              "id": "af-minuut",
+              "term": "minuut",
+              "translation": "minute",
+              "phonetic": "mih-NYHT"
+            },
+            {
+              "id": "af-oggend2",
+              "term": "oggend",
+              "translation": "morning",
+              "phonetic": "OH-khent"
+            },
+            {
+              "id": "af-middag",
+              "term": "middag",
+              "translation": "midday / afternoon",
+              "phonetic": "MID-ukh"
+            },
+            {
+              "id": "af-aand2",
+              "term": "aand",
+              "translation": "evening / night",
+              "phonetic": "aant"
+            },
+            {
+              "id": "af-gisteraand",
+              "term": "gisteraand",
+              "translation": "last night",
+              "phonetic": "KHIS-ter-aant"
+            },
+            {
+              "id": "af-vanoggend",
+              "term": "vanoggend",
+              "translation": "this morning",
+              "phonetic": "fun-OH-khent"
+            },
+            {
+              "id": "af-eergister",
+              "term": "eergister",
+              "translation": "the day before yesterday",
+              "phonetic": "EYR-khis-ter"
+            },
+            {
+              "id": "af-oormore",
+              "term": "oormore",
+              "translation": "the day after tomorrow",
+              "phonetic": "OHR-maw-ruh"
+            },
+            {
+              "id": "af-verlede",
+              "term": "verlede",
+              "translation": "past / last (week, year)",
+              "phonetic": "fer-LAY-duh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Hoe laat is dit?",
+              "en": "What time is it?"
+            },
+            {
+              "t": "Dit is tienuur die oggend.",
+              "en": "It is ten o'clock in the morning."
+            },
+            {
+              "t": "Ek sien jou more.",
+              "en": "I will see you tomorrow."
+            },
+            {
+              "t": "Verlede week was dit warm.",
+              "en": "Last week it was hot."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "af-u29",
+      "title": "Unit 29: Advanced Communication",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "af-u29-l1",
+          "title": "Describing and discussing",
+          "culturalNote": "These words let you share opinions and describe experiences - key for real conversation.",
+          "vocab": [
+            {
+              "id": "af-mening",
+              "term": "mening",
+              "translation": "opinion",
+              "phonetic": "MAY-ning"
+            },
+            {
+              "id": "af-ondervinding",
+              "term": "ondervinding",
+              "translation": "experience",
+              "phonetic": "ON-der-VIN-ding"
+            },
+            {
+              "id": "af-moontlik",
+              "term": "moontlik",
+              "translation": "possible",
+              "phonetic": "MOHNT-lik"
+            },
+            {
+              "id": "af-nodig",
+              "term": "nodig",
+              "translation": "necessary / needed",
+              "phonetic": "NOH-dikh"
+            },
+            {
+              "id": "af-sonder",
+              "term": "sonder",
+              "translation": "without",
+              "phonetic": "SON-der"
+            },
+            {
+              "id": "af-tussen",
+              "term": "tussen",
+              "translation": "between",
+              "phonetic": "TYHS-sen"
+            },
+            {
+              "id": "af-volgende",
+              "term": "volgende",
+              "translation": "next / following",
+              "phonetic": "FOL-khende"
+            },
+            {
+              "id": "af-laaste",
+              "term": "laaste",
+              "translation": "last / final",
+              "phonetic": "LAAS-tuh"
+            },
+            {
+              "id": "af-eerste",
+              "term": "eerste",
+              "translation": "first",
+              "phonetic": "EYR-stuh"
+            },
+            {
+              "id": "af-begin",
+              "term": "begin",
+              "translation": "to start / beginning",
+              "phonetic": "buh-KHIN"
+            },
+            {
+              "id": "af-eindig",
+              "term": "eindig",
+              "translation": "to end / finish",
+              "phonetic": "AYN-dikh"
+            },
+            {
+              "id": "af-verandering",
+              "term": "verandering",
+              "translation": "change",
+              "phonetic": "fer-UN-der-ing"
+            },
+            {
+              "id": "af-rede",
+              "term": "rede",
+              "translation": "reason",
+              "phonetic": "RAY-duh"
+            },
+            {
+              "id": "af-gevolg",
+              "term": "gevolg",
+              "translation": "result / consequence",
+              "phonetic": "khuh-FOLK"
+            },
+            {
+              "id": "af-doel",
+              "term": "doel",
+              "translation": "goal / aim",
+              "phonetic": "dool"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Wat is jou mening?",
+              "en": "What is your opinion?"
+            },
+            {
+              "t": "Dit is moontlik.",
+              "en": "It is possible."
+            },
+            {
+              "t": "Ek het 'n goeie ondervinding gehad.",
+              "en": "I had a good experience."
+            },
+            {
+              "t": "Wat is die rede?",
+              "en": "What is the reason?"
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
@@ -4870,6 +6713,201 @@
             "Tired",
             "Sick"
           ]
+        }
+      ]
+    },
+    {
+      "id": "af-r3",
+      "title": "By die mark (At the market)",
+      "level": "Basic Conversation",
+      "lines": [
+        {
+          "t": "Dit is Saterdag en Pieter gaan mark toe.",
+          "en": "It is Saturday and Pieter goes to the market."
+        },
+        {
+          "t": "Hy sien vars groente en vrugte.",
+          "en": "He sees fresh vegetables and fruit."
+        },
+        {
+          "t": "Hy koop appels, tamaties en uie.",
+          "en": "He buys apples, tomatoes and onions."
+        },
+        {
+          "t": "Die vrou by die stalletjie is vriendelik.",
+          "en": "The woman at the stall is friendly."
+        },
+        {
+          "t": "Sy gee vir hom gratis pietersielie.",
+          "en": "She gives him free parsley."
+        },
+        {
+          "t": "Pieter betaal R30 vir alles.",
+          "en": "Pieter pays R30 for everything."
+        },
+        {
+          "t": "Hy is bly - die mark is altyd lekker.",
+          "en": "He is happy - the market is always great."
+        },
+        {
+          "t": "Hy loop terug huis toe met sy sak.",
+          "en": "He walks back home with his bag."
+        }
+      ]
+    },
+    {
+      "id": "af-r4",
+      "title": "Skooldae (School days)",
+      "level": "Basic Conversation",
+      "lines": [
+        {
+          "t": "Amirah staan vroeg op vir skool.",
+          "en": "Amirah gets up early for school."
+        },
+        {
+          "t": "Sy eet ontbyt: brood en tee.",
+          "en": "She eats breakfast: bread and tea."
+        },
+        {
+          "t": "Haar skool begin om agtuur.",
+          "en": "Her school starts at eight o'clock."
+        },
+        {
+          "t": "Die onderwyseres is streng maar vriendelik.",
+          "en": "The teacher is strict but friendly."
+        },
+        {
+          "t": "Vandag is daar 'n wiskunde-eksamen.",
+          "en": "Today there is a maths exam."
+        },
+        {
+          "t": "Amirah het hard gestudeer.",
+          "en": "Amirah studied hard."
+        },
+        {
+          "t": "Sy glo sy sal goed doen.",
+          "en": "She believes she will do well."
+        },
+        {
+          "t": "Na skool kuier sy by haar vriende.",
+          "en": "After school she visits her friends."
+        }
+      ]
+    },
+    {
+      "id": "af-r5",
+      "title": "Die groot wedstryd (The big match)",
+      "level": "Travel",
+      "lines": [
+        {
+          "t": "Vanaand speel die groen span teen die blou span.",
+          "en": "Tonight the green team plays against the blue team."
+        },
+        {
+          "t": "Die stadion is vol mense.",
+          "en": "The stadium is full of people."
+        },
+        {
+          "t": "Almal dra hulle spankleure.",
+          "en": "Everyone wears their team colours."
+        },
+        {
+          "t": "Die wedstryd begin presies om seweuur.",
+          "en": "The match starts exactly at seven o'clock."
+        },
+        {
+          "t": "Die eerste helfte is gelyk.",
+          "en": "The first half is equal (tied)."
+        },
+        {
+          "t": "In die tweede helfte skiet die groen span 'n doel.",
+          "en": "In the second half the green team scores a goal."
+        },
+        {
+          "t": "Die skare juig luid.",
+          "en": "The crowd cheers loudly."
+        },
+        {
+          "t": "Die groen span wen. Wat 'n aand!",
+          "en": "The green team wins. What a night!"
+        }
+      ]
+    },
+    {
+      "id": "af-r6",
+      "title": "Op die strand (At the beach)",
+      "level": "Travel",
+      "lines": [
+        {
+          "t": "Die familie gaan strand toe op Nuwejaarsdag.",
+          "en": "The family goes to the beach on New Year's Day."
+        },
+        {
+          "t": "Die see is blougroen en helder.",
+          "en": "The sea is blue-green and clear."
+        },
+        {
+          "t": "Die kinders swem en bou sandkastele.",
+          "en": "The children swim and build sandcastles."
+        },
+        {
+          "t": "Pa sit onder 'n sambreel met 'n boek.",
+          "en": "Dad sits under an umbrella with a book."
+        },
+        {
+          "t": "Ma braai wors op die oop vuur.",
+          "en": "Mom grills sausages on the open fire."
+        },
+        {
+          "t": "Hulle eet almal saam op die sand.",
+          "en": "They all eat together on the sand."
+        },
+        {
+          "t": "Die son sak en die lug word oranje.",
+          "en": "The sun sets and the sky turns orange."
+        },
+        {
+          "t": "Dit was die beste dag van die vakansie.",
+          "en": "It was the best day of the holiday."
+        }
+      ]
+    },
+    {
+      "id": "af-r7",
+      "title": "Werksdag (A working day)",
+      "level": "Work",
+      "lines": [
+        {
+          "t": "Jaco werk by 'n groot maatskappy in die stad.",
+          "en": "Jaco works at a big company in the city."
+        },
+        {
+          "t": "Hy ry elke oggend met die taxi werk toe.",
+          "en": "He travels by taxi to work every morning."
+        },
+        {
+          "t": "Sy kantoor is op die vierde verdieping.",
+          "en": "His office is on the fourth floor."
+        },
+        {
+          "t": "Om negeuur begin die eerste vergadering.",
+          "en": "At nine o'clock the first meeting begins."
+        },
+        {
+          "t": "Jaco verduidelik die nuwe projek aan sy span.",
+          "en": "Jaco explains the new project to his team."
+        },
+        {
+          "t": "Die spanwerk is goed en almal werk hard.",
+          "en": "The teamwork is good and everyone works hard."
+        },
+        {
+          "t": "Om vyf uur gaan hy huis toe.",
+          "en": "At five o'clock he goes home."
+        },
+        {
+          "t": "Hy is tevrede - dit was 'n goeie dag.",
+          "en": "He is satisfied - it was a good day."
         }
       ]
     }
@@ -5163,6 +7201,356 @@
               "why": "You already got the help you needed! Thank them: 'Dankie, totsiens!'"
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "af-d2",
+      "title": "At the clinic",
+      "goal": "Describe your symptoms and follow the doctor's advice",
+      "turns": [
+        {
+          "id": "af-d2-t1",
+          "speaker": "npc",
+          "name": "Suster (Nurse)",
+          "t": "Goeiedag. Wat pla jou vandag?",
+          "en": "Good day. What is bothering you today?",
+          "next": "af-d2-t2"
+        },
+        {
+          "id": "af-d2-t2",
+          "speaker": "you",
+          "prompt": "Tell the nurse what is wrong:",
+          "options": [
+            {
+              "t": "Ek het baie hoofpyn.",
+              "en": "I have a bad headache.",
+              "ok": true,
+              "next": "af-d2-t3"
+            },
+            {
+              "t": "Ek wil iets koop.",
+              "en": "I want to buy something.",
+              "ok": false,
+              "why": "This is for a shop, not a clinic. Tell the nurse your symptom."
+            },
+            {
+              "t": "Ek is in 'n haas.",
+              "en": "I am in a hurry.",
+              "ok": false,
+              "why": "The nurse needs to know your symptom first."
+            }
+          ]
+        },
+        {
+          "id": "af-d2-t3",
+          "speaker": "npc",
+          "name": "Suster",
+          "t": "Het jy ook koors?",
+          "en": "Do you also have a fever?",
+          "next": "af-d2-t4"
+        },
+        {
+          "id": "af-d2-t4",
+          "speaker": "you",
+          "prompt": "Answer the nurse:",
+          "options": [
+            {
+              "t": "Ja, ek het koors en ek is moeg.",
+              "en": "Yes, I have a fever and I am tired.",
+              "ok": true,
+              "next": "af-d2-t5"
+            },
+            {
+              "t": "Nee, ek wil rugby speel.",
+              "en": "No, I want to play rugby.",
+              "ok": false,
+              "why": "Answer honestly about your symptoms."
+            },
+            {
+              "t": "Ek weet nie.",
+              "en": "I don't know.",
+              "ok": false,
+              "why": "Try to describe how you feel more specifically."
+            }
+          ]
+        },
+        {
+          "id": "af-d2-t5",
+          "speaker": "npc",
+          "name": "Suster",
+          "t": "Die dokter sal jou nou sien. Sit asseblief.",
+          "en": "The doctor will see you now. Please sit.",
+          "next": "af-d2-t6"
+        },
+        {
+          "id": "af-d2-t6",
+          "speaker": "npc",
+          "name": "Dokter",
+          "t": "Goeiedag. Hoe lank voel jy al so?",
+          "en": "Good day. How long have you been feeling like this?",
+          "next": "af-d2-t7"
+        },
+        {
+          "id": "af-d2-t7",
+          "speaker": "you",
+          "prompt": "Tell the doctor how long:",
+          "options": [
+            {
+              "t": "Al twee dae lank.",
+              "en": "For two days already.",
+              "ok": true,
+              "next": "af-d2-t8"
+            },
+            {
+              "t": "Ek het 'n afspraak.",
+              "en": "I have an appointment.",
+              "ok": false,
+              "why": "Answer the doctor's question about how long you have been ill."
+            },
+            {
+              "t": "More is ek beter.",
+              "en": "Tomorrow I will be better.",
+              "ok": false,
+              "why": "The doctor is asking how long you have been feeling ill."
+            }
+          ]
+        },
+        {
+          "id": "af-d2-t8",
+          "speaker": "npc",
+          "name": "Dokter",
+          "t": "Ek gee vir jou medisyne. Drink dit drie keer per dag.",
+          "en": "I am giving you medicine. Take it three times a day.",
+          "next": "end"
+        }
+      ]
+    },
+    {
+      "id": "af-d3",
+      "title": "Buying groceries",
+      "goal": "Buy items at a shop and pay correctly",
+      "turns": [
+        {
+          "id": "af-d3-t1",
+          "speaker": "npc",
+          "name": "Kassier",
+          "t": "Hallo! Kan ek jou help?",
+          "en": "Hello! Can I help you?",
+          "next": "af-d3-t2"
+        },
+        {
+          "id": "af-d3-t2",
+          "speaker": "you",
+          "prompt": "Tell the cashier what you need:",
+          "options": [
+            {
+              "t": "Ek soek brood en melk asseblief.",
+              "en": "I am looking for bread and milk please.",
+              "ok": true,
+              "next": "af-d3-t3"
+            },
+            {
+              "t": "Ek wil slaap.",
+              "en": "I want to sleep.",
+              "ok": false,
+              "why": "Tell the cashier what you need from the shop."
+            },
+            {
+              "t": "Waar is die badkamer?",
+              "en": "Where is the bathroom?",
+              "ok": false,
+              "why": "First ask for the items you need to buy."
+            }
+          ]
+        },
+        {
+          "id": "af-d3-t3",
+          "speaker": "npc",
+          "name": "Kassier",
+          "t": "Die brood is in ry drie. Die melk is by die koelkas.",
+          "en": "The bread is in aisle three. The milk is at the fridge.",
+          "next": "af-d3-t4"
+        },
+        {
+          "id": "af-d3-t4",
+          "speaker": "you",
+          "prompt": "Thank the cashier and ask the price:",
+          "options": [
+            {
+              "t": "Dankie! Hoeveel kos dit alles?",
+              "en": "Thank you! How much does it all cost?",
+              "ok": true,
+              "next": "af-d3-t5"
+            },
+            {
+              "t": "Ek hou nie van melk nie.",
+              "en": "I don't like milk.",
+              "ok": false,
+              "why": "Thank the cashier and ask how much you need to pay."
+            },
+            {
+              "t": "Totsiens!",
+              "en": "Goodbye!",
+              "ok": false,
+              "why": "You haven't bought anything yet."
+            }
+          ]
+        },
+        {
+          "id": "af-d3-t5",
+          "speaker": "npc",
+          "name": "Kassier",
+          "t": "Dit kos R45 altesaam.",
+          "en": "It costs R45 altogether.",
+          "next": "af-d3-t6"
+        },
+        {
+          "id": "af-d3-t6",
+          "speaker": "you",
+          "prompt": "Pay and ask for a bag:",
+          "options": [
+            {
+              "t": "Hier is R50. Kan ek ook 'n plastieksak kry?",
+              "en": "Here is R50. Can I also get a plastic bag?",
+              "ok": true,
+              "next": "af-d3-t7"
+            },
+            {
+              "t": "Dit is te duur!",
+              "en": "It is too expensive!",
+              "ok": false,
+              "why": "R45 is a fair price. Pay and ask for a bag."
+            },
+            {
+              "t": "Ek het vergeet my geld.",
+              "en": "I forgot my money.",
+              "ok": false,
+              "why": "Pay for your groceries."
+            }
+          ]
+        },
+        {
+          "id": "af-d3-t7",
+          "speaker": "npc",
+          "name": "Kassier",
+          "t": "Hier is jou R5 wissel. Lekker dag!",
+          "en": "Here is your R5 change. Have a nice day!",
+          "next": "end"
+        }
+      ]
+    },
+    {
+      "id": "af-d4",
+      "title": "Planning the weekend",
+      "goal": "Discuss weekend plans with a friend",
+      "turns": [
+        {
+          "id": "af-d4-t1",
+          "speaker": "npc",
+          "name": "Reza",
+          "t": "Haai! Wat maak jy die naweek?",
+          "en": "Hi! What are you doing the weekend?",
+          "next": "af-d4-t2"
+        },
+        {
+          "id": "af-d4-t2",
+          "speaker": "you",
+          "prompt": "Tell your friend your plan:",
+          "options": [
+            {
+              "t": "Ek gaan strand toe met my familie.",
+              "en": "I am going to the beach with my family.",
+              "ok": true,
+              "next": "af-d4-t3"
+            },
+            {
+              "t": "Ek gaan werk.",
+              "en": "I am going to work.",
+              "ok": false,
+              "why": "Share your fun weekend plan with your friend."
+            },
+            {
+              "t": "Ek weet nie wat is die naweek nie.",
+              "en": "I don't know what the weekend is.",
+              "ok": false,
+              "why": "Tell your friend what you plan to do."
+            }
+          ]
+        },
+        {
+          "id": "af-d4-t3",
+          "speaker": "npc",
+          "name": "Reza",
+          "t": "Sjoe, dit klink lekker! Kan ek saamkom?",
+          "en": "Wow, that sounds great! Can I come along?",
+          "next": "af-d4-t4"
+        },
+        {
+          "id": "af-d4-t4",
+          "speaker": "you",
+          "prompt": "Invite your friend:",
+          "options": [
+            {
+              "t": "Ja, natuurlik! Ons vertrek Saterdag oggend.",
+              "en": "Yes, of course! We leave Saturday morning.",
+              "ok": true,
+              "next": "af-d4-t5"
+            },
+            {
+              "t": "Nee, daar is nie plek nie.",
+              "en": "No, there is no space.",
+              "ok": false,
+              "why": "Be friendly and invite your friend along."
+            },
+            {
+              "t": "Miskien moet jy vra.",
+              "en": "Maybe you should ask.",
+              "ok": false,
+              "why": "Invite your friend warmly."
+            }
+          ]
+        },
+        {
+          "id": "af-d4-t5",
+          "speaker": "npc",
+          "name": "Reza",
+          "t": "Fantasties! Wat moet ek saambring?",
+          "en": "Fantastic! What should I bring along?",
+          "next": "af-d4-t6"
+        },
+        {
+          "id": "af-d4-t6",
+          "speaker": "you",
+          "prompt": "Tell your friend what to bring:",
+          "options": [
+            {
+              "t": "Bring 'n handdoek, sonblok en iets om te eet.",
+              "en": "Bring a towel, sunscreen and something to eat.",
+              "ok": true,
+              "next": "af-d4-t7"
+            },
+            {
+              "t": "Niks nie, jy kan net so kom.",
+              "en": "Nothing, you can just come as you are.",
+              "ok": false,
+              "why": "Suggest some practical items to bring to the beach."
+            },
+            {
+              "t": "Jou selfoon.",
+              "en": "Your phone.",
+              "ok": false,
+              "why": "Suggest useful beach items like a towel and sunscreen."
+            }
+          ]
+        },
+        {
+          "id": "af-d4-t7",
+          "speaker": "npc",
+          "name": "Reza",
+          "t": "Dankie! Tot Saterdag dan!",
+          "en": "Thank you! Until Saturday then!",
+          "next": "end"
         }
       ]
     }

@@ -4826,6 +4826,1913 @@
           ]
         }
       ]
+    },
+    {
+      "id": "zu-u12",
+      "title": "Unit 12: Health & Body",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "zu-u12-l1",
+          "title": "Body parts",
+          "culturalNote": "Health care in Zulu culture integrates both traditional healing (izinyanga) and modern medicine.",
+          "vocab": [
+            {
+              "id": "zu-ikhanda2",
+              "term": "ikhanda",
+              "translation": "head",
+              "phonetic": "ee-KHAN-dah"
+            },
+            {
+              "id": "zu-iso",
+              "term": "iso",
+              "translation": "eye",
+              "phonetic": "ee-SOH"
+            },
+            {
+              "id": "zu-indlebe2",
+              "term": "indlebe",
+              "translation": "ear",
+              "phonetic": "in-DLEH-beh"
+            },
+            {
+              "id": "zu-ikhala",
+              "term": "ikhala",
+              "translation": "nose",
+              "phonetic": "ee-KHAH-lah"
+            },
+            {
+              "id": "zu-umlomo2",
+              "term": "umlomo",
+              "translation": "mouth",
+              "phonetic": "oom-LOH-moh"
+            },
+            {
+              "id": "zu-amazinyo2",
+              "term": "amazinyo",
+              "translation": "teeth",
+              "phonetic": "ah-mah-ZEE-nyoh"
+            },
+            {
+              "id": "zu-ulimi",
+              "term": "ulimi",
+              "translation": "tongue",
+              "phonetic": "oo-LEE-mee"
+            },
+            {
+              "id": "zu-intamo",
+              "term": "intamo",
+              "translation": "neck",
+              "phonetic": "in-TAH-moh"
+            },
+            {
+              "id": "zu-igxalaba",
+              "term": "igxalaba",
+              "translation": "shoulder",
+              "phonetic": "ee-gxah-LAH-bah"
+            },
+            {
+              "id": "zu-ingalo2",
+              "term": "ingalo",
+              "translation": "arm",
+              "phonetic": "in-GAH-loh"
+            },
+            {
+              "id": "zu-isandla2",
+              "term": "isandla",
+              "translation": "hand",
+              "phonetic": "ee-SAN-dlah"
+            },
+            {
+              "id": "zu-isifuba",
+              "term": "isifuba",
+              "translation": "chest",
+              "phonetic": "ee-see-FOO-bah"
+            },
+            {
+              "id": "zu-isisu2",
+              "term": "isisu",
+              "translation": "stomach / belly",
+              "phonetic": "ee-SEE-soo"
+            },
+            {
+              "id": "zu-umlenze2",
+              "term": "umlenze",
+              "translation": "leg",
+              "phonetic": "oom-LEN-zeh"
+            },
+            {
+              "id": "zu-unyawo2",
+              "term": "unyawo",
+              "translation": "foot",
+              "phonetic": "oo-NYAH-woh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ikhanda lami libuhlungu.",
+              "en": "My head is sore."
+            },
+            {
+              "t": "Amazinyo ami amhlophe.",
+              "en": "My teeth are white."
+            },
+            {
+              "t": "Ingalo yami iqinile.",
+              "en": "My arm is strong."
+            }
+          ]
+        },
+        {
+          "id": "zu-u12-l2",
+          "title": "At the clinic",
+          "culturalNote": "Public clinics (izibhedlela) are common in townships. Zulu people also consult traditional healers called izinyanga.",
+          "vocab": [
+            {
+              "id": "zu-isibhedlela2",
+              "term": "isibhedlela",
+              "translation": "hospital / clinic",
+              "phonetic": "ee-see-bheh-DLEH-lah"
+            },
+            {
+              "id": "zu-udokotela2",
+              "term": "udokotela",
+              "translation": "doctor",
+              "phonetic": "oo-doh-koh-TEH-lah"
+            },
+            {
+              "id": "zu-umhlengikazi",
+              "term": "umhlengikazi",
+              "translation": "nurse",
+              "phonetic": "oom-hlen-gee-KAH-zee"
+            },
+            {
+              "id": "zu-umuthi2",
+              "term": "umuthi",
+              "translation": "medicine / traditional remedy",
+              "phonetic": "oo-MOO-tee"
+            },
+            {
+              "id": "zu-ukugula",
+              "term": "ukugula",
+              "translation": "to be sick",
+              "phonetic": "oo-koo-GOO-lah"
+            },
+            {
+              "id": "zu-ubuhlungu2",
+              "term": "ubuhlungu",
+              "translation": "pain",
+              "phonetic": "oo-boo-HLOO-ngoo"
+            },
+            {
+              "id": "zu-umkhuhlane",
+              "term": "umkhuhlane",
+              "translation": "cold / flu",
+              "phonetic": "oom-KHOO-hlah-neh"
+            },
+            {
+              "id": "zu-imfiva",
+              "term": "imfiva",
+              "translation": "fever",
+              "phonetic": "eem-FEE-vah"
+            },
+            {
+              "id": "zu-iyela",
+              "term": "iyela",
+              "translation": "pill / tablet",
+              "phonetic": "ee-YEH-lah"
+            },
+            {
+              "id": "zu-ukuphilisa",
+              "term": "ukuphilisa",
+              "translation": "to heal / cure",
+              "phonetic": "oo-koo-phee-LEE-sah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngigula namhlanje.",
+              "en": "I am sick today."
+            },
+            {
+              "t": "Ngidinga ukubona udokotela.",
+              "en": "I need to see a doctor."
+            },
+            {
+              "t": "Uyangizwa ubuhlungu?",
+              "en": "Do you feel pain?"
+            },
+            {
+              "t": "Umuthi uzosiza.",
+              "en": "The medicine will help."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u13",
+      "title": "Unit 13: Shopping & Commerce",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "zu-u13-l1",
+          "title": "At the market",
+          "culturalNote": "Street markets (izitolo zomthombo) are common throughout KwaZulu-Natal. Bargaining is part of the culture.",
+          "vocab": [
+            {
+              "id": "zu-isitolo2",
+              "term": "isitolo",
+              "translation": "shop / store",
+              "phonetic": "ee-see-TOH-loh"
+            },
+            {
+              "id": "zu-imali2",
+              "term": "imali",
+              "translation": "money",
+              "phonetic": "ee-MAH-lee"
+            },
+            {
+              "id": "zu-intengo2",
+              "term": "intengo",
+              "translation": "price",
+              "phonetic": "in-TEN-goh"
+            },
+            {
+              "id": "zu-ukuthenga2",
+              "term": "ukuthenga",
+              "translation": "to buy",
+              "phonetic": "oo-koo-THEN-gah"
+            },
+            {
+              "id": "zu-ukudayisa",
+              "term": "ukudayisa",
+              "translation": "to sell",
+              "phonetic": "oo-koo-dah-YEE-sah"
+            },
+            {
+              "id": "zu-ukukhokha",
+              "term": "ukukhokha",
+              "translation": "to pay",
+              "phonetic": "oo-koo-KHOH-khah"
+            },
+            {
+              "id": "zu-ukushintsha",
+              "term": "ukushintsha",
+              "translation": "to change / exchange",
+              "phonetic": "oo-koo-SHIN-tsha"
+            },
+            {
+              "id": "zu-ikheshi",
+              "term": "ikheshi",
+              "translation": "cash",
+              "phonetic": "ee-KHEH-shee"
+            },
+            {
+              "id": "zu-ikhadi",
+              "term": "ikhadi",
+              "translation": "card",
+              "phonetic": "ee-KHAH-dee"
+            },
+            {
+              "id": "zu-isikhwama",
+              "term": "isikhwama",
+              "translation": "bag / purse",
+              "phonetic": "ee-see-KHWAH-mah"
+            },
+            {
+              "id": "zu-ibhegi",
+              "term": "ibhegi",
+              "translation": "shopping bag",
+              "phonetic": "ee-BHEH-gee"
+            },
+            {
+              "id": "zu-ukubheka",
+              "term": "ukubheka",
+              "translation": "to look at / browse",
+              "phonetic": "oo-koo-BHEH-kah"
+            },
+            {
+              "id": "zu-isaphulelo",
+              "term": "isaphulelo",
+              "translation": "discount",
+              "phonetic": "ee-sah-phoo-LEH-loh"
+            },
+            {
+              "id": "zu-ukufuna2",
+              "term": "ukufuna",
+              "translation": "to want / look for",
+              "phonetic": "oo-koo-FOO-nah"
+            },
+            {
+              "id": "zu-ukudinga",
+              "term": "ukudinga",
+              "translation": "to need",
+              "phonetic": "oo-koo-DING-gah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngifuna ukuthenga ukudla.",
+              "en": "I want to buy food."
+            },
+            {
+              "t": "Intengo ingakanani?",
+              "en": "What is the price?"
+            },
+            {
+              "t": "Ngingakhokha ngekhadi?",
+              "en": "Can I pay by card?"
+            },
+            {
+              "t": "Isaphulelo sikhona?",
+              "en": "Is there a discount?"
+            }
+          ]
+        },
+        {
+          "id": "zu-u13-l2",
+          "title": "Clothing and shopping",
+          "culturalNote": "Traditional Zulu clothing like izigege (beaded skirts) is worn during ceremonies while modern fashion is popular in cities.",
+          "vocab": [
+            {
+              "id": "zu-izingubo",
+              "term": "izingubo",
+              "translation": "clothes",
+              "phonetic": "ee-zin-GOO-boh"
+            },
+            {
+              "id": "zu-ibhantshi",
+              "term": "ibhantshi",
+              "translation": "jacket / coat",
+              "phonetic": "ee-BHAN-tshee"
+            },
+            {
+              "id": "zu-isikibha",
+              "term": "isikibha",
+              "translation": "shirt",
+              "phonetic": "ee-see-KEE-bah"
+            },
+            {
+              "id": "zu-ibhulukwe2",
+              "term": "ibhulukwe",
+              "translation": "trousers / pants",
+              "phonetic": "ee-BHOO-loo-kweh"
+            },
+            {
+              "id": "zu-isidwaba",
+              "term": "isidwaba",
+              "translation": "traditional skirt (Zulu women)",
+              "phonetic": "ee-see-DWAH-bah"
+            },
+            {
+              "id": "zu-isicathulo",
+              "term": "isicathulo",
+              "translation": "shoe",
+              "phonetic": "ee-see-KAH-thoo-loh"
+            },
+            {
+              "id": "zu-isigqoko2",
+              "term": "isigqoko",
+              "translation": "hat",
+              "phonetic": "ee-see-GQOH-koh"
+            },
+            {
+              "id": "zu-amabhande",
+              "term": "amabhande",
+              "translation": "belt / straps",
+              "phonetic": "ah-mah-BHAHN-deh"
+            },
+            {
+              "id": "zu-ubungako",
+              "term": "ubungako",
+              "translation": "size",
+              "phonetic": "oo-boon-GAH-koh"
+            },
+            {
+              "id": "zu-umbala2",
+              "term": "umbala",
+              "translation": "colour",
+              "phonetic": "oom-BAH-lah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngifuna isikibha esimhlophe.",
+              "en": "I want a white shirt."
+            },
+            {
+              "t": "Ubungako bami buyi-medium.",
+              "en": "My size is medium."
+            },
+            {
+              "t": "Lombala uyasithanda?",
+              "en": "Do you like this colour?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u14",
+      "title": "Unit 14: Education & Work",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "zu-u14-l1",
+          "title": "At school and university",
+          "culturalNote": "Education is highly valued in Zulu culture. The phrase 'Imfundo ingcebo' means 'Education is wealth'.",
+          "vocab": [
+            {
+              "id": "zu-isikole2",
+              "term": "isikole",
+              "translation": "school",
+              "phonetic": "ee-see-KOH-leh"
+            },
+            {
+              "id": "zu-inyuvesi",
+              "term": "inyuvesi",
+              "translation": "university",
+              "phonetic": "in-yoo-VEH-see"
+            },
+            {
+              "id": "zu-utitshala",
+              "term": "utitshala",
+              "translation": "teacher",
+              "phonetic": "oo-tit-SHAH-lah"
+            },
+            {
+              "id": "zu-umfundi2",
+              "term": "umfundi",
+              "translation": "student / learner",
+              "phonetic": "oom-FOON-dee"
+            },
+            {
+              "id": "zu-ibhuku",
+              "term": "ibhuku",
+              "translation": "book",
+              "phonetic": "ee-BHOO-koo"
+            },
+            {
+              "id": "zu-iphepha",
+              "term": "iphepha",
+              "translation": "paper / page",
+              "phonetic": "ee-PHEH-phah"
+            },
+            {
+              "id": "zu-ukubhala2",
+              "term": "ukubhala",
+              "translation": "to write",
+              "phonetic": "oo-koo-BHAH-lah"
+            },
+            {
+              "id": "zu-ukufunda2",
+              "term": "ukufunda",
+              "translation": "to study / learn",
+              "phonetic": "oo-koo-FOON-dah"
+            },
+            {
+              "id": "zu-ukufundisa",
+              "term": "ukufundisa",
+              "translation": "to teach",
+              "phonetic": "oo-koo-foon-DEE-sah"
+            },
+            {
+              "id": "zu-isifundo",
+              "term": "isifundo",
+              "translation": "lesson / subject",
+              "phonetic": "ee-see-FOON-doh"
+            },
+            {
+              "id": "zu-uhlelo",
+              "term": "uhlelo",
+              "translation": "plan / programme / curriculum",
+              "phonetic": "oo-HLEH-loh"
+            },
+            {
+              "id": "zu-ukuphasa",
+              "term": "ukuphasa",
+              "translation": "to pass (exam)",
+              "phonetic": "oo-koo-PHAH-sah"
+            },
+            {
+              "id": "zu-isigidi",
+              "term": "isigidi",
+              "translation": "examination",
+              "phonetic": "ee-see-GEE-dee"
+            },
+            {
+              "id": "zu-ingxoxo",
+              "term": "ingxoxo",
+              "translation": "discussion / conversation",
+              "phonetic": "in-GXOH-xoh"
+            },
+            {
+              "id": "zu-ulwazi2",
+              "term": "ulwazi",
+              "translation": "knowledge",
+              "phonetic": "ool-WAH-zee"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngifunda esikoleni.",
+              "en": "I study at school."
+            },
+            {
+              "t": "Ngifuna ukuphasa.",
+              "en": "I want to pass."
+            },
+            {
+              "t": "Imfundo ingcebo enkulu.",
+              "en": "Education is great wealth."
+            },
+            {
+              "t": "Utitshala usifundisa kahle.",
+              "en": "The teacher teaches us well."
+            }
+          ]
+        },
+        {
+          "id": "zu-u14-l2",
+          "title": "Work and career",
+          "culturalNote": "Employment in urban areas is often in contrast to rural Zulu life. Many travel to cities seeking work.",
+          "vocab": [
+            {
+              "id": "zu-umsebenzi2",
+              "term": "umsebenzi",
+              "translation": "work / job / worker",
+              "phonetic": "oom-seh-BEN-zee"
+            },
+            {
+              "id": "zu-ihovisi",
+              "term": "ihovisi",
+              "translation": "office",
+              "phonetic": "ee-hoh-VEE-see"
+            },
+            {
+              "id": "zu-inkampani",
+              "term": "inkampani",
+              "translation": "company",
+              "phonetic": "in-KAM-pah-nee"
+            },
+            {
+              "id": "zu-umphathi",
+              "term": "umphathi",
+              "translation": "manager / director",
+              "phonetic": "oom-PHAH-tee"
+            },
+            {
+              "id": "zu-iholo",
+              "term": "iholo",
+              "translation": "salary / wage",
+              "phonetic": "ee-HOH-loh"
+            },
+            {
+              "id": "zu-isikhathi2",
+              "term": "isikhathi",
+              "translation": "time",
+              "phonetic": "ee-see-KHAH-tee"
+            },
+            {
+              "id": "zu-ukusebenza2",
+              "term": "ukusebenza",
+              "translation": "to work",
+              "phonetic": "oo-koo-seh-BEN-zah"
+            },
+            {
+              "id": "zu-umhlangano",
+              "term": "umhlangano",
+              "translation": "meeting",
+              "phonetic": "oom-hlah-NGAH-noh"
+            },
+            {
+              "id": "zu-iprojekthi",
+              "term": "iprojekthi",
+              "translation": "project",
+              "phonetic": "ee-proh-JEK-tee"
+            },
+            {
+              "id": "zu-ikhefu",
+              "term": "ikhefu",
+              "translation": "break / leave",
+              "phonetic": "ee-KHEH-foo"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngisebenza ehovisi.",
+              "en": "I work in the office."
+            },
+            {
+              "t": "Umhlangano uqala ngomsitho.",
+              "en": "The meeting starts at nine."
+            },
+            {
+              "t": "Iholo lami likhulu.",
+              "en": "My salary is good."
+            },
+            {
+              "t": "Ngidinga ikhefu.",
+              "en": "I need a break."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u15",
+      "title": "Unit 15: Technology & Communication",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "zu-u15-l1",
+          "title": "Technology",
+          "culturalNote": "South Africa has rapidly adopted mobile technology. Zulu youth are among the most active users of social media on the continent.",
+          "vocab": [
+            {
+              "id": "zu-ikhompyutha",
+              "term": "ikhompyutha",
+              "translation": "computer",
+              "phonetic": "ee-khom-PYOO-tah"
+            },
+            {
+              "id": "zu-iselula2",
+              "term": "iselula",
+              "translation": "cell phone",
+              "phonetic": "ee-seh-LOO-lah"
+            },
+            {
+              "id": "zu-i-inthanethi",
+              "term": "i-inthanethi",
+              "translation": "internet",
+              "phonetic": "ee-in-tha-NEH-tee"
+            },
+            {
+              "id": "zu-i-imeyili",
+              "term": "i-imeyili",
+              "translation": "email",
+              "phonetic": "ee-ee-meh-YEE-lee"
+            },
+            {
+              "id": "zu-i-app",
+              "term": "i-app",
+              "translation": "app / application",
+              "phonetic": "ee-AP"
+            },
+            {
+              "id": "zu-idatha",
+              "term": "idatha",
+              "translation": "data",
+              "phonetic": "ee-DAH-tah"
+            },
+            {
+              "id": "zu-ukudawuniloda",
+              "term": "ukudawuniloda",
+              "translation": "to download",
+              "phonetic": "oo-koo-dah-woo-nee-LOH-dah"
+            },
+            {
+              "id": "zu-ukushayela",
+              "term": "ukushayela",
+              "translation": "to call (phone)",
+              "phonetic": "oo-koo-shah-YEH-lah"
+            },
+            {
+              "id": "zu-umlayezo",
+              "term": "umlayezo",
+              "translation": "message",
+              "phonetic": "oom-lah-YEH-zoh"
+            },
+            {
+              "id": "zu-ividiya",
+              "term": "ividiya",
+              "translation": "video",
+              "phonetic": "ee-vee-DEE-yah"
+            },
+            {
+              "id": "zu-isithombe2",
+              "term": "isithombe",
+              "translation": "photo / picture",
+              "phonetic": "ee-see-THOM-beh"
+            },
+            {
+              "id": "zu-ukuthayipha",
+              "term": "ukuthayipha",
+              "translation": "to type",
+              "phonetic": "oo-koo-THAH-ee-phah"
+            },
+            {
+              "id": "zu-ukuseva",
+              "term": "ukuseva",
+              "translation": "to save (file)",
+              "phonetic": "oo-koo-SEH-vah"
+            },
+            {
+              "id": "zu-ukuprinta",
+              "term": "ukuprinta",
+              "translation": "to print",
+              "phonetic": "oo-koo-PRIN-tah"
+            },
+            {
+              "id": "zu-iphoyinti",
+              "term": "iphoyinti yomsindo",
+              "translation": "speaker / sound point",
+              "phonetic": "ee-PHOY-in-tee yom-SIN-doh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngidinga idatha.",
+              "en": "I need data."
+            },
+            {
+              "t": "Thumela umlayezo.",
+              "en": "Send a message."
+            },
+            {
+              "t": "I-imeyili ayisebenzanga.",
+              "en": "The email did not work."
+            },
+            {
+              "t": "Dawuniloda i-app.",
+              "en": "Download the app."
+            }
+          ]
+        },
+        {
+          "id": "zu-u15-l2",
+          "title": "Social media and communication",
+          "culturalNote": "WhatsApp is the dominant messaging platform in South Africa. Groups are used for family and community coordination.",
+          "vocab": [
+            {
+              "id": "zu-imithiya",
+              "term": "imithiya yezokukhuluma",
+              "translation": "social media",
+              "phonetic": "ee-mee-THEE-yah yeh-zoh-koo-KHOO-loo-mah"
+            },
+            {
+              "id": "zu-ukuxhumana",
+              "term": "ukuxhumana",
+              "translation": "to communicate / connect",
+              "phonetic": "oo-koo-xhoo-MAH-nah"
+            },
+            {
+              "id": "zu-usaziwayo",
+              "term": "usaziwayo",
+              "translation": "celebrity / well-known person",
+              "phonetic": "oo-sah-zee-WAH-yoh"
+            },
+            {
+              "id": "zu-umphakathi2",
+              "term": "umphakathi",
+              "translation": "public / community",
+              "phonetic": "oom-phah-KAH-tee"
+            },
+            {
+              "id": "zu-izindaba",
+              "term": "izindaba",
+              "translation": "news",
+              "phonetic": "ee-zin-DAH-bah"
+            },
+            {
+              "id": "zu-izindabazwe",
+              "term": "izindabazwe",
+              "translation": "world news / newspapers",
+              "phonetic": "ee-zin-dah-BAH-zweh"
+            },
+            {
+              "id": "zu-ukwabelana",
+              "term": "ukwabelana",
+              "translation": "to share",
+              "phonetic": "oo-kwah-beh-LAH-nah"
+            },
+            {
+              "id": "zu-ukukhomenta",
+              "term": "ukukhomenta",
+              "translation": "to comment",
+              "phonetic": "oo-koo-khoh-MEN-tah"
+            },
+            {
+              "id": "zu-i-layiki",
+              "term": "i-layiki",
+              "translation": "like (social media)",
+              "phonetic": "ee-LAH-ee-kee"
+            },
+            {
+              "id": "zu-ithimba",
+              "term": "ithimba",
+              "translation": "group / team",
+              "phonetic": "ee-THIM-bah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Sawubona, ngifuna ukukhuluma nawe.",
+              "en": "Hello, I want to speak with you."
+            },
+            {
+              "t": "Wabelana nami lenkomba.",
+              "en": "Share this link with me."
+            },
+            {
+              "t": "Ithimba lethu lihlangana nsuku zonke.",
+              "en": "Our group meets every day."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u16",
+      "title": "Unit 16: Sports & Hobbies",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "zu-u16-l1",
+          "title": "Sports",
+          "culturalNote": "Soccer is South Africa's most popular sport. The Bafana Bafana (national team) and Orlando Pirates are beloved clubs.",
+          "vocab": [
+            {
+              "id": "zu-ibhola2",
+              "term": "ibhola",
+              "translation": "ball / soccer",
+              "phonetic": "ee-BHOH-lah"
+            },
+            {
+              "id": "zu-ikrikethi",
+              "term": "ikrikethi",
+              "translation": "cricket",
+              "phonetic": "ee-kree-KEH-tee"
+            },
+            {
+              "id": "zu-irugby",
+              "term": "irugby",
+              "translation": "rugby",
+              "phonetic": "ee-RUG-bee"
+            },
+            {
+              "id": "zu-ukugijima2",
+              "term": "ukugijima",
+              "translation": "to run",
+              "phonetic": "oo-koo-gee-JEE-mah"
+            },
+            {
+              "id": "zu-ukudlala2",
+              "term": "ukudlala",
+              "translation": "to play",
+              "phonetic": "oo-koo-DLAH-lah"
+            },
+            {
+              "id": "zu-iqembu",
+              "term": "iqembu",
+              "translation": "team",
+              "phonetic": "ee-QEM-boo"
+            },
+            {
+              "id": "zu-umgwebo",
+              "term": "umgwebo",
+              "translation": "judge / referee",
+              "phonetic": "oom-GWEH-boh"
+            },
+            {
+              "id": "zu-ukuwina",
+              "term": "ukuwina",
+              "translation": "to win",
+              "phonetic": "oo-koo-WEE-nah"
+            },
+            {
+              "id": "zu-ukunqoba",
+              "term": "ukunqoba",
+              "translation": "to conquer / defeat",
+              "phonetic": "oo-koo-NQOH-bah"
+            },
+            {
+              "id": "zu-inkundla",
+              "term": "inkundla",
+              "translation": "field / court / grounds",
+              "phonetic": "in-KOON-dlah"
+            },
+            {
+              "id": "zu-ukuzulazula",
+              "term": "ukuzulazula",
+              "translation": "to wander / explore on foot",
+              "phonetic": "oo-koo-zoo-lah-ZOO-lah"
+            },
+            {
+              "id": "zu-ukubhukuda",
+              "term": "ukubhukuda",
+              "translation": "to swim",
+              "phonetic": "oo-koo-BHOO-koo-dah"
+            },
+            {
+              "id": "zu-isilwane",
+              "term": "isilwane",
+              "translation": "animal / wild animal",
+              "phonetic": "ee-see-LWAH-neh"
+            },
+            {
+              "id": "zu-inkamba",
+              "term": "inkamba",
+              "translation": "camping / tent",
+              "phonetic": "in-KAM-bah"
+            },
+            {
+              "id": "zu-ukunamathela",
+              "term": "ukunamathela",
+              "translation": "to support / stick with",
+              "phonetic": "oo-koo-nah-mah-THEH-lah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngidlala ibhola.",
+              "en": "I play soccer."
+            },
+            {
+              "t": "Iqembu lethu liwine.",
+              "en": "Our team won."
+            },
+            {
+              "t": "Inkundla izimele kahle.",
+              "en": "The field looks good."
+            },
+            {
+              "t": "Ngithanda ukubhukuda.",
+              "en": "I like to swim."
+            }
+          ]
+        },
+        {
+          "id": "zu-u16-l2",
+          "title": "Music and arts",
+          "culturalNote": "Music is central to Zulu tradition. Isicathamiya (a cappella) and maskandi music are uniquely Zulu art forms.",
+          "vocab": [
+            {
+              "id": "zu-umculo2",
+              "term": "umculo",
+              "translation": "music",
+              "phonetic": "oom-KOO-loh"
+            },
+            {
+              "id": "zu-ukugida",
+              "term": "ukugida",
+              "translation": "to dance (traditional)",
+              "phonetic": "oo-koo-GEE-dah"
+            },
+            {
+              "id": "zu-ukucula2",
+              "term": "ukucula",
+              "translation": "to sing",
+              "phonetic": "oo-koo-KOO-lah"
+            },
+            {
+              "id": "zu-umgwaqo2",
+              "term": "umgwaqo",
+              "translation": "beat / rhythm / road",
+              "phonetic": "oom-GWAH-qoh"
+            },
+            {
+              "id": "zu-ingoma",
+              "term": "ingoma",
+              "translation": "song",
+              "phonetic": "in-GOH-mah"
+            },
+            {
+              "id": "zu-inkonzane",
+              "term": "inkonzane",
+              "translation": "musical instrument",
+              "phonetic": "in-kon-ZAH-neh"
+            },
+            {
+              "id": "zu-ubuciko",
+              "term": "ubuciko",
+              "translation": "art / craft / skill",
+              "phonetic": "oo-boo-SEE-koh"
+            },
+            {
+              "id": "zu-ukuchwayita",
+              "term": "ukuchwayita",
+              "translation": "to act / perform",
+              "phonetic": "oo-koo-chwah-YEE-tah"
+            },
+            {
+              "id": "zu-ibhande",
+              "term": "ibhande",
+              "translation": "band / group",
+              "phonetic": "ee-BHAHN-deh"
+            },
+            {
+              "id": "zu-umshazo",
+              "term": "umshazo",
+              "translation": "drawing / sketch",
+              "phonetic": "oom-SHAH-zoh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Isiqu sami singumculo.",
+              "en": "My thing is music."
+            },
+            {
+              "t": "Ngifuna ukugida namhlanje.",
+              "en": "I want to dance today."
+            },
+            {
+              "t": "Ingoma yakhe iyamthokozisa.",
+              "en": "Her song makes her happy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u17",
+      "title": "Unit 17: Nature & Environment",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "zu-u17-l1",
+          "title": "Nature and landscape",
+          "culturalNote": "KwaZulu-Natal is famous for its game reserves like Hluhluwe and Kruger Park, as well as the Drakensberg mountains.",
+          "vocab": [
+            {
+              "id": "zu-intaba2",
+              "term": "intaba",
+              "translation": "mountain",
+              "phonetic": "in-TAH-bah"
+            },
+            {
+              "id": "zu-umfula2",
+              "term": "umfula",
+              "translation": "river",
+              "phonetic": "oom-FOO-lah"
+            },
+            {
+              "id": "zu-ulwandle2",
+              "term": "ulwandle",
+              "translation": "ocean / sea",
+              "phonetic": "ool-WAHN-dleh"
+            },
+            {
+              "id": "zu-ihlathi2",
+              "term": "ihlathi",
+              "translation": "forest / bush",
+              "phonetic": "ee-HLAH-tee"
+            },
+            {
+              "id": "zu-ilanga2",
+              "term": "ilanga",
+              "translation": "sun",
+              "phonetic": "ee-LAHN-gah"
+            },
+            {
+              "id": "zu-umoya2",
+              "term": "umoya",
+              "translation": "wind / air",
+              "phonetic": "oo-MOH-yah"
+            },
+            {
+              "id": "zu-imvula2",
+              "term": "imvula",
+              "translation": "rain",
+              "phonetic": "eem-VOO-lah"
+            },
+            {
+              "id": "zu-izinkanyezi",
+              "term": "izinkanyezi",
+              "translation": "stars",
+              "phonetic": "ee-zin-kah-NYEH-zee"
+            },
+            {
+              "id": "zu-inyanga2",
+              "term": "inyanga",
+              "translation": "moon / month",
+              "phonetic": "in-NYAH-ngah"
+            },
+            {
+              "id": "zu-ifu",
+              "term": "ifu",
+              "translation": "cloud",
+              "phonetic": "ee-FOO"
+            },
+            {
+              "id": "zu-ukushisa2",
+              "term": "ukushisa",
+              "translation": "to be hot / burn",
+              "phonetic": "oo-koo-SHEE-sah"
+            },
+            {
+              "id": "zu-ukubanda2",
+              "term": "ukubanda",
+              "translation": "to be cold",
+              "phonetic": "oo-koo-BAHN-dah"
+            },
+            {
+              "id": "zu-insimu",
+              "term": "insimu",
+              "translation": "field / garden plot",
+              "phonetic": "in-SEE-moo"
+            },
+            {
+              "id": "zu-isihlahla2",
+              "term": "isihlahla",
+              "translation": "tree / shrub",
+              "phonetic": "ee-see-HLAH-hlah"
+            },
+            {
+              "id": "zu-isithombo",
+              "term": "isithombo",
+              "translation": "plant",
+              "phonetic": "ee-see-THOM-boh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Intaba izimele ngenhle.",
+              "en": "The mountain looks beautiful."
+            },
+            {
+              "t": "Imvula eyile namhlanje.",
+              "en": "It rained today."
+            },
+            {
+              "t": "Izinkanyezi ziyakhanya ebusuku.",
+              "en": "Stars shine at night."
+            },
+            {
+              "t": "Umoya ubanda kakhulu.",
+              "en": "The wind is very cold."
+            }
+          ]
+        },
+        {
+          "id": "zu-u17-l2",
+          "title": "Animals of KwaZulu-Natal",
+          "culturalNote": "The Big Five game animals are central to South African wildlife tourism. Zulu names for animals often describe their characteristics.",
+          "vocab": [
+            {
+              "id": "zu-ibhubesi",
+              "term": "ibhubesi",
+              "translation": "lion",
+              "phonetic": "ee-BHOO-beh-see"
+            },
+            {
+              "id": "zu-indlovu2",
+              "term": "indlovu",
+              "translation": "elephant",
+              "phonetic": "in-DLOV-oo"
+            },
+            {
+              "id": "zu-umkhumbi2",
+              "term": "umkhumbi",
+              "translation": "hippo",
+              "phonetic": "oom-KHOOM-bee"
+            },
+            {
+              "id": "zu-ingwenya",
+              "term": "ingwenya",
+              "translation": "crocodile",
+              "phonetic": "in-GWEN-yah"
+            },
+            {
+              "id": "zu-ingwe",
+              "term": "ingwe",
+              "translation": "leopard",
+              "phonetic": "in-GWEH"
+            },
+            {
+              "id": "zu-ubhejane",
+              "term": "ubhejane",
+              "translation": "rhinoceros",
+              "phonetic": "oo-BHEH-jah-neh"
+            },
+            {
+              "id": "zu-inyathi",
+              "term": "inyathi",
+              "translation": "buffalo",
+              "phonetic": "in-NYAH-tee"
+            },
+            {
+              "id": "zu-indluzele",
+              "term": "indluzele",
+              "translation": "cheetah",
+              "phonetic": "in-dloo-ZEH-leh"
+            },
+            {
+              "id": "zu-inkosi-wezilwane",
+              "term": "inkosi yezilwane",
+              "translation": "king of animals (lion)",
+              "phonetic": "in-KOH-see yeh-zee-LWAH-neh"
+            },
+            {
+              "id": "zu-isivande",
+              "term": "isivande",
+              "translation": "game reserve / wildlife park",
+              "phonetic": "ee-see-VAHN-deh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ibhubesi liyinkosi yezilwane.",
+              "en": "The lion is the king of animals."
+            },
+            {
+              "t": "Siya esivandeni namhlanje.",
+              "en": "We are going to the game reserve today."
+            },
+            {
+              "t": "Indlovu inamandla.",
+              "en": "The elephant is strong."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u18",
+      "title": "Unit 18: Culture & Society",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "zu-u18-l1",
+          "title": "Traditions and ceremonies",
+          "culturalNote": "Umemulo (coming of age), umabo (bride wealth ceremony) and ulwaluko (initiation) are core Zulu rites of passage.",
+          "vocab": [
+            {
+              "id": "zu-umemulo",
+              "term": "umemulo",
+              "translation": "coming of age celebration (women)",
+              "phonetic": "oo-meh-MOO-loh"
+            },
+            {
+              "id": "zu-umkhosi",
+              "term": "umkhosi",
+              "translation": "ceremony / celebration",
+              "phonetic": "oom-KHOH-see"
+            },
+            {
+              "id": "zu-umshado",
+              "term": "umshado",
+              "translation": "wedding",
+              "phonetic": "oom-SHAH-doh"
+            },
+            {
+              "id": "zu-ilobolo",
+              "term": "ilobolo",
+              "translation": "bride wealth / dowry",
+              "phonetic": "ee-loh-BOH-loh"
+            },
+            {
+              "id": "zu-amasiko",
+              "term": "amasiko",
+              "translation": "customs / traditions",
+              "phonetic": "ah-mah-SEE-koh"
+            },
+            {
+              "id": "zu-amadlozi",
+              "term": "amadlozi",
+              "translation": "ancestors",
+              "phonetic": "ah-mah-DLOH-zee"
+            },
+            {
+              "id": "zu-isigodi",
+              "term": "isigodi",
+              "translation": "community / village section",
+              "phonetic": "ee-see-GOH-dee"
+            },
+            {
+              "id": "zu-inkosi2",
+              "term": "inkosi",
+              "translation": "chief / king / lord",
+              "phonetic": "in-KOH-see"
+            },
+            {
+              "id": "zu-umndeni2",
+              "term": "umndeni",
+              "translation": "family",
+              "phonetic": "oom-NDEH-nee"
+            },
+            {
+              "id": "zu-ubukhosi",
+              "term": "ubukhosi",
+              "translation": "royalty / chieftainship",
+              "phonetic": "oo-boo-KHOH-see"
+            },
+            {
+              "id": "zu-impi",
+              "term": "impi",
+              "translation": "regiment / warrior group",
+              "phonetic": "eem-PEE"
+            },
+            {
+              "id": "zu-iklwa",
+              "term": "iklwa",
+              "translation": "Zulu short spear",
+              "phonetic": "ee-KLWAH"
+            },
+            {
+              "id": "zu-isigqi",
+              "term": "isigqi",
+              "translation": "rhythm / beat (traditional)",
+              "phonetic": "ee-see-GQEE"
+            },
+            {
+              "id": "zu-isibhuda",
+              "term": "isibhuda",
+              "translation": "shield",
+              "phonetic": "ee-see-BHOO-dah"
+            },
+            {
+              "id": "zu-umlungu",
+              "term": "umlungu",
+              "translation": "white person (informal)",
+              "phonetic": "oom-LOON-goo"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Umshado uzoba ngoMgqibelo.",
+              "en": "The wedding will be on Saturday."
+            },
+            {
+              "t": "Amasiko ethu abalulekile.",
+              "en": "Our customs are important."
+            },
+            {
+              "t": "Amadlozi ayasikhusela.",
+              "en": "The ancestors protect us."
+            },
+            {
+              "t": "Ilobolo likhokhelwa ngaphambi komshado.",
+              "en": "Bride wealth is paid before the wedding."
+            }
+          ]
+        },
+        {
+          "id": "zu-u18-l2",
+          "title": "Advanced expressions",
+          "culturalNote": "These proverbs and advanced expressions reflect deep Zulu wisdom and communal values.",
+          "vocab": [
+            {
+              "id": "zu-ubuntu2",
+              "term": "ubuntu",
+              "translation": "humanity / compassion",
+              "phonetic": "oo-BOON-too"
+            },
+            {
+              "id": "zu-ubulungiswa",
+              "term": "ubulungiswa",
+              "translation": "justice",
+              "phonetic": "oo-boo-loon-GEE-swah"
+            },
+            {
+              "id": "zu-inkululeko2",
+              "term": "inkululeko",
+              "translation": "freedom",
+              "phonetic": "in-koo-loo-LEH-koh"
+            },
+            {
+              "id": "zu-ithemba",
+              "term": "ithemba",
+              "translation": "hope",
+              "phonetic": "ee-THEM-bah"
+            },
+            {
+              "id": "zu-isizwe",
+              "term": "isizwe",
+              "translation": "nation / people",
+              "phonetic": "ee-SEE-zweh"
+            },
+            {
+              "id": "zu-umuntu2",
+              "term": "umuntu",
+              "translation": "person",
+              "phonetic": "oo-MOON-too"
+            },
+            {
+              "id": "zu-abantu2",
+              "term": "abantu",
+              "translation": "people",
+              "phonetic": "ah-BAHN-too"
+            },
+            {
+              "id": "zu-inhlonipho",
+              "term": "inhlonipho",
+              "translation": "respect",
+              "phonetic": "in-HLOH-nee-phoh"
+            },
+            {
+              "id": "zu-ukukhula2",
+              "term": "ukukhula",
+              "translation": "to grow up / develop",
+              "phonetic": "oo-koo-KHOO-lah"
+            },
+            {
+              "id": "zu-ukwethemba",
+              "term": "ukwethemba",
+              "translation": "to trust / to hope",
+              "phonetic": "oo-kweh-THEM-bah"
+            },
+            {
+              "id": "zu-ubuhle",
+              "term": "ubuhle",
+              "translation": "beauty",
+              "phonetic": "oo-BHOO-hleh"
+            },
+            {
+              "id": "zu-ukuthula2",
+              "term": "ukuthula",
+              "translation": "to be quiet / be peaceful",
+              "phonetic": "oo-koo-THOO-lah"
+            },
+            {
+              "id": "zu-ukunyamezela2",
+              "term": "ukunyamezela",
+              "translation": "to be patient / persevere",
+              "phonetic": "oo-koo-nyah-meh-ZEH-lah"
+            },
+            {
+              "id": "zu-ukuzimisela",
+              "term": "ukuzimisela",
+              "translation": "to be determined / dedicated",
+              "phonetic": "oo-koo-zee-mee-SEH-lah"
+            },
+            {
+              "id": "zu-isifundiswa",
+              "term": "isifundiswa",
+              "translation": "scholar / learned person",
+              "phonetic": "ee-see-foon-DEE-swah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ubuntu: Umuntu ngumuntu ngabantu.",
+              "en": "Ubuntu: A person is a person through other people."
+            },
+            {
+              "t": "Ithemba alilahli.",
+              "en": "Hope does not disappoint."
+            },
+            {
+              "t": "Inhlonipho yisona sekhelo.",
+              "en": "Respect is the foundation."
+            },
+            {
+              "t": "Isizwe sethu sinamandla.",
+              "en": "Our nation is strong."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u19",
+      "title": "Unit 19: Food & Meals",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "zu-u19-l1",
+          "title": "Zulu food culture",
+          "culturalNote": "Umngqusho (samp and beans) and uphuthu (stiff maize porridge) are staple Zulu foods. Meals are shared family events.",
+          "vocab": [
+            {
+              "id": "zu-umngqusho",
+              "term": "umngqusho",
+              "translation": "samp and beans",
+              "phonetic": "oom-NGQOO-shoh"
+            },
+            {
+              "id": "zu-uphuthu",
+              "term": "uphuthu",
+              "translation": "stiff maize porridge",
+              "phonetic": "oo-PHOO-too"
+            },
+            {
+              "id": "zu-inyama2",
+              "term": "inyama",
+              "translation": "meat",
+              "phonetic": "in-NYAH-mah"
+            },
+            {
+              "id": "zu-izambane2",
+              "term": "izambane",
+              "translation": "potato",
+              "phonetic": "ee-ZAM-bah-neh"
+            },
+            {
+              "id": "zu-isiphuzo2",
+              "term": "isiphuzo",
+              "translation": "drink / beverage",
+              "phonetic": "ee-see-PHOO-zoh"
+            },
+            {
+              "id": "zu-amanzi2",
+              "term": "amanzi",
+              "translation": "water",
+              "phonetic": "ah-MAHN-zee"
+            },
+            {
+              "id": "zu-ubisi2",
+              "term": "ubisi",
+              "translation": "milk",
+              "phonetic": "oo-BEE-see"
+            },
+            {
+              "id": "zu-itiye2",
+              "term": "itiye",
+              "translation": "tea",
+              "phonetic": "ee-TEE-yeh"
+            },
+            {
+              "id": "zu-ikhofhi",
+              "term": "ikhofhi",
+              "translation": "coffee",
+              "phonetic": "ee-KHOH-fee"
+            },
+            {
+              "id": "zu-inanasi",
+              "term": "inanasi",
+              "translation": "pineapple",
+              "phonetic": "ee-nah-NAH-see"
+            },
+            {
+              "id": "zu-iapula",
+              "term": "iapula",
+              "translation": "apple",
+              "phonetic": "ee-AH-poo-lah"
+            },
+            {
+              "id": "zu-ihlazu",
+              "term": "ihlazu",
+              "translation": "watermelon",
+              "phonetic": "ee-HLAH-zoo"
+            },
+            {
+              "id": "zu-ithanga",
+              "term": "ithanga",
+              "translation": "pumpkin",
+              "phonetic": "ee-THAN-gah"
+            },
+            {
+              "id": "zu-umhluzi",
+              "term": "umhluzi",
+              "translation": "gravy / sauce",
+              "phonetic": "oom-HLOO-zee"
+            },
+            {
+              "id": "zu-ukupheka2",
+              "term": "ukupheka",
+              "translation": "to cook",
+              "phonetic": "oo-koo-PHEH-kah"
+            },
+            {
+              "id": "zu-ukudla3",
+              "term": "ukudla",
+              "translation": "to eat",
+              "phonetic": "oo-koo-DLAH"
+            },
+            {
+              "id": "zu-ukuphuzwa",
+              "term": "ukuphuza",
+              "translation": "to drink",
+              "phonetic": "oo-koo-PHOO-zah"
+            },
+            {
+              "id": "zu-umlilo",
+              "term": "umlilo",
+              "translation": "fire",
+              "phonetic": "oom-LEE-loh"
+            },
+            {
+              "id": "zu-iphaneya",
+              "term": "iphaneya",
+              "translation": "frying pan",
+              "phonetic": "ee-phah-NEH-yah"
+            },
+            {
+              "id": "zu-isithelo",
+              "term": "isithelo",
+              "translation": "fruit",
+              "phonetic": "ee-see-THEH-loh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngidinga uphuthu.",
+              "en": "I need maize porridge."
+            },
+            {
+              "t": "Sidla umngqusho namhlanje.",
+              "en": "We eat samp and beans today."
+            },
+            {
+              "t": "Ukupheka kuyajabulisa.",
+              "en": "Cooking is enjoyable."
+            },
+            {
+              "t": "Itiye liyashisa.",
+              "en": "The tea is hot."
+            },
+            {
+              "t": "Ngifuna amanzi.",
+              "en": "I want water."
+            }
+          ]
+        },
+        {
+          "id": "zu-u19-l2",
+          "title": "Meals and restaurant",
+          "culturalNote": "Braai (barbecue) culture is shared across all South African communities. Zulu families often cook outside on weekends.",
+          "vocab": [
+            {
+              "id": "zu-idili",
+              "term": "idili",
+              "translation": "meal / dinner",
+              "phonetic": "ee-DEE-lee"
+            },
+            {
+              "id": "zu-ukudla-kwasekuseni",
+              "term": "ukudla kwasekuseni",
+              "translation": "breakfast",
+              "phonetic": "oo-koo-DLAH kwah-seh-KOO-seh-nee"
+            },
+            {
+              "id": "zu-ukudla-kwasemini",
+              "term": "ukudla kwasemini",
+              "translation": "lunch",
+              "phonetic": "oo-koo-DLAH kwah-seh-MEE-nee"
+            },
+            {
+              "id": "zu-ukudla-kwantambama",
+              "term": "ukudla kwantambama",
+              "translation": "supper / dinner",
+              "phonetic": "oo-koo-DLAH kwahn-tam-BAH-mah"
+            },
+            {
+              "id": "zu-irestawuranti",
+              "term": "irestawuranti",
+              "translation": "restaurant",
+              "phonetic": "ee-reh-stah-woo-RAHN-tee"
+            },
+            {
+              "id": "zu-imenyu",
+              "term": "imenyu",
+              "translation": "menu",
+              "phonetic": "ee-MEN-yoo"
+            },
+            {
+              "id": "zu-umpheki2",
+              "term": "umpheki",
+              "translation": "cook / chef",
+              "phonetic": "oom-PHEH-kee"
+            },
+            {
+              "id": "zu-usizo2",
+              "term": "usizo",
+              "translation": "waiter / service",
+              "phonetic": "oo-SEE-zoh"
+            },
+            {
+              "id": "zu-isikhwama-sokukhokha",
+              "term": "isikhwama sokukhokha",
+              "translation": "wallet / payment bag",
+              "phonetic": "ee-see-KHWAH-mah soh-koo-KHOH-khah"
+            },
+            {
+              "id": "zu-irisidi",
+              "term": "irisidi",
+              "translation": "receipt",
+              "phonetic": "ee-ree-SEE-dee"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngifuna imentyu.",
+              "en": "I want the menu."
+            },
+            {
+              "t": "Sidla ngobunane.",
+              "en": "We eat at eight."
+            },
+            {
+              "t": "Irestawuranti lihle.",
+              "en": "The restaurant is nice."
+            },
+            {
+              "t": "Ngidinga irisidi.",
+              "en": "I need a receipt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zu-u20",
+      "title": "Unit 20: Travel & Transport",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "zu-u20-l1",
+          "title": "Transport",
+          "culturalNote": "Minibus taxis (izithuthuthu) are the most common form of public transport in Zulu-speaking areas, with their own call phrases.",
+          "vocab": [
+            {
+              "id": "zu-ibhasi2",
+              "term": "ibhasi",
+              "translation": "bus",
+              "phonetic": "ee-BHAH-see"
+            },
+            {
+              "id": "zu-ithekisi",
+              "term": "ithekisi",
+              "translation": "taxi",
+              "phonetic": "ee-THEH-kee-see"
+            },
+            {
+              "id": "zu-imoto2",
+              "term": "imoto",
+              "translation": "car",
+              "phonetic": "ee-MOH-toh"
+            },
+            {
+              "id": "zu-isitimela2",
+              "term": "isitimela",
+              "translation": "train",
+              "phonetic": "ee-see-tee-MEH-lah"
+            },
+            {
+              "id": "zu-inqola",
+              "term": "inqola",
+              "translation": "wagon / cart",
+              "phonetic": "in-QOHL-ah"
+            },
+            {
+              "id": "zu-ibhayisikili2",
+              "term": "ibhayisikili",
+              "translation": "bicycle",
+              "phonetic": "ee-BHAH-yee-see-kee-lee"
+            },
+            {
+              "id": "zu-ukuhamba2",
+              "term": "ukuhamba",
+              "translation": "to go / travel",
+              "phonetic": "oo-koo-HAM-bah"
+            },
+            {
+              "id": "zu-ukufika2",
+              "term": "ukufika",
+              "translation": "to arrive",
+              "phonetic": "oo-koo-FEE-kah"
+            },
+            {
+              "id": "zu-isikhundla2",
+              "term": "isikhundla",
+              "translation": "station / stop",
+              "phonetic": "ee-see-KHOON-dlah"
+            },
+            {
+              "id": "zu-umgwaqo3",
+              "term": "umgwaqo",
+              "translation": "road / street",
+              "phonetic": "oom-GWAH-qoh"
+            },
+            {
+              "id": "zu-indlela2",
+              "term": "indlela",
+              "translation": "way / path",
+              "phonetic": "in-DLEH-lah"
+            },
+            {
+              "id": "zu-ekunxele",
+              "term": "ekunxele",
+              "translation": "on the left",
+              "phonetic": "eh-koon-XHEH-leh"
+            },
+            {
+              "id": "zu-ekwesokudla",
+              "term": "ekwesokudla",
+              "translation": "on the right",
+              "phonetic": "eh-kweh-soh-KOO-dlah"
+            },
+            {
+              "id": "zu-phambili2",
+              "term": "phambili",
+              "translation": "ahead / forward",
+              "phonetic": "pham-BEE-lee"
+            },
+            {
+              "id": "zu-emuva2",
+              "term": "emuva",
+              "translation": "behind / back",
+              "phonetic": "eh-MOO-vah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ngithatha ithekisi.",
+              "en": "I take the taxi."
+            },
+            {
+              "t": "Isitimela sifika nini?",
+              "en": "When does the train arrive?"
+            },
+            {
+              "t": "Phenduka ekunxele.",
+              "en": "Turn left."
+            },
+            {
+              "t": "Umgwaqo ukhona phambili.",
+              "en": "The road is ahead."
+            }
+          ]
+        },
+        {
+          "id": "zu-u20-l2",
+          "title": "At the airport and travel",
+          "culturalNote": "King Shaka International Airport serves KwaZulu-Natal. Many Zulu people travel between rural homesteads and urban areas.",
+          "vocab": [
+            {
+              "id": "zu-inqwaba",
+              "term": "inqwaba",
+              "translation": "airplane",
+              "phonetic": "in-QWAH-bah"
+            },
+            {
+              "id": "zu-isixwayiso",
+              "term": "isixwayiso",
+              "translation": "passport / document",
+              "phonetic": "ee-see-hwah-YEE-soh"
+            },
+            {
+              "id": "zu-ithikithi2",
+              "term": "ithikithi",
+              "translation": "ticket",
+              "phonetic": "ee-THEE-kee-tee"
+            },
+            {
+              "id": "zu-isamba",
+              "term": "isamba",
+              "translation": "luggage / bags",
+              "phonetic": "ee-SAM-bah"
+            },
+            {
+              "id": "zu-ukubhalisela",
+              "term": "ukubhalisela",
+              "translation": "to check in / register",
+              "phonetic": "oo-koo-BHAH-lee-seh-lah"
+            },
+            {
+              "id": "zu-isikhala2",
+              "term": "isikhala",
+              "translation": "seat / space",
+              "phonetic": "ee-see-KHAH-lah"
+            },
+            {
+              "id": "zu-ukuphuma2",
+              "term": "ukuphuma",
+              "translation": "to leave / exit",
+              "phonetic": "oo-koo-PHOO-mah"
+            },
+            {
+              "id": "zu-ukungena",
+              "term": "ukungena",
+              "translation": "to enter",
+              "phonetic": "oo-koo-NGEH-nah"
+            },
+            {
+              "id": "zu-izwe2",
+              "term": "izwe",
+              "translation": "country / land",
+              "phonetic": "ee-ZWEH"
+            },
+            {
+              "id": "zu-ihovisi-lezokungena",
+              "term": "ihovisi lezokungena",
+              "translation": "immigration office",
+              "phonetic": "ee-hoh-VEE-see leh-zoh-koo-NGEH-nah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ithikithi lami lisekhona.",
+              "en": "My ticket is here."
+            },
+            {
+              "t": "Ngifuna ukubhalisela.",
+              "en": "I want to check in."
+            },
+            {
+              "t": "Inqwaba ihamba nini?",
+              "en": "When does the plane depart?"
+            },
+            {
+              "t": "Ngifika kuleli zwe.",
+              "en": "I arrive in this country."
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
@@ -5018,6 +6925,99 @@
             "I am happy"
           ],
           "vocabId": "zu-ngilambile"
+        }
+      ]
+    },
+    {
+      "id": "zu-r4",
+      "title": "Uhambo Lwami (My Journey)",
+      "level": "Travel",
+      "lines": [
+        {
+          "t": "Ngihamba njalo ngisondela edolobheni.",
+          "en": "I travel regularly to the city."
+        },
+        {
+          "t": "Ngithatha ibhasi ekuseni.",
+          "en": "I take the bus in the morning."
+        },
+        {
+          "t": "Ihambo lithatha ihora elilodwa.",
+          "en": "The journey takes one hour."
+        },
+        {
+          "t": "Ngifika esikhundleni somsebenzi ekuseni.",
+          "en": "I arrive at work in the morning."
+        },
+        {
+          "t": "Ngemuva komsebenzi, ngibuya ekhaya.",
+          "en": "After work, I return home."
+        },
+        {
+          "t": "Umndeni wami uyangithokozela.",
+          "en": "My family welcomes me."
+        },
+        {
+          "t": "Sidla ndawonye ntambama.",
+          "en": "We eat together in the afternoon."
+        }
+      ]
+    },
+    {
+      "id": "zu-r5",
+      "title": "Izilwane Zasezweni (Animals of the Land)",
+      "level": "Family",
+      "lines": [
+        {
+          "t": "Isivande sinazo izilwane ezinazo.",
+          "en": "The game reserve has many animals."
+        },
+        {
+          "t": "Ibhubesi liyinkosi yezilwane.",
+          "en": "The lion is the king of animals."
+        },
+        {
+          "t": "Indlovu inamandla amakhulu.",
+          "en": "The elephant has great strength."
+        },
+        {
+          "t": "Izilwane zihlala emathunzini.",
+          "en": "Animals rest in the shade."
+        },
+        {
+          "t": "Abantu bayathanda ukubheka izilwane.",
+          "en": "People enjoy watching animals."
+        },
+        {
+          "t": "Isivande isikhusela izilwane.",
+          "en": "The reserve protects the animals."
+        }
+      ]
+    },
+    {
+      "id": "zu-r6",
+      "title": "Umuntu Omuhle (A Good Person)",
+      "level": "Family",
+      "lines": [
+        {
+          "t": "Umuntu omuhle uhlonipha abanye.",
+          "en": "A good person respects others."
+        },
+        {
+          "t": "Uyasiza lapho kudingekile.",
+          "en": "He/she helps where needed."
+        },
+        {
+          "t": "Inhlonipho isikhuthaza.",
+          "en": "Respect encourages us."
+        },
+        {
+          "t": "Ubuntu buyasifundisa ukubana abantu.",
+          "en": "Ubuntu teaches us to be human."
+        },
+        {
+          "t": "Lapho kukhona ubuntu, kukhona injabulo.",
+          "en": "Where there is ubuntu, there is joy."
         }
       ]
     }
@@ -5446,6 +7446,100 @@
               "why": "'I'm hungry' isn't a goodbye. 'Sala kahle' is how you take your leave."
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "zu-d2",
+      "title": "Emtholampilo (At the clinic)",
+      "goal": "Practice asking for medical help in Zulu",
+      "turns": [
+        {
+          "id": "zu-d2-t1",
+          "speaker": "npc",
+          "name": "Umhlengikazi",
+          "t": "Sawubona. Ngingakusiza ngani namhlanje?",
+          "en": "Hello. How can I help you today?",
+          "next": "zu-d2-t2"
+        },
+        {
+          "id": "zu-d2-t2",
+          "speaker": "you",
+          "name": "Wena",
+          "t": "Ngigula. Ikhanda lami libuhlungu.",
+          "en": "I am sick. My head is sore.",
+          "next": "zu-d2-t3",
+          "options": [
+            {
+              "t": "Ngigula. Ikhanda lami libuhlungu.",
+              "en": "I am sick. My head hurts.",
+              "ok": true,
+              "why": "Correct way to describe headache.",
+              "next": "zu-d2-t3"
+            },
+            {
+              "t": "Ngifuna ukudla.",
+              "en": "I want to eat.",
+              "ok": false,
+              "why": "This means you want to eat, not report illness.",
+              "next": "zu-d2-t3"
+            }
+          ]
+        },
+        {
+          "id": "zu-d2-t3",
+          "speaker": "npc",
+          "name": "Umhlengikazi",
+          "t": "Kulungile. Uzobona udokotela manje.",
+          "en": "Alright. You will see the doctor now.",
+          "next": "end"
+        }
+      ]
+    },
+    {
+      "id": "zu-d3",
+      "title": "Isitolo Sakwamanqindi (At the tuck shop)",
+      "goal": "Practice buying items at a local shop",
+      "turns": [
+        {
+          "id": "zu-d3-t1",
+          "speaker": "npc",
+          "name": "Umninisitolo",
+          "t": "Sawubona! Ufunani namhlanje?",
+          "en": "Hello! What do you want today?",
+          "next": "zu-d3-t2"
+        },
+        {
+          "id": "zu-d3-t2",
+          "speaker": "you",
+          "name": "Wena",
+          "t": "Ngifuna irothi nekhekhe.",
+          "en": "I want bread and a cake.",
+          "next": "zu-d3-t3",
+          "options": [
+            {
+              "t": "Ngifuna irothi nekhekhe.",
+              "en": "I want bread and cake.",
+              "ok": true,
+              "why": "Correct order statement.",
+              "next": "zu-d3-t3"
+            },
+            {
+              "t": "Ngidinga ukuthenga izingubo.",
+              "en": "I need to buy clothes.",
+              "ok": false,
+              "why": "This is about clothes, not food.",
+              "next": "zu-d3-t3"
+            }
+          ]
+        },
+        {
+          "id": "zu-d3-t3",
+          "speaker": "npc",
+          "name": "Umninisitolo",
+          "t": "Kulungile. Uzokhokhela lapha.",
+          "en": "Alright. You'll pay here.",
+          "next": "end"
         }
       ]
     }

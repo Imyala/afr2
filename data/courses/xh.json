@@ -4101,6 +4101,2162 @@
           ]
         }
       ]
+    },
+    {
+      "id": "xh-u11",
+      "title": "Unit 11: Health & Body",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "xh-u11-l1",
+          "title": "Parts of the body",
+          "culturalNote": "Knowing body part vocabulary helps you describe illness to a health worker. In isiXhosa, body terms often use the prefix 'in-', 'im-', or 'i-'.",
+          "vocab": [
+            {
+              "id": "xh-intloko2",
+              "term": "intloko",
+              "translation": "head",
+              "phonetic": "in-TLOH-koh"
+            },
+            {
+              "id": "xh-iliso",
+              "term": "iliso",
+              "translation": "eye",
+              "phonetic": "ee-LEE-soh"
+            },
+            {
+              "id": "xh-indlebe2",
+              "term": "indlebe",
+              "translation": "ear",
+              "phonetic": "in-DLEH-beh"
+            },
+            {
+              "id": "xh-impumlo",
+              "term": "impumlo",
+              "translation": "nose",
+              "phonetic": "im-POOM-loh"
+            },
+            {
+              "id": "xh-umlomo2",
+              "term": "umlomo",
+              "translation": "mouth",
+              "phonetic": "oom-LOH-moh"
+            },
+            {
+              "id": "xh-amazinyo2",
+              "term": "amazinyo",
+              "translation": "teeth",
+              "phonetic": "ah-mah-ZEE-nyoh"
+            },
+            {
+              "id": "xh-intamo",
+              "term": "intamo",
+              "translation": "neck",
+              "phonetic": "in-TAH-moh"
+            },
+            {
+              "id": "xh-igxa",
+              "term": "igxa",
+              "translation": "shoulder",
+              "phonetic": "ee-GXA"
+            },
+            {
+              "id": "xh-ingalo2",
+              "term": "ingalo",
+              "translation": "arm",
+              "phonetic": "in-GAH-loh"
+            },
+            {
+              "id": "xh-isandla2",
+              "term": "isandla",
+              "translation": "hand",
+              "phonetic": "ee-SAND-lah"
+            },
+            {
+              "id": "xh-umlenze2",
+              "term": "umlenze",
+              "translation": "leg",
+              "phonetic": "oom-LEN-zeh"
+            },
+            {
+              "id": "xh-unyawo2",
+              "term": "unyawo",
+              "translation": "foot",
+              "phonetic": "oo-NYAH-woh"
+            },
+            {
+              "id": "xh-umqolo2",
+              "term": "umqolo",
+              "translation": "back",
+              "phonetic": "oom-QOH-loh"
+            },
+            {
+              "id": "xh-isisu2",
+              "term": "isisu",
+              "translation": "stomach",
+              "phonetic": "ee-SEE-soo"
+            },
+            {
+              "id": "xh-intliziyo",
+              "term": "intliziyo",
+              "translation": "heart",
+              "phonetic": "in-tlee-ZEE-yoh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Intloko yam ibuhlungu.",
+              "en": "My head hurts."
+            },
+            {
+              "t": "Isandla sam sibuhlungu.",
+              "en": "My hand is painful."
+            },
+            {
+              "t": "Ndinebuhlungu emqolo.",
+              "en": "I have pain in my back."
+            }
+          ]
+        },
+        {
+          "id": "xh-u11-l2",
+          "title": "Sickness and health",
+          "culturalNote": "The public health system in the Eastern Cape uses isiXhosa widely. Knowing how to describe symptoms is essential.",
+          "vocab": [
+            {
+              "id": "xh-ukugula",
+              "term": "ukugula",
+              "translation": "to be sick",
+              "phonetic": "oo-koo-GOO-lah"
+            },
+            {
+              "id": "xh-ubuhlungu",
+              "term": "ubuhlungu",
+              "translation": "pain",
+              "phonetic": "oo-boo-HLOO-ngoo"
+            },
+            {
+              "id": "xh-umkhuhlane",
+              "term": "umkhuhlane",
+              "translation": "cold / flu",
+              "phonetic": "oom-khoo-HLAH-neh"
+            },
+            {
+              "id": "xh-ihudo",
+              "term": "ihudo",
+              "translation": "diarrhoea",
+              "phonetic": "ee-HOO-doh"
+            },
+            {
+              "id": "xh-iyeza",
+              "term": "iyeza",
+              "translation": "medicine",
+              "phonetic": "ee-YEH-zah"
+            },
+            {
+              "id": "xh-ugqirha",
+              "term": "ugqirha",
+              "translation": "doctor",
+              "phonetic": "oo-GQEER-hah"
+            },
+            {
+              "id": "xh-isibhedlele2",
+              "term": "isibhedlele",
+              "translation": "hospital",
+              "phonetic": "ee-see-BHED-leh-leh"
+            },
+            {
+              "id": "xh-ikliniki",
+              "term": "ikliniki",
+              "translation": "clinic",
+              "phonetic": "ee-klee-NEE-kee"
+            },
+            {
+              "id": "xh-impilo",
+              "term": "impilo",
+              "translation": "health / life",
+              "phonetic": "im-PEE-loh"
+            },
+            {
+              "id": "xh-ukopha",
+              "term": "ukopha",
+              "translation": "to bleed",
+              "phonetic": "oo-KOH-phah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndiyagula.",
+              "en": "I am sick."
+            },
+            {
+              "t": "Ndifuna iyeza.",
+              "en": "I need medicine."
+            },
+            {
+              "t": "Ugqirha uphi?",
+              "en": "Where is the doctor?"
+            },
+            {
+              "t": "Ndifuna ukuya esibhedlele.",
+              "en": "I need to go to the hospital."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u12",
+      "title": "Unit 12: Shopping & Money",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "xh-u12-l1",
+          "title": "At the shop",
+          "culturalNote": "Spaza shops are small community stores found throughout townships. In isiXhosa-speaking areas, they are central to daily life.",
+          "vocab": [
+            {
+              "id": "xh-ivenkile2",
+              "term": "ivenkile",
+              "translation": "shop / store",
+              "phonetic": "ee-ven-KEE-leh"
+            },
+            {
+              "id": "xh-imali2",
+              "term": "imali",
+              "translation": "money",
+              "phonetic": "ee-MAH-lee"
+            },
+            {
+              "id": "xh-ixabiso",
+              "term": "ixabiso",
+              "translation": "price",
+              "phonetic": "ee-hah-BEE-soh"
+            },
+            {
+              "id": "xh-ukuthenga2",
+              "term": "ukuthenga",
+              "translation": "to buy",
+              "phonetic": "oo-koo-THEN-gah"
+            },
+            {
+              "id": "xh-thengisa",
+              "term": "ukuthengisa",
+              "translation": "to sell",
+              "phonetic": "oo-koo-then-GEE-sah"
+            },
+            {
+              "id": "xh-irand",
+              "term": "irand",
+              "translation": "rand (currency)",
+              "phonetic": "ee-RAND"
+            },
+            {
+              "id": "xh-nzima",
+              "term": "ibiza kakhulu",
+              "translation": "expensive",
+              "phonetic": "ee-BEE-zah kah-KHOO-loo"
+            },
+            {
+              "id": "xh-yoyo",
+              "term": "yoyo",
+              "translation": "one rand coin",
+              "phonetic": "YOH-yoh"
+            },
+            {
+              "id": "xh-cashier-xh",
+              "term": "ikashiya",
+              "translation": "cashier",
+              "phonetic": "ee-kah-SHEE-yah"
+            },
+            {
+              "id": "xh-isikhwama",
+              "term": "isikhwama",
+              "translation": "bag",
+              "phonetic": "ee-see-KHWAH-mah"
+            },
+            {
+              "id": "xh-isigqibo",
+              "term": "irisiti",
+              "translation": "receipt",
+              "phonetic": "ee-ree-SEE-tee"
+            },
+            {
+              "id": "xh-ukulanda",
+              "term": "ukulanda",
+              "translation": "to fetch / collect",
+              "phonetic": "oo-koo-LAN-dah"
+            },
+            {
+              "id": "xh-ubuncinci",
+              "term": "ubuncinci",
+              "translation": "minimum / small amount",
+              "phonetic": "oo-boon-ZEEN-zee"
+            },
+            {
+              "id": "xh-intsenti",
+              "term": "intsenti",
+              "translation": "cent",
+              "phonetic": "in-TSEN-tee"
+            },
+            {
+              "id": "xh-ukuhlawula",
+              "term": "ukuhlawula",
+              "translation": "to pay",
+              "phonetic": "oo-koo-hlah-WOO-lah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ixabiso liphakame kangakanani?",
+              "en": "How much does it cost?"
+            },
+            {
+              "t": "Ndifuna ukuthenga isonka.",
+              "en": "I want to buy bread."
+            },
+            {
+              "t": "Ndifuna ukulanda imali.",
+              "en": "I need to collect money."
+            },
+            {
+              "t": "Ungandiphe irisiti?",
+              "en": "Can you give me a receipt?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u13",
+      "title": "Unit 13: Education & Work",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "xh-u13-l1",
+          "title": "At school",
+          "culturalNote": "Education is highly valued in Xhosa culture. Nelson Mandela himself emphasised the importance of learning in his famous quote about education.",
+          "vocab": [
+            {
+              "id": "xh-isikolo2",
+              "term": "isikolo",
+              "translation": "school",
+              "phonetic": "ee-see-KOH-loh"
+            },
+            {
+              "id": "xh-iklasi",
+              "term": "iklasi",
+              "translation": "class / classroom",
+              "phonetic": "ee-KLAH-see"
+            },
+            {
+              "id": "xh-utitshala",
+              "term": "utitshala",
+              "translation": "teacher",
+              "phonetic": "oo-teet-SHAH-lah"
+            },
+            {
+              "id": "xh-umfundi",
+              "term": "umfundi",
+              "translation": "student / learner",
+              "phonetic": "oom-FOON-dee"
+            },
+            {
+              "id": "xh-incwadi",
+              "term": "incwadi",
+              "translation": "book / letter",
+              "phonetic": "in-CHWAH-dee"
+            },
+            {
+              "id": "xh-usiba",
+              "term": "usiba",
+              "translation": "pen",
+              "phonetic": "oo-SEE-bah"
+            },
+            {
+              "id": "xh-ipensile",
+              "term": "ipensile",
+              "translation": "pencil",
+              "phonetic": "ee-pen-SEE-leh"
+            },
+            {
+              "id": "xh-uvavanyo",
+              "term": "uvavanyo",
+              "translation": "exam / test",
+              "phonetic": "oo-vah-VAH-nyoh"
+            },
+            {
+              "id": "xh-umsebenzi-kwa",
+              "term": "umsebenzi wasekhaya",
+              "translation": "homework",
+              "phonetic": "oom-seh-BEN-zee wah-seh-KAH-yah"
+            },
+            {
+              "id": "xh-ulwimi",
+              "term": "ulwimi",
+              "translation": "language",
+              "phonetic": "oo-LWEE-mee"
+            },
+            {
+              "id": "xh-ukufunda2",
+              "term": "ukufunda",
+              "translation": "to learn / to study",
+              "phonetic": "oo-koo-FOON-dah"
+            },
+            {
+              "id": "xh-ukuqonda",
+              "term": "ukuqonda",
+              "translation": "to understand",
+              "phonetic": "oo-koo-QOHN-dah"
+            },
+            {
+              "id": "xh-ukubuza",
+              "term": "ukubuza",
+              "translation": "to ask",
+              "phonetic": "oo-koo-BOO-zah"
+            },
+            {
+              "id": "xh-impendulo",
+              "term": "impendulo",
+              "translation": "answer / reply",
+              "phonetic": "im-pen-DOO-loh"
+            },
+            {
+              "id": "xh-umbuzo",
+              "term": "umbuzo",
+              "translation": "question",
+              "phonetic": "oom-BOO-zoh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Andiqondi.",
+              "en": "I don't understand."
+            },
+            {
+              "t": "Ungaphinda?",
+              "en": "Can you repeat?"
+            },
+            {
+              "t": "Uvavanyo lusasa.",
+              "en": "The exam is tomorrow."
+            },
+            {
+              "t": "Ndifunda isiXhosa.",
+              "en": "I am learning isiXhosa."
+            }
+          ]
+        },
+        {
+          "id": "xh-u13-l2",
+          "title": "Work and jobs",
+          "culturalNote": "Job titles in isiXhosa often blend traditional Xhosa words with loanwords from English and Afrikaans.",
+          "vocab": [
+            {
+              "id": "xh-umsebenzi",
+              "term": "umsebenzi",
+              "translation": "work / job",
+              "phonetic": "oom-seh-BEN-zee"
+            },
+            {
+              "id": "xh-iofisi",
+              "term": "iofisi",
+              "translation": "office",
+              "phonetic": "ee-oh-FEE-see"
+            },
+            {
+              "id": "xh-umphathi",
+              "term": "umphathi",
+              "translation": "boss / manager",
+              "phonetic": "oom-PHAH-tee"
+            },
+            {
+              "id": "xh-isimemo",
+              "term": "isimemo",
+              "translation": "meeting",
+              "phonetic": "ee-see-MEH-moh"
+            },
+            {
+              "id": "xh-umvuzo",
+              "term": "umvuzo",
+              "translation": "salary / wages",
+              "phonetic": "oom-VOO-zoh"
+            },
+            {
+              "id": "xh-iholide",
+              "term": "iholide",
+              "translation": "holiday / leave",
+              "phonetic": "ee-hoh-LEE-deh"
+            },
+            {
+              "id": "xh-iprojekthi",
+              "term": "iprojekthi",
+              "translation": "project",
+              "phonetic": "ee-proh-JEK-tee"
+            },
+            {
+              "id": "xh-ingxelo",
+              "term": "ingxelo",
+              "translation": "report",
+              "phonetic": "in-GXE-loh"
+            },
+            {
+              "id": "xh-ukusebenza2",
+              "term": "ukusebenza",
+              "translation": "to work",
+              "phonetic": "oo-koo-seh-BEN-zah"
+            },
+            {
+              "id": "xh-inkampani",
+              "term": "inkampani",
+              "translation": "company",
+              "phonetic": "in-kam-PAH-nee"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndisebenza apha.",
+              "en": "I work here."
+            },
+            {
+              "t": "Isimemo sini?",
+              "en": "When is the meeting?"
+            },
+            {
+              "t": "Umphathi wam unobubele.",
+              "en": "My boss is kind."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u14",
+      "title": "Unit 14: Transport & Travel",
+      "level": "Travel",
+      "lessons": [
+        {
+          "id": "xh-u14-l1",
+          "title": "Getting around",
+          "culturalNote": "Taxis (minibus taxis) are the most common form of transport in Xhosa-speaking communities. Knowing how to navigate routes is essential.",
+          "vocab": [
+            {
+              "id": "xh-iteksi",
+              "term": "iteksi",
+              "translation": "taxi / minibus taxi",
+              "phonetic": "ee-TEK-see"
+            },
+            {
+              "id": "xh-ibhasi2",
+              "term": "ibhasi",
+              "translation": "bus",
+              "phonetic": "ee-BHAH-see"
+            },
+            {
+              "id": "xh-iloliwe",
+              "term": "iloliwe",
+              "translation": "train",
+              "phonetic": "ee-loh-LEE-weh"
+            },
+            {
+              "id": "xh-inqwelo",
+              "term": "inqwelo",
+              "translation": "vehicle / car",
+              "phonetic": "in-QWEH-loh"
+            },
+            {
+              "id": "xh-ibhayisekile2",
+              "term": "ibhayisekile",
+              "translation": "bicycle",
+              "phonetic": "ee-bhah-ee-seh-KEE-leh"
+            },
+            {
+              "id": "xh-indlela",
+              "term": "indlela",
+              "translation": "road / way",
+              "phonetic": "in-DLEH-lah"
+            },
+            {
+              "id": "xh-isitishi",
+              "term": "isitishi",
+              "translation": "station",
+              "phonetic": "ee-see-TEE-shee"
+            },
+            {
+              "id": "xh-inqwelomoya2",
+              "term": "inqwelomoya",
+              "translation": "aeroplane",
+              "phonetic": "in-qweh-loh-MOH-yah"
+            },
+            {
+              "id": "xh-itikethi",
+              "term": "itikethi",
+              "translation": "ticket",
+              "phonetic": "ee-tee-KEH-tee"
+            },
+            {
+              "id": "xh-ukufika",
+              "term": "ukufika",
+              "translation": "to arrive",
+              "phonetic": "oo-koo-FEE-kah"
+            },
+            {
+              "id": "xh-ukuhamba2",
+              "term": "ukuhamba",
+              "translation": "to go / travel",
+              "phonetic": "oo-koo-HAM-bah"
+            },
+            {
+              "id": "xh-ukuphuma",
+              "term": "ukuphuma",
+              "translation": "to leave / exit",
+              "phonetic": "oo-koo-PHOO-mah"
+            },
+            {
+              "id": "xh-ikhonkco",
+              "term": "inqanaba",
+              "translation": "direction",
+              "phonetic": "in-qah-NAH-bah"
+            },
+            {
+              "id": "xh-uhambo",
+              "term": "uhambo",
+              "translation": "journey / trip",
+              "phonetic": "oo-HAM-boh"
+            },
+            {
+              "id": "xh-umgama",
+              "term": "umgama",
+              "translation": "distance",
+              "phonetic": "oom-GAH-mah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Iteksi iya eKapa?",
+              "en": "Does this taxi go to Cape Town?"
+            },
+            {
+              "t": "Ndiswele itikethi.",
+              "en": "I need a ticket."
+            },
+            {
+              "t": "Ndifika nini?",
+              "en": "When do I arrive?"
+            },
+            {
+              "t": "Uhambo luya kude?",
+              "en": "Is the journey far?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u15",
+      "title": "Unit 15: Food & Nature",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u15-l1",
+          "title": "Food and meals",
+          "culturalNote": "Traditional Xhosa food includes umngqusho (samp and beans), umvubo (sour milk and pap), and uluthi (sugarcane). These remain culturally significant.",
+          "vocab": [
+            {
+              "id": "xh-ukutya2",
+              "term": "ukutya",
+              "translation": "food",
+              "phonetic": "oo-koo-TYAH"
+            },
+            {
+              "id": "xh-isidlo",
+              "term": "isidlo",
+              "translation": "meal",
+              "phonetic": "ee-SEE-dloh"
+            },
+            {
+              "id": "xh-isidlo-sa",
+              "term": "isidlo sakusasa",
+              "translation": "breakfast",
+              "phonetic": "ee-SEE-dloh sah-koo-SAH-sah"
+            },
+            {
+              "id": "xh-isidlo-se",
+              "term": "isidlo semini",
+              "translation": "lunch",
+              "phonetic": "ee-SEE-dloh seh-MEE-nee"
+            },
+            {
+              "id": "xh-isidlo-sas",
+              "term": "isidlo sangokuhlwa",
+              "translation": "dinner / supper",
+              "phonetic": "ee-SEE-dloh sah-ngoh-KHLOO-wah"
+            },
+            {
+              "id": "xh-inyama2",
+              "term": "inyama",
+              "translation": "meat",
+              "phonetic": "ee-NYAH-mah"
+            },
+            {
+              "id": "xh-inkukhu2",
+              "term": "inkukhu",
+              "translation": "chicken",
+              "phonetic": "in-KOO-khoo"
+            },
+            {
+              "id": "xh-isonka2",
+              "term": "isonka",
+              "translation": "bread",
+              "phonetic": "ee-SON-kah"
+            },
+            {
+              "id": "xh-ubisi2",
+              "term": "ubisi",
+              "translation": "milk",
+              "phonetic": "oo-BEE-see"
+            },
+            {
+              "id": "xh-amanzi2",
+              "term": "amanzi",
+              "translation": "water",
+              "phonetic": "ah-MAN-zee"
+            },
+            {
+              "id": "xh-ikofu",
+              "term": "ikofu",
+              "translation": "coffee",
+              "phonetic": "ee-KOH-foo"
+            },
+            {
+              "id": "xh-itiye",
+              "term": "itiye",
+              "translation": "tea",
+              "phonetic": "ee-TEE-yeh"
+            },
+            {
+              "id": "xh-usawoti",
+              "term": "usawoti",
+              "translation": "salt",
+              "phonetic": "oo-sah-WOH-tee"
+            },
+            {
+              "id": "xh-upelepele",
+              "term": "upelepele",
+              "translation": "pepper",
+              "phonetic": "oo-peh-leh-PEH-leh"
+            },
+            {
+              "id": "xh-amaqunube",
+              "term": "amaqunube",
+              "translation": "berries / fruit",
+              "phonetic": "ah-mah-QOON-oo-beh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndilambile.",
+              "en": "I am hungry."
+            },
+            {
+              "t": "Ukutya kumnandi.",
+              "en": "The food is delicious."
+            },
+            {
+              "t": "Siya kutya ntoni namhlanje?",
+              "en": "What are we eating today?"
+            },
+            {
+              "t": "Ndifuna amanzi.",
+              "en": "I want water."
+            }
+          ]
+        },
+        {
+          "id": "xh-u15-l2",
+          "title": "Nature",
+          "culturalNote": "The Eastern Cape has stunning landscapes - from the Wild Coast to the Drakensberg. Many Xhosa proverbs draw on nature imagery.",
+          "vocab": [
+            {
+              "id": "xh-intaba2",
+              "term": "intaba",
+              "translation": "mountain",
+              "phonetic": "in-TAH-bah"
+            },
+            {
+              "id": "xh-ulwandle2",
+              "term": "ulwandle",
+              "translation": "ocean / sea",
+              "phonetic": "oo-LWAN-dleh"
+            },
+            {
+              "id": "xh-umlambo2",
+              "term": "umlambo",
+              "translation": "river",
+              "phonetic": "oom-LAM-boh"
+            },
+            {
+              "id": "xh-ithafa",
+              "term": "ithafa",
+              "translation": "plain / flat land",
+              "phonetic": "ee-TAH-fah"
+            },
+            {
+              "id": "xh-ihlathi",
+              "term": "ihlathi",
+              "translation": "forest",
+              "phonetic": "ee-HLAH-tee"
+            },
+            {
+              "id": "xh-umthi2",
+              "term": "umthi",
+              "translation": "tree",
+              "phonetic": "oom-THEE"
+            },
+            {
+              "id": "xh-intyatyambo",
+              "term": "intyatyambo",
+              "translation": "flower",
+              "phonetic": "in-tyah-TYAM-boh"
+            },
+            {
+              "id": "xh-ingca",
+              "term": "ingca",
+              "translation": "grass",
+              "phonetic": "in-GCA"
+            },
+            {
+              "id": "xh-intaka2",
+              "term": "intaka",
+              "translation": "bird",
+              "phonetic": "in-TAH-kah"
+            },
+            {
+              "id": "xh-ihashe2",
+              "term": "ihashe",
+              "translation": "horse",
+              "phonetic": "ee-HAH-sheh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Intaba intle.",
+              "en": "The mountain is beautiful."
+            },
+            {
+              "t": "Ndibona intaka.",
+              "en": "I see a bird."
+            },
+            {
+              "t": "Ulwandle luluhlaza.",
+              "en": "The sea is blue."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u16",
+      "title": "Unit 16: Emotions & Community",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u16-l1",
+          "title": "Feelings",
+          "culturalNote": "Ubuntu ('I am because we are') is a core Xhosa value. Expressing feelings and checking on others is part of daily social interaction.",
+          "vocab": [
+            {
+              "id": "xh-uvuyo",
+              "term": "uvuyo",
+              "translation": "happiness / joy",
+              "phonetic": "oo-VOO-yoh"
+            },
+            {
+              "id": "xh-imbilini",
+              "term": "usizi",
+              "translation": "sadness",
+              "phonetic": "oo-SEE-zee"
+            },
+            {
+              "id": "xh-umsindo",
+              "term": "umsindo",
+              "translation": "anger / noise",
+              "phonetic": "oom-SEE-ndoh"
+            },
+            {
+              "id": "xh-ukoyika",
+              "term": "ukoyika",
+              "translation": "to be afraid",
+              "phonetic": "oo-koh-YEE-kah"
+            },
+            {
+              "id": "xh-uzonwabele",
+              "term": "ukukhathazeka",
+              "translation": "to be worried",
+              "phonetic": "oo-koo-khah-TAH-zeh-kah"
+            },
+            {
+              "id": "xh-ukuphumla",
+              "term": "ukuphumla",
+              "translation": "to rest / relax",
+              "phonetic": "oo-koo-PHOOM-lah"
+            },
+            {
+              "id": "xh-uthando",
+              "term": "uthando",
+              "translation": "love",
+              "phonetic": "oo-TAN-doh"
+            },
+            {
+              "id": "xh-isidima",
+              "term": "isidima",
+              "translation": "pride / dignity",
+              "phonetic": "ee-see-DEE-mah"
+            },
+            {
+              "id": "xh-ukuvuya",
+              "term": "ukuvuya",
+              "translation": "to be happy",
+              "phonetic": "oo-koo-VOO-yah"
+            },
+            {
+              "id": "xh-amandla",
+              "term": "amandla",
+              "translation": "strength / power",
+              "phonetic": "ah-MAN-dlah"
+            },
+            {
+              "id": "xh-ithemba",
+              "term": "ithemba",
+              "translation": "hope",
+              "phonetic": "ee-THEM-bah"
+            },
+            {
+              "id": "xh-ukusoloko",
+              "term": "ukusoloko",
+              "translation": "always",
+              "phonetic": "oo-koo-SOH-loh-koh"
+            },
+            {
+              "id": "xh-uxolo2",
+              "term": "uxolo",
+              "translation": "peace / sorry",
+              "phonetic": "oo-HOH-loh"
+            },
+            {
+              "id": "xh-ubuntu",
+              "term": "ubuntu",
+              "translation": "humanity / compassion",
+              "phonetic": "oo-BOON-too"
+            },
+            {
+              "id": "xh-ukwabelana",
+              "term": "ukwabelana",
+              "translation": "to share",
+              "phonetic": "oo-kwah-beh-LAH-nah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndivuya kakhulu.",
+              "en": "I am very happy."
+            },
+            {
+              "t": "Ndinothando.",
+              "en": "I have love."
+            },
+            {
+              "t": "Ithemba alipheli.",
+              "en": "Hope never ends."
+            },
+            {
+              "t": "Ubuntu bubalulekile.",
+              "en": "Ubuntu is important."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u17",
+      "title": "Unit 17: Technology & Advanced Vocabulary",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "xh-u17-l1",
+          "title": "Technology",
+          "culturalNote": "Smartphone use is widespread across South Africa. WhatsApp is used for communication across all communities.",
+          "vocab": [
+            {
+              "id": "xh-ifowuni",
+              "term": "ifowuni",
+              "translation": "phone",
+              "phonetic": "ee-foh-WOO-nee"
+            },
+            {
+              "id": "xh-ikhompyutha",
+              "term": "ikhompyutha",
+              "translation": "computer",
+              "phonetic": "ee-khom-PYOO-tah"
+            },
+            {
+              "id": "xh-i-intanethi",
+              "term": "i-intanethi",
+              "translation": "internet",
+              "phonetic": "ee-in-tah-NEH-tee"
+            },
+            {
+              "id": "xh-imeyile",
+              "term": "imeyile",
+              "translation": "email",
+              "phonetic": "ee-meh-YEE-leh"
+            },
+            {
+              "id": "xh-umlayezo",
+              "term": "umlayezo",
+              "translation": "message",
+              "phonetic": "oom-lah-YEH-zoh"
+            },
+            {
+              "id": "xh-isithombe",
+              "term": "isithombe",
+              "translation": "photo / picture",
+              "phonetic": "ee-see-THOM-beh"
+            },
+            {
+              "id": "xh-ibhethri",
+              "term": "ibhethri",
+              "translation": "battery",
+              "phonetic": "ee-BHEH-tree"
+            },
+            {
+              "id": "xh-iphasiwedi",
+              "term": "iphasiwedi",
+              "translation": "password",
+              "phonetic": "ee-phah-see-WEH-dee"
+            },
+            {
+              "id": "xh-ukuthumela",
+              "term": "ukuthumela",
+              "translation": "to send",
+              "phonetic": "oo-koo-thoo-MEH-lah"
+            },
+            {
+              "id": "xh-ukufumana",
+              "term": "ukufumana",
+              "translation": "to receive / get",
+              "phonetic": "oo-koo-foo-MAH-nah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Nthumela umlayezo.",
+              "en": "Send the message."
+            },
+            {
+              "t": "Ibhethri yam iphelile.",
+              "en": "My battery is flat."
+            },
+            {
+              "t": "Iphasiwedi yintoni?",
+              "en": "What is the password?"
+            }
+          ]
+        },
+        {
+          "id": "xh-u17-l2",
+          "title": "Advanced verbs and expressions",
+          "culturalNote": "These verbs extend your ability to discuss plans, feelings, and actions in depth.",
+          "vocab": [
+            {
+              "id": "xh-ukuchaza",
+              "term": "ukuchaza",
+              "translation": "to explain",
+              "phonetic": "oo-koo-CHA-zah"
+            },
+            {
+              "id": "xh-ukuqonda2",
+              "term": "ukwenza isigqibo",
+              "translation": "to decide",
+              "phonetic": "oo-KWEN-zah ee-see-GQEE-boh"
+            },
+            {
+              "id": "xh-ukuzama",
+              "term": "ukuzama",
+              "translation": "to try",
+              "phonetic": "oo-koo-ZAH-mah"
+            },
+            {
+              "id": "xh-ukulibala",
+              "term": "ukulibala",
+              "translation": "to forget",
+              "phonetic": "oo-koo-lee-BAH-lah"
+            },
+            {
+              "id": "xh-ukukhumbula",
+              "term": "ukukhumbula",
+              "translation": "to remember",
+              "phonetic": "oo-koo-KHOOM-boo-lah"
+            },
+            {
+              "id": "xh-ukucinga",
+              "term": "ukucinga",
+              "translation": "to think",
+              "phonetic": "oo-koo-ZING-ah"
+            },
+            {
+              "id": "xh-ukholwa",
+              "term": "ukholwa",
+              "translation": "to believe",
+              "phonetic": "oo-KOHL-wah"
+            },
+            {
+              "id": "xh-ukulinda",
+              "term": "ukulinda",
+              "translation": "to wait",
+              "phonetic": "oo-koo-LEEN-dah"
+            },
+            {
+              "id": "xh-ukukhathalela",
+              "term": "ukukhathalela",
+              "translation": "to care for",
+              "phonetic": "oo-koo-khah-tah-LEH-lah"
+            },
+            {
+              "id": "xh-ukhetha",
+              "term": "ukhetha",
+              "translation": "to choose",
+              "phonetic": "oo-KHEH-tah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndizama kakubi.",
+              "en": "I am trying hard."
+            },
+            {
+              "t": "Ungachaza?",
+              "en": "Can you explain?"
+            },
+            {
+              "t": "Ndilibele.",
+              "en": "I forgot."
+            },
+            {
+              "t": "Ukukhumbula kubalulekile.",
+              "en": "Remembering is important."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u18",
+      "title": "Unit 18: Sports & Hobbies",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u18-l1",
+          "title": "Sports",
+          "culturalNote": "Soccer is widely played in township communities. Traditional stick fighting (ulwazi) and cattle herding are also part of Xhosa culture.",
+          "vocab": [
+            {
+              "id": "xh-ibhola2",
+              "term": "ibhola",
+              "translation": "soccer / ball",
+              "phonetic": "ee-BHOH-lah"
+            },
+            {
+              "id": "xh-ikrikethi",
+              "term": "ikrikethi",
+              "translation": "cricket",
+              "phonetic": "ee-kree-KEH-tee"
+            },
+            {
+              "id": "xh-irugby",
+              "term": "irugby",
+              "translation": "rugby",
+              "phonetic": "ee-RUG-bee"
+            },
+            {
+              "id": "xh-ukubhukuqa",
+              "term": "ukubhukuqa",
+              "translation": "to swim",
+              "phonetic": "oo-koo-BHOO-koo-qah"
+            },
+            {
+              "id": "xh-ukugijima",
+              "term": "ukugijima",
+              "translation": "to run",
+              "phonetic": "oo-koo-gee-JEE-mah"
+            },
+            {
+              "id": "xh-iqela",
+              "term": "iqela",
+              "translation": "team",
+              "phonetic": "ee-QEH-lah"
+            },
+            {
+              "id": "xh-imidlalo",
+              "term": "imidlalo",
+              "translation": "match / game",
+              "phonetic": "ee-mee-DLAH-loh"
+            },
+            {
+              "id": "xh-ukuphumelela",
+              "term": "ukuphumelela",
+              "translation": "to win / succeed",
+              "phonetic": "oo-koo-phoo-meh-LEH-lah"
+            },
+            {
+              "id": "xh-ukukhohlelwa",
+              "term": "ukukhohlelwa",
+              "translation": "to lose",
+              "phonetic": "oo-koo-khoh-HLEL-wah"
+            },
+            {
+              "id": "xh-ukudlala2",
+              "term": "ukudlala",
+              "translation": "to play",
+              "phonetic": "oo-koo-DLAH-lah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndidlala ibhola.",
+              "en": "I play soccer."
+            },
+            {
+              "t": "Iqela lethu liphumelele.",
+              "en": "Our team won."
+            },
+            {
+              "t": "Ndithanda irugby.",
+              "en": "I like rugby."
+            }
+          ]
+        },
+        {
+          "id": "xh-u18-l2",
+          "title": "Hobbies and free time",
+          "culturalNote": "Traditional Xhosa music and dance are central to ceremonies. Modern youth also embrace hip-hop, which often incorporates isiXhosa lyrics.",
+          "vocab": [
+            {
+              "id": "xh-umculo2",
+              "term": "umculo",
+              "translation": "music",
+              "phonetic": "oom-KOO-loh"
+            },
+            {
+              "id": "xh-ukugida",
+              "term": "ukugida",
+              "translation": "to dance",
+              "phonetic": "oo-koo-GEE-dah"
+            },
+            {
+              "id": "xh-ukucula2",
+              "term": "ukucula",
+              "translation": "to sing",
+              "phonetic": "oo-koo-KOO-lah"
+            },
+            {
+              "id": "xh-ukupheka2",
+              "term": "ukupheka",
+              "translation": "to cook",
+              "phonetic": "oo-koo-PHEH-kah"
+            },
+            {
+              "id": "xh-ukufunda-ub",
+              "term": "ukufunda",
+              "translation": "to read",
+              "phonetic": "oo-koo-FOON-dah"
+            },
+            {
+              "id": "xh-ukutyala",
+              "term": "ukutyala",
+              "translation": "to draw / plant",
+              "phonetic": "oo-koo-TYAH-lah"
+            },
+            {
+              "id": "xh-ukunakekela",
+              "term": "ukunakekela",
+              "translation": "to take care / tend",
+              "phonetic": "oo-koo-nah-keh-KEH-lah"
+            },
+            {
+              "id": "xh-ukuthekelela",
+              "term": "ukuthekelela",
+              "translation": "to visit",
+              "phonetic": "oo-koo-theh-keh-LEH-lah"
+            },
+            {
+              "id": "xh-umbukiso",
+              "term": "umbukiso",
+              "translation": "television / show",
+              "phonetic": "oom-boo-KEE-soh"
+            },
+            {
+              "id": "xh-ukuphumlela",
+              "term": "ukuphumlela",
+              "translation": "to relax",
+              "phonetic": "oo-koo-phoom-LEH-lah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndithanda umculo.",
+              "en": "I like music."
+            },
+            {
+              "t": "Siyokupheka namhlanje.",
+              "en": "We are going to cook today."
+            },
+            {
+              "t": "Ndiyathekelela abahlobo bam.",
+              "en": "I am visiting my friends."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u19",
+      "title": "Unit 19: Advanced Communication",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "xh-u19-l1",
+          "title": "Opinions and discussion",
+          "culturalNote": "These expressions allow you to participate in group discussions - a valued part of Xhosa community life.",
+          "vocab": [
+            {
+              "id": "xh-uluvo",
+              "term": "uluvo",
+              "translation": "opinion / view",
+              "phonetic": "oo-LOO-voh"
+            },
+            {
+              "id": "xh-amava",
+              "term": "amava",
+              "translation": "experience",
+              "phonetic": "ah-MAH-vah"
+            },
+            {
+              "id": "xh-kunokwenzeka",
+              "term": "kunokwenzeka",
+              "translation": "it is possible",
+              "phonetic": "koo-noh-kwen-ZEH-kah"
+            },
+            {
+              "id": "xh-kuyafuneka",
+              "term": "kuyafuneka",
+              "translation": "it is necessary / needed",
+              "phonetic": "koo-yah-foo-NEH-kah"
+            },
+            {
+              "id": "xh-ngaphandle",
+              "term": "ngaphandle",
+              "translation": "without / outside",
+              "phonetic": "ngah-PHAN-dleh"
+            },
+            {
+              "id": "xh-phakathi",
+              "term": "phakathi",
+              "translation": "between / inside",
+              "phonetic": "phah-KAH-tee"
+            },
+            {
+              "id": "xh-elandelayo",
+              "term": "elandelayo",
+              "translation": "next / following",
+              "phonetic": "eh-lan-deh-LAH-yoh"
+            },
+            {
+              "id": "xh-ukuqala",
+              "term": "ukuqala",
+              "translation": "to start / begin",
+              "phonetic": "oo-koo-QAH-lah"
+            },
+            {
+              "id": "xh-ukugqibela",
+              "term": "ukugqibela",
+              "translation": "to finish / end",
+              "phonetic": "oo-koo-GQEE-beh-lah"
+            },
+            {
+              "id": "xh-injongo",
+              "term": "injongo",
+              "translation": "goal / aim",
+              "phonetic": "in-JON-goh"
+            },
+            {
+              "id": "xh-ufaneleko",
+              "term": "ufaneleko",
+              "translation": "right (entitlement)",
+              "phonetic": "oo-fah-neh-LEH-koh"
+            },
+            {
+              "id": "xh-inkcazelo",
+              "term": "inkcazelo",
+              "translation": "explanation / reason",
+              "phonetic": "in-kah-ZEH-loh"
+            },
+            {
+              "id": "xh-isiphumo",
+              "term": "isiphumo",
+              "translation": "result / outcome",
+              "phonetic": "ee-see-PHOO-moh"
+            },
+            {
+              "id": "xh-ukuguquka",
+              "term": "ukuguquka",
+              "translation": "to change",
+              "phonetic": "oo-koo-GOO-qoo-kah"
+            },
+            {
+              "id": "xh-inyaniso",
+              "term": "inyaniso",
+              "translation": "truth",
+              "phonetic": "in-yah-NEE-soh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Luvo lwam luthini?",
+              "en": "What is my opinion?"
+            },
+            {
+              "t": "Kunokwenzeka yonke into.",
+              "en": "Everything is possible."
+            },
+            {
+              "t": "Inyaniso ibalulekile.",
+              "en": "The truth is important."
+            },
+            {
+              "t": "Injongo yam kukufunda.",
+              "en": "My goal is to learn."
+            }
+          ]
+        },
+        {
+          "id": "xh-u19-l2",
+          "title": "Time expressions",
+          "culturalNote": "Time in isiXhosa is often expressed relative to events rather than the clock. Learning these words helps you understand the rhythm of daily life.",
+          "vocab": [
+            {
+              "id": "xh-iyure",
+              "term": "iyure",
+              "translation": "hour",
+              "phonetic": "ee-YOO-reh"
+            },
+            {
+              "id": "xh-iimizuzu",
+              "term": "iimizuzu",
+              "translation": "minutes",
+              "phonetic": "ee-mee-ZOO-zoo"
+            },
+            {
+              "id": "xh-ngokuhlwa",
+              "term": "ngokuhlwa",
+              "translation": "in the evening",
+              "phonetic": "ngoh-koo-HLOO-wah"
+            },
+            {
+              "id": "xh-ngentsasa",
+              "term": "ngentsasa",
+              "translation": "in the morning",
+              "phonetic": "ngen-TSAH-sah"
+            },
+            {
+              "id": "xh-emini",
+              "term": "emini",
+              "translation": "at midday",
+              "phonetic": "eh-MEE-nee"
+            },
+            {
+              "id": "xh-izolo2",
+              "term": "izolo",
+              "translation": "yesterday",
+              "phonetic": "ee-ZOH-loh"
+            },
+            {
+              "id": "xh-namhlanje2",
+              "term": "namhlanje",
+              "translation": "today",
+              "phonetic": "nam-HLAH-nyeh"
+            },
+            {
+              "id": "xh-ngomso2",
+              "term": "ngomso",
+              "translation": "tomorrow",
+              "phonetic": "ngom-SOH"
+            },
+            {
+              "id": "xh-kwiveki",
+              "term": "kwiveki edlulileyo",
+              "translation": "last week",
+              "phonetic": "kwee-VEH-kee eh-dloo-lee-LEH-yoh"
+            },
+            {
+              "id": "xh-ngexesha",
+              "term": "ngexesha",
+              "translation": "on time / at that time",
+              "phonetic": "ngeh-HEH-shah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ixesha lini ngoku?",
+              "en": "What time is it now?"
+            },
+            {
+              "t": "Izolo ndandisiya esikolweni.",
+              "en": "Yesterday I was going to school."
+            },
+            {
+              "t": "Ngomso sizakuya ebazini.",
+              "en": "Tomorrow we will go to the dam."
+            },
+            {
+              "t": "Wafika ngexesha.",
+              "en": "He/she arrived on time."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u20",
+      "title": "Unit 20: Expressions & Daily Life",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u20-l1",
+          "title": "Expressions and idioms",
+          "culturalNote": "Xhosa idioms often reflect wisdom about community, respect and perseverance. Ubuntu philosophy is central.",
+          "vocab": [
+            {
+              "id": "xh-ubuntu2",
+              "term": "ubuntu",
+              "translation": "humanity / I am because we are",
+              "phonetic": "oo-BOON-too"
+            },
+            {
+              "id": "xh-inkolo",
+              "term": "inkolo",
+              "translation": "religion / belief",
+              "phonetic": "in-KOH-loh"
+            },
+            {
+              "id": "xh-ithemba2",
+              "term": "ithemba",
+              "translation": "hope",
+              "phonetic": "ee-THEM-bah"
+            },
+            {
+              "id": "xh-ilizwi",
+              "term": "ilizwi",
+              "translation": "voice / word",
+              "phonetic": "ee-LEE-zwee"
+            },
+            {
+              "id": "xh-icebo",
+              "term": "icebo",
+              "translation": "plan / idea",
+              "phonetic": "ee-SEH-boh"
+            },
+            {
+              "id": "xh-isibindi",
+              "term": "isibindi",
+              "translation": "courage / liver (idiom)",
+              "phonetic": "ee-see-BIN-dee"
+            },
+            {
+              "id": "xh-ukuphila",
+              "term": "ukuphila",
+              "translation": "to live / be well",
+              "phonetic": "oo-koo-PHEE-lah"
+            },
+            {
+              "id": "xh-inkululeko",
+              "term": "inkululeko",
+              "translation": "freedom",
+              "phonetic": "in-koo-loo-LEH-koh"
+            },
+            {
+              "id": "xh-uthando2",
+              "term": "uthando",
+              "translation": "love",
+              "phonetic": "oo-THAN-doh"
+            },
+            {
+              "id": "xh-ulwazi",
+              "term": "ulwazi",
+              "translation": "knowledge / stick fighting",
+              "phonetic": "ool-WAH-zee"
+            },
+            {
+              "id": "xh-ukuhlonela",
+              "term": "ukuhlonela",
+              "translation": "to respect",
+              "phonetic": "oo-koo-hloh-NEH-lah"
+            },
+            {
+              "id": "xh-isiko",
+              "term": "isiko",
+              "translation": "culture / tradition / custom",
+              "phonetic": "ee-SEE-koh"
+            },
+            {
+              "id": "xh-inkolelo",
+              "term": "inkolelo",
+              "translation": "belief",
+              "phonetic": "in-koh-LEH-loh"
+            },
+            {
+              "id": "xh-ubulumko",
+              "term": "ubulumko",
+              "translation": "wisdom",
+              "phonetic": "oo-boo-LOOM-koh"
+            },
+            {
+              "id": "xh-umngcwabo",
+              "term": "umngcwabo",
+              "translation": "funeral",
+              "phonetic": "oom-NGCWAH-boh"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ubuntu yimfundiso enkulu.",
+              "en": "Ubuntu is a great teaching."
+            },
+            {
+              "t": "Sineethemba.",
+              "en": "We have hope."
+            },
+            {
+              "t": "Uthando lwabantu lubalulekile.",
+              "en": "The love of people is important."
+            },
+            {
+              "t": "Inkululeko iyasenza sikhule.",
+              "en": "Freedom makes us grow."
+            }
+          ]
+        },
+        {
+          "id": "xh-u20-l2",
+          "title": "The home environment",
+          "culturalNote": "Xhosa homes range from urban flats to rural rondavels. The fireplace (ilisu) is central to family life.",
+          "vocab": [
+            {
+              "id": "xh-ilisu",
+              "term": "ilisu",
+              "translation": "hearth / fireplace",
+              "phonetic": "ee-LEE-soo"
+            },
+            {
+              "id": "xh-isitulo-xh",
+              "term": "isitulo",
+              "translation": "chair",
+              "phonetic": "ee-see-TOO-loh"
+            },
+            {
+              "id": "xh-itafile-xh",
+              "term": "itafile",
+              "translation": "table",
+              "phonetic": "ee-TAH-fee-leh"
+            },
+            {
+              "id": "xh-ibhedi-xh",
+              "term": "ibhedi",
+              "translation": "bed",
+              "phonetic": "ee-BHEH-dee"
+            },
+            {
+              "id": "xh-igumbi-lokuhlamba",
+              "term": "igumbi lokuhlamba",
+              "translation": "bathroom",
+              "phonetic": "ee-GOOM-bee loh-koo-HLAM-bah"
+            },
+            {
+              "id": "xh-ikhitshi",
+              "term": "ikhitshi",
+              "translation": "kitchen",
+              "phonetic": "ee-KHEE-tshee"
+            },
+            {
+              "id": "xh-indlu-xh2",
+              "term": "indlu",
+              "translation": "house (inner)",
+              "phonetic": "in-DLOO"
+            },
+            {
+              "id": "xh-isango-xh",
+              "term": "isango",
+              "translation": "gate / entrance",
+              "phonetic": "ee-SAN-goh"
+            },
+            {
+              "id": "xh-ucango",
+              "term": "ucango",
+              "translation": "door",
+              "phonetic": "oo-KAN-goh"
+            },
+            {
+              "id": "xh-ifestile2",
+              "term": "ifestile",
+              "translation": "window",
+              "phonetic": "ee-feh-STEE-leh"
+            },
+            {
+              "id": "xh-iplanga",
+              "term": "iplanga",
+              "translation": "shelf / plank",
+              "phonetic": "ee-PLAN-gah"
+            },
+            {
+              "id": "xh-urhwebo",
+              "term": "urhwebo",
+              "translation": "commerce / trade",
+              "phonetic": "oo-HRWEH-boh"
+            },
+            {
+              "id": "xh-umhlaba-xh2",
+              "term": "umhlaba",
+              "translation": "land / soil",
+              "phonetic": "oom-HLAH-bah"
+            },
+            {
+              "id": "xh-isihlalo",
+              "term": "isihlalo",
+              "translation": "seat / position",
+              "phonetic": "ee-see-HLAH-loh"
+            },
+            {
+              "id": "xh-inkaba",
+              "term": "inkaba",
+              "translation": "navel / origin place",
+              "phonetic": "in-KAH-bah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Sihlala endlwini enkulu.",
+              "en": "We live in a big house."
+            },
+            {
+              "t": "Ikhitshi livuthela.",
+              "en": "The kitchen smells good (is fragrant)."
+            },
+            {
+              "t": "Ucango uvuliwe.",
+              "en": "The door is open."
+            },
+            {
+              "t": "Inkaba yam isekuhlaleni.",
+              "en": "My origin place is in the village."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u21",
+      "title": "Unit 21: Advanced Verbs & Grammar",
+      "level": "Work",
+      "lessons": [
+        {
+          "id": "xh-u21-l1",
+          "title": "Advanced verbs",
+          "culturalNote": "Xhosa verb extensions can change the meaning of verbs dramatically. Mastering them marks fluency.",
+          "vocab": [
+            {
+              "id": "xh-ukubuya",
+              "term": "ukubuya",
+              "translation": "to come back / return",
+              "phonetic": "oo-koo-BOO-yah"
+            },
+            {
+              "id": "xh-ukulinda2",
+              "term": "ukulinda",
+              "translation": "to wait",
+              "phonetic": "oo-koo-LIN-dah"
+            },
+            {
+              "id": "xh-ukuphendula",
+              "term": "ukuphendula",
+              "translation": "to answer / reply",
+              "phonetic": "oo-koo-phen-DOO-lah"
+            },
+            {
+              "id": "xh-ukubuza-xh2",
+              "term": "ukubuza",
+              "translation": "to ask / inquire",
+              "phonetic": "oo-koo-BOO-zah"
+            },
+            {
+              "id": "xh-ukukhokha",
+              "term": "ukukhokha",
+              "translation": "to pay",
+              "phonetic": "oo-koo-KHOH-khah"
+            },
+            {
+              "id": "xh-ukuthenga-xh2",
+              "term": "ukuthenga",
+              "translation": "to buy",
+              "phonetic": "oo-koo-THEN-gah"
+            },
+            {
+              "id": "xh-ukuthengisa-xh2",
+              "term": "ukuthengisa",
+              "translation": "to sell",
+              "phonetic": "oo-koo-then-GEE-sah"
+            },
+            {
+              "id": "xh-ukuqhagamshela",
+              "term": "ukuqhagamshela",
+              "translation": "to connect / to call",
+              "phonetic": "oo-koo-QHA-gam-sheh-lah"
+            },
+            {
+              "id": "xh-ukucinga2",
+              "term": "ukucinga",
+              "translation": "to think / consider",
+              "phonetic": "oo-koo-SING-gah"
+            },
+            {
+              "id": "xh-ukusebenzisa",
+              "term": "ukusebenzisa",
+              "translation": "to use",
+              "phonetic": "oo-koo-seh-ben-ZEE-sah"
+            },
+            {
+              "id": "xh-ukuphefumla",
+              "term": "ukuphefumla",
+              "translation": "to breathe",
+              "phonetic": "oo-koo-pheh-FOOM-lah"
+            },
+            {
+              "id": "xh-ukuhleka",
+              "term": "ukuhleka",
+              "translation": "to laugh",
+              "phonetic": "oo-koo-HLEH-kah"
+            },
+            {
+              "id": "xh-ukulila",
+              "term": "ukulila",
+              "translation": "to cry",
+              "phonetic": "oo-koo-LEE-lah"
+            },
+            {
+              "id": "xh-ukuzimela",
+              "term": "ukuzimela",
+              "translation": "to stand on your own / be independent",
+              "phonetic": "oo-koo-zee-MEH-lah"
+            },
+            {
+              "id": "xh-ukufumana2",
+              "term": "ukufumana",
+              "translation": "to get / find / receive",
+              "phonetic": "oo-koo-foo-MAH-nah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ndibuye kusasa.",
+              "en": "I'll come back in the morning."
+            },
+            {
+              "t": "Ukulinda kunyamezela.",
+              "en": "Waiting requires patience."
+            },
+            {
+              "t": "Ndifumene imali.",
+              "en": "I received money."
+            },
+            {
+              "t": "Ukuhleka kushintsha isimo.",
+              "en": "Laughing changes the mood."
+            }
+          ]
+        },
+        {
+          "id": "xh-u21-l2",
+          "title": "Nature and environment",
+          "culturalNote": "Xhosa people have deep connections to the land. The Eastern Cape's rivers, mountains and sea all feature in their oral tradition.",
+          "vocab": [
+            {
+              "id": "xh-ulwandle-xh2",
+              "term": "ulwandle",
+              "translation": "sea / ocean",
+              "phonetic": "ool-WAHN-dleh"
+            },
+            {
+              "id": "xh-intaba-xh2",
+              "term": "intaba",
+              "translation": "mountain",
+              "phonetic": "in-TAH-bah"
+            },
+            {
+              "id": "xh-umlambo-xh2",
+              "term": "umlambo",
+              "translation": "river",
+              "phonetic": "oom-LAM-boh"
+            },
+            {
+              "id": "xh-ihlathi-xh2",
+              "term": "ihlathi",
+              "translation": "forest",
+              "phonetic": "ee-HLAH-tee"
+            },
+            {
+              "id": "xh-ixesha-xh2",
+              "term": "ixesha",
+              "translation": "time / weather / season",
+              "phonetic": "ee-HEH-shah"
+            },
+            {
+              "id": "xh-imvula-xh2",
+              "term": "imvula",
+              "translation": "rain",
+              "phonetic": "eem-VOO-lah"
+            },
+            {
+              "id": "xh-ilanga-xh2",
+              "term": "ilanga",
+              "translation": "sun / day",
+              "phonetic": "ee-LAHN-gah"
+            },
+            {
+              "id": "xh-umoya-xh2",
+              "term": "umoya",
+              "translation": "wind / spirit / air",
+              "phonetic": "oo-MOH-yah"
+            },
+            {
+              "id": "xh-ilizwe-xh2",
+              "term": "ilizwe",
+              "translation": "country / world",
+              "phonetic": "ee-LEE-zweh"
+            },
+            {
+              "id": "xh-umhlaba-xh3",
+              "term": "umhlaba omhle",
+              "translation": "beautiful land",
+              "phonetic": "oom-HLAH-bah om-HLEH"
+            },
+            {
+              "id": "xh-intsimi",
+              "term": "intsimi",
+              "translation": "field / farm",
+              "phonetic": "in-TSEE-mee"
+            },
+            {
+              "id": "xh-isityalo",
+              "term": "isityalo",
+              "translation": "plant / tree",
+              "phonetic": "ee-see-TYAH-loh"
+            },
+            {
+              "id": "xh-intyatyambo2",
+              "term": "intyatyambo",
+              "translation": "flower",
+              "phonetic": "in-tyah-TYAM-boh"
+            },
+            {
+              "id": "xh-isihlahla",
+              "term": "isihlahla",
+              "translation": "tree",
+              "phonetic": "ee-see-HLAH-hlah"
+            },
+            {
+              "id": "xh-izilwanyana",
+              "term": "izilwanyana",
+              "translation": "animals",
+              "phonetic": "ee-zil-wah-NYAH-nah"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Ulwandle luhleli olukhulu.",
+              "en": "The sea is very large."
+            },
+            {
+              "t": "Intaba yethu iphakame.",
+              "en": "Our mountain is tall."
+            },
+            {
+              "t": "Izilwanyana zihlala ehlathini.",
+              "en": "Animals live in the forest."
+            },
+            {
+              "t": "Umoya ubanda namhlanje.",
+              "en": "The wind is cold today."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "xh-u22",
+      "title": "Unit 22: Personality & Society",
+      "level": "Family",
+      "lessons": [
+        {
+          "id": "xh-u22-l1",
+          "title": "Personality traits",
+          "culturalNote": "Character is highly valued in Xhosa society. Traits like generosity, patience and hard work are celebrated.",
+          "vocab": [
+            {
+              "id": "xh-ukupholisa",
+              "term": "ukupholisa",
+              "translation": "to calm / cool down",
+              "phonetic": "oo-koo-phoh-LEE-sah"
+            },
+            {
+              "id": "xh-umntu-omhle",
+              "term": "umntu omhle",
+              "translation": "a good person",
+              "phonetic": "oom-NTOO om-HLEH"
+            },
+            {
+              "id": "xh-ubunyulu",
+              "term": "ubunyulu",
+              "translation": "kindness / generosity",
+              "phonetic": "oo-boo-NYOO-loo"
+            },
+            {
+              "id": "xh-ukubhekela",
+              "term": "ukubhekela",
+              "translation": "to care for / look after",
+              "phonetic": "oo-koo-BHEH-keh-lah"
+            },
+            {
+              "id": "xh-uluntu",
+              "term": "uluntu",
+              "translation": "society / community",
+              "phonetic": "oo-LOON-too"
+            },
+            {
+              "id": "xh-ubuqili",
+              "term": "ubuqili",
+              "translation": "cleverness / intelligence",
+              "phonetic": "oo-boo-QEE-lee"
+            },
+            {
+              "id": "xh-ubuyolo",
+              "term": "ubuyolo",
+              "translation": "happiness / joy",
+              "phonetic": "oo-boo-YOH-loh"
+            },
+            {
+              "id": "xh-ukuhlonipha",
+              "term": "ukuhlonipha",
+              "translation": "to show respect",
+              "phonetic": "oo-koo-hloh-NEE-phah"
+            },
+            {
+              "id": "xh-inyameko",
+              "term": "inyameko",
+              "translation": "attention / care",
+              "phonetic": "in-yah-MEH-koh"
+            },
+            {
+              "id": "xh-ukuthembela",
+              "term": "ukuthembela",
+              "translation": "to trust / depend on",
+              "phonetic": "oo-koo-them-BEH-lah"
+            },
+            {
+              "id": "xh-ukuqiniseka",
+              "term": "ukuqiniseka",
+              "translation": "to make sure / confirm",
+              "phonetic": "oo-koo-qee-nee-SEH-kah"
+            },
+            {
+              "id": "xh-ukugcina",
+              "term": "ukugcina",
+              "translation": "to keep / preserve",
+              "phonetic": "oo-koo-GCEE-nah"
+            },
+            {
+              "id": "xh-ukunyamezela",
+              "term": "ukunyamezela",
+              "translation": "to be patient / endure",
+              "phonetic": "oo-koo-nyah-meh-ZEH-lah"
+            },
+            {
+              "id": "xh-ukuphila-hle",
+              "term": "ukuphila kakuhle",
+              "translation": "to live well",
+              "phonetic": "oo-koo-PHEE-lah kah-KOO-hleh"
+            },
+            {
+              "id": "xh-imicimbi",
+              "term": "imicimbi",
+              "translation": "events / ceremonies",
+              "phonetic": "ee-mee-SEEM-bee"
+            },
+            {
+              "id": "xh-imikhosi",
+              "term": "imikhosi",
+              "translation": "festivals / celebrations",
+              "phonetic": "ee-mee-KHOH-see"
+            },
+            {
+              "id": "xh-ukukhulisa",
+              "term": "ukukhulisa",
+              "translation": "to raise / grow something",
+              "phonetic": "oo-koo-khoo-LEE-sah"
+            },
+            {
+              "id": "xh-ubuhlanga",
+              "term": "ubuhlanga",
+              "translation": "nation / tribe",
+              "phonetic": "oo-boo-HLAHN-gah"
+            },
+            {
+              "id": "xh-intlonipho",
+              "term": "intlonipho",
+              "translation": "respect (noun)",
+              "phonetic": "in-tloh-NEE-phoh"
+            },
+            {
+              "id": "xh-izinto",
+              "term": "izinto",
+              "translation": "things",
+              "phonetic": "ee-ZIN-toh"
+            },
+            {
+              "id": "xh-ubomi",
+              "term": "ubomi",
+              "translation": "life",
+              "phonetic": "oo-BOH-mee"
+            }
+          ],
+          "phrases": [
+            {
+              "t": "Siyahloniphana.",
+              "en": "We respect each other."
+            },
+            {
+              "t": "Ubuntu bufundisa uthando.",
+              "en": "Ubuntu teaches love."
+            },
+            {
+              "t": "Ubunyulu bubalulekile kuluntu.",
+              "en": "Kindness is important in society."
+            },
+            {
+              "t": "Ubomi buhleli bufuna inqanaba.",
+              "en": "Life always requires balance."
+            }
+          ]
+        }
+      ]
     }
   ],
   "reading": [
@@ -4225,6 +6381,201 @@
             "Thank you",
             "How are you?"
           ]
+        }
+      ]
+    },
+    {
+      "id": "xh-r3",
+      "title": "Umhlobo wam (My friend)",
+      "level": "Basic Conversation",
+      "lines": [
+        {
+          "t": "Igama lomhlobo wam nguThemba.",
+          "en": "My friend's name is Themba."
+        },
+        {
+          "t": "Sihlala kwindawo enye.",
+          "en": "We live in the same area."
+        },
+        {
+          "t": "Siya esikolweni ndawonye yonke imihla.",
+          "en": "We go to school together every day."
+        },
+        {
+          "t": "UThemba ufunda kakhulu.",
+          "en": "Themba studies a lot."
+        },
+        {
+          "t": "Uthandwa ngabafundisi bakowethu.",
+          "en": "He is loved by our teachers."
+        },
+        {
+          "t": "Ndinomnqweno wokuba uThemba ayiphumelele iimviwo zakhe.",
+          "en": "I wish that Themba passes his exams."
+        },
+        {
+          "t": "Sihlala sidlala ibhola emva kwesikolo.",
+          "en": "We always play soccer after school."
+        },
+        {
+          "t": "Ubuhlobo bethu bubalulekile kum.",
+          "en": "Our friendship is important to me."
+        }
+      ]
+    },
+    {
+      "id": "xh-r4",
+      "title": "Isidlo sasemini (Lunch)",
+      "level": "Basic Conversation",
+      "lines": [
+        {
+          "t": "Ngomsitho wobethelo, siyathanda ukutya ndawonye.",
+          "en": "During lunch break, we like to eat together."
+        },
+        {
+          "t": "Namhlanje ndizisa isonka kunye nenyama.",
+          "en": "Today I am bringing bread and meat."
+        },
+        {
+          "t": "USipho uzisa amanzi akhwitshiweyo.",
+          "en": "Sipho is bringing cold water."
+        },
+        {
+          "t": "Ukutya kwethu kuhlala kumnandi.",
+          "en": "Our food is always delicious."
+        },
+        {
+          "t": "Sihlala sithetha ngeenkwenkwe zezemidlalo.",
+          "en": "We always talk about soccer players."
+        },
+        {
+          "t": "Ndinomdla kakhulu kwisiXhosa.",
+          "en": "I am very interested in isiXhosa."
+        },
+        {
+          "t": "Ndinethemba lokufunda ulwimi olu.",
+          "en": "I have hope to learn this language."
+        },
+        {
+          "t": "Isikhalo senyama asikho - ndilambile!",
+          "en": "The smell of meat - I am hungry!"
+        }
+      ]
+    },
+    {
+      "id": "xh-r5",
+      "title": "Usuku ebuhlanti (A day at the field)",
+      "level": "Travel",
+      "lines": [
+        {
+          "t": "Ngempelaveki siya emasimini.",
+          "en": "On the weekend we go to the fields."
+        },
+        {
+          "t": "Iintsimi zethu ziluhlaza ngenxa yemvula.",
+          "en": "Our fields are green because of the rain."
+        },
+        {
+          "t": "Ubaba usebenza kanzima emhlabeni.",
+          "en": "Father works hard on the land."
+        },
+        {
+          "t": "Ndimdla ukuhlela izilwanyana.",
+          "en": "I enjoy herding the animals."
+        },
+        {
+          "t": "Imfuyo yethu inamaduna nemaduna.",
+          "en": "Our livestock has bulls and cows."
+        },
+        {
+          "t": "Ekuseni sibuya nenkomo.",
+          "en": "In the morning we return with the cow."
+        },
+        {
+          "t": "Umama wenza ubisi olukhulu.",
+          "en": "Mother makes plenty of milk."
+        },
+        {
+          "t": "Usuku ebuhlanti wusonwabele.",
+          "en": "A day in the kraal is enjoyable."
+        }
+      ]
+    },
+    {
+      "id": "xh-r6",
+      "title": "Umsebenzi (Work)",
+      "level": "Work",
+      "lines": [
+        {
+          "t": "U-Andile usebenza edolophini.",
+          "en": "Andile works in the city."
+        },
+        {
+          "t": "Uhamba ngebhasi yonke imihla.",
+          "en": "He travels by bus every day."
+        },
+        {
+          "t": "Iofisi yakhe ikwi-bhilidi enkulu.",
+          "en": "His office is in a big building."
+        },
+        {
+          "t": "Ngentsasa ngomsitho, kunembutho yomsebenzi.",
+          "en": "In the morning at nine, there is a work meeting."
+        },
+        {
+          "t": "U-Andile uyichaza iprojekthi entsha.",
+          "en": "Andile explains the new project."
+        },
+        {
+          "t": "Bonke basebenza ngokuzimisela.",
+          "en": "Everyone works with dedication."
+        },
+        {
+          "t": "Ngentsimbi yesihlanu, ubuyela ekhaya.",
+          "en": "At five o'clock, he returns home."
+        },
+        {
+          "t": "Uyonwaba - usuku beluhle.",
+          "en": "He is happy - it was a good day."
+        }
+      ]
+    },
+    {
+      "id": "xh-r7",
+      "title": "Impilo entle (A healthy life)",
+      "level": "Work",
+      "lines": [
+        {
+          "t": "U-Nomsa uhamba yonke imihla.",
+          "en": "Nomsa walks every day."
+        },
+        {
+          "t": "Utya ukutya okusempilweni.",
+          "en": "She eats healthy food."
+        },
+        {
+          "t": "Utya iziqhamo nemifino.",
+          "en": "She eats fruit and vegetables."
+        },
+        {
+          "t": "Usela amanzi amaninzi.",
+          "en": "She drinks a lot of water."
+        },
+        {
+          "t": "Ukuphumla kubalulekile kuye.",
+          "en": "Rest is important to her."
+        },
+        {
+          "t": "Uthanda ukugijima ngokuhlwa.",
+          "en": "She likes to run in the evenings."
+        },
+        {
+          "t": "Impilo yakhe iyakhula.",
+          "en": "Her health is improving."
+        },
+        {
+          "t": "Wakhuthaza abahlobo bakhe ukuba basebenze nzima.",
+          "en": "She encourages her friends to work hard."
         }
       ]
     }
@@ -4507,6 +6858,242 @@
               "why": "'Ndilambile' says you're hungry. The reply that fits here is 'Ndiphilile, wena?' (I'm well, and you?) — or 'Sala kakuhle' when leaving."
             }
           ]
+        }
+      ]
+    },
+    {
+      "id": "xh-d2",
+      "title": "At the clinic",
+      "goal": "Describe your symptoms to a nurse in isiXhosa",
+      "turns": [
+        {
+          "id": "xh-d2-t1",
+          "speaker": "npc",
+          "name": "Umongikazi (Nurse)",
+          "t": "Molo. Ukufa kwakho yintoni namhlanje?",
+          "en": "Hello. What is your illness today?",
+          "next": "xh-d2-t2"
+        },
+        {
+          "id": "xh-d2-t2",
+          "speaker": "you",
+          "prompt": "Tell the nurse what is wrong:",
+          "options": [
+            {
+              "t": "Ndineentlungu entloko yam.",
+              "en": "I have pains in my head.",
+              "ok": true,
+              "next": "xh-d2-t3"
+            },
+            {
+              "t": "Ndifuna ukuthenga.",
+              "en": "I want to buy something.",
+              "ok": false,
+              "why": "You are at a clinic, not a shop. Describe your symptom."
+            },
+            {
+              "t": "Ndikhathazeke.",
+              "en": "I am worried.",
+              "ok": false,
+              "why": "Be more specific about your physical symptoms."
+            }
+          ]
+        },
+        {
+          "id": "xh-d2-t3",
+          "speaker": "npc",
+          "name": "Umongikazi",
+          "t": "Ingaba unomkhuhlane?",
+          "en": "Do you have a cold/flu?",
+          "next": "xh-d2-t4"
+        },
+        {
+          "id": "xh-d2-t4",
+          "speaker": "you",
+          "prompt": "Answer the nurse:",
+          "options": [
+            {
+              "t": "Ewe, ndinomkhuhlane kwaye ndikhathele.",
+              "en": "Yes, I have a cold and I am tired.",
+              "ok": true,
+              "next": "xh-d2-t5"
+            },
+            {
+              "t": "Hayi, ndifuna ukudlala.",
+              "en": "No, I want to play.",
+              "ok": false,
+              "why": "Answer honestly about how you feel."
+            },
+            {
+              "t": "Andazi.",
+              "en": "I don't know.",
+              "ok": false,
+              "why": "Try to describe your symptoms more clearly."
+            }
+          ]
+        },
+        {
+          "id": "xh-d2-t5",
+          "speaker": "npc",
+          "name": "Umongikazi",
+          "t": "Ugqirha uya kukubona ngoku. Hlala phantsi.",
+          "en": "The doctor will see you now. Sit down.",
+          "next": "xh-d2-t6"
+        },
+        {
+          "id": "xh-d2-t6",
+          "speaker": "npc",
+          "name": "Ugqirha",
+          "t": "Molo. Uzive njani?",
+          "en": "Hello. How do you feel?",
+          "next": "xh-d2-t7"
+        },
+        {
+          "id": "xh-d2-t7",
+          "speaker": "you",
+          "prompt": "Tell the doctor how long you've been sick:",
+          "options": [
+            {
+              "t": "Ndigula iintsuku ezimbini.",
+              "en": "I have been sick for two days.",
+              "ok": true,
+              "next": "xh-d2-t8"
+            },
+            {
+              "t": "Ndinexesha lokuhlangana.",
+              "en": "I have an appointment.",
+              "ok": false,
+              "why": "Tell the doctor how long you have been feeling ill."
+            },
+            {
+              "t": "Ndiziva ngcono.",
+              "en": "I feel better.",
+              "ok": false,
+              "why": "Tell the doctor honestly how long you have been sick."
+            }
+          ]
+        },
+        {
+          "id": "xh-d2-t8",
+          "speaker": "npc",
+          "name": "Ugqirha",
+          "t": "Niya kunika iyeza. Sela kathathu ngosuku.",
+          "en": "We will give you medicine. Take it three times a day.",
+          "next": "end"
+        }
+      ]
+    },
+    {
+      "id": "xh-d3",
+      "title": "At the spaza shop",
+      "goal": "Buy groceries at a spaza shop",
+      "turns": [
+        {
+          "id": "xh-d3-t1",
+          "speaker": "npc",
+          "name": "Umthengisi",
+          "t": "Molo! Unganceda ngantoni?",
+          "en": "Hello! How can I help you?",
+          "next": "xh-d3-t2"
+        },
+        {
+          "id": "xh-d3-t2",
+          "speaker": "you",
+          "prompt": "Tell the shopkeeper what you need:",
+          "options": [
+            {
+              "t": "Ndifuna isonka kunye nobisi.",
+              "en": "I want bread and milk.",
+              "ok": true,
+              "next": "xh-d3-t3"
+            },
+            {
+              "t": "Ndifuna ukuphumla.",
+              "en": "I want to rest.",
+              "ok": false,
+              "why": "Tell the shopkeeper what groceries you need."
+            },
+            {
+              "t": "Ndifuna ukuya ekhaya.",
+              "en": "I want to go home.",
+              "ok": false,
+              "why": "Tell the shopkeeper what you want to buy."
+            }
+          ]
+        },
+        {
+          "id": "xh-d3-t3",
+          "speaker": "npc",
+          "name": "Umthengisi",
+          "t": "Kulungile. Isonka sineR15 kwaye ubisi buneR20.",
+          "en": "Okay. The bread is R15 and the milk is R20.",
+          "next": "xh-d3-t4"
+        },
+        {
+          "id": "xh-d3-t4",
+          "speaker": "you",
+          "prompt": "Confirm your order and ask for the total:",
+          "options": [
+            {
+              "t": "Ndifuna zombini. Yimalini yonke?",
+              "en": "I want both. How much is everything?",
+              "ok": true,
+              "next": "xh-d3-t5"
+            },
+            {
+              "t": "Ibiza kakhulu.",
+              "en": "It is too expensive.",
+              "ok": false,
+              "why": "R35 is a fair price. Accept and ask for the total."
+            },
+            {
+              "t": "Ndifuna isonka kuphela.",
+              "en": "I only want the bread.",
+              "ok": false,
+              "why": "Buy both items and ask for the total."
+            }
+          ]
+        },
+        {
+          "id": "xh-d3-t5",
+          "speaker": "npc",
+          "name": "Umthengisi",
+          "t": "Yimalini R35 yonke.",
+          "en": "It is R35 altogether.",
+          "next": "xh-d3-t6"
+        },
+        {
+          "id": "xh-d3-t6",
+          "speaker": "you",
+          "prompt": "Pay and say goodbye:",
+          "options": [
+            {
+              "t": "Nantsi R50. Enkosi kakhulu.",
+              "en": "Here is R50. Thank you very much.",
+              "ok": true,
+              "next": "xh-d3-t7"
+            },
+            {
+              "t": "Andinalimali.",
+              "en": "I have no money.",
+              "ok": false,
+              "why": "Pay for your groceries."
+            },
+            {
+              "t": "Bendifuna ukubuza ixabiso.",
+              "en": "I was asking about the price.",
+              "ok": false,
+              "why": "Pay for your items with R50."
+            }
+          ]
+        },
+        {
+          "id": "xh-d3-t7",
+          "speaker": "npc",
+          "name": "Umthengisi",
+          "t": "Nantsi R15 yakho. Sala kakuhle!",
+          "en": "Here is your R15 change. Stay well!",
+          "next": "end"
         }
       ]
     }
