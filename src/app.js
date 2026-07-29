@@ -518,6 +518,8 @@ function nextBestAction(L, due, nextLesson) {
   return { id: 'resumeSpeak', icon: '🎤', title: 'Keep your fluency warm', sub: 'Do a quick speaking practice', action: startSpeaking };
 }
 
+// Contextual coaching copy for home: keeps the page emotionally supportive while
+// pointing to a single clear next step based on progress and workload.
 function homeCoachLine(L, due, nextAction) {
   if (!L.completedLessons.length) return 'You only need one step right now. Tap start and I will guide you.';
   if (due > 0) return `Let’s do ${Math.min(due, 6)} short review${due === 1 ? '' : 's'} and rebuild confidence.`;
@@ -538,6 +540,7 @@ function renderHome() {
   const due = store.dueItems().length;
   const totalVocab = totalCourseVocab();
   const unseen = Math.max(0, totalVocab - m.introduced);
+  const weekly = weeklyMomentum();
   const statusClass = due > 0 ? 'home-hero__sub home-hero__sub--urgent' : 'muted home-hero__sub';
 
   const lessons = allLessons(course);
@@ -656,6 +659,7 @@ function renderHome() {
           <span><b>${m.mastered}</b><small>mastered</small></span>
           <span><b>${unseen}</b><small>ahead</small></span>
         </div>
+        ${weekly ? `<p class="today-focus__note">This week: ${weekly.retentionPct}% recall · ${esc(weeklyMomentumNote(weekly))}</p>` : ''}
       </section>
 
       ${showPlanReview ? (L.plan
@@ -669,7 +673,6 @@ function renderHome() {
       ${showPractice ? `<details class="home-drawer">
         <summary>Practice tools</summary>
         <div class="home-drawer__body">
-        <h3 class="sec sec--home">Practice</h3>
       <div class="act-grid">
         ${supportsSentences(course.code) ? `<button class="act act--say" id="sayBtn">
           <span class="act__ic">🗣️</span><span class="act__l"><b>Say it</b><small>${(L.sentencesBuilt || 0) ? `${L.sentencesBuilt} sentences made` : 'make your own sentences'}</small></span></button>` : ''}

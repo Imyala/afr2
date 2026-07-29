@@ -231,6 +231,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 }
 .today-focus__stats b { color: var(--green); font-size: 17px; }
 .today-focus__stats small { color: var(--muted); font-size: 11px; }
+.today-focus__note { margin: 0; font-size: 12px; color: var(--muted); }
 
 .home-drawer {
   border: 1px solid var(--line);
@@ -277,7 +278,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .home-overview__stats small, .home-overview__note { color: var(--muted); font-size: 12px; }
 
 .home-shortcuts {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(108px, 1fr)); gap: 8px;
 }
 .quick-nav {
   border: 1px solid var(--line); background: color-mix(in srgb, var(--card) 88%, var(--bg));
