@@ -214,8 +214,18 @@ export function mascotById(id) {
 
 // A line in this buddy's own voice. `seed` (e.g. XP + streak) rotates through
 // their pool so the character stays chatty across the day without repeating.
-export function mascotGreeting(idOrMascot, seed = 0) {
+export function mascotGreeting(idOrMascot, seed = 0, { tone = 'default' } = {}) {
   const m = typeof idOrMascot === 'string' ? mascotById(idOrMascot) : (idOrMascot || MASCOT_CAST[0]);
+  if (tone === 'gentle') {
+    const lines = [
+      `${m.name} is with you — one calm step at a time.`,
+      `You’re doing well. Let’s take the next small step together.`,
+      `No pressure, just progress. I’ll guide you through this.`,
+      `Every try helps your brain grow — keep going.`,
+      `You belong here. Let’s make today’s practice feel easy.`,
+    ];
+    return lines[Math.abs(seed | 0) % lines.length];
+  }
   return m.lines[Math.abs(seed | 0) % m.lines.length];
 }
 

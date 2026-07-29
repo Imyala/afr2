@@ -1,13 +1,13 @@
 /* MzansiLingo — mobile-first styles. Calm, modern SA-inspired palette. */
 :root {
   /* Core palette — refined teal-green, warm gold, soft blue */
-  --green: #0f8c5f;
-  --green-dark: #096b47;
-  --green-light: #d2f0e4;
-  --gold: #e8a020;
-  --gold-dark: #b87b10;
-  --blue: #2563b8;
-  --blue-light: #dbeafe;
+  --green: #2f8f74;
+  --green-dark: #1f6d58;
+  --green-light: #d9f0e8;
+  --gold: #d79a35;
+  --gold-dark: #9b6b1f;
+  --blue: #3c6fba;
+  --blue-light: #dfeafb;
   --red: #c93c3c;
   --red-light: #fee2e2;
   --purple: #7c3aed;
@@ -15,8 +15,8 @@
   /* Neutrals — warm white, soft gray */
   --ink: #18231e;
   --ink-2: #2e3e38;
-  --bg: #f7f9f8;
-  --bg-2: #edf2ef;
+  --bg: #f5f7f6;
+  --bg-2: #eaf0ed;
   --card: #ffffff;
   --muted: #607068;
   --muted-2: #8a9a90;
@@ -60,8 +60,8 @@ body {
     "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
   background-image:
-    radial-gradient(ellipse 90% 50% at 50% -5%, color-mix(in srgb, var(--green) 8%, transparent), transparent 55%),
-    radial-gradient(ellipse 60% 30% at 90% 10%, color-mix(in srgb, var(--gold) 5%, transparent), transparent 50%);
+    radial-gradient(ellipse 90% 50% at 50% -5%, color-mix(in srgb, var(--green) 6%, transparent), transparent 55%),
+    radial-gradient(ellipse 60% 30% at 90% 10%, color-mix(in srgb, var(--gold) 4%, transparent), transparent 50%);
   background-attachment: fixed;
   color: var(--ink);
   -webkit-tap-highlight-color: transparent;
@@ -203,6 +203,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 @media (prefers-reduced-motion: reduce) { .mascot-img--bob, .mascot-img--cheer { animation: none; } }
 .home-hero__greet { font-size: 17px; line-height: 1.2; display: block; }
 .home-hero__sub { margin: 3px 0 0; font-size: 13px; }
+.home-hero__coach { margin: 5px 0 0; font-size: 12px; color: var(--muted); }
 .home-hero__sub--urgent {
   display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
   padding: 5px 10px; border-radius: 999px;
@@ -210,6 +211,49 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   color: var(--green-dark); font-weight: 800;
 }
 .goal__ring--hero { width: 66px; height: 66px; }
+
+.today-focus {
+  display: grid; gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+.today-focus__title { margin: 0; font-size: 15px; }
+.plan-card--focus { margin-top: 0; }
+.today-focus__stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.today-focus__stats span {
+  display: grid; gap: 2px; text-align: center; border-radius: 12px;
+  padding: 8px 6px; background: color-mix(in srgb, var(--bg) 78%, var(--card));
+}
+.today-focus__stats b { color: var(--green); font-size: 17px; }
+.today-focus__stats small { color: var(--muted); font-size: 11px; }
+
+.home-drawer {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.home-drawer summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 12px 14px;
+  font-weight: 800;
+}
+.home-drawer summary::-webkit-details-marker { display: none; }
+.home-drawer summary::after {
+  content: '▾';
+  float: right;
+  color: var(--muted);
+  transition: transform var(--transition);
+}
+.home-drawer[open] summary::after { transform: rotate(180deg); }
+.home-drawer__body { padding: 2px 12px 12px; display: grid; gap: 12px; }
 
 .home-overview { display: grid; gap: 12px; }
 .home-overview__card {
@@ -233,11 +277,11 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .home-overview__stats small, .home-overview__note { color: var(--muted); font-size: 12px; }
 
 .home-shortcuts {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(108px, 1fr)); gap: 8px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
 }
 .quick-nav {
   border: 1px solid var(--line); background: color-mix(in srgb, var(--card) 88%, var(--bg));
-  border-radius: 12px; padding: 10px 8px; font-size: 13px; font-weight: 700;
+  border-radius: 12px; padding: 12px 8px; font-size: 13px; font-weight: 700;
 }
 .quick-nav:disabled { opacity: .45; }
 
