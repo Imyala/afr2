@@ -518,15 +518,6 @@ function nextBestAction(L, due, nextLesson) {
   return { id: 'resumeSpeak', icon: '🎤', title: 'Keep your fluency warm', sub: 'Do a quick speaking practice', action: startSpeaking };
 }
 
-// Contextual coaching copy for home: keeps the page emotionally supportive while
-// pointing to a single clear next step based on progress and workload.
-function homeCoachLine(L, due, nextAction) {
-  if (!L.completedLessons.length) return 'You only need one step right now. Tap start and I will guide you.';
-  if (due > 0) return `Let’s do ${Math.min(due, 6)} short review${due === 1 ? '' : 's'} and rebuild confidence.`;
-  if (nextAction.id === 'resumePlan') return 'Follow today’s guided loop for steady progress without overload.';
-  return 'Small daily wins build real speaking confidence — one step at a time.';
-}
-
 // ---------- home / lesson path ----------
 function renderHome() {
   planLaunch = null; // any loop step we drop back home from is abandoned, not done
@@ -546,6 +537,13 @@ function renderHome() {
   const lessons = allLessons(course);
   const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
   const nextAction = nextBestAction(L, due, nextLesson);
+  const coachLine = !L.completedLessons.length
+    ? 'You only need one step right now. Choose start and I will guide you.'
+    : due > 0
+      ? `Let’s do ${Math.min(due, 6)} short review${due === 1 ? '' : 's'} and rebuild confidence.`
+      : nextAction.id === 'resumePlan'
+        ? 'Follow today’s guided loop for steady progress without overload.'
+        : 'Small daily wins build real speaking confidence — one step at a time.';
   // Progressive disclosure: a brand-new learner sees ONE thing to do — the
   // path — under a friendly hello. Extra widgets appear as lessons complete,
   // so the screen grows with the learner instead of shouting at a beginner.
@@ -640,7 +638,7 @@ function renderHome() {
         <div class="home-hero__text">
           <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed, { tone: 'gentle' }))}</strong>
           <p class="${statusClass}">${esc(homeStatus(L, due, pct, goal))}</p>
-          <p class="home-hero__coach">${esc(homeCoachLine(L, due, nextAction))}</p>
+          <p class="home-hero__coach">${esc(coachLine)}</p>
           ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
         </div>
         <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
