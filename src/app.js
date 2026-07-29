@@ -537,6 +537,13 @@ function renderHome() {
   const lessons = allLessons(course);
   const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
   const nextAction = nextBestAction(L, due, nextLesson);
+  const coachLine = !L.completedLessons.length
+    ? 'You only need one step right now. Choose start and I will guide you.'
+    : due > 0
+      ? `Let’s do ${Math.min(due, 6)} short review${due === 1 ? '' : 's'} and rebuild confidence.`
+      : nextAction.id === 'resumePlan'
+        ? 'Follow today’s guided loop for steady progress without overload.'
+        : 'Small daily wins build real speaking confidence — one step at a time.';
   // Progressive disclosure: a brand-new learner sees ONE thing to do — the
   // path — under a friendly hello. Extra widgets appear as lessons complete,
   // so the screen grows with the learner instead of shouting at a beginner.
@@ -629,8 +636,9 @@ function renderHome() {
       <section class="home-hero">
         <span class="home-hero__mascot">${mascotImg(buddy, { size: 84 })}</span>
         <div class="home-hero__text">
-          <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed))}</strong>
+          <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed, { tone: 'gentle' }))}</strong>
           <p class="${statusClass}">${esc(homeStatus(L, due, pct, goal))}</p>
+          <p class="home-hero__coach">${esc(coachLine)}</p>
           ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
         </div>
         <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
@@ -638,33 +646,19 @@ function renderHome() {
         </div>
       </section>
 
-      <section class="home-overview">
-        <div class="home-overview__card">
-          <div class="home-overview__head"><strong>Learning now</strong><span>${Math.round(m.retention * 100)}% retention</span></div>
-          <div class="home-overview__stats">
-            <span><b>${m.mastered}</b><small>mastered</small></span>
-            <span><b>${m.learning}</b><small>drilling</small></span>
-            <span><b>${unseen}</b><small>still ahead</small></span>
-          </div>
+      <section class="today-focus" aria-label="Guided next step">
+        <h2 class="today-focus__title">Your next step</h2>
+        <button class="plan-card plan-card--resume plan-card--focus" id="${nextAction.id}">
+          <span class="plan-card__l">${nextAction.icon} <b>${esc(nextAction.title)}</b></span>
+          <span class="plan-card__r">${esc(nextAction.sub)} ›</span>
+        </button>
+        <div class="today-focus__stats">
+          <span><b>${Math.round(m.retention * 100)}%</b><small>retention</small></span>
+          <span><b>${m.mastered}</b><small>mastered</small></span>
+          <span><b>${unseen}</b><small>ahead</small></span>
         </div>
-        ${weekly ? `<div class="home-overview__card home-overview__card--warm">
-          <div class="home-overview__head"><strong>This week</strong><span>${weekly.retentionPct}% recall</span></div>
-          <p class="home-overview__note">${weeklyMomentumNote(weekly)}</p>
-        </div>` : ''}
+        ${weekly ? `<p class="today-focus__note">This week: ${weekly.retentionPct}% recall · ${esc(weeklyMomentumNote(weekly))}</p>` : ''}
       </section>
-
-      <section class="home-shortcuts" aria-label="Quick navigation">
-        <button class="quick-nav" id="quickReview" aria-label="Start due review">🔁 Review</button>
-        <button class="quick-nav" id="quickStories" aria-label="Open stories library" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
-        <button class="quick-nav" id="quickProgress" aria-label="Open progress dashboard">📊 Progress</button>
-        <button class="quick-nav" id="quickRoadmap" aria-label="View fluency roadmap">🧭 Roadmap</button>
-        <button class="quick-nav" id="quickShop" aria-label="Open rewards shop">🛒 Shop</button>
-      </section>
-
-      ${lessonsDone >= 1 ? `<button class="plan-card plan-card--resume" id="${nextAction.id}">
-        <span class="plan-card__l">${nextAction.icon} <b>${esc(nextAction.title)}</b></span>
-        <span class="plan-card__r">${esc(nextAction.sub)} ›</span>
-      </button>` : ''}
 
       ${showPlanReview ? (L.plan
     ? `<button class="plan-card" id="planBtn"><span class="plan-card__l">📅 <b>Day ${L.plan.day}/90</b> · today's loop</span><span class="plan-card__r">${Object.values(L.plan.done).filter(Boolean).length}/4 ›</span></button>`
@@ -674,31 +668,9 @@ function renderHome() {
         🔁 Review <span class="badge">${due} due</span>
       </button>` : ''}
 
-      ${showMinis ? `<div class="mini-row">
-        <button class="mini" id="questsBtn">
-          <span class="mini__top">🎯 Quests <b>${questsDone}/${quests.length}</b></span>
-          <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
-        </button>
-        <button class="mini" id="leagueBtn">
-          <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} <b>#${lgRank.rank}</b></span>
-          <span class="qbar qbar--gold"><span style="width:${Math.round(((G.LEAGUE_SIZE - lgRank.rank + 1) / G.LEAGUE_SIZE) * 100)}%"></span></span>
-        </button>
-      </div>` : ''}
-
-      ${showMinis && wotd ? `<button class="wotd-strip" id="wotdBtn">
-        🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
-      </button>` : ''}
-
-      <button class="roadmap-card" id="roadmapBtn">
-        <div class="roadmap-card__head"><strong>🧭 Fluency roadmap</strong><span>${fluency.current.tag}</span></div>
-        <p class="roadmap-card__text">${fluency.next
-          ? `${fluency.remaining.toLocaleString()} words to ${fluency.next.tag}.`
-          : 'You are in the high academic range. Keep sharpening speaking precision and domain vocabulary.'}</p>
-        <div class="qbar"><span style="width:${fluency.progressPct}%"></span></div>
-        <small>Toward 20,000+ speaking words and 50,000+ high-education words</small>
-      </button>
-
-      ${showPractice ? `<h3 class="sec sec--home">Practice</h3>
+      ${showPractice ? `<details class="home-drawer">
+        <summary>Practice tools</summary>
+        <div class="home-drawer__body">
       <div class="act-grid">
         ${supportsSentences(course.code) ? `<button class="act act--say" id="sayBtn">
           <span class="act__ic">🗣️</span><span class="act__l"><b>Say it</b><small>${(L.sentencesBuilt || 0) ? `${L.sentencesBuilt} sentences made` : 'make your own sentences'}</small></span></button>` : ''}
@@ -716,10 +688,50 @@ function renderHome() {
           <span class="act__ic">⚡</span><span class="act__l"><b>Lightning</b><small>fast recall</small></span></button>
         <button class="act act--words" id="glossaryBtn">
           <span class="act__ic">📒</span><span class="act__l"><b>Word list</b><small>all ${Object.keys(vocabIndex(course)).length} words</small></span></button>
-      </div>` : ''}
+      </div>
+      </div>
+      </details>` : ''}
 
-      ${lessonsDone >= 1 && !showMinis ? '<p class="footnote">More tools unlock as you learn 🔓</p>' : ''}
-      <div class="path">${path}</div>
+      <details class="home-drawer">
+        <summary>More options</summary>
+        <div class="home-drawer__body">
+          <section class="home-shortcuts" aria-label="Quick navigation">
+            <button class="quick-nav" id="quickReview" aria-label="Start due review">🔁 Review</button>
+            <button class="quick-nav" id="quickStories" aria-label="Open stories library" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
+            <button class="quick-nav" id="quickProgress" aria-label="Open progress dashboard">📊 Progress</button>
+            <button class="quick-nav" id="quickRoadmap" aria-label="View fluency roadmap">🧭 Roadmap</button>
+            <button class="quick-nav" id="quickShop" aria-label="Open rewards shop">🛒 Shop</button>
+          </section>
+          ${showMinis ? `<div class="mini-row">
+            <button class="mini" id="questsBtn">
+              <span class="mini__top">🎯 Quests <b>${questsDone}/${quests.length}</b></span>
+              <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
+            </button>
+            <button class="mini" id="leagueBtn">
+              <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} <b>#${lgRank.rank}</b></span>
+              <span class="qbar qbar--gold"><span style="width:${Math.round(((G.LEAGUE_SIZE - lgRank.rank + 1) / G.LEAGUE_SIZE) * 100)}%"></span></span>
+            </button>
+          </div>` : ''}
+          ${showMinis && wotd ? `<button class="wotd-strip" id="wotdBtn">
+            🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
+          </button>` : ''}
+          <button class="roadmap-card" id="roadmapBtn">
+            <div class="roadmap-card__head"><strong>🧭 Fluency roadmap</strong><span>${fluency.current.tag}</span></div>
+            <p class="roadmap-card__text">${fluency.next
+              ? `${fluency.remaining.toLocaleString()} words to ${fluency.next.tag}.`
+              : 'You are in the high academic range. Keep sharpening speaking precision and domain vocabulary.'}</p>
+            <div class="qbar"><span style="width:${fluency.progressPct}%"></span></div>
+            <small>Toward 20,000+ speaking words and 50,000+ high-education words</small>
+          </button>
+        </div>
+      </details>
+
+      <details class="home-drawer" ${lessonsDone ? '' : 'open'}>
+        <summary>${lessonsDone ? 'Lesson path' : 'Start here: lesson path'}</summary>
+        <div class="home-drawer__body">
+          <div class="path">${path}</div>
+        </div>
+      </details>
       <nav class="bottombar" aria-label="Main">
         <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
         <button class="navbtn" id="storiesNav" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
@@ -1670,7 +1682,7 @@ function renderDialogue() {
         b.classList.add('opt--bad'); b.disabled = true;
         // corrective feedback — the highest-impact ingredient of interaction:
         // say WHY the reply doesn't work, not just that it doesn't
-        const why = choice.why || 'Not quite — try a different reply.';
+        const why = choice.why || 'Good try — pick the reply that fits this moment best.';
         let fb = node.querySelector('#dlgWhy');
         if (!fb) { fb = h('<p class="dlg-why" id="dlgWhy" role="alert"></p>'); node.querySelector('#foot').prepend(fb); }
         fb.textContent = `💡 ${why}`;
@@ -2105,7 +2117,7 @@ function renderWritingLab() {
             <div class="wlab__result wlab__result--${result.type}">
               <div class="wlab__result-head">
                 <span>${result.type === 'correct' ? '✅' : result.type === 'typo' ? '💛' : '❌'}</span>
-                <span>${result.type === 'correct' ? 'Correct!' : result.type === 'typo' ? 'Almost — watch the spelling' : 'Not quite'}</span>
+                <span>${result.type === 'correct' ? 'Correct!' : result.type === 'typo' ? 'Almost — watch the spelling' : 'Good try'}</span>
               </div>
               <div class="wlab__result-answer">
                 <strong>${esc(sentence.t)}</strong>
@@ -2401,7 +2413,7 @@ function finishTestOut() {
   const node = h(`
     <div class="screen screen--center result">
       <div class="onb__art">${mascotImg(currentBuddy(), { size: 110, className: passed ? 'mascot-img--cheer' : 'mascot-img--sad' })}</div>
-      <h1>${passed ? 'Tested out! ⏭️' : 'Not quite yet'}</h1>
+      <h1>${passed ? 'Tested out! ⏭️' : 'Great effort — keep going'}</h1>
       <div class="result__row"><div class="kpi"><span class="kpi__v">${session.score}/${session.queue.length}</span><span class="kpi__k">Score</span></div><div class="kpi"><span class="kpi__v">${Math.round(pct * 100)}%</span><span class="kpi__k">Accuracy</span></div></div>
       <p class="muted">${passed ? `${esc(unit.title)} is marked complete — jump ahead to what's next!` : 'You need 80% to skip this unit. Work through the lessons and you\'ll master it.'}</p>
       <button class="btn btn--primary" id="doneBtn">${passed ? 'Continue' : 'Back to lessons'}</button>
