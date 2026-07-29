@@ -608,6 +608,10 @@ function renderHome() {
   const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
   const boostN = Shop.inventory(store).boosts.double_xp || 0;
   const fluency = fluencyRoadmap(m.mastered);
+  const writingLabSubtext = (() => {
+    const ws = L.writingLabScore;
+    return ws && ws.total ? `${ws.correct}/${ws.total} today` : 'translate & get graded';
+  })();
 
   const node = h(`
     <div class="screen screen--home">
@@ -703,7 +707,7 @@ function renderHome() {
         ${(course.dialogues || []).length ? `<button class="act act--convo" id="dialogueBtn">
           <span class="act__ic">💬</span><span class="act__l"><b>Conversations</b><small>real chats</small></span></button>` : ''}
         <button class="act act--write" id="writingLabBtn">
-          <span class="act__ic">✍️</span><span class="act__l"><b>Writing Lab</b><small>${(() => { const ws = L.writingLabScore; return ws && ws.total ? `${ws.correct}/${ws.total} today` : 'translate & get graded'; })()}</small></span></button>
+          <span class="act__ic">✍️</span><span class="act__l"><b>Writing Lab</b><small>${writingLabSubtext}</small></span></button>
         <button class="act act--speak" id="speakBtn">
           <span class="act__ic">🎤</span><span class="act__l"><b>Speaking</b><small>out loud</small></span></button>
         <button class="act act--listen" id="listenBtn">
