@@ -529,28 +529,17 @@ function renderHome() {
   const goal = store.state.settings.dailyGoalXP;
   const pct = Math.min(100, Math.round((L.xpToday / goal) * 100));
   const due = store.dueItems().length;
-  const totalVocab = totalCourseVocab();
-  const unseen = Math.max(0, totalVocab - m.introduced);
-  const weekly = weeklyMomentum();
   const statusClass = due > 0 ? 'home-hero__sub home-hero__sub--urgent' : 'muted home-hero__sub';
 
   const lessons = allLessons(course);
   const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
   const nextAction = nextBestAction(L, due, nextLesson);
-  const coachLine = !L.completedLessons.length
-    ? 'You only need one step right now. Choose start and I will guide you.'
-    : due > 0
-      ? `Let’s do ${Math.min(due, 6)} short review${due === 1 ? '' : 's'} and rebuild confidence.`
-      : nextAction.id === 'resumePlan'
-        ? 'Follow today’s guided loop for steady progress without overload.'
-        : 'Small daily wins build real speaking confidence — one step at a time.';
   // Progressive disclosure: a brand-new learner sees ONE thing to do — the
   // path — under a friendly hello. Extra widgets appear as lessons complete,
   // so the screen grows with the learner instead of shouting at a beginner.
   const lessonsDone = L.completedLessons.length;
   const showPlanReview = lessonsDone >= 1;  // 90-day plan + review button
   const showPractice = lessonsDone >= 2;    // practice tools grid
-  const showMinis = lessonsDone >= 3;       // quests/league + word of the day
   // which units are already fully complete (so we only offer "test out" on the rest)
   const unitComplete = {};
   for (const u of course.units) unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
@@ -591,30 +580,10 @@ function renderHome() {
       </button>`;
   }).join('');
 
-  // gamification widgets
-  const quests = G.questDefs(store);
-  const questsDone = quests.filter((q) => q.claimed).length;
-  const questHtml = quests.map((q) => {
-    const pc = Math.min(100, Math.round((q.progress / q.goal) * 100));
-    return `<div class="quest ${q.claimed ? 'quest--done' : ''}">
-        <span class="quest__icon">${q.claimed ? '✅' : q.icon}</span>
-        <div class="quest__body">
-          <span class="quest__text">${esc(q.text)}</span>
-          <div class="qbar"><div style="width:${pc}%"></div></div>
-        </div>
-        <span class="quest__reward">${q.claimed ? 'done' : `💎${q.gems}`}</span>
-      </div>`;
-  }).join('');
-
-  const lg = L.league;
-  const lgRank = G.leagueRank(store);
   const hasReading = (course.reading || []).length > 0;
   const buddy = currentBuddy();
   const greetSeed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
-  const wotd = wordOfTheDay();
-  const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
   const boostN = Shop.inventory(store).boosts.double_xp || 0;
-  const fluency = fluencyRoadmap(m.mastered);
   const writingLabSubtext = (() => {
     const ws = L.writingLabScore;
     return ws && ws.total ? `${ws.correct}/${ws.total} today` : 'translate & get graded';
@@ -626,8 +595,7 @@ function renderHome() {
       <header class="topbar">
         <button class="topbar__lang" id="switchLang">${esc(meta.name)} ▾</button>
         <div class="topbar__stats">
-          ${showPlanReview ? `<span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
-          <span class="stat stat--gems" id="gemsBtn" role="button" tabindex="0" aria-label="${G.gems(store)} gems. Open shop.">💎 ${G.gems(store)}</span>` : ''}
+          ${showPlanReview ? `<span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>` : ''}
           <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
           <button class="stat" id="settingsBtn" aria-label="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
         </div>
@@ -638,7 +606,6 @@ function renderHome() {
         <div class="home-hero__text">
           <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed, { tone: 'gentle' }))}</strong>
           <p class="${statusClass}">${esc(homeStatus(L, due, pct, goal))}</p>
-          <p class="home-hero__coach">${esc(coachLine)}</p>
           ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
         </div>
         <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
@@ -652,79 +619,27 @@ function renderHome() {
           <span class="plan-card__l">${nextAction.icon} <b>${esc(nextAction.title)}</b></span>
           <span class="plan-card__r">${esc(nextAction.sub)} ›</span>
         </button>
-        <div class="today-focus__stats">
-          <span><b>${Math.round(m.retention * 100)}%</b><small>retention</small></span>
-          <span><b>${m.mastered}</b><small>mastered</small></span>
-          <span><b>${unseen}</b><small>ahead</small></span>
-        </div>
-        ${weekly ? `<p class="today-focus__note">This week: ${weekly.retentionPct}% recall · ${esc(weeklyMomentumNote(weekly))}</p>` : ''}
       </section>
 
       ${showPlanReview ? (L.plan
     ? `<button class="plan-card" id="planBtn"><span class="plan-card__l">📅 <b>Day ${L.plan.day}/90</b> · today's loop</span><span class="plan-card__r">${Object.values(L.plan.done).filter(Boolean).length}/4 ›</span></button>`
     : '<button class="plan-card plan-card--start" id="planBtn"><span class="plan-card__l">📅 <b>Start your 90-day plan</b></span><span class="plan-card__r">guided daily path ›</span></button>') : ''}
 
-      ${showPlanReview && due ? `<button class="btn btn--review" id="reviewBtn">
-        🔁 Review <span class="badge">${due} due</span>
-      </button>` : ''}
-
       ${showPractice ? `<details class="home-drawer">
-        <summary>Practice tools</summary>
+        <summary>More practice</summary>
         <div class="home-drawer__body">
-      <div class="act-grid">
-        ${supportsSentences(course.code) ? `<button class="act act--say" id="sayBtn">
-          <span class="act__ic">🗣️</span><span class="act__l"><b>Say it</b><small>${(L.sentencesBuilt || 0) ? `${L.sentencesBuilt} sentences made` : 'make your own sentences'}</small></span></button>` : ''}
-        ${(course.grammar || []).length ? `<button class="act act--grammar" id="grammarBtn">
-          <span class="act__ic">🧩</span><span class="act__l"><b>Grammar</b><small>patterns</small></span></button>` : ''}
-        ${(course.dialogues || []).length ? `<button class="act act--convo" id="dialogueBtn">
-          <span class="act__ic">💬</span><span class="act__l"><b>Conversations</b><small>real chats</small></span></button>` : ''}
-        <button class="act act--write" id="writingLabBtn">
-          <span class="act__ic">✍️</span><span class="act__l"><b>Writing Lab</b><small>${writingLabSubtext}</small></span></button>
-        <button class="act act--speak" id="speakBtn">
-          <span class="act__ic">🎤</span><span class="act__l"><b>Speaking</b><small>out loud</small></span></button>
-        <button class="act act--listen" id="listenBtn">
-          <span class="act__ic">👂</span><span class="act__l"><b>Listening</b><small>understand by ear</small></span></button>
-        <button class="act act--blitz" id="blitzBtn">
-          <span class="act__ic">⚡</span><span class="act__l"><b>Lightning</b><small>fast recall</small></span></button>
-        <button class="act act--words" id="glossaryBtn">
-          <span class="act__ic">📒</span><span class="act__l"><b>Word list</b><small>all ${Object.keys(vocabIndex(course)).length} words</small></span></button>
-      </div>
-      </div>
-      </details>` : ''}
-
-      <details class="home-drawer">
-        <summary>More options</summary>
-        <div class="home-drawer__body">
-          <section class="home-shortcuts" aria-label="Quick navigation">
-            <button class="quick-nav" id="quickReview" aria-label="Start due review">🔁 Review</button>
-            <button class="quick-nav" id="quickStories" aria-label="Open stories library" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
-            <button class="quick-nav" id="quickProgress" aria-label="Open progress dashboard">📊 Progress</button>
-            <button class="quick-nav" id="quickRoadmap" aria-label="View fluency roadmap">🧭 Roadmap</button>
-            <button class="quick-nav" id="quickShop" aria-label="Open rewards shop">🛒 Shop</button>
-          </section>
-          ${showMinis ? `<div class="mini-row">
-            <button class="mini" id="questsBtn">
-              <span class="mini__top">🎯 Quests <b>${questsDone}/${quests.length}</b></span>
-              <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
-            </button>
-            <button class="mini" id="leagueBtn">
-              <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} <b>#${lgRank.rank}</b></span>
-              <span class="qbar qbar--gold"><span style="width:${Math.round(((G.LEAGUE_SIZE - lgRank.rank + 1) / G.LEAGUE_SIZE) * 100)}%"></span></span>
-            </button>
-          </div>` : ''}
-          ${showMinis && wotd ? `<button class="wotd-strip" id="wotdBtn">
-            🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
-          </button>` : ''}
-          <button class="roadmap-card" id="roadmapBtn">
-            <div class="roadmap-card__head"><strong>🧭 Fluency roadmap</strong><span>${fluency.current.tag}</span></div>
-            <p class="roadmap-card__text">${fluency.next
-              ? `${fluency.remaining.toLocaleString()} words to ${fluency.next.tag}.`
-              : 'You are in the high academic range. Keep sharpening speaking precision and domain vocabulary.'}</p>
-            <div class="qbar"><span style="width:${fluency.progressPct}%"></span></div>
-            <small>Toward 20,000+ speaking words and 50,000+ high-education words</small>
-          </button>
+          <div class="act-grid">
+            <button class="act act--speak" id="speakBtn">
+              <span class="act__ic">🎤</span><span class="act__l"><b>Speaking</b><small>out loud</small></span></button>
+            <button class="act act--listen" id="listenBtn">
+              <span class="act__ic">👂</span><span class="act__l"><b>Listening</b><small>understand by ear</small></span></button>
+            <button class="act act--write" id="writingLabBtn">
+              <span class="act__ic">✍️</span><span class="act__l"><b>Writing Lab</b><small>${writingLabSubtext}</small></span></button>
+            <button class="act act--blitz" id="blitzBtn">
+              <span class="act__ic">⚡</span><span class="act__l"><b>Lightning</b><small>fast recall</small></span></button>
+          </div>
         </div>
-      </details>
+      </details>` : ''}
 
       <details class="home-drawer" ${lessonsDone ? '' : 'open'}>
         <summary>${lessonsDone ? 'Lesson path' : 'Start here: lesson path'}</summary>
@@ -750,7 +665,6 @@ function renderHome() {
   // several widgets only exist past certain progress — wire whatever rendered
   const on = (sel, fn) => { const el = node.querySelector(sel); if (el) el.addEventListener('click', fn); };
   on('#switchLang', () => renderLanguageSelect(false));
-  on('#reviewBtn', startReview);
   on('#resumeReview', startReview);
   on('#resumePlan', renderPlan);
   on('#resumeLesson', () => startLesson(nextLesson.id));
@@ -758,30 +672,16 @@ function renderHome() {
   on('#resumeSpeak', startSpeaking);
   on('#planBtn', renderPlan);
   on('#storiesNav', renderLibrary);
-  on('#glossaryBtn', () => renderGlossary());
-  on('#sayBtn', renderSentenceStudio);
   on('#writingLabBtn', () => { sound.tap(); renderWritingLab(); });
   on('#speakBtn', startSpeaking);
   on('#listenBtn', startListening);
   on('#blitzBtn', startBlitz);
-  on('#grammarBtn', renderGrammar);
-  on('#dialogueBtn', renderDialogues);
   on('#shopNav', renderShop);
-  on('#questsBtn', renderQuests);
-  on('#leagueBtn', renderLeague);
   on('#achBtn', renderAchievements);
   on('#progressBtn2', renderProgress);
-  on('#gemsBtn', renderShop);
   on('#streakBtn', renderLeague);
   on('#heartsBtn', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
   on('#settingsBtn', renderSettings);
-  on('#quickReview', startReview);
-  on('#quickStories', renderLibrary);
-  on('#quickProgress', renderProgress);
-  on('#quickRoadmap', renderFluencyRoadmap);
-  on('#quickShop', renderShop);
-  on('#wotdBtn', renderWotd);
-  on('#roadmapBtn', renderFluencyRoadmap);
   wireKeyActivation(node);
   mount(node);
   // keep the reminder state fresh for the service worker, and arm a same-session
