@@ -100,7 +100,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   background: var(--card); color: var(--ink); box-shadow: var(--shadow); width: 100%;
   transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
 }
-.btn:active:not(:disabled) { transform: scale(.98); }
+.btn:active:not(:disabled):not(.btn--primary):not(.btn--review) { transform: scale(.98); }
 .btn--primary {
   background: linear-gradient(160deg, color-mix(in srgb, var(--green) 110%, #fff), var(--green-dark));
   color: #fff;
@@ -966,11 +966,9 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 /* ---------- polish pass ---------- */
 .btn--primary {
   background: linear-gradient(180deg, color-mix(in srgb, var(--green) 88%, #fff), var(--green));
-  border-top: 1px solid rgba(255,255,255,.28);
 }
 .home-hero {
   background: linear-gradient(135deg, color-mix(in srgb, var(--green) 10%, var(--card)), var(--card) 58%);
-  border-top: 1px solid rgba(255,255,255,.92);
 }
 .act { transition: transform .08s ease, box-shadow .12s ease; }
 .act:hover { box-shadow: 0 4px 14px color-mix(in srgb, var(--acc) 22%, transparent); }
@@ -1217,7 +1215,6 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
     left: 18px;
     font-size: 15px;
     font-weight: 800;
-    color: var(--green);
     letter-spacing: -.3px;
     pointer-events: none;
     background: linear-gradient(95deg, var(--green), var(--gold));
