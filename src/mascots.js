@@ -216,6 +216,18 @@ export function mascotById(id) {
 // their pool so the character stays chatty across the day without repeating.
 export function mascotGreeting(idOrMascot, seed = 0, { tone = 'default' } = {}) {
   const m = typeof idOrMascot === 'string' ? mascotById(idOrMascot) : (idOrMascot || MASCOT_CAST[0]);
+  // 'short': a single friendly clause for the home screen, where the hello sits
+  // above one big button and must not push it off the first glance.
+  if (tone === 'short') {
+    const lines = [
+      `Hi, I’m ${m.name}. Ready?`,
+      `${m.name} here — let’s go!`,
+      `Good to see you! 👋`,
+      `${m.name} is with you today.`,
+      `Let’s learn something new.`,
+    ];
+    return lines[Math.abs(seed | 0) % lines.length];
+  }
   if (tone === 'gentle') {
     const lines = [
       `${m.name} is with you — one calm step at a time.`,

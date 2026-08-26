@@ -507,281 +507,194 @@ function toughestWordId() {
   return rows[0] ? rows[0][0] : null;
 }
 
-function nextBestAction(L, due, nextLesson) {
-  const repairPending = due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr();
-  if (repairPending) return { id: 'resumeReview', icon: '🌱', title: 'Ease back in', sub: `Start a shorter confidence-building review (${Math.min(due, 8)} due first)`, action: startReview };
-  if (due > 0) return { id: 'resumeReview', icon: '🔁', title: 'Reviews ready', sub: `${due} review${due === 1 ? '' : 's'} due now`, action: startReview };
-  if (L.plan && Object.values(L.plan.done).some((x) => !x)) return { id: 'resumePlan', icon: '📅', title: 'Resume today’s plan', sub: `${Object.values(L.plan.done).filter(Boolean).length}/4 steps done`, action: renderPlan };
-  if (nextLesson) return { id: 'resumeLesson', icon: '📘', title: 'Next lesson', sub: nextLesson.title, action: () => startLesson(nextLesson.id) };
-  const story = recommendedStory();
-  if (story) return { id: 'resumeStory', icon: '📖', title: 'Best next story', sub: story.title, action: () => renderReadingIntro(story.id) };
-  return { id: 'resumeSpeak', icon: '🎤', title: 'Keep your fluency warm', sub: 'Do a quick speaking practice', action: startSpeaking };
+// ---------- shared shell: bottom tab bar ----------
+// Four flat destinations, always in the same place. Everything the app can do
+// lives under one of them, so nothing has to be crammed onto the home screen
+// and nobody has to remember where a feature was hidden.
+const NAV_TABS = [
+  { id: 'today', icon: '🏠', label: 'Today' },
+  { id: 'path', icon: '🗺️', label: 'Lessons' },
+  { id: 'practice', icon: '🎮', label: 'Practice' },
+  { id: 'me', icon: '⭐', label: 'Me' },
+];
+
+// The hub the learner came from, so a sub-screen's back arrow returns there
+// instead of always dumping them on the home screen.
+let lastHub = null;
+function backToHub() { (lastHub || renderHome)(); }
+
+function navBar(active) {
+  return `<nav class="bottombar" aria-label="Main">${NAV_TABS.map((t) => `
+        <button class="navbtn ${t.id === active ? 'navbtn--active' : ''}" data-nav="${t.id}" ${t.id === active ? 'aria-current="page"' : ''}>
+          <span class="navbtn__ic" aria-hidden="true">${t.icon}</span>
+          <span class="navbtn__l">${t.label}</span>
+        </button>`).join('')}
+      </nav>`;
 }
 
-// ---------- home / lesson path ----------
-function renderHome() {
-  planLaunch = null; // any loop step we drop back home from is abandoned, not done
-  store.rollover();
-  store.refreshHearts();
+function wireNav(node, active) {
+  const go = { today: renderHome, path: renderPath, practice: renderPractice, me: renderMe };
+  node.querySelectorAll('[data-nav]').forEach((b) => b.addEventListener('click', () => {
+    if (b.dataset.nav === active) return;
+    sound.tap();
+    go[b.dataset.nav]();
+  }));
+}
+
+// The compact header every hub shares: language, the counters that matter, settings.
+// Streak and gems stay hidden until the learner has finished a lesson — a brand-new
+// kid doesn't need scoreboards before their first win.
+function hubTopbar() {
   const L = store.lang();
-  const m = store.metrics();
   const meta = LANGS.languages.find((x) => x.code === course.code);
-  const goal = store.state.settings.dailyGoalXP;
-  const pct = Math.min(100, Math.round((L.xpToday / goal) * 100));
-  const due = store.dueItems().length;
-  const totalVocab = totalCourseVocab();
-  const unseen = Math.max(0, totalVocab - m.introduced);
-  const weekly = weeklyMomentum();
-  const statusClass = due > 0 ? 'home-hero__sub home-hero__sub--urgent' : 'muted home-hero__sub';
-
-  const lessons = allLessons(course);
-  const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
-  const nextAction = nextBestAction(L, due, nextLesson);
-  const coachLine = !L.completedLessons.length
-    ? 'You only need one step right now. Choose start and I will guide you.'
-    : due > 0
-      ? `Let’s do ${Math.min(due, 6)} short review${due === 1 ? '' : 's'} and rebuild confidence.`
-      : nextAction.id === 'resumePlan'
-        ? 'Follow today’s guided loop for steady progress without overload.'
-        : 'Small daily wins build real speaking confidence — one step at a time.';
-  // Progressive disclosure: a brand-new learner sees ONE thing to do — the
-  // path — under a friendly hello. Extra widgets appear as lessons complete,
-  // so the screen grows with the learner instead of shouting at a beginner.
-  const lessonsDone = L.completedLessons.length;
-  const showPlanReview = lessonsDone >= 1;  // 90-day plan + review button
-  const showPractice = lessonsDone >= 2;    // practice tools grid
-  const showMinis = lessonsDone >= 3;       // quests/league + word of the day
-  // which units are already fully complete (so we only offer "test out" on the rest)
-  const unitComplete = {};
-  for (const u of course.units) unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
-  // Step 0: a no-pressure warm-up before Lesson 1 for absolute beginners.
-  // Shown until the first lesson is complete; while it's pending it is the
-  // highlighted next step (Lesson 1 stays open for those who want to dive in).
-  const firstLesson = lessons[0];
-  const showWarmup = firstLesson && !store.isLessonComplete(firstLesson.id) && (firstLesson.vocab || []).length >= 3;
-  const warmupPending = showWarmup && !L.warmupDone;
-  const warmupNode = showWarmup ? `
-      <button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup>
-        <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
-        <span class="node__title">Warm-up: meet your first words</span>
-        ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
-      </button>` : '';
-  let lastUnit = null;
-  let activeMarked = warmupPending;
-  const path = lessons.map((l, i) => {
-    const done = store.isLessonComplete(l.id);
-    const stars = L.lessonStars[l.id] || 0;
-    const prevDone = i === 0 || store.isLessonComplete(lessons[i - 1].id);
-    const locked = !done && !prevDone;
-    // The first available, not-yet-finished lesson is the learner's clear
-    // next step — highlight it so the eye lands on what to do now.
-    const active = !done && !locked && !activeMarked;
-    if (active) activeMarked = true;
-    const unitHeader = l.unitTitle !== lastUnit
-      ? `<div class="unit-head"><span>${esc(l.unitTitle)}</span><div class="unit-head__right"><small>${esc(l.level)}</small>${!unitComplete[l.unitId] && lessonsDone >= 1 ? `<button class="testout-btn" data-testout="${esc(l.unitId)}">Test out</button>` : ''}</div></div>`
-      : '';
-    lastUnit = l.unitTitle;
-    const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
-    const cta = active ? '<span class="node__cta">START</span>' : '';
-    return `${unitHeader}${i === 0 ? warmupNode : ''}
-      <button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''}>
-        <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
-        <span class="node__title">${esc(l.title)}</span>
-        ${active ? cta : starHtml}
-      </button>`;
-  }).join('');
-
-  // gamification widgets
-  const quests = G.questDefs(store);
-  const questsDone = quests.filter((q) => q.claimed).length;
-  const questHtml = quests.map((q) => {
-    const pc = Math.min(100, Math.round((q.progress / q.goal) * 100));
-    return `<div class="quest ${q.claimed ? 'quest--done' : ''}">
-        <span class="quest__icon">${q.claimed ? '✅' : q.icon}</span>
-        <div class="quest__body">
-          <span class="quest__text">${esc(q.text)}</span>
-          <div class="qbar"><div style="width:${pc}%"></div></div>
-        </div>
-        <span class="quest__reward">${q.claimed ? 'done' : `💎${q.gems}`}</span>
-      </div>`;
-  }).join('');
-
-  const lg = L.league;
-  const lgRank = G.leagueRank(store);
-  const hasReading = (course.reading || []).length > 0;
-  const buddy = currentBuddy();
-  const greetSeed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
-  const wotd = wordOfTheDay();
-  const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
-  const boostN = Shop.inventory(store).boosts.double_xp || 0;
-  const fluency = fluencyRoadmap(m.mastered);
-  const writingLabSubtext = (() => {
-    const ws = L.writingLabScore;
-    return ws && ws.total ? `${ws.correct}/${ws.total} today` : 'translate & get graded';
-  })();
-
-  const node = h(`
-    <div class="screen screen--home">
-      <h1 class="sr-only">MzansiLingo — ${esc(meta.name)} home</h1>
-      <header class="topbar">
+  const showScores = L.completedLessons.length >= 1;
+  return `<header class="topbar">
         <button class="topbar__lang" id="switchLang">${esc(meta.name)} ▾</button>
         <div class="topbar__stats">
-          ${showPlanReview ? `<span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
+          ${showScores ? `<span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
           <span class="stat stat--gems" id="gemsBtn" role="button" tabindex="0" aria-label="${G.gems(store)} gems. Open shop.">💎 ${G.gems(store)}</span>` : ''}
           <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
-          <button class="stat" id="settingsBtn" aria-label="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
+          <button class="stat stat--gear" id="settingsBtn" aria-label="Settings">⚙️</button>
         </div>
-      </header>
+      </header>`;
+}
 
-      <section class="home-hero">
-        <span class="home-hero__mascot">${mascotImg(buddy, { size: 84 })}</span>
-        <div class="home-hero__text">
-          <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed, { tone: 'gentle' }))}</strong>
-          <p class="${statusClass}">${esc(homeStatus(L, due, pct, goal))}</p>
-          <p class="home-hero__coach">${esc(coachLine)}</p>
-          ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
-        </div>
-        <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
-          <span>${L.xpToday}/${goal}</span>
-        </div>
-      </section>
+function wireHubTopbar(node) {
+  const on = (sel, fn) => { const el = node.querySelector(sel); if (el) el.addEventListener('click', fn); };
+  on('#switchLang', () => renderLanguageSelect(false));
+  on('#gemsBtn', renderShop);
+  on('#streakBtn', renderLeague);
+  on('#heartsBtn', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
+  on('#settingsBtn', renderSettings);
+}
 
-      <section class="today-focus" aria-label="Guided next step">
-        <h2 class="today-focus__title">Your next step</h2>
-        <button class="plan-card plan-card--resume plan-card--focus" id="${nextAction.id}">
-          <span class="plan-card__l">${nextAction.icon} <b>${esc(nextAction.title)}</b></span>
-          <span class="plan-card__r">${esc(nextAction.sub)} ›</span>
-        </button>
-        <div class="today-focus__stats">
-          <span><b>${Math.round(m.retention * 100)}%</b><small>retention</small></span>
-          <span><b>${m.mastered}</b><small>mastered</small></span>
-          <span><b>${unseen}</b><small>ahead</small></span>
-        </div>
-        ${weekly ? `<p class="today-focus__note">This week: ${weekly.retentionPct}% recall · ${esc(weeklyMomentumNote(weekly))}</p>` : ''}
-      </section>
+// ---------- lesson path ----------
+// Where the learner stands in the course right now — used by both the home
+// screen's short "up next" peek and the full Lessons map.
+function pathPosition() {
+  const L = store.lang();
+  const lessons = allLessons(course);
+  const first = lessons[0];
+  // A no-pressure warm-up sits before lesson 1 for absolute beginners.
+  const hasWarmup = !!first && !store.isLessonComplete(first.id) && (first.vocab || []).length >= 3;
+  let nextIdx = lessons.findIndex((l) => !store.isLessonComplete(l.id));
+  if (nextIdx === -1) nextIdx = lessons.length;
+  return {
+    lessons,
+    hasWarmup,
+    warmupPending: hasWarmup && !L.warmupDone,
+    nextIdx,
+    nextLesson: lessons[nextIdx] || null,
+  };
+}
 
-      ${showPlanReview ? (L.plan
-    ? `<button class="plan-card" id="planBtn"><span class="plan-card__l">📅 <b>Day ${L.plan.day}/90</b> · today's loop</span><span class="plan-card__r">${Object.values(L.plan.done).filter(Boolean).length}/4 ›</span></button>`
-    : '<button class="plan-card plan-card--start" id="planBtn"><span class="plan-card__l">📅 <b>Start your 90-day plan</b></span><span class="plan-card__r">guided daily path ›</span></button>') : ''}
+function warmupNodeHtml(done) {
+  return `<button class="node ${done ? 'node--done' : 'node--active'}" data-warmup>
+        <span class="node__icon">${done ? '✓' : '🌱'}</span>
+        <span class="node__title">Warm-up: your first words</span>
+        ${done ? '' : '<span class="node__cta">START</span>'}
+      </button>`;
+}
 
-      ${showPlanReview && due ? `<button class="btn btn--review" id="reviewBtn">
-        🔁 Review <span class="badge">${due} due</span>
-      </button>` : ''}
+// One lesson row. `active` marks the single lesson the learner should tap now.
+function lessonNodeHtml(l, i, { done, locked, active, stars }) {
+  const icon = done ? '✓' : locked ? '🔒' : i + 1;
+  const tail = active
+    ? '<span class="node__cta">START</span>'
+    : done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
+  return `<button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''}>
+        <span class="node__icon">${icon}</span>
+        <span class="node__title">${esc(l.title)}</span>
+        ${tail}
+      </button>`;
+}
 
-      ${showPractice ? `<details class="home-drawer">
-        <summary>Practice tools</summary>
-        <div class="home-drawer__body">
-      <div class="act-grid">
-        ${supportsSentences(course.code) ? `<button class="act act--say" id="sayBtn">
-          <span class="act__ic">🗣️</span><span class="act__l"><b>Say it</b><small>${(L.sentencesBuilt || 0) ? `${L.sentencesBuilt} sentences made` : 'make your own sentences'}</small></span></button>` : ''}
-        ${(course.grammar || []).length ? `<button class="act act--grammar" id="grammarBtn">
-          <span class="act__ic">🧩</span><span class="act__l"><b>Grammar</b><small>patterns</small></span></button>` : ''}
-        ${(course.dialogues || []).length ? `<button class="act act--convo" id="dialogueBtn">
-          <span class="act__ic">💬</span><span class="act__l"><b>Conversations</b><small>real chats</small></span></button>` : ''}
-        <button class="act act--write" id="writingLabBtn">
-          <span class="act__ic">✍️</span><span class="act__l"><b>Writing Lab</b><small>${writingLabSubtext}</small></span></button>
-        <button class="act act--speak" id="speakBtn">
-          <span class="act__ic">🎤</span><span class="act__l"><b>Speaking</b><small>out loud</small></span></button>
-        <button class="act act--listen" id="listenBtn">
-          <span class="act__ic">👂</span><span class="act__l"><b>Listening</b><small>understand by ear</small></span></button>
-        <button class="act act--blitz" id="blitzBtn">
-          <span class="act__ic">⚡</span><span class="act__l"><b>Lightning</b><small>fast recall</small></span></button>
-        <button class="act act--words" id="glossaryBtn">
-          <span class="act__ic">📒</span><span class="act__l"><b>Word list</b><small>all ${Object.keys(vocabIndex(course)).length} words</small></span></button>
-      </div>
-      </div>
-      </details>` : ''}
-
-      <details class="home-drawer">
-        <summary>More options</summary>
-        <div class="home-drawer__body">
-          <section class="home-shortcuts" aria-label="Quick navigation">
-            <button class="quick-nav" id="quickReview" aria-label="Start due review">🔁 Review</button>
-            <button class="quick-nav" id="quickStories" aria-label="Open stories library" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
-            <button class="quick-nav" id="quickProgress" aria-label="Open progress dashboard">📊 Progress</button>
-            <button class="quick-nav" id="quickRoadmap" aria-label="View fluency roadmap">🧭 Roadmap</button>
-            <button class="quick-nav" id="quickShop" aria-label="Open rewards shop">🛒 Shop</button>
-          </section>
-          ${showMinis ? `<div class="mini-row">
-            <button class="mini" id="questsBtn">
-              <span class="mini__top">🎯 Quests <b>${questsDone}/${quests.length}</b></span>
-              <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
-            </button>
-            <button class="mini" id="leagueBtn">
-              <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} <b>#${lgRank.rank}</b></span>
-              <span class="qbar qbar--gold"><span style="width:${Math.round(((G.LEAGUE_SIZE - lgRank.rank + 1) / G.LEAGUE_SIZE) * 100)}%"></span></span>
-            </button>
-          </div>` : ''}
-          ${showMinis && wotd ? `<button class="wotd-strip" id="wotdBtn">
-            🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
-          </button>` : ''}
-          <button class="roadmap-card" id="roadmapBtn">
-            <div class="roadmap-card__head"><strong>🧭 Fluency roadmap</strong><span>${fluency.current.tag}</span></div>
-            <p class="roadmap-card__text">${fluency.next
-              ? `${fluency.remaining.toLocaleString()} words to ${fluency.next.tag}.`
-              : 'You are in the high academic range. Keep sharpening speaking precision and domain vocabulary.'}</p>
-            <div class="qbar"><span style="width:${fluency.progressPct}%"></span></div>
-            <small>Toward 20,000+ speaking words and 50,000+ high-education words</small>
-          </button>
-        </div>
-      </details>
-
-      <details class="home-drawer" ${lessonsDone ? '' : 'open'}>
-        <summary>${lessonsDone ? 'Lesson path' : 'Start here: lesson path'}</summary>
-        <div class="home-drawer__body">
-          <div class="path">${path}</div>
-        </div>
-      </details>
-      <nav class="bottombar" aria-label="Main">
-        <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
-        <button class="navbtn" id="storiesNav" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
-        <button class="navbtn" id="shopNav">🛒 Shop</button>
-        <button class="navbtn" id="achBtn">🏅 Badges</button>
-        <button class="navbtn" id="progressBtn2">📊 Progress</button>
-      </nav>
-    </div>`);
-
+function wirePath(node) {
   node.querySelectorAll('[data-lesson]').forEach((b) =>
     b.addEventListener('click', () => startLesson(b.dataset.lesson)));
   node.querySelectorAll('[data-warmup]').forEach((b) =>
     b.addEventListener('click', () => { sound.tap(); startWarmup(); }));
   node.querySelectorAll('[data-testout]').forEach((b) =>
     b.addEventListener('click', (e) => { e.stopPropagation(); confirmTestOut(b.dataset.testout); }));
-  // several widgets only exist past certain progress — wire whatever rendered
+}
+
+// ---------- home / "Today" ----------
+// One screen, one question: what do I tap now? A hello, a single big Start
+// button, and a peek at the next lessons. Everything else lives one tab away.
+function renderHome() {
+  planLaunch = null; // any loop step we drop back home from is abandoned, not done
+  lastHub = renderHome;
+  store.rollover();
+  store.refreshHearts();
+  const L = store.lang();
+  const meta = LANGS.languages.find((x) => x.code === course.code);
+  const goal = store.state.settings.dailyGoalXP;
+  const pct = Math.min(100, Math.round((L.xpToday / goal) * 100));
+  const due = store.dueItems().length;
+  const pos = pathPosition();
+  const primary = primaryAction(L, due, pos);
+  const buddy = currentBuddy();
+  const greetSeed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
+  // A second button only when there is genuinely a second thing worth doing.
+  const showReview = due > 0 && primary.id !== 'goReview';
+
+  // The peek: what comes after the big button, so home shows where this is
+  // going without repeating the one thing it already asks for.
+  const peekStart = primary.id === 'goLesson' ? pos.nextIdx + 1 : pos.nextIdx;
+  const peekHtml = pos.lessons.slice(peekStart, peekStart + 3).map((l, k) => {
+    const i = peekStart + k;
+    return lessonNodeHtml(l, i, { done: false, locked: i > pos.nextIdx, active: false, stars: 0 });
+  }).join('');
+
+  const node = h(`
+    <div class="screen screen--hub">
+      <h1 class="sr-only">MzansiLingo — ${esc(meta.name)} home</h1>
+      ${hubTopbar()}
+
+      <section class="hero">
+        <span class="hero__mascot">${mascotImg(buddy, { size: 84 })}</span>
+        <div class="hero__text">
+          <strong class="hero__greet">${esc(mascotGreeting(buddy, greetSeed, { tone: 'short' }))}</strong>
+          <p class="hero__sub">${esc(homeStatus(L, due, pct, goal))}</p>
+        </div>
+        <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
+          <span>${L.xpToday}/${goal}</span>
+        </div>
+      </section>
+
+      <button class="start-card" id="primaryAction">
+        <span class="start-card__ic" aria-hidden="true">${primary.icon}</span>
+        <span class="start-card__body">
+          <b>${esc(primary.title)}</b>
+          <small>${esc(primary.sub)}</small>
+        </span>
+        <span class="start-card__go" aria-hidden="true">▶</span>
+      </button>
+
+      ${showReview ? `<button class="start-card start-card--second" id="homeReview">
+        <span class="start-card__ic" aria-hidden="true">🔁</span>
+        <span class="start-card__body"><b>Review</b><small>${due} word${due === 1 ? '' : 's'} ready</small></span>
+        <span class="start-card__go" aria-hidden="true">▶</span>
+      </button>` : ''}
+
+      ${peekHtml ? `<section class="upnext" aria-label="Coming up">
+        <div class="upnext__head">
+          <h2>Up next</h2>
+          <button class="upnext__all" id="seeAllLessons">All lessons ›</button>
+        </div>
+        <div class="path path--peek">${peekHtml}</div>
+      </section>` : ''}
+
+      ${navBar('today')}
+    </div>`);
+
+  wirePath(node);
+  wireHubTopbar(node);
   const on = (sel, fn) => { const el = node.querySelector(sel); if (el) el.addEventListener('click', fn); };
-  on('#switchLang', () => renderLanguageSelect(false));
-  on('#reviewBtn', startReview);
-  on('#resumeReview', startReview);
-  on('#resumePlan', renderPlan);
-  on('#resumeLesson', () => startLesson(nextLesson.id));
-  on('#resumeStory', nextAction.action);
-  on('#resumeSpeak', startSpeaking);
-  on('#planBtn', renderPlan);
-  on('#storiesNav', renderLibrary);
-  on('#glossaryBtn', () => renderGlossary());
-  on('#sayBtn', renderSentenceStudio);
-  on('#writingLabBtn', () => { sound.tap(); renderWritingLab(); });
-  on('#speakBtn', startSpeaking);
-  on('#listenBtn', startListening);
-  on('#blitzBtn', startBlitz);
-  on('#grammarBtn', renderGrammar);
-  on('#dialogueBtn', renderDialogues);
-  on('#shopNav', renderShop);
-  on('#questsBtn', renderQuests);
-  on('#leagueBtn', renderLeague);
-  on('#achBtn', renderAchievements);
-  on('#progressBtn2', renderProgress);
-  on('#gemsBtn', renderShop);
-  on('#streakBtn', renderLeague);
-  on('#heartsBtn', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
-  on('#settingsBtn', renderSettings);
-  on('#quickReview', startReview);
-  on('#quickStories', renderLibrary);
-  on('#quickProgress', renderProgress);
-  on('#quickRoadmap', renderFluencyRoadmap);
-  on('#quickShop', renderShop);
-  on('#wotdBtn', renderWotd);
-  on('#roadmapBtn', renderFluencyRoadmap);
+  on('#primaryAction', () => { sound.tap(); primary.action(); });
+  on('#homeReview', startReview);
+  on('#seeAllLessons', renderPath);
+  wireNav(node, 'today');
   wireKeyActivation(node);
   mount(node);
   // keep the reminder state fresh for the service worker, and arm a same-session
@@ -790,22 +703,249 @@ function renderHome() {
   Notify.armSessionFallback(store);
 }
 
-// The situational status line under the buddy's greeting — what to do right now.
-// The buddy's own voice carries the warmth (see mascotGreeting); this line keeps
-// the learner oriented: what's due, the streak, or XP left to the daily goal.
+// The one thing the big Start button does. Short titles and subtitles on
+// purpose — a young learner should understand the button at a glance.
+function primaryAction(L, due, pos) {
+  if (pos.warmupPending) return { id: 'goWarmup', icon: '🌱', title: 'Start here', sub: 'Meet your first words', action: () => startWarmup() };
+  const repairPending = due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr();
+  if (repairPending) return { id: 'goReview', icon: '🌱', title: 'Ease back in', sub: `${Math.min(due, 8)} gentle reviews`, action: startReview };
+  if (due > 0) return { id: 'goReview', icon: '🔁', title: 'Review', sub: `${due} word${due === 1 ? '' : 's'} ready`, action: startReview };
+  if (L.plan && Object.values(L.plan.done).some((x) => !x)) {
+    const stepsDone = Object.values(L.plan.done).filter(Boolean).length;
+    return { id: 'goPlan', icon: '📅', title: 'Today’s plan', sub: `Step ${stepsDone + 1} of 4`, action: renderPlan };
+  }
+  if (pos.nextLesson) return { id: 'goLesson', icon: '📘', title: 'Next lesson', sub: pos.nextLesson.title, action: () => startLesson(pos.nextLesson.id) };
+  const story = recommendedStory();
+  if (story) return { id: 'goStory', icon: '📖', title: 'Read a story', sub: story.title, action: () => renderReadingIntro(story.id) };
+  return { id: 'goSpeak', icon: '🎤', title: 'Speak out loud', sub: 'A quick speaking round', action: startSpeaking };
+}
+
+// ---------- Lessons tab: the full course map ----------
+function renderPath() {
+  lastHub = renderPath;
+  const L = store.lang();
+  const pos = pathPosition();
+  const lessonsDone = L.completedLessons.length;
+  const activeId = pos.nextLesson ? pos.nextLesson.id : null;
+
+  // One folder per unit instead of one endless scroll. Only the unit the
+  // learner is actually on is open — a 60-lesson course then reads as a short
+  // list of chapters, which is the difference between "I can do this" and
+  // "there is too much here".
+  const units = course.units.map((u, ui) => {
+    const ls = u.lessons || [];
+    const done = ls.filter((l) => store.isLessonComplete(l.id)).length;
+    const complete = ls.length > 0 && done === ls.length;
+    const isCurrent = ls.some((l) => l.id === activeId);
+    const started = done > 0 || isCurrent;
+    const pct = ls.length ? Math.round((done / ls.length) * 100) : 0;
+    const nodes = ls.map((l) => {
+      const i = pos.lessons.findIndex((x) => x.id === l.id);
+      const lDone = store.isLessonComplete(l.id);
+      const prevDone = i === 0 || store.isLessonComplete(pos.lessons[i - 1].id);
+      return lessonNodeHtml(l, i, {
+        done: lDone,
+        locked: !lDone && !prevDone,
+        active: l.id === activeId,
+        stars: L.lessonStars[l.id] || 0,
+      });
+    }).join('');
+    const warmup = ui === 0 && pos.hasWarmup ? warmupNodeHtml(L.warmupDone) : '';
+    const testOut = !complete && lessonsDone >= 1
+      ? `<button class="testout-btn" data-testout="${esc(u.id)}">I already know this — test out</button>`
+      : '';
+    return `<details class="unit ${started ? '' : 'unit--fresh'} ${complete ? 'unit--done' : ''}" ${isCurrent ? 'open' : ''}>
+        <summary class="unit__sum">
+          <span class="unit__ic">${complete ? '✓' : ui + 1}</span>
+          <span class="unit__body">
+            <b>${esc(u.title)}</b>
+            <small>${esc(u.level || '')}${u.level ? ' · ' : ''}${done}/${ls.length} done</small>
+            ${started ? `<span class="qbar"><span style="width:${Math.max(3, pct)}%"></span></span>` : ''}
+          </span>
+          <span class="unit__chev" aria-hidden="true">▾</span>
+        </summary>
+        <div class="unit__lessons">${warmup}${nodes}${testOut}</div>
+      </details>`;
+  }).join('');
+
+  const doneCount = pos.lessons.filter((l) => store.isLessonComplete(l.id)).length;
+  const pct = pos.lessons.length ? Math.round((doneCount / pos.lessons.length) * 100) : 0;
+
+  const node = h(`
+    <div class="screen screen--hub">
+      <h1 class="sr-only">Lessons</h1>
+      ${hubTopbar()}
+      <section class="hub-head">
+        <h2 class="hub-head__title">🗺️ Lessons</h2>
+        <p class="hub-head__sub">${doneCount} of ${pos.lessons.length} done · tap a chapter to open it</p>
+        <div class="qbar"><span style="width:${pct}%"></span></div>
+      </section>
+      <div class="units">${units}</div>
+      ${navBar('path')}
+    </div>`);
+
+  wirePath(node);
+  wireHubTopbar(node);
+  wireNav(node, 'path');
+  wireKeyActivation(node);
+  mount(node);
+  // drop the learner straight at the chapter they're on
+  const open = node.querySelector('.unit[open]');
+  if (open) requestAnimationFrame(() => { if (open.offsetTop > window.innerHeight * 0.6) open.scrollIntoView({ block: 'center' }); });
+}
+
+// ---------- Practice tab ----------
+// Every practice mode in one calm grid of big tiles, most useful first.
+function renderPractice() {
+  lastHub = renderPractice;
+  const L = store.lang();
+  const due = store.dueItems().length;
+  const hasReading = (course.reading || []).length > 0;
+  const words = Object.keys(vocabIndex(course)).length;
+  const writingScore = L.writingLabScore;
+
+  const tiles = [
+    { id: 'pReview', ic: '🔁', mod: 'review', label: 'Review', sub: due ? `${due} ready now` : 'nothing due yet', off: due === 0 },
+    { id: 'pStories', ic: '📖', mod: 'story', label: 'Stories', sub: 'read and listen', off: !hasReading },
+    { id: 'pSpeak', ic: '🎤', mod: 'speak', label: 'Speaking', sub: 'say it out loud' },
+    { id: 'pListen', ic: '👂', mod: 'listen', label: 'Listening', sub: 'understand by ear' },
+    { id: 'pBlitz', ic: '⚡', mod: 'blitz', label: 'Lightning', sub: 'fast recall game' },
+    supportsSentences(course.code)
+      ? { id: 'pSay', ic: '🧱', mod: 'say', label: 'Build it', sub: (L.sentencesBuilt || 0) ? `${L.sentencesBuilt} made` : 'make sentences' }
+      : null,
+    { id: 'pWrite', ic: '✍️', mod: 'write', label: 'Writing', sub: writingScore && writingScore.total ? `${writingScore.correct}/${writingScore.total} today` : 'translate & get graded' },
+    (course.grammar || []).length ? { id: 'pGrammar', ic: '🧩', mod: 'grammar', label: 'Grammar', sub: 'how it fits together' } : null,
+    (course.dialogues || []).length ? { id: 'pConvo', ic: '💬', mod: 'convo', label: 'Chats', sub: 'real conversations' } : null,
+    { id: 'pWords', ic: '📒', mod: 'words', label: 'Word list', sub: `all ${words} words` },
+  ].filter(Boolean);
+
+  const grid = tiles.map((t) => `
+        <button class="tile tile--${t.mod} ${t.off ? 'tile--off' : ''}" id="${t.id}" ${t.off ? 'disabled' : ''}>
+          <span class="tile__ic" aria-hidden="true">${t.ic}</span>
+          <b class="tile__l">${t.label}</b>
+          <small class="tile__s">${esc(t.sub)}</small>
+        </button>`).join('');
+
+  const node = h(`
+    <div class="screen screen--hub">
+      <h1 class="sr-only">Practice</h1>
+      ${hubTopbar()}
+      <section class="hub-head">
+        <h2 class="hub-head__title">🎮 Practice</h2>
+        <p class="hub-head__sub">Pick anything you feel like — they all count.</p>
+      </section>
+      <div class="tile-grid">${grid}</div>
+      ${navBar('practice')}
+    </div>`);
+
+  wireHubTopbar(node);
+  const on = (sel, fn) => { const el = node.querySelector(sel); if (el) el.addEventListener('click', fn); };
+  on('#pReview', startReview);
+  on('#pStories', renderLibrary);
+  on('#pSpeak', startSpeaking);
+  on('#pListen', startListening);
+  on('#pBlitz', startBlitz);
+  on('#pSay', renderSentenceStudio);
+  on('#pWrite', () => { sound.tap(); renderWritingLab(); });
+  on('#pGrammar', renderGrammar);
+  on('#pConvo', renderDialogues);
+  on('#pWords', () => renderGlossary());
+  wireNav(node, 'practice');
+  wireKeyActivation(node);
+  mount(node);
+}
+
+// ---------- Me tab ----------
+// Progress, rewards and the long game — the numbers that used to crowd the
+// home screen now live here, where a learner comes to look at them on purpose.
+function renderMe() {
+  lastHub = renderMe;
+  const L = store.lang();
+  const m = store.metrics();
+  const learning = Math.max(0, m.introduced - m.mastered);
+  const unseen = Math.max(0, totalCourseVocab() - m.introduced);
+  const weekly = weeklyMomentum();
+  const fluency = fluencyRoadmap(m.mastered);
+  const quests = G.questDefs(store);
+  const questsDone = quests.filter((q) => q.claimed).length;
+  const lgRank = G.leagueRank(store);
+  const buddy = currentBuddy();
+  const wotd = wordOfTheDay();
+  const wotdLearned = !!(L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
+  const planRow = L.plan
+    ? { icon: '📅', label: `90-day plan · day ${L.plan.day}`, sub: `${Object.values(L.plan.done).filter(Boolean).length}/4 steps today` }
+    : { icon: '📅', label: 'Start your 90-day plan', sub: 'a guided daily path' };
+
+  // Rewards and rankings only appear once there is something in them — a first-day
+  // learner shouldn't have to scroll past five empty scoreboards.
+  const scored = L.completedLessons.length >= 1;
+  const rows = [
+    { id: 'mePlan', ...planRow },
+    { id: 'meProgress', icon: '📊', label: 'Progress', sub: m.introduced ? `${Math.round(m.retention * 100)}% of what you learn sticks` : 'see how you are doing' },
+    scored ? { id: 'meQuests', icon: '🎯', label: 'Daily quests', sub: `${questsDone} of ${quests.length} done` } : null,
+    scored ? { id: 'meLeague', icon: G.leagueIcon(G.LEAGUES[L.league.tier]), label: `${G.LEAGUES[L.league.tier]} league`, sub: `you are #${lgRank.rank} this week` } : null,
+    scored ? { id: 'meBadges', icon: '🏅', label: 'Badges', sub: `${Object.keys(store.state.achievements || {}).length} of ${G.ACHIEVEMENTS.length} unlocked` } : null,
+    scored ? { id: 'meShop', icon: '🛒', label: 'Shop', sub: `${G.gems(store)} gems to spend` } : null,
+    wotd ? { id: 'meWotd', icon: '🗓️', label: 'Word of the day', sub: `${wotd.term} — ${wotd.translation}${wotdLearned ? ' ✓' : ''}` } : null,
+    { id: 'meRoadmap', icon: '🧭', label: 'Fluency roadmap', sub: fluency.next ? `${fluency.remaining.toLocaleString()} words to ${fluency.next.tag}` : fluency.current.tag },
+    { id: 'meSettings', icon: '⚙️', label: 'Settings', sub: 'sound, reminders, pace' },
+  ].filter(Boolean);
+
+  const rowHtml = rows.map((r) => `
+        <button class="menu-row" id="${r.id}">
+          <span class="menu-row__ic" aria-hidden="true">${r.icon}</span>
+          <span class="menu-row__body"><b>${esc(r.label)}</b><small>${esc(r.sub)}</small></span>
+          <span class="menu-row__go" aria-hidden="true">›</span>
+        </button>`).join('');
+
+  const node = h(`
+    <div class="screen screen--hub">
+      <h1 class="sr-only">Me</h1>
+      ${hubTopbar()}
+      <section class="me-card">
+        <span class="me-card__mascot">${mascotImg(buddy, { size: 64 })}</span>
+        <div class="me-card__stats">
+          <span><b>${m.mastered}</b><small>know it</small></span>
+          <span><b>${learning}</b><small>learning</small></span>
+          <span><b>${unseen}</b><small>to come</small></span>
+        </div>
+      </section>
+      ${weekly ? `<p class="me-note">This week: ${weekly.retentionPct}% recall · ${esc(weeklyMomentumNote(weekly))}</p>` : ''}
+      <div class="menu">${rowHtml}</div>
+      ${navBar('me')}
+    </div>`);
+
+  wireHubTopbar(node);
+  const on = (sel, fn) => { const el = node.querySelector(sel); if (el) el.addEventListener('click', fn); };
+  on('#mePlan', renderPlan);
+  on('#meProgress', renderProgress);
+  on('#meQuests', renderQuests);
+  on('#meLeague', renderLeague);
+  on('#meBadges', renderAchievements);
+  on('#meShop', renderShop);
+  on('#meWotd', renderWotd);
+  on('#meRoadmap', renderFluencyRoadmap);
+  on('#meSettings', renderSettings);
+  wireNav(node, 'me');
+  wireKeyActivation(node);
+  mount(node);
+}
+
+
+// One short line under the buddy's hello. Short on purpose: it sits above a
+// single big button, so it only has to say why that button is there — a young
+// learner should be able to read it in one glance.
 function homeStatus(L, due, pct, goal) {
   const profile = learnerProfile();
-  // brand-new learner: one clear pointer, no jargon about streaks or reviews
-  if (!L.completedLessons.length) {
-    return L.warmupDone ? 'Your first lesson is ready below 👇' : 'Start with the warm-up below 👇';
-  }
-  if (pct >= 100) return 'Done for today — well played! 🎉';
-  if (due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr()) return 'Welcome back — start with a short confidence reset 🌱';
-  if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔒`;
-  if (profile.goal === 'conversation' || profile.goal === 'travel') return 'Keep speaking and listening — that’s your fastest path now';
-  if (profile.goal === 'school') return 'A little every day makes the school stuff stick';
+  // brand-new learner: point at the button, no jargon about streaks or reviews
+  if (!L.completedLessons.length) return 'Tap the big green button 👇';
+  if (pct >= 100) return 'Done for today — nice one! 🎉';
+  if (due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr()) return 'Welcome back — let’s start gently 🌱';
+  if (due > 0) return `${due} word${due === 1 ? '' : 's'} to bring back`;
   if ((L.streak || 0) >= 3) return `🔥 ${L.streak}-day streak — keep it going!`;
-  return `${goal - L.xpToday} XP to keep your streak`;
+  if (profile.goal === 'conversation' || profile.goal === 'travel') return 'Speaking and listening move you fastest';
+  if (profile.goal === 'school') return 'A little every day makes it stick';
+  return `${goal - L.xpToday} XP to finish today`;
 }
 
 const FLUENCY_MILESTONES = [
@@ -939,9 +1079,9 @@ function renderWotd() {
     if (!already) { store.addXp(5); store.lang().wotd = { day: todayStr(), learned: true }; }
     store.save();
     flashToast('Added to your reviews! 🎉');
-    setTimeout(renderHome, 700);
+    setTimeout(backToHub, 700);
   });
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   mount(node);
 }
 
@@ -951,7 +1091,7 @@ function renderFluencyRoadmap() {
   const next = fluency.next ? `${fluency.remaining.toLocaleString()} words left to ${fluency.next.tag}.` : 'You are beyond the 50,000-word high-education target.';
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Fluency roadmap</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Fluency roadmap</strong><span></span></header>
       <div class="card roadmap-hero">
         <strong>Your current range: ${fluency.current.tag}</strong>
         <p class="muted">${next}</p>
@@ -988,7 +1128,7 @@ function renderFluencyRoadmap() {
       <button class="btn btn--review" id="review">🔁 Start due review</button>
       <button class="btn" id="speak">🎤 Practice speaking now</button>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelector('#review').addEventListener('click', startReview);
   node.querySelector('#speak').addEventListener('click', startSpeaking);
   mount(node);
@@ -1011,11 +1151,11 @@ function renderQuests() {
   }).join('');
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Daily Quests</strong><span class="stat stat--gems">💎 ${G.gems(store)}</span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Daily Quests</strong><span class="stat stat--gems">💎 ${G.gems(store)}</span></header>
       <p class="muted">Fresh quests every day. Finish them to earn gems for the shop.</p>
       <div class="card quests-card">${list}</div>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   mount(node);
 }
 
@@ -1075,7 +1215,7 @@ function renderGlossary() {
 
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Word list</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Word list</strong><span></span></header>
       <input class="ex__input" id="glossSearch" placeholder="Search ${esc(course.name)} or English…" autocomplete="off" autocapitalize="off" />
       ${hardestHtml}
       <h3 class="sec">All words</h3>
@@ -1083,7 +1223,7 @@ function renderGlossary() {
       <p class="footnote">Tap a word to hear it. “Mastered” means you produced it from memory and it survived a spaced review.</p>
     </div>`);
 
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelectorAll('[data-hear]').forEach((b) => b.addEventListener('click', () => tryHear(b.dataset.hear, course.code)));
   const ph = node.querySelector('#practiseHard');
   if (ph) ph.addEventListener('click', () => {
@@ -1375,7 +1515,7 @@ function startBlitz() {
       </div>
     </div>`);
   node.querySelector('#go').addEventListener('click', runBlitz);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   mount(node);
 }
 
@@ -1542,7 +1682,7 @@ function renderPlanIntro() {
       </div>
     </div>`);
   node.querySelector('#start').addEventListener('click', () => { store.startPlan(); sound.reward(); confetti({ count: 60 }); renderPlan(); });
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   mount(node);
 }
 
@@ -1568,7 +1708,7 @@ function renderPlan() {
     </div>`).join('');
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>90-Day Plan</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>90-Day Plan</strong><span></span></header>
       <section class="plan-hero">
         <span class="plan-hero__mascot">${mascotImg(currentBuddy(), { size: 84 })}</span>
         <div class="plan-hero__main">
@@ -1581,7 +1721,7 @@ function renderPlan() {
       <div class="plan-steps">${rows}</div>
       ${allDone ? '<div class="plan-complete">🎉 Come back tomorrow — a little every day is what makes 90 days work!</div>' : ''}
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelectorAll('[data-act]').forEach((b) => b.addEventListener('click', () => {
     const a = acts.find((x) => x.key === b.dataset.act);
     if (a && a.action) { planLaunch = a.key; a.action(); }
@@ -1605,11 +1745,11 @@ function renderDialogues() {
   }).join('');
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Conversations</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Conversations</strong><span></span></header>
       <p class="muted">Practise real conversations. The other person speaks — you choose how to reply.</p>
       <div class="stories">${rows || '<p class="muted">Conversations coming soon for this language.</p>'}</div>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelectorAll('[data-d]').forEach((b) => b.addEventListener('click', () => startDialogue(b.dataset.d)));
   mount(node);
 }
@@ -1741,12 +1881,12 @@ function renderGrammar() {
   }).join('');
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Grammar</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Grammar</strong><span></span></header>
       <p class="muted">Learn the patterns that let you build your own sentences — not just memorise words.</p>
       <div class="set-list">${rows || '<p class="muted">Grammar patterns coming soon for this language.</p>'}</div>
       <p class="footnote">Grammar here is community-reviewed. Spot something off? Help us improve it.</p>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelectorAll('[data-g]').forEach((b) => b.addEventListener('click', () => {
     const gid = b.dataset.g;
     // inquiry-based learning: the FIRST time you meet a pattern, notice it
@@ -2065,7 +2205,7 @@ function renderSentenceStudio() {
     </div>`);
   node.querySelector('#go').addEventListener('click', () => { sound.tap(); startSentences(); });
   node.querySelector('#lab').addEventListener('click', () => { sound.tap(); renderSentenceLab(); });
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   mount(node);
 }
 
@@ -3039,8 +3179,8 @@ function renderHeartsModal() {
       <button class="btn btn--ghost" id="back">Back</button>
     </div>`);
   node.querySelector('#premium').addEventListener('click', renderPremium);
-  node.querySelector('#practice').addEventListener('click', () => store.dueItems().length ? startReview() : renderHome());
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#practice').addEventListener('click', () => (store.dueItems().length ? startReview() : renderPractice()));
+  node.querySelector('#back').addEventListener('click', backToHub);
   mount(node);
 }
 
@@ -3141,7 +3281,7 @@ function renderProgress() {
 
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Progress</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Progress</strong><span></span></header>
 
       <div class="level-card">
         <span class="level-card__tag">${esc(level.tag)}</span>
@@ -3178,7 +3318,7 @@ function renderProgress() {
 
       <p class="footnote">Mastered = recalled correctly in <em>production</em> (typing/speaking) and survived a spaced review. That's real retention, not just taps.</p>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   const bb = node.querySelector('#baselineBtn'); if (bb) bb.addEventListener('click', () => startBaseline(false));
   const rb = node.querySelector('#retestBtn'); if (rb) rb.addEventListener('click', () => startBaseline(true));
   mount(node);
@@ -3203,7 +3343,7 @@ function renderPremium() {
   const isP = store.state.premium;
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Premium</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Premium</strong><span></span></header>
       <div class="pay">
         <div class="pay__hero">⭐ MzansiLingo Premium</div>
         <ul class="pay__list">
@@ -3221,7 +3361,7 @@ function renderPremium() {
         ${isP ? '<button class="btn btn--ghost" id="cancel">Turn off Premium (demo)</button>' : ''}
       </div>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   const setP = (v) => { store.state.premium = v; if (v) store.refillHearts(); store.save(); renderPremium(); };
   if (node.querySelector('#yearBtn')) node.querySelector('#yearBtn').addEventListener('click', () => setP(true));
   if (node.querySelector('#monthBtn')) node.querySelector('#monthBtn').addEventListener('click', () => setP(true));
@@ -3336,7 +3476,7 @@ function renderSettings() {
       </div>`;
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Settings</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Settings</strong><span></span></header>
       ${accountRow}
       <button class="set-row set-row--btn" id="profBtn" style="width:100%;text-align:left">
         <div class="set-row__label"><b>${esc(prof.avatar)} ${esc(prof.name)}</b><small>Active learner · tap to switch or add</small></div>
@@ -3395,7 +3535,7 @@ function renderSettings() {
       <button class="card" id="prem" style="text-align:left"><strong>⭐ MzansiLingo Premium</strong><span class="muted">Unlimited hearts, all languages, no ads.</span></button>
       <p class="footnote">MzansiLingo v1 · Works offline · Made for South Africa 🇿🇦</p>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelector('#themeSel').addEventListener('change', (e) => {
     store.state.settings.theme = e.target.value;
     store.save();
@@ -3489,7 +3629,7 @@ async function renderLibrary() {
     </a>`).join('');
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Stories</strong><span></span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Stories</strong><span></span></header>
       <h3 class="sec">Read in ${esc(course.name)}</h3>
       <p class="muted">Read the story, tap a line to hear it, then answer a few questions. The % shows how many of the words you already know — around 90%+ is the sweet spot where reading teaches best.</p>
       <div class="stories">${cards || '<p class="muted">Stories coming soon for this language.</p>'}</div>
@@ -3497,7 +3637,7 @@ async function renderLibrary() {
       <p class="muted">Thousands more children's books in ${esc(course.name)} — all free and openly licensed. Best with internet.</p>
       <div class="books">${books}</div>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelectorAll('[data-read]').forEach((b) => b.addEventListener('click', () => renderReadingIntro(b.dataset.read)));
   mount(node);
 }
@@ -3566,10 +3706,10 @@ function renderAchievements() {
   const count = Object.keys(unlocked).length;
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Badges</strong><span>${count}/${G.ACHIEVEMENTS.length}</span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Badges</strong><span>${count}/${G.ACHIEVEMENTS.length}</span></header>
       <div class="badge-grid">${grid}</div>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   mount(node);
 }
 
@@ -3613,7 +3753,7 @@ function renderLeague() {
 
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>League</strong><span class="stat">💎 ${G.gems(store)}</span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>League</strong><span class="stat">💎 ${G.gems(store)}</span></header>
       <section class="card">
         <div class="card__head"><strong>${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} League</strong><span class="muted">${esc(weekDaysLeft())} left</span></div>
         ${settled}
@@ -3632,7 +3772,7 @@ function renderLeague() {
         <button class="btn btn--ghost" id="buyHearts">Refill hearts (💎30)</button>
       </section>
     </div>`);
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelector('#buyFreeze').addEventListener('click', () => { if (G.buyStreakFreeze(store)) renderLeague(); else flashToast('Not enough gems'); });
   node.querySelector('#buyHearts').addEventListener('click', () => { if (G.buyHeartsRefill(store)) { flashToast('Hearts refilled!'); renderLeague(); } else flashToast('Not enough gems'); });
   mount(node);
@@ -3673,7 +3813,7 @@ function renderShop() {
 
   const node = h(`
     <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Shop</strong><span class="stat stat--gems">💎 ${gems}</span></header>
+      <header class="topbar"><button class="topbar__lang" id="back">← Back</button><strong>Shop</strong><span class="stat stat--gems">💎 ${gems}</span></header>
       <p class="muted">Earn 💎 gems from quests, badges, daily logins and finishing lessons — then spend them here.</p>
 
       <h3 class="sec">⚡ Power-ups</h3>
@@ -3692,7 +3832,7 @@ function renderShop() {
       </button>
     </div>`);
 
-  node.querySelector('#back').addEventListener('click', renderHome);
+  node.querySelector('#back').addEventListener('click', backToHub);
   node.querySelector('#premiumBanner').addEventListener('click', renderPremium);
   node.querySelectorAll('[data-buy]').forEach((b) => b.addEventListener('click', () => {
     const res = Shop.buy(store, b.dataset.buy);
