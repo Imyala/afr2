@@ -94,7 +94,9 @@ export function countUp(el, to, { from = 0, ms = 700, prefix = '', suffix = '' }
 }
 
 // ---------- confetti (canvas, self-removing) ----------
-export function confetti({ count = 90, duration = 1500 } = {}) {
+// Bursts from screen centre by default; pass `x`/`y` (viewport px) to burst
+// from a specific spot — e.g. the stepping stone that just turned gold.
+export function confetti({ count = 90, duration = 1500, x = null, y = null } = {}) {
   if (typeof document === 'undefined' || reduceMotion()) return;
   const canvas = document.createElement('canvas');
   canvas.className = 'fx-confetti';
@@ -105,10 +107,13 @@ export function confetti({ count = 90, duration = 1500 } = {}) {
   document.body.appendChild(canvas);
   const g = canvas.getContext('2d');
   g.scale(dpr, dpr);
+  const targeted = x != null || y != null;
+  const ox = x == null ? W / 2 : x;
+  const oy = y == null ? H / 3 : y;
   const colors = ['#1b7a43', '#f0b323', '#1d6fb8', '#d64545', '#7c3aed', '#38c46e'];
   const parts = Array.from({ length: count }, () => ({
-    x: W / 2 + (Math.random() - 0.5) * 120,
-    y: H / 3 + (Math.random() - 0.5) * 60,
+    x: ox + (Math.random() - 0.5) * (targeted ? 64 : 120),
+    y: oy + (Math.random() - 0.5) * (targeted ? 32 : 60),
     vx: (Math.random() - 0.5) * 9,
     vy: Math.random() * -11 - 4,
     size: Math.random() * 7 + 4,

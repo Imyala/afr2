@@ -712,6 +712,7 @@ function renderHome() {
   on('#allUnitsBtn', renderUnitsMap);
   wireKeyActivation(node);
   mount(node);
+  celebrateStoneIn(node);
   // keep the reminder state fresh for the service worker, and arm a same-session
   // nudge in case the learner leaves the tab open without practising
   Notify.syncState(store);
@@ -843,6 +844,7 @@ function renderUnitsMap() {
     b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); confirmTestOut(b.dataset.testout); }));
   node.querySelector('#back').addEventListener('click', renderHome);
   mount(node);
+  celebrateStoneIn(node);
 }
 
 // The situational status line under the buddy's greeting — what to do right now.
@@ -1532,6 +1534,30 @@ function finishBlitz() {
 // when the activity was started here, so unrelated practice elsewhere doesn't
 // silently complete today's loop. Cleared whenever we land on home or the plan.
 let planLaunch = null;
+
+// The stone to celebrate on the next path render: set when a lesson (or the
+// warm-up) completes for the first time, consumed by celebrateStoneIn().
+let celebrateStone = null;
+
+// After a first-time completion, the stepping stone turns gold in front of
+// the learner: scroll it into view, pop it, and burst confetti from it.
+function celebrateStoneIn(root) {
+  if (!celebrateStone) return;
+  const sel = celebrateStone.warmup ? '[data-warmup]' : `[data-lesson="${celebrateStone.lesson}"]`;
+  const el = root.querySelector(sel);
+  celebrateStone = null;
+  if (!el || !el.classList.contains('node--done')) return;
+  setTimeout(() => {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      el.classList.add('node--celebrate');
+      const icon = el.querySelector('.node__icon');
+      const r = (icon || el).getBoundingClientRect();
+      confetti({ count: 70, duration: 1300, x: r.left + r.width / 2, y: r.top + r.height / 2 });
+      haptic([12, 40, 12]);
+    }, 480);
+  }, 300);
+}
 // Where to go when a finished activity's "Continue" is tapped: back to the plan
 // if it was part of today's loop, otherwise home.
 function afterActivityNav() {
@@ -1971,7 +1997,7 @@ function renderWarmupCheck(w) {
 
 function renderWarmupDone(w) {
   const L = store.lang();
-  if (!L.warmupDone) { L.warmupDone = true; store.addXp(10); }
+  if (!L.warmupDone) { L.warmupDone = true; store.addXp(10); celebrateStone = { warmup: true }; }
   store.save();
   confetti({ count: 70, duration: 1100 }); sound.complete(); haptic([15, 30, 15]);
   const chips = w.words.map((p) => `<span class="win-word">${esc(p.term)}</span>`).join('');
@@ -2510,6 +2536,7 @@ function endSession() {
   rewards.gems += baseGems;
   const merge = (r) => { rewards.quests.push(...r.quests); rewards.achievements.push(...r.achievements); rewards.gems += r.gems; };
   if (session.mode === 'lesson') {
+    if (!store.isLessonComplete(session.lesson.id)) celebrateStone = { lesson: session.lesson.id };
     store.completeLesson(session.lesson.id, stars);
     syncCompletedUnits();
     merge(G.track(store, 'lesson', { mistakes: session.mistakes }));
