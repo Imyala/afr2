@@ -2277,11 +2277,7 @@ function renderWritingLab() {
 
     const node = h(`
       <div class="screen wlab">
-        <header class="topbar">
-          <button class="btn--ghost" id="backBtn" style="width:auto;padding:6px 14px;font-size:14px">← Back</button>
-          <span style="font-weight:800;font-size:15px;color:var(--muted)">Writing Lab</span>
-          <span style="width:80px"></span>
-        </header>
+        <header class="topbar"><button class="topbar__lang" id="backBtn">← Home</button><strong>Writing Lab</strong><span></span></header>
 
         <div class="wlab__hero">
           <div class="wlab__icon">✍️</div>
@@ -2298,7 +2294,7 @@ function renderWritingLab() {
           ${result ? `
             <div class="wlab__result wlab__result--${result.type}">
               <div class="wlab__result-head">
-                <span>${result.type === 'correct' ? '✅' : result.type === 'typo' ? '💛' : '❌'}</span>
+                <span>${result.type === 'correct' ? '✅' : result.type === 'typo' ? '💛' : '💡'}</span>
                 <span>${result.type === 'correct' ? 'Correct!' : result.type === 'typo' ? 'Almost — watch the spelling' : 'Good try'}</span>
               </div>
               <div class="wlab__result-answer">

@@ -1503,16 +1503,18 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   background: var(--blue-light);
   border-color: color-mix(in srgb, var(--blue) 40%, transparent);
 }
+/* a miss is a warm learning moment, not an error — amber, never red */
 .wlab__result--wrong {
-  background: var(--red-light);
-  border-color: color-mix(in srgb, var(--red) 40%, transparent);
+  background: color-mix(in srgb, var(--gold) 16%, var(--card));
+  border-color: color-mix(in srgb, var(--gold) 45%, transparent);
 }
 .wlab__result-head {
   display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px;
 }
 .wlab__result--correct .wlab__result-head { color: var(--green-dark); }
 .wlab__result--typo .wlab__result-head { color: var(--blue); }
-.wlab__result--wrong .wlab__result-head { color: var(--red); }
+.wlab__result--wrong .wlab__result-head { color: var(--gold-dark); }
+[data-theme="dark"] .wlab__result--wrong .wlab__result-head { color: var(--gold); }
 .wlab__result-answer {
   margin-top: 8px; font-size: 15px; color: var(--ink-2);
 }
