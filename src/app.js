@@ -16,6 +16,7 @@ import { cheerLine, learnLine } from './mascot.js';
 import { MASCOT_CAST, mascotById, mascotImg, mascotGreeting } from './mascots.js';
 import * as Auth from './auth.js';
 import * as Notify from './notify.js';
+import * as Cloud from './cloud.js';
 
 let LIBRARY = null;   // library.json
 
@@ -176,7 +177,10 @@ async function boot() {
       .addEventListener('change', () => { applyColorScheme(); Shop.applyTheme(store); });
   }
   LANGS = await loadLanguages();
-  // Auth gate (demo). Grandfather existing users in as guests so this update
+  // Optional cloud sync (see docs/SYNC-SETUP.md) — with no config this is a
+  // no-op and accounts stay device-local exactly as before.
+  await Cloud.init();
+  // Auth gate. Grandfather existing users in as guests so this update
   // never locks anyone out of progress they already have.
   let auth = Auth.getAuth();
   if (!auth) {
@@ -188,7 +192,31 @@ async function boot() {
     if (acc) store.ensureProfile(acc.id, acc.name, acc.avatar);
     else { Auth.setAuth({ mode: 'guest' }); }
   }
+  if (auth.mode === 'cloud') {
+    const u = Cloud.user();
+    if (Cloud.configured() && u && u.id) {
+      store.ensureProfile(cloudProfileId(u), auth.name || u.name || (u.email || '').split('@')[0] || 'Me', auth.avatar || '☁️');
+      await Cloud.syncDown(store);
+    } else {
+      // config removed or session expired beyond repair — progress stays local
+      Auth.setAuth({ mode: 'guest' });
+    }
+  }
+  startCloudPush();
   await bootIntoApp();
+}
+
+// each cloud user maps to their own local progress profile, same as local accounts
+function cloudProfileId(u) { return `c_${String(u.id).replace(/[^a-zA-Z0-9]/g, '').slice(0, 16)}`; }
+
+// after any local save, schedule a debounced push; flush when the tab hides
+let cloudPushWired = false;
+function startCloudPush() {
+  if (cloudPushWired || !Cloud.configured()) return;
+  cloudPushWired = true;
+  store.onSave = () => Cloud.schedulePush(store);
+  window.addEventListener('pagehide', () => Cloud.flush(store));
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') Cloud.flush(store); });
 }
 
 // Continue booting once we know who the learner is (account or guest).
@@ -221,7 +249,7 @@ function renderAuthLanding() {
         <button class="btn btn--ghost" id="create">Create account</button>
         <button class="btn btn--ghost" id="login">Log in</button>
       </div>
-      <p class="footnote">Demo: accounts are stored on this device only.</p>
+      <p class="footnote">${Cloud.configured() ? 'An account syncs your progress across devices.' : 'Demo: accounts are stored on this device only.'}</p>
     </div>`);
   node.querySelector('#guest').addEventListener('click', () => { store.ensureProfile('default', 'Me', '🦫'); Auth.setAuth({ mode: 'guest' }); sound.tap(); bootIntoApp(); });
   node.querySelector('#create').addEventListener('click', () => { sound.tap(); renderSignup(); });
@@ -240,18 +268,47 @@ function renderSignup() {
         <div class="auth-err" id="err" role="alert" hidden></div>
         <button class="btn btn--primary" id="submit" type="submit">Create account</button>
       </form>
-      <p class="footnote">Demo: your account and progress are stored only on this device.</p>
+      <p class="footnote">${Cloud.configured() ? 'Your progress syncs to your account across devices.' : 'Demo: your account and progress are stored only on this device.'}</p>
     </div>`);
   node.querySelector('#back').addEventListener('click', renderAuthLanding);
   node.querySelector('#form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const err = node.querySelector('#err');
     const submit = node.querySelector('#submit');
+    const name = node.querySelector('#name').value.trim();
+    const email = node.querySelector('#email').value.trim();
+    const pw = node.querySelector('#pw').value;
     err.hidden = true;
     submit.disabled = true; submit.textContent = 'Checking password…';
-    const res = await Auth.createAccount(node.querySelector('#name').value, node.querySelector('#email').value, node.querySelector('#pw').value);
+    const fail = (msg) => { err.textContent = msg; err.hidden = false; sound.wrong(); };
+    if (Cloud.configured()) {
+      // shared client-side checks, then the real account lives on the server
+      if (!name) { submit.disabled = false; submit.textContent = 'Create account'; return fail('Please enter your name.'); }
+      if (!Auth.validEmail(email)) { submit.disabled = false; submit.textContent = 'Create account'; return fail('Please enter a valid email address.'); }
+      const pwned = await Auth.pwnedCount(pw);
+      if (pwned > 0) { submit.disabled = false; submit.textContent = 'Create account'; return fail(`This password has appeared in ${pwned.toLocaleString()} known data breaches. Please choose a different one.`); }
+      submit.textContent = 'Creating account…';
+      const res = await Cloud.signUp(email, pw, name);
+      submit.disabled = false; submit.textContent = 'Create account';
+      if (res.error) return fail(res.error);
+      if (res.needsConfirm) { err.textContent = '✉️ Check your email to confirm your account, then log in.'; err.hidden = false; return; }
+      const u = res.session.user;
+      // a guest creating an account is CLAIMING their progress — carry the
+      // guest state into the new cloud profile before the first sync
+      const prevAuth = Auth.getAuth();
+      const guestState = prevAuth && prevAuth.mode === 'guest' ? JSON.parse(JSON.stringify(store.state)) : null;
+      store.ensureProfile(cloudProfileId(u), name, '☁️');
+      if (guestState) { store.state = Cloud.mergeStates(store.state, guestState); store.save(); }
+      Auth.setAuth({ mode: 'cloud', userId: u.id, email: u.email, name });
+      startCloudPush();
+      await Cloud.syncDown(store);
+      sound.reward(); flashToast(`Welcome, ${name}! 🎉`);
+      bootIntoApp();
+      return;
+    }
+    const res = await Auth.createAccount(name, email, pw);
     submit.disabled = false; submit.textContent = 'Create account';
-    if (res.error) { err.textContent = res.error; err.hidden = false; sound.wrong(); return; }
+    if (res.error) return fail(res.error);
     store.ensureProfile(res.account.id, res.account.name, res.account.avatar);
     Auth.setAuth({ mode: 'account', accountId: res.account.id });
     sound.reward(); flashToast(`Welcome, ${res.account.name}! 🎉`);
@@ -277,7 +334,22 @@ function renderLogin() {
   node.querySelector('#form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const err = node.querySelector('#err');
-    const res = await Auth.login(node.querySelector('#email').value, node.querySelector('#pw').value);
+    const email = node.querySelector('#email').value.trim();
+    const pw = node.querySelector('#pw').value;
+    if (Cloud.configured()) {
+      const res = await Cloud.signIn(email, pw);
+      if (res.error) { err.textContent = res.error; err.hidden = false; sound.wrong(); return; }
+      const u = res.session.user;
+      const name = u.name || (u.email || '').split('@')[0] || 'Me';
+      store.ensureProfile(cloudProfileId(u), name, '☁️');
+      Auth.setAuth({ mode: 'cloud', userId: u.id, email: u.email, name });
+      startCloudPush();
+      await Cloud.syncDown(store);
+      sound.reward(); flashToast(`Welcome back, ${name}!`);
+      bootIntoApp();
+      return;
+    }
+    const res = await Auth.login(email, pw);
     if (res.error) { err.textContent = res.error; err.hidden = false; sound.wrong(); return; }
     store.ensureProfile(res.account.id, res.account.name, res.account.avatar);
     Auth.setAuth({ mode: 'account', accountId: res.account.id });
@@ -3511,14 +3583,23 @@ function renderSettings() {
   const remSupported = Notify.supported();
   const remDenied = Notify.permission() === 'denied';
   const acc = Auth.currentAccount();
+  const auth = Auth.getAuth();
+  const cloudUser = auth && auth.mode === 'cloud' ? auth : null;
   const pace = learningPaceInfo();
-  const accountRow = acc
+  const syncedAt = Cloud.lastSyncedAt();
+  const syncedLabel = syncedAt ? `synced ${new Date(syncedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'sync pending';
+  const accountRow = cloudUser
+    ? `<div class="set-row">
+        <div class="set-row__label"><b>☁️ ${esc(cloudUser.name || 'Signed in')}</b><small>${esc(cloudUser.email || '')} · ${esc(syncedLabel)}</small></div>
+        <button class="btn btn--ghost" id="signOut" style="width:auto;padding:8px 14px">Sign out</button>
+      </div>`
+    : acc
     ? `<div class="set-row">
         <div class="set-row__label"><b>${esc(acc.avatar)} ${esc(acc.name)}</b><small>Signed in · ${esc(acc.email)}</small></div>
         <button class="btn btn--ghost" id="signOut" style="width:auto;padding:8px 14px">Sign out</button>
       </div>`
     : `<div class="set-row">
-        <div class="set-row__label"><b>👤 Guest</b><small>Progress saved on this device only</small></div>
+        <div class="set-row__label"><b>👤 Guest</b><small>${Cloud.configured() ? 'Create an account to sync across devices' : 'Progress saved on this device only'}</small></div>
         <button class="btn btn--ghost" id="createAcc" style="width:auto;padding:8px 14px">Create account</button>
       </div>`;
   const node = h(`
@@ -3629,8 +3710,12 @@ function renderSettings() {
   node.querySelector('#profBtn').addEventListener('click', renderProfiles);
   node.querySelector('#roadmapGuideBtn').addEventListener('click', renderFluencyRoadmap);
   const soBtn = node.querySelector('#signOut');
-  if (soBtn) soBtn.addEventListener('click', () => {
-    if (confirm('Sign out? Your progress stays saved on this device.')) { Auth.clearAuth(); renderAuthLanding(); }
+  if (soBtn) soBtn.addEventListener('click', async () => {
+    if (!confirm('Sign out? Your progress stays saved on this device.')) return;
+    const a = Auth.getAuth();
+    if (a && a.mode === 'cloud') { Cloud.flush(store); await Cloud.signOut(); }
+    Auth.clearAuth();
+    renderAuthLanding();
   });
   const caBtn = node.querySelector('#createAcc');
   if (caBtn) caBtn.addEventListener('click', renderSignup);

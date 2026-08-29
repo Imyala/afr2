@@ -49,7 +49,11 @@ export async function pwnedCount(password) {
     const hex = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
     const prefix = hex.slice(0, 5);
     const suffix = hex.slice(5);
-    const res = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+    // a slow network must never hang signup — skip the check after 3.5s
+    const ac = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = ac ? setTimeout(() => ac.abort(), 3500) : null;
+    const res = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`, ac ? { signal: ac.signal } : undefined);
+    if (timer) clearTimeout(timer);
     if (!res.ok) return -1;
     const text = await res.text();
     for (const line of text.split('\n')) {

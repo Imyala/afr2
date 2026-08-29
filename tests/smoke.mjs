@@ -22,8 +22,9 @@ const server = createServer((req, res) => {
   let p = req.url.split('?')[0];
   if (p === '/') p = '/index.html';
   try {
+    const body = readFileSync(join(ROOT, p)); // read BEFORE writing headers — a miss must 404
     res.writeHead(200, { 'content-type': MIME[extname(p)] || 'application/octet-stream' });
-    res.end(readFileSync(join(ROOT, p)));
+    res.end(body);
   } catch { res.writeHead(404); res.end(); }
 });
 await new Promise((r) => server.listen(0, r));

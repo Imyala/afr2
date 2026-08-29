@@ -1,0 +1,5 @@
+{
+  "_comment": "Copy to data/cloud.json and fill in your Supabase project's values (Settings → API). The anon key is public by design — row-level security protects the data. Without data/cloud.json the app stays fully local.",
+  "url": "https://YOUR-PROJECT-REF.supabase.co",
+  "anonKey": "YOUR-ANON-PUBLIC-KEY"
+}

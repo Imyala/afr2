@@ -20,6 +20,7 @@ jobs:
       - run: node tests/gamify.mjs
       - run: node tests/shop.mjs
       - run: node tests/auth.mjs
+      - run: node tests/sync.mjs
 
   smoke:
     name: Browser smoke test

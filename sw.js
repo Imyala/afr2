@@ -1,7 +1,7 @@
 // sw.js — offline-first service worker.
 // Offline use is MzansiLingo's core feature: after the first visit the whole
 // app (shell, code, lesson content, icons) is cached and works with no network.
-const CACHE = 'mzansilingo-v38';
+const CACHE = 'mzansilingo-v39';
 
 const MASCOTS = ['lion', 'elephant', 'zebra', 'giraffe', 'hippo', 'crocodile', 'cheetah',
   'leopard', 'gorilla', 'antelope', 'meerkat', 'mandrill', 'rhino', 'buffalo']
@@ -20,6 +20,7 @@ const ASSETS = [
   './src/gamify.js',
   './src/shop.js',
   './src/auth.js',
+  './src/cloud.js',
   './src/fx.js',
   './src/mascot.js',
   './src/mascots.js',

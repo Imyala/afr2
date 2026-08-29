@@ -127,6 +127,8 @@ class Store {
 
   save() {
     try { localStorage.setItem(keyFor(this.profileId), JSON.stringify(this.state)); } catch (e) { /* ignore quota */ }
+    // optional observer (cloud sync schedules a debounced push here)
+    if (this.onSave) { try { this.onSave(); } catch (e) { /* observer must never break saving */ } }
   }
 
   reset() {
