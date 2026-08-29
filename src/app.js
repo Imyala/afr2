@@ -770,8 +770,8 @@ function unitTrails() {
       cur = {
         id: l.unitId, idx, accent, level: l.level,
         title: l.unitTitle.replace(/^Unit \d+:\s*/i, ''),
-        canTestOut: !unitComplete[l.unitId] && lessonsDone >= 1,
-        parts: [], hasActive: false, done: 0, total: 0,
+        testable: !unitComplete[l.unitId] && lessonsDone >= 1,
+        parts: [], hasActive: false, reached: false, done: 0, total: 0,
       };
       units.push(cur);
     }
@@ -790,6 +790,9 @@ function unitTrails() {
     cur.total += 1;
     if (done) cur.done += 1;
     if (active) cur.hasActive = true;
+    // a unit is "reached" once any of its lessons is playable or complete —
+    // test-out and full banner colour are reserved for reached units
+    if (done || !locked) cur.reached = true;
     const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
     const cta = active ? '<span class="node__cta">START</span>' : '';
     cur.parts.push(`<button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''} style="--zig:${z}px;--uacc:${cur.accent}">
@@ -801,10 +804,11 @@ function unitTrails() {
   });
   return units.map((u) => ({
     ...u,
+    canTestOut: u.testable && u.reached,
     stones: u.parts.join(''),
     banner: `<div class="unit-banner" style="--uacc:${u.accent}">
         <div class="unit-banner__l"><small>Unit ${u.idx + 1} · ${esc(u.level)}</small><strong>${esc(u.title)}</strong></div>
-        ${u.canTestOut ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
+        ${u.testable && u.reached ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
       </div>`,
   }));
 }
@@ -820,10 +824,10 @@ function renderUnitsMap() {
         ${trails.map((u) => `
         <details class="unit-acc" ${u.hasActive ? 'open' : ''}>
           <summary>
-            <div class="unit-banner unit-banner--sum" style="--uacc:${u.accent}">
+            <div class="unit-banner unit-banner--sum ${u.reached ? '' : 'unit-banner--locked'}" style="--uacc:${u.accent}">
               <div class="unit-banner__l"><small>Unit ${u.idx + 1} · ${esc(u.level)}</small><strong>${esc(u.title)}</strong></div>
               ${u.canTestOut ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
-              <span class="unit-banner__meta">${u.total > 0 && u.done >= u.total ? '✓' : `${u.done}/${u.total}`} <span class="unit-banner__chev" aria-hidden="true">▾</span></span>
+              <span class="unit-banner__meta">${!u.reached ? '🔒' : u.total > 0 && u.done >= u.total ? '✓' : `${u.done}/${u.total}`} <span class="unit-banner__chev" aria-hidden="true">▾</span></span>
             </div>
           </summary>
           <div class="path path--unit">${u.stones}</div>

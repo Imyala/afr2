@@ -391,6 +391,8 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 }
 .unit-banner__chev { display: inline-block; transition: transform var(--transition); }
 .unit-acc[open] .unit-banner__chev { transform: rotate(180deg); }
+/* units the learner hasn't reached yet sit muted until the road gets there */
+.unit-banner--locked { filter: saturate(.25); opacity: .75; }
 .path--unit { padding: 16px 0 6px; }
 /* each node is a free-standing circle nudged left/right by --zig (set inline) */
 .node {
