@@ -531,19 +531,11 @@ function renderHome() {
   const due = store.dueItems().length;
   const totalVocab = totalCourseVocab();
   const unseen = Math.max(0, totalVocab - m.introduced);
-  const weekly = weeklyMomentum();
   const statusClass = due > 0 ? 'home-hero__sub home-hero__sub--urgent' : 'muted home-hero__sub';
 
   const lessons = allLessons(course);
   const nextLesson = lessons.find((l) => !store.isLessonComplete(l.id));
   const nextAction = nextBestAction(L, due, nextLesson);
-  const coachLine = !L.completedLessons.length
-    ? 'You only need one step right now. Choose start and I will guide you.'
-    : due > 0
-      ? `Let’s do ${Math.min(due, 6)} short review${due === 1 ? '' : 's'} and rebuild confidence.`
-      : nextAction.id === 'resumePlan'
-        ? 'Follow today’s guided loop for steady progress without overload.'
-        : 'Small daily wins build real speaking confidence — one step at a time.';
   // Progressive disclosure: a brand-new learner sees ONE thing to do — the
   // path — under a friendly hello. Extra widgets appear as lessons complete,
   // so the screen grows with the learner instead of shouting at a beginner.
@@ -615,10 +607,6 @@ function renderHome() {
   const wotdLearned = (L.wotd && L.wotd.day === todayStr() && L.wotd.learned);
   const boostN = Shop.inventory(store).boosts.double_xp || 0;
   const fluency = fluencyRoadmap(m.mastered);
-  const writingLabSubtext = (() => {
-    const ws = L.writingLabScore;
-    return ws && ws.total ? `${ws.correct}/${ws.total} today` : 'translate & get graded';
-  })();
 
   const node = h(`
     <div class="screen screen--home">
@@ -634,75 +622,56 @@ function renderHome() {
       </header>
 
       <section class="home-hero">
-        <span class="home-hero__mascot">${mascotImg(buddy, { size: 84 })}</span>
-        <div class="home-hero__text">
-          <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed, { tone: 'gentle' }))}</strong>
-          <p class="${statusClass}">${esc(homeStatus(L, due, pct, goal))}</p>
-          <p class="home-hero__coach">${esc(coachLine)}</p>
-          ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
+        <div class="home-hero__row">
+          <span class="home-hero__mascot">${mascotImg(buddy, { size: 84 })}</span>
+          <div class="home-hero__text">
+            <strong class="home-hero__greet">${esc(mascotGreeting(buddy, greetSeed, { tone: 'gentle' }))}</strong>
+            <p class="${statusClass}">${esc(homeStatus(L, due, pct, goal))}</p>
+            ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
+          </div>
+          <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
+            <span>${L.xpToday}/${goal}</span>
+          </div>
         </div>
-        <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
-          <span>${L.xpToday}/${goal}</span>
-        </div>
-      </section>
-
-      <section class="today-focus" aria-label="Guided next step">
-        <h2 class="today-focus__title">Your next step</h2>
-        <button class="plan-card plan-card--resume plan-card--focus" id="${nextAction.id}">
-          <span class="plan-card__l">${nextAction.icon} <b>${esc(nextAction.title)}</b></span>
-          <span class="plan-card__r">${esc(nextAction.sub)} ›</span>
+        <button class="hero-cta" id="${nextAction.id}">
+          <span class="hero-cta__ic">${nextAction.icon}</span>
+          <span class="hero-cta__l"><b>${esc(nextAction.title)}</b><small>${esc(nextAction.sub)}</small></span>
+          <span class="hero-cta__go" aria-hidden="true">›</span>
         </button>
-        <div class="today-focus__stats">
-          <span><b>${Math.round(m.retention * 100)}%</b><small>retention</small></span>
-          <span><b>${m.mastered}</b><small>mastered</small></span>
-          <span><b>${unseen}</b><small>ahead</small></span>
-        </div>
-        ${weekly ? `<p class="today-focus__note">This week: ${weekly.retentionPct}% recall · ${esc(weeklyMomentumNote(weekly))}</p>` : ''}
       </section>
 
-      ${showPlanReview ? (L.plan
-    ? `<button class="plan-card" id="planBtn"><span class="plan-card__l">📅 <b>Day ${L.plan.day}/90</b> · today's loop</span><span class="plan-card__r">${Object.values(L.plan.done).filter(Boolean).length}/4 ›</span></button>`
-    : '<button class="plan-card plan-card--start" id="planBtn"><span class="plan-card__l">📅 <b>Start your 90-day plan</b></span><span class="plan-card__r">guided daily path ›</span></button>') : ''}
+      ${showPlanReview ? `<section class="stat-strip" aria-label="Progress at a glance">
+        <span><b>${Math.round(m.retention * 100)}%</b><small>retention</small></span>
+        <span><b>${m.mastered}</b><small>mastered</small></span>
+        <span><b>${due}</b><small>due now</small></span>
+        <span><b>${unseen}</b><small>ahead</small></span>
+      </section>
 
-      ${showPlanReview && due ? `<button class="btn btn--review" id="reviewBtn">
-        🔁 Review <span class="badge">${due} due</span>
-      </button>` : ''}
+      <div class="today-row ${due && nextAction.id !== 'resumeReview' ? '' : 'today-row--single'}">
+        ${L.plan
+    ? `<button class="pill pill--plan" id="planBtn"><span class="pill__ic">📅</span><span class="pill__l"><b>Day ${L.plan.day}/90</b><small>${Object.values(L.plan.done).filter(Boolean).length}/4 steps today</small></span></button>`
+    : '<button class="pill pill--plan" id="planBtn"><span class="pill__ic">📅</span><span class="pill__l"><b>90-day plan</b><small>guided daily path</small></span></button>'}
+        ${due && nextAction.id !== 'resumeReview' ? `<button class="pill pill--review" id="reviewBtn"><span class="pill__ic">🔁</span><span class="pill__l"><b>Review</b><small>${due} word${due === 1 ? '' : 's'} due</small></span></button>` : ''}
+      </div>` : ''}
 
-      ${showPractice ? `<details class="home-drawer">
-        <summary>Practice tools</summary>
+      ${showPractice ? `<section aria-label="Practice tools">
+        <h2 class="sec-title">Practice</h2>
+        <div class="rail">
+          ${supportsSentences(course.code) ? '<button class="tool tool--say" id="sayBtn"><span class="tool__ic">🗣️</span><small>Say it</small></button>' : ''}
+          ${(course.grammar || []).length ? '<button class="tool tool--grammar" id="grammarBtn"><span class="tool__ic">🧩</span><small>Grammar</small></button>' : ''}
+          ${(course.dialogues || []).length ? '<button class="tool tool--convo" id="dialogueBtn"><span class="tool__ic">💬</span><small>Chats</small></button>' : ''}
+          <button class="tool tool--write" id="writingLabBtn"><span class="tool__ic">✍️</span><small>Writing</small></button>
+          <button class="tool tool--speak" id="speakBtn"><span class="tool__ic">🎤</span><small>Speaking</small></button>
+          <button class="tool tool--listen" id="listenBtn"><span class="tool__ic">👂</span><small>Listening</small></button>
+          <button class="tool tool--blitz" id="blitzBtn"><span class="tool__ic">⚡</span><small>Lightning</small></button>
+          <button class="tool tool--words" id="glossaryBtn"><span class="tool__ic">📒</span><small>Words</small></button>
+        </div>
+      </section>` : ''}
+
+      ${showMinis ? `<details class="home-drawer">
+        <summary>✨ Quests, league &amp; roadmap</summary>
         <div class="home-drawer__body">
-      <div class="act-grid">
-        ${supportsSentences(course.code) ? `<button class="act act--say" id="sayBtn">
-          <span class="act__ic">🗣️</span><span class="act__l"><b>Say it</b><small>${(L.sentencesBuilt || 0) ? `${L.sentencesBuilt} sentences made` : 'make your own sentences'}</small></span></button>` : ''}
-        ${(course.grammar || []).length ? `<button class="act act--grammar" id="grammarBtn">
-          <span class="act__ic">🧩</span><span class="act__l"><b>Grammar</b><small>patterns</small></span></button>` : ''}
-        ${(course.dialogues || []).length ? `<button class="act act--convo" id="dialogueBtn">
-          <span class="act__ic">💬</span><span class="act__l"><b>Conversations</b><small>real chats</small></span></button>` : ''}
-        <button class="act act--write" id="writingLabBtn">
-          <span class="act__ic">✍️</span><span class="act__l"><b>Writing Lab</b><small>${writingLabSubtext}</small></span></button>
-        <button class="act act--speak" id="speakBtn">
-          <span class="act__ic">🎤</span><span class="act__l"><b>Speaking</b><small>out loud</small></span></button>
-        <button class="act act--listen" id="listenBtn">
-          <span class="act__ic">👂</span><span class="act__l"><b>Listening</b><small>understand by ear</small></span></button>
-        <button class="act act--blitz" id="blitzBtn">
-          <span class="act__ic">⚡</span><span class="act__l"><b>Lightning</b><small>fast recall</small></span></button>
-        <button class="act act--words" id="glossaryBtn">
-          <span class="act__ic">📒</span><span class="act__l"><b>Word list</b><small>all ${Object.keys(vocabIndex(course)).length} words</small></span></button>
-      </div>
-      </div>
-      </details>` : ''}
-
-      <details class="home-drawer">
-        <summary>More options</summary>
-        <div class="home-drawer__body">
-          <section class="home-shortcuts" aria-label="Quick navigation">
-            <button class="quick-nav" id="quickReview" aria-label="Start due review">🔁 Review</button>
-            <button class="quick-nav" id="quickStories" aria-label="Open stories library" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
-            <button class="quick-nav" id="quickProgress" aria-label="Open progress dashboard">📊 Progress</button>
-            <button class="quick-nav" id="quickRoadmap" aria-label="View fluency roadmap">🧭 Roadmap</button>
-            <button class="quick-nav" id="quickShop" aria-label="Open rewards shop">🛒 Shop</button>
-          </section>
-          ${showMinis ? `<div class="mini-row">
+          <div class="mini-row">
             <button class="mini" id="questsBtn">
               <span class="mini__top">🎯 Quests <b>${questsDone}/${quests.length}</b></span>
               <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
@@ -711,8 +680,8 @@ function renderHome() {
               <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} <b>#${lgRank.rank}</b></span>
               <span class="qbar qbar--gold"><span style="width:${Math.round(((G.LEAGUE_SIZE - lgRank.rank + 1) / G.LEAGUE_SIZE) * 100)}%"></span></span>
             </button>
-          </div>` : ''}
-          ${showMinis && wotd ? `<button class="wotd-strip" id="wotdBtn">
+          </div>
+          ${wotd ? `<button class="wotd-strip" id="wotdBtn">
             🗓️ <span class="muted">Word of the day:</span> <b>${esc(wotd.term)}</b> — ${esc(wotd.translation)} ${wotdLearned ? '✓' : '🔊'}
           </button>` : ''}
           <button class="roadmap-card" id="roadmapBtn">
@@ -721,17 +690,14 @@ function renderHome() {
               ? `${fluency.remaining.toLocaleString()} words to ${fluency.next.tag}.`
               : 'You are in the high academic range. Keep sharpening speaking precision and domain vocabulary.'}</p>
             <div class="qbar"><span style="width:${fluency.progressPct}%"></span></div>
-            <small>Toward 20,000+ speaking words and 50,000+ high-education words</small>
           </button>
         </div>
-      </details>
+      </details>` : ''}
 
-      <details class="home-drawer" ${lessonsDone ? '' : 'open'}>
-        <summary>${lessonsDone ? 'Lesson path' : 'Start here: lesson path'}</summary>
-        <div class="home-drawer__body">
-          <div class="path">${path}</div>
-        </div>
-      </details>
+      <section aria-label="Lesson path">
+        <h2 class="sec-title">${lessonsDone ? 'Your path' : 'Start here'}</h2>
+        <div class="path">${path}</div>
+      </section>
       <nav class="bottombar" aria-label="Main">
         <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
         <button class="navbtn" id="storiesNav" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
@@ -775,11 +741,6 @@ function renderHome() {
   on('#streakBtn', renderLeague);
   on('#heartsBtn', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
   on('#settingsBtn', renderSettings);
-  on('#quickReview', startReview);
-  on('#quickStories', renderLibrary);
-  on('#quickProgress', renderProgress);
-  on('#quickRoadmap', renderFluencyRoadmap);
-  on('#quickShop', renderShop);
   on('#wotdBtn', renderWotd);
   on('#roadmapBtn', renderFluencyRoadmap);
   wireKeyActivation(node);
@@ -801,7 +762,7 @@ function homeStatus(L, due, pct, goal) {
   }
   if (pct >= 100) return 'Done for today — well played! 🎉';
   if (due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr()) return 'Welcome back — start with a short confidence reset 🌱';
-  if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔒`;
+  if (due > 0) return `${due} word${due === 1 ? '' : 's'} ready to review 🔁`;
   if (profile.goal === 'conversation' || profile.goal === 'travel') return 'Keep speaking and listening — that’s your fastest path now';
   if (profile.goal === 'school') return 'A little every day makes the school stuff stick';
   if ((L.streak || 0) >= 3) return `🔥 ${L.streak}-day streak — keep it going!`;
