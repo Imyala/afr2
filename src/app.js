@@ -552,11 +552,16 @@ function renderHome() {
   const firstLesson = lessons[0];
   const showWarmup = firstLesson && !store.isLessonComplete(firstLesson.id) && (firstLesson.vocab || []).length >= 3;
   const warmupPending = showWarmup && !L.warmupDone;
+  // The path winds gently left-right like a trail: each node takes the next
+  // offset in a small zigzag cycle, resetting at every unit header.
+  const ZIG = [0, 40, 0, -40];
+  let zigStep = 0;
+  const zig = () => `style="--zig:${ZIG[zigStep++ % ZIG.length]}px"`;
   const warmupNode = showWarmup ? `
-      <button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup>
-        <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
-        <span class="node__title">Warm-up: meet your first words</span>
+      <button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup ${zig()}>
         ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
+        <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
+        <span class="node__title">Warm-up</span>
       </button>` : '';
   let lastUnit = null;
   let activeMarked = warmupPending;
@@ -569,17 +574,20 @@ function renderHome() {
     // next step — highlight it so the eye lands on what to do now.
     const active = !done && !locked && !activeMarked;
     if (active) activeMarked = true;
-    const unitHeader = l.unitTitle !== lastUnit
+    const newUnit = l.unitTitle !== lastUnit;
+    if (newUnit) zigStep = 0;
+    const unitHeader = newUnit
       ? `<div class="unit-head"><span>${esc(l.unitTitle)}</span><div class="unit-head__right"><small>${esc(l.level)}</small>${!unitComplete[l.unitId] && lessonsDone >= 1 ? `<button class="testout-btn" data-testout="${esc(l.unitId)}">Test out</button>` : ''}</div></div>`
       : '';
     lastUnit = l.unitTitle;
     const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
     const cta = active ? '<span class="node__cta">START</span>' : '';
     return `${unitHeader}${i === 0 ? warmupNode : ''}
-      <button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''}>
+      <button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''} ${zig()}>
+        ${cta}
         <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
         <span class="node__title">${esc(l.title)}</span>
-        ${active ? cta : starHtml}
+        ${starHtml}
       </button>`;
   }).join('');
 
@@ -640,12 +648,11 @@ function renderHome() {
         </button>
       </section>
 
-      ${showPlanReview ? `<section class="stat-strip" aria-label="Progress at a glance">
-        <span><b>${Math.round(m.retention * 100)}%</b><small>retention</small></span>
-        <span><b>${m.mastered}</b><small>mastered</small></span>
-        <span><b>${due}</b><small>due now</small></span>
-        <span><b>${unseen}</b><small>ahead</small></span>
-      </section>
+      ${showPlanReview ? `<p class="glance" aria-label="Progress at a glance">
+        <span><b>${Math.round(m.retention * 100)}%</b> retention</span><span aria-hidden="true">·</span>
+        <span><b>${m.mastered}</b> mastered</span><span aria-hidden="true">·</span>
+        <span><b>${unseen}</b> words ahead</span>
+      </p>
 
       <div class="today-row ${due && nextAction.id !== 'resumeReview' ? '' : 'today-row--single'}">
         ${L.plan
@@ -695,7 +702,7 @@ function renderHome() {
       </details>` : ''}
 
       <section aria-label="Lesson path">
-        <h2 class="sec-title">${lessonsDone ? 'Your path' : 'Start here'}</h2>
+        <h2 class="sr-only">Lesson path</h2>
         <div class="path">${path}</div>
       </section>
       <nav class="bottombar" aria-label="Main">
