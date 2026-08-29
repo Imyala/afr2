@@ -714,6 +714,7 @@ function renderHome() {
   wireKeyActivation(node);
   mount(node);
   celebrateStoneIn(node);
+  maybeCelebrateUnit();
   // keep the reminder state fresh for the service worker, and arm a same-session
   // nudge in case the learner leaves the tab open without practising
   Notify.syncState(store);
@@ -830,15 +831,20 @@ function unitTrails() {
       </button>`);
     }
   });
-  return units.map((u) => ({
-    ...u,
-    canTestOut: u.testable && u.reached,
-    stones: u.parts.join(''),
-    banner: `<div class="unit-banner" style="--uacc:${u.accent}">
+  return units.map((u) => {
+    const won = u.total > 0 && u.done >= u.total;
+    return {
+      ...u,
+      won,
+      canTestOut: u.testable && u.reached,
+      stones: u.parts.join(''),
+      banner: `<div class="unit-banner ${won ? 'unit-banner--won' : ''}" style="--uacc:${u.accent}">
         <div class="unit-banner__l"><small>Unit ${u.idx + 1} · ${esc(u.level)}</small><strong>${esc(u.title)}</strong></div>
         ${u.testable && u.reached ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
+        ${won ? '<span class="unit-banner__trophy" aria-label="Unit complete">🏆</span>' : ''}
       </div>`,
-  }));
+    };
+  });
 }
 
 // The full level map: every unit as a collapsible banner; the unit the
@@ -852,10 +858,10 @@ function renderUnitsMap() {
         ${trails.map((u) => `
         <details class="unit-acc" ${u.hasActive ? 'open' : ''}>
           <summary>
-            <div class="unit-banner unit-banner--sum ${u.reached ? '' : 'unit-banner--locked'}" style="--uacc:${u.accent}">
+            <div class="unit-banner unit-banner--sum ${u.won ? 'unit-banner--won' : ''} ${u.reached ? '' : 'unit-banner--locked'}" style="--uacc:${u.accent}">
               <div class="unit-banner__l"><small>Unit ${u.idx + 1} · ${esc(u.level)}</small><strong>${esc(u.title)}</strong></div>
               ${u.canTestOut ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
-              <span class="unit-banner__meta">${!u.reached ? '🔒' : u.total > 0 && u.done >= u.total ? '✓' : `${u.done}/${u.total}`} <span class="unit-banner__chev" aria-hidden="true">▾</span></span>
+              <span class="unit-banner__meta">${!u.reached ? '🔒' : u.won ? '🏆' : `${u.done}/${u.total}`} <span class="unit-banner__chev" aria-hidden="true">▾</span></span>
             </div>
           </summary>
           <div class="path path--unit">${u.stones}</div>
@@ -873,6 +879,7 @@ function renderUnitsMap() {
   wireChests(node, renderUnitsMap);
   mount(node);
   celebrateStoneIn(node);
+  maybeCelebrateUnit();
 }
 
 // The situational status line under the buddy's greeting — what to do right now.
@@ -1585,6 +1592,39 @@ function celebrateStoneIn(root) {
       haptic([12, 40, 12]);
     }, 480);
   }, 300);
+}
+
+// Set when the last lesson of a unit completes for the first time — the next
+// path render shows the trophy overlay instead of a single stone celebration.
+let celebrateUnit = null;
+
+function maybeCelebrateUnit() {
+  if (!celebrateUnit) return;
+  const unit = course.units.find((u) => u.id === celebrateUnit.id);
+  celebrateUnit = null;
+  if (!unit) return;
+  const idx = course.units.indexOf(unit);
+  const accent = UNIT_ACCENTS[idx % UNIT_ACCENTS.length];
+  const L = store.lang();
+  const starsGot = unit.lessons.reduce((s, l) => s + (L.lessonStars[l.id] || 0), 0);
+  const starsMax = unit.lessons.length * 3;
+  const title = (unit.title || '').replace(/^Unit \d+:\s*/i, '');
+  const ov = h(`
+    <div class="unit-win" role="dialog" aria-label="Unit ${idx + 1} complete">
+      <div class="unit-win__card" style="--uacc:${accent}">
+        <span class="unit-win__trophy" aria-hidden="true">🏆</span>
+        <h2 class="unit-win__title">Unit ${idx + 1} complete!</h2>
+        <p class="unit-win__name">${esc(title)}</p>
+        <p class="unit-win__stars">★ ${starsGot}/${starsMax} stars</p>
+        <button class="btn btn--primary" id="unitWinGo">Onward! →</button>
+      </div>
+    </div>`);
+  ov.querySelector('#unitWinGo').addEventListener('click', () => { sound.tap(); ov.remove(); });
+  ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  announce(`Unit ${idx + 1} complete!`);
+  sound.complete(); haptic([20, 40, 20]);
+  confetti({ count: 150, duration: 1900 });
 }
 
 // Opening a halfway treasure chest: gems, confetti from the chest, and an
@@ -2592,9 +2632,18 @@ function endSession() {
   rewards.gems += baseGems;
   const merge = (r) => { rewards.quests.push(...r.quests); rewards.achievements.push(...r.achievements); rewards.gems += r.gems; };
   if (session.mode === 'lesson') {
-    if (!store.isLessonComplete(session.lesson.id)) celebrateStone = { lesson: session.lesson.id };
+    const firstTime = !store.isLessonComplete(session.lesson.id);
+    if (firstTime) celebrateStone = { lesson: session.lesson.id };
     store.completeLesson(session.lesson.id, stars);
     syncCompletedUnits();
+    // finishing the unit's last lesson upgrades the celebration to the trophy
+    if (firstTime) {
+      const unit = course.units.find((u) => u.lessons.some((x) => x.id === session.lesson.id));
+      if (unit && unit.lessons.every((x) => store.isLessonComplete(x.id))) {
+        celebrateStone = null;
+        celebrateUnit = { id: unit.id };
+      }
+    }
     merge(G.track(store, 'lesson', { mistakes: session.mistakes }));
   } else if (session.mode === 'review') {
     store.lang().reviewsDone += session.total;

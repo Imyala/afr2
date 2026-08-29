@@ -393,6 +393,49 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .unit-acc[open] .unit-banner__chev { transform: rotate(180deg); }
 /* units the learner hasn't reached yet sit muted until the road gets there */
 .unit-banner--locked { filter: saturate(.25); opacity: .75; }
+/* fully completed units wear gold and a trophy */
+.unit-banner--won {
+  background: linear-gradient(135deg, #f7cd55, #d99920);
+  box-shadow: 0 4px 0 #a17010, var(--shadow-sm);
+  color: #3d2a00;
+}
+.unit-banner--won .testout-btn { color: #3d2a00; border-color: rgba(61,42,0,.3); background: rgba(255,255,255,.3); }
+.unit-banner__trophy { flex: 0 0 auto; font-size: 24px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.2)); }
+
+/* unit-complete celebration — trophy overlay over the road */
+.unit-win {
+  position: fixed; inset: 0; z-index: 60; display: grid; place-items: center;
+  padding: 24px; background: rgba(8, 18, 13, .45);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  animation: winFade .25s ease both;
+}
+.unit-win__card {
+  width: min(100%, 340px); display: grid; gap: 8px; justify-items: center; text-align: center;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--uacc, var(--green)) 16%, var(--card)), var(--card) 62%);
+  border: 1px solid var(--line); border-radius: 26px; padding: 26px 22px 20px;
+  box-shadow: var(--shadow-md);
+  animation: winPop .5s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+.unit-win__trophy {
+  font-size: 76px; line-height: 1;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
+  animation: trophyDrop .65s cubic-bezier(.34, 1.56, .64, 1) .1s both;
+}
+.unit-win__title { margin: 0; font-size: 22px; }
+.unit-win__name { margin: 0; color: var(--muted); font-weight: 700; }
+.unit-win__stars { margin: 0 0 6px; color: var(--gold-dark); font-weight: 800; }
+@keyframes winFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes winPop { from { transform: scale(.7) translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes trophyDrop {
+  0% { transform: scale(.3) translateY(-44px) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(1.15) translateY(4px) rotate(5deg); opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .unit-win, .unit-win__card, .unit-win__trophy { animation: none; }
+}
+[data-theme="dark"] .unit-win__stars { color: var(--gold); }
+[data-theme="dark"] .unit-win { background: rgba(0, 0, 0, .55); }
 .path--unit { padding: 16px 0 6px; }
 /* each node is a free-standing circle nudged left/right by --zig (set inline) */
 .node {
