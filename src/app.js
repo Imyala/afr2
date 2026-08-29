@@ -727,8 +727,10 @@ function renderHome() {
 // the current step). Returned per unit so home can show just the current one
 // and the Units screen can list them all.
 const UNIT_ACCENTS = ['#2f8f74', '#3c6fba', '#8b5cf6', '#e8823a', '#0ea5c8', '#e85a9a'];
-// gems inside each unit's halfway treasure chest
-const CHEST_GEMS = 10;
+// gems inside a unit's halfway treasure chest scale with the unit's
+// difficulty tier, so deeper roads hide richer treasure
+const CHEST_TIER_GEMS = { Beginner: 10, 'Basic Conversation': 12, Travel: 15, Family: 20, Work: 25 };
+const chestGems = (level) => CHEST_TIER_GEMS[level] || 10;
 function unitTrails() {
   const L = store.lang();
   const lessons = allLessons(course);
@@ -823,11 +825,12 @@ function unitTrails() {
     if (size >= 4 && cur.total === Math.ceil(size / 2)) {
       const claimed = !!(L.unitChests || {})[l.unitId];
       const ready = !claimed && cur.allDoneSoFar;
+      const gems = chestGems(l.level);
       const cz = step(claimed ? 'done' : ready ? 'active' : 'todo', cur.accent);
       cur.parts.push(`<button class="node node-chest ${claimed ? 'chest--open' : ready ? 'chest--ready' : 'chest--locked'}" data-chest="${esc(l.unitId)}" ${ready ? '' : 'disabled'} style="--zig:${cz}px;--uacc:${cur.accent}">
         ${ready ? '<span class="node__cta">OPEN ME</span>' : ''}
         <span class="node__icon">🎁</span>
-        <span class="node__title">${claimed ? 'Collected' : 'Treasure'}</span>
+        <span class="node__title">${claimed ? 'Collected' : ready ? `Treasure · ${gems} 💎` : 'Treasure'}</span>
       </button>`);
     }
   });
@@ -1635,8 +1638,10 @@ function wireChests(root, rerender) {
     const L = store.lang();
     L.unitChests = L.unitChests || {};
     if (L.unitChests[b.dataset.chest]) return;
+    const unit = course.units.find((u) => u.id === b.dataset.chest);
+    const gems = chestGems(unit && unit.level);
     L.unitChests[b.dataset.chest] = todayStr();
-    store.state.gems = (store.state.gems || 0) + CHEST_GEMS;
+    store.state.gems = (store.state.gems || 0) + gems;
     store.save();
     G.checkAchievements(store);
     const icon = b.querySelector('.node__icon');
@@ -1649,7 +1654,7 @@ function wireChests(root, rerender) {
     const cta = b.querySelector('.node__cta');
     if (cta) cta.remove();
     const t = b.querySelector('.node__title');
-    if (t) t.textContent = `+${CHEST_GEMS} 💎`;
+    if (t) t.textContent = `+${gems} 💎`;
     if (icon) pop(icon, 1.3);
     setTimeout(rerender, 1500);
   }));
