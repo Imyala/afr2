@@ -552,20 +552,30 @@ function renderHome() {
   const firstLesson = lessons[0];
   const showWarmup = firstLesson && !store.isLessonComplete(firstLesson.id) && (firstLesson.vocab || []).length >= 3;
   const warmupPending = showWarmup && !L.warmupDone;
-  // The path winds gently left-right like a trail: each node takes the next
-  // offset in a small zigzag cycle, resetting at every unit header.
-  const ZIG = [0, 40, 0, -40];
+  // The path is a level-map road: colourful unit banners, stepping stones
+  // winding left-right on a zigzag cycle, and dotted road segments joining
+  // each stone to the next (gold where already travelled, unit-coloured on
+  // the segment into the current step).
+  const UNIT_ACCENTS = ['#2f8f74', '#3c6fba', '#8b5cf6', '#e8823a', '#0ea5c8', '#e85a9a'];
+  const ZIG = [0, 44, 0, -44];
   let zigStep = 0;
-  const zig = () => `style="--zig:${ZIG[zigStep++ % ZIG.length]}px"`;
-  const warmupNode = showWarmup ? `
-      <button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup ${zig()}>
-        ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
-        <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
-        <span class="node__title">Warm-up</span>
-      </button>` : '';
+  let prevZig = null;
+  let unitIdx = -1;
   let lastUnit = null;
   let activeMarked = warmupPending;
-  const path = lessons.map((l, i) => {
+  const parts = [];
+  // advance the winding road by one stone: emits the dotted segment from the
+  // previous stone (if any) and returns this stone's horizontal offset
+  const step = (state, accent) => {
+    const z = ZIG[zigStep++ % ZIG.length];
+    if (prevZig !== null) {
+      const segCls = state === 'done' ? ' trail-seg--done' : state === 'active' ? ' trail-seg--live' : '';
+      parts.push(`<span class="trail-seg${segCls}" style="--a:${prevZig}px;--b:${z}px;--uacc:${accent}" aria-hidden="true"><i></i><i></i><i></i></span>`);
+    }
+    prevZig = z;
+    return z;
+  };
+  lessons.forEach((l, i) => {
     const done = store.isLessonComplete(l.id);
     const stars = L.lessonStars[l.id] || 0;
     const prevDone = i === 0 || store.isLessonComplete(lessons[i - 1].id);
@@ -574,22 +584,42 @@ function renderHome() {
     // next step — highlight it so the eye lands on what to do now.
     const active = !done && !locked && !activeMarked;
     if (active) activeMarked = true;
-    const newUnit = l.unitTitle !== lastUnit;
-    if (newUnit) zigStep = 0;
-    const unitHeader = newUnit
-      ? `<div class="unit-head"><span>${esc(l.unitTitle)}</span><div class="unit-head__right"><small>${esc(l.level)}</small>${!unitComplete[l.unitId] && lessonsDone >= 1 ? `<button class="testout-btn" data-testout="${esc(l.unitId)}">Test out</button>` : ''}</div></div>`
-      : '';
+    if (l.unitTitle !== lastUnit) {
+      unitIdx += 1; zigStep = 0; prevZig = null;
+      const accent = UNIT_ACCENTS[unitIdx % UNIT_ACCENTS.length];
+      parts.push(`<div class="unit-banner" style="--uacc:${accent}">
+        <div class="unit-banner__l"><small>Unit ${unitIdx + 1} · ${esc(l.level)}</small><strong>${esc(l.unitTitle.replace(/^Unit \d+:\s*/i, ''))}</strong></div>
+        ${!unitComplete[l.unitId] && lessonsDone >= 1 ? `<button class="testout-btn" data-testout="${esc(l.unitId)}">Test out</button>` : ''}
+      </div>`);
+    }
     lastUnit = l.unitTitle;
+    const accent = UNIT_ACCENTS[unitIdx % UNIT_ACCENTS.length];
+    if (i === 0 && showWarmup) {
+      const wState = L.warmupDone ? 'done' : 'active';
+      const wz = step(wState, accent);
+      parts.push(`<button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup style="--zig:${wz}px;--uacc:${accent}">
+        ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
+        <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
+        <span class="node__title">Warm-up</span>
+      </button>`);
+    }
+    const state = done ? 'done' : active ? 'active' : 'todo';
+    const z = step(state, accent);
     const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
     const cta = active ? '<span class="node__cta">START</span>' : '';
-    return `${unitHeader}${i === 0 ? warmupNode : ''}
-      <button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''} ${zig()}>
+    parts.push(`<button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''} style="--zig:${z}px;--uacc:${accent}">
         ${cta}
         <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
         <span class="node__title">${esc(l.title)}</span>
         ${starHtml}
-      </button>`;
-  }).join('');
+      </button>`);
+  });
+  // a little finish line at the end of the road, just for fun
+  if (lessons.length && prevZig !== null) {
+    parts.push(`<span class="trail-seg" style="--a:${prevZig}px;--b:0px" aria-hidden="true"><i></i><i></i><i></i></span>`);
+    parts.push('<div class="trail-finish" aria-hidden="true">🏁</div>');
+  }
+  const path = parts.join('');
 
   // gamification widgets
   const quests = G.questDefs(store);
