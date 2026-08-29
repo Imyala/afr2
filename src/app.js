@@ -624,7 +624,7 @@ function renderHome() {
         <div class="topbar__stats">
           ${showPlanReview ? `<span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
           <span class="stat stat--gems" id="gemsBtn" role="button" tabindex="0" aria-label="${G.gems(store)} gems. Open shop.">💎 ${G.gems(store)}</span>` : ''}
-          <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>
+          <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️ ∞' : `${L.hearts > 0 ? '❤️' : '🤍'} ${L.hearts}`}</span>
           <button class="stat" id="settingsBtn" aria-label="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
         </div>
       </header>
@@ -646,20 +646,17 @@ function renderHome() {
           <span class="hero-cta__l"><b>${esc(nextAction.title)}</b><small>${esc(nextAction.sub)}</small></span>
           <span class="hero-cta__go" aria-hidden="true">›</span>
         </button>
+        ${showPlanReview ? `<div class="hero-links">
+          <button class="hero-link" id="planBtn">📅 ${L.plan ? `Day ${L.plan.day}/90 · ${Object.values(L.plan.done).filter(Boolean).length}/4 today` : 'Start the 90-day plan'} ›</button>
+          ${due && nextAction.id !== 'resumeReview' ? `<button class="hero-link" id="reviewBtn">🔁 ${due} due ›</button>` : ''}
+        </div>` : ''}
       </section>
 
       ${showPlanReview ? `<p class="glance" aria-label="Progress at a glance">
         <span><b>${Math.round(m.retention * 100)}%</b> retention</span><span aria-hidden="true">·</span>
         <span><b>${m.mastered}</b> mastered</span><span aria-hidden="true">·</span>
         <span><b>${unseen}</b> words ahead</span>
-      </p>
-
-      <div class="today-row ${due && nextAction.id !== 'resumeReview' ? '' : 'today-row--single'}">
-        ${L.plan
-    ? `<button class="pill pill--plan" id="planBtn"><span class="pill__ic">📅</span><span class="pill__l"><b>Day ${L.plan.day}/90</b><small>${Object.values(L.plan.done).filter(Boolean).length}/4 steps today</small></span></button>`
-    : '<button class="pill pill--plan" id="planBtn"><span class="pill__ic">📅</span><span class="pill__l"><b>90-day plan</b><small>guided daily path</small></span></button>'}
-        ${due && nextAction.id !== 'resumeReview' ? `<button class="pill pill--review" id="reviewBtn"><span class="pill__ic">🔁</span><span class="pill__l"><b>Review</b><small>${due} word${due === 1 ? '' : 's'} due</small></span></button>` : ''}
-      </div>` : ''}
+      </p>` : ''}
 
       ${showPractice ? `<section aria-label="Practice tools">
         <h2 class="sec-title">Practice</h2>
