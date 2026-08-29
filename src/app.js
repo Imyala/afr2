@@ -543,83 +543,15 @@ function renderHome() {
   const showPlanReview = lessonsDone >= 1;  // 90-day plan + review button
   const showPractice = lessonsDone >= 2;    // practice tools grid
   const showMinis = lessonsDone >= 3;       // quests/league + word of the day
-  // which units are already fully complete (so we only offer "test out" on the rest)
-  const unitComplete = {};
-  for (const u of course.units) unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
-  // Step 0: a no-pressure warm-up before Lesson 1 for absolute beginners.
-  // Shown until the first lesson is complete; while it's pending it is the
-  // highlighted next step (Lesson 1 stays open for those who want to dive in).
-  const firstLesson = lessons[0];
-  const showWarmup = firstLesson && !store.isLessonComplete(firstLesson.id) && (firstLesson.vocab || []).length >= 3;
-  const warmupPending = showWarmup && !L.warmupDone;
-  // The path is a level-map road: colourful unit banners, stepping stones
-  // winding left-right on a zigzag cycle, and dotted road segments joining
-  // each stone to the next (gold where already travelled, unit-coloured on
-  // the segment into the current step).
-  const UNIT_ACCENTS = ['#2f8f74', '#3c6fba', '#8b5cf6', '#e8823a', '#0ea5c8', '#e85a9a'];
-  const ZIG = [0, 44, 0, -44];
-  let zigStep = 0;
-  let prevZig = null;
-  let unitIdx = -1;
-  let lastUnit = null;
-  let activeMarked = warmupPending;
-  const parts = [];
-  // advance the winding road by one stone: emits the dotted segment from the
-  // previous stone (if any) and returns this stone's horizontal offset
-  const step = (state, accent) => {
-    const z = ZIG[zigStep++ % ZIG.length];
-    if (prevZig !== null) {
-      const segCls = state === 'done' ? ' trail-seg--done' : state === 'active' ? ' trail-seg--live' : '';
-      parts.push(`<span class="trail-seg${segCls}" style="--a:${prevZig}px;--b:${z}px;--uacc:${accent}" aria-hidden="true"><i></i><i></i><i></i></span>`);
-    }
-    prevZig = z;
-    return z;
-  };
-  lessons.forEach((l, i) => {
-    const done = store.isLessonComplete(l.id);
-    const stars = L.lessonStars[l.id] || 0;
-    const prevDone = i === 0 || store.isLessonComplete(lessons[i - 1].id);
-    const locked = !done && !prevDone;
-    // The first available, not-yet-finished lesson is the learner's clear
-    // next step — highlight it so the eye lands on what to do now.
-    const active = !done && !locked && !activeMarked;
-    if (active) activeMarked = true;
-    if (l.unitTitle !== lastUnit) {
-      unitIdx += 1; zigStep = 0; prevZig = null;
-      const accent = UNIT_ACCENTS[unitIdx % UNIT_ACCENTS.length];
-      parts.push(`<div class="unit-banner" style="--uacc:${accent}">
-        <div class="unit-banner__l"><small>Unit ${unitIdx + 1} · ${esc(l.level)}</small><strong>${esc(l.unitTitle.replace(/^Unit \d+:\s*/i, ''))}</strong></div>
-        ${!unitComplete[l.unitId] && lessonsDone >= 1 ? `<button class="testout-btn" data-testout="${esc(l.unitId)}">Test out</button>` : ''}
-      </div>`);
-    }
-    lastUnit = l.unitTitle;
-    const accent = UNIT_ACCENTS[unitIdx % UNIT_ACCENTS.length];
-    if (i === 0 && showWarmup) {
-      const wState = L.warmupDone ? 'done' : 'active';
-      const wz = step(wState, accent);
-      parts.push(`<button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup style="--zig:${wz}px;--uacc:${accent}">
-        ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
-        <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
-        <span class="node__title">Warm-up</span>
-      </button>`);
-    }
-    const state = done ? 'done' : active ? 'active' : 'todo';
-    const z = step(state, accent);
-    const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
-    const cta = active ? '<span class="node__cta">START</span>' : '';
-    parts.push(`<button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''} style="--zig:${z}px;--uacc:${accent}">
-        ${cta}
-        <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
-        <span class="node__title">${esc(l.title)}</span>
-        ${starHtml}
-      </button>`);
-  });
-  // a little finish line at the end of the road, just for fun
-  if (lessons.length && prevZig !== null) {
-    parts.push(`<span class="trail-seg" style="--a:${prevZig}px;--b:0px" aria-hidden="true"><i></i><i></i><i></i></span>`);
-    parts.push('<div class="trail-finish" aria-hidden="true">🏁</div>');
-  }
-  const path = parts.join('');
+  // The level-map road, split per unit: home shows only the unit the learner
+  // is currently in; the full map lives on the Units screen.
+  const trails = unitTrails();
+  const currentUnit = trails.find((u) => u.hasActive) || trails.find((u) => u.done < u.total) || trails[trails.length - 1];
+  const unitsComplete = trails.filter((u) => u.total > 0 && u.done >= u.total).length;
+  const path = currentUnit
+    ? `${currentUnit.banner}${currentUnit.stones}
+      <button class="all-units" id="allUnitsBtn">🗺️ <b>All units</b><small>${unitsComplete}/${trails.length} complete</small><span aria-hidden="true">›</span></button>`
+    : '';
 
   // gamification widgets
   const quests = G.questDefs(store);
@@ -777,12 +709,136 @@ function renderHome() {
   on('#settingsBtn', renderSettings);
   on('#wotdBtn', renderWotd);
   on('#roadmapBtn', renderFluencyRoadmap);
+  on('#allUnitsBtn', renderUnitsMap);
   wireKeyActivation(node);
   mount(node);
   // keep the reminder state fresh for the service worker, and arm a same-session
   // nudge in case the learner leaves the tab open without practising
   Notify.syncState(store);
   Notify.armSessionFallback(store);
+}
+
+// ---------- level-map trail ----------
+// Builds the winding road for every unit: a colourful banner plus stepping
+// stones joined by dotted segments (gold where travelled, unit-coloured into
+// the current step). Returned per unit so home can show just the current one
+// and the Units screen can list them all.
+const UNIT_ACCENTS = ['#2f8f74', '#3c6fba', '#8b5cf6', '#e8823a', '#0ea5c8', '#e85a9a'];
+function unitTrails() {
+  const L = store.lang();
+  const lessons = allLessons(course);
+  const lessonsDone = L.completedLessons.length;
+  // which units are already fully complete (so we only offer "test out" on the rest)
+  const unitComplete = {};
+  for (const u of course.units) unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
+  // Step 0: a no-pressure warm-up before Lesson 1 for absolute beginners.
+  // Shown until the first lesson is complete; while it's pending it is the
+  // highlighted next step (Lesson 1 stays open for those who want to dive in).
+  const firstLesson = lessons[0];
+  const showWarmup = firstLesson && !store.isLessonComplete(firstLesson.id) && (firstLesson.vocab || []).length >= 3;
+  const warmupPending = showWarmup && !L.warmupDone;
+  const ZIG = [0, 44, 0, -44];
+  let zigStep = 0;
+  let prevZig = null;
+  let activeMarked = warmupPending;
+  const units = [];
+  let cur = null;
+  // advance the winding road by one stone: emits the dotted segment from the
+  // previous stone (if any) and returns this stone's horizontal offset
+  const step = (state, accent) => {
+    const z = ZIG[zigStep++ % ZIG.length];
+    if (prevZig !== null) {
+      const segCls = state === 'done' ? ' trail-seg--done' : state === 'active' ? ' trail-seg--live' : '';
+      cur.parts.push(`<span class="trail-seg${segCls}" style="--a:${prevZig}px;--b:${z}px;--uacc:${accent}" aria-hidden="true"><i></i><i></i><i></i></span>`);
+    }
+    prevZig = z;
+    return z;
+  };
+  lessons.forEach((l, i) => {
+    const done = store.isLessonComplete(l.id);
+    const stars = L.lessonStars[l.id] || 0;
+    const prevDone = i === 0 || store.isLessonComplete(lessons[i - 1].id);
+    const locked = !done && !prevDone;
+    // The first available, not-yet-finished lesson is the learner's clear
+    // next step — highlight it so the eye lands on what to do now.
+    const active = !done && !locked && !activeMarked;
+    if (active) activeMarked = true;
+    if (!cur || l.unitId !== cur.id) {
+      zigStep = 0; prevZig = null;
+      const idx = units.length;
+      const accent = UNIT_ACCENTS[idx % UNIT_ACCENTS.length];
+      cur = {
+        id: l.unitId, idx, accent, level: l.level,
+        title: l.unitTitle.replace(/^Unit \d+:\s*/i, ''),
+        canTestOut: !unitComplete[l.unitId] && lessonsDone >= 1,
+        parts: [], hasActive: false, done: 0, total: 0,
+      };
+      units.push(cur);
+    }
+    if (i === 0 && showWarmup) {
+      const wState = L.warmupDone ? 'done' : 'active';
+      const wz = step(wState, cur.accent);
+      if (warmupPending) cur.hasActive = true;
+      cur.parts.push(`<button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup style="--zig:${wz}px;--uacc:${cur.accent}">
+        ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
+        <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
+        <span class="node__title">Warm-up</span>
+      </button>`);
+    }
+    const state = done ? 'done' : active ? 'active' : 'todo';
+    const z = step(state, cur.accent);
+    cur.total += 1;
+    if (done) cur.done += 1;
+    if (active) cur.hasActive = true;
+    const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
+    const cta = active ? '<span class="node__cta">START</span>' : '';
+    cur.parts.push(`<button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''} style="--zig:${z}px;--uacc:${cur.accent}">
+        ${cta}
+        <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
+        <span class="node__title">${esc(l.title)}</span>
+        ${starHtml}
+      </button>`);
+  });
+  return units.map((u) => ({
+    ...u,
+    stones: u.parts.join(''),
+    banner: `<div class="unit-banner" style="--uacc:${u.accent}">
+        <div class="unit-banner__l"><small>Unit ${u.idx + 1} · ${esc(u.level)}</small><strong>${esc(u.title)}</strong></div>
+        ${u.canTestOut ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
+      </div>`,
+  }));
+}
+
+// The full level map: every unit as a collapsible banner; the unit the
+// learner is currently in starts expanded.
+function renderUnitsMap() {
+  const trails = unitTrails();
+  const node = h(`
+    <div class="screen">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Units</strong><span></span></header>
+      <div class="units-list">
+        ${trails.map((u) => `
+        <details class="unit-acc" ${u.hasActive ? 'open' : ''}>
+          <summary>
+            <div class="unit-banner unit-banner--sum" style="--uacc:${u.accent}">
+              <div class="unit-banner__l"><small>Unit ${u.idx + 1} · ${esc(u.level)}</small><strong>${esc(u.title)}</strong></div>
+              ${u.canTestOut ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
+              <span class="unit-banner__meta">${u.total > 0 && u.done >= u.total ? '✓' : `${u.done}/${u.total}`} <span class="unit-banner__chev" aria-hidden="true">▾</span></span>
+            </div>
+          </summary>
+          <div class="path path--unit">${u.stones}</div>
+        </details>`).join('')}
+        <div class="trail-finish" aria-hidden="true">🏁</div>
+      </div>
+    </div>`);
+  node.querySelectorAll('[data-lesson]').forEach((b) =>
+    b.addEventListener('click', () => startLesson(b.dataset.lesson)));
+  node.querySelectorAll('[data-warmup]').forEach((b) =>
+    b.addEventListener('click', () => { sound.tap(); startWarmup(); }));
+  node.querySelectorAll('[data-testout]').forEach((b) =>
+    b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); confirmTestOut(b.dataset.testout); }));
+  node.querySelector('#back').addEventListener('click', renderHome);
+  mount(node);
 }
 
 // The situational status line under the buddy's greeting — what to do right now.

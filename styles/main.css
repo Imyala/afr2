@@ -337,7 +337,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .screen--home { padding-bottom: calc(var(--bottombar-offset) + env(safe-area-inset-bottom)); }
 .path {
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 10px 0 var(--bottombar-offset);
+  padding: 10px 0 0;
 }
 /* each unit opens with a colourful level banner — its accent (--uacc, set
    inline) also colours that unit's stones and road */
@@ -367,7 +367,31 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .trail-seg i:nth-child(3) { top: 18px; left: calc(50% + (var(--a) * .25) + (var(--b) * .75)); }
 .trail-seg--done i { background: color-mix(in srgb, var(--gold) 62%, var(--line-2)); }
 .trail-seg--live i { background: color-mix(in srgb, var(--uacc, var(--green)) 55%, var(--line-2)); }
-.trail-finish { font-size: 34px; margin-top: 4px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.18)); }
+.trail-finish { font-size: 34px; margin-top: 4px; text-align: center; filter: drop-shadow(0 2px 2px rgba(0,0,0,.18)); }
+/* home shows one unit's road; this leads to the full level map */
+.all-units {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  align-self: stretch; margin-top: 20px; padding: 14px 16px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: var(--shadow); font-size: 15px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.all-units:active { transform: scale(.98); box-shadow: var(--shadow-sm); }
+.all-units b { font-weight: 800; }
+.all-units small { color: var(--muted); font-weight: 700; }
+.all-units span { color: var(--muted-2); font-size: 20px; line-height: 1; }
+/* the Units screen: every unit banner is a collapsible level */
+.units-list { display: grid; gap: 12px; padding-bottom: 12px; }
+.unit-acc summary { list-style: none; cursor: pointer; }
+.unit-acc summary::-webkit-details-marker { display: none; }
+.unit-acc .unit-banner { margin: 0; }
+.unit-banner__meta {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 800; opacity: .95; white-space: nowrap;
+}
+.unit-banner__chev { display: inline-block; transition: transform var(--transition); }
+.unit-acc[open] .unit-banner__chev { transform: rotate(180deg); }
+.path--unit { padding: 16px 0 6px; }
 /* each node is a free-standing circle nudged left/right by --zig (set inline) */
 .node {
   --acc-dark: color-mix(in srgb, var(--uacc, var(--green)) 62%, #000);
