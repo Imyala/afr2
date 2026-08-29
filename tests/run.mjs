@@ -127,7 +127,9 @@ for (const c of ['zu', 'xh', 'af']) {
   for (const u of course.units) for (const l of u.lessons) {
     ok(l.vocab && l.vocab.length > 0, `${l.id} has vocab`);
     for (const v of l.vocab) ok(v.phonetic, `${v.id} has phonetics (offline fallback)`);
-    for (const ex of l.exercises) {
+    // newer vocab-first lessons ship no authored exercises at all — their whole
+    // session is generated, which the buildLessonSession checks below cover
+    for (const ex of (l.exercises || [])) {
       if (ex.vocabId) ok(vocabIds.has(ex.vocabId), `${l.id} vocabId ${ex.vocabId} resolves`);
       if (['multiple_choice', 'listen', 'fill_blank'].includes(ex.type)) {
         ok(ex.options.map(normalize).includes(normalize(ex.answer)), `${l.id} ${ex.type} answer in options`);
@@ -167,8 +169,10 @@ for (const c of ['zu', 'xh', 'af']) {
     ok(r.id && r.title, `${c} reading has id+title`);
     ok(Array.isArray(r.lines) && r.lines.length >= 2, `${r.id} has lines`);
     for (const ln of r.lines) ok(ln.t && ln.en, `${r.id} line has target + english`);
-    ok(Array.isArray(r.questions) && r.questions.length >= 1, `${r.id} has questions`);
-    for (const q of r.questions) {
+    // a quiz is optional (reading itself can be the whole exercise), but an
+    // authored questions array must not be empty
+    ok(!('questions' in r) || (Array.isArray(r.questions) && r.questions.length >= 1), `${r.id} questions well-formed if present`);
+    for (const q of (r.questions || [])) {
       if (['multiple_choice', 'fill_blank'].includes(q.type)) {
         ok(q.options.map(normalize).includes(normalize(q.answer)), `${r.id} question answer in options`);
       }

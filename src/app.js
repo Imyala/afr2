@@ -3726,7 +3726,7 @@ function renderReadingIntro(readId) {
       <p class="reading-legend">${Math.round(cov.pct * 100)}% known · <span class="rword--new">${newCount} new word${newCount === 1 ? '' : 's'}</span> highlighted — meet them here, then they join your reviews.</p>
       <div class="reading">${lines}</div>
       <button class="play-btn" id="playAll">🔊 Play the whole story</button>
-      <button class="btn btn--primary" id="quizBtn">I've read it — answer questions</button>
+      <button class="btn btn--primary" id="quizBtn">${(r.questions || []).length ? 'I’ve read it — answer questions' : 'I’ve finished reading ✓'}</button>
     </div>`);
   node.querySelector('#back').addEventListener('click', renderLibrary);
   node.querySelectorAll('[data-line]').forEach((b) => b.addEventListener('click', () => tryHear(r.lines[b.dataset.line].t, course.code)));
@@ -3736,7 +3736,11 @@ function renderReadingIntro(readId) {
     if (!any) flashToast('Audio for this language isn’t available on this device yet.');
   });
   node.querySelector('#quizBtn').addEventListener('click', () => {
-    session = { mode: 'reading', reading: r, lesson: null, queue: r.questions.map((q, i) => ({ ...q, _i: i })), idx: 0, mistakes: 0, total: 0 };
+    const qs = r.questions || [];
+    session = { mode: 'reading', reading: r, lesson: null, queue: qs.map((q, i) => ({ ...q, _i: i })), idx: 0, mistakes: 0, total: 0 };
+    // some stories ship without a quiz — reading them is the whole exercise,
+    // so finish straight away (marks the story done, seeds its words)
+    if (!qs.length) return endSession();
     renderExercise();
   });
   mount(node);
