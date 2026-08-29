@@ -814,6 +814,25 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
    text would vanish on the dark theme's near-white --ink bubble) */
 .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 999px; font-weight: 700; z-index: 50; box-shadow: var(--shadow); max-width: min(88vw, 440px); text-align: center; }
 
+/* persistent "update ready" banner — stays until the learner refreshes.
+   Centered with auto margins, NOT a transform: the fb-rise entrance animation
+   ends at `transform: none`, which would wipe out a translateX centering. */
+.update-toast {
+  position: fixed; left: 16px; right: 16px; margin: 0 auto; width: fit-content;
+  bottom: calc(88px + env(safe-area-inset-bottom));
+  z-index: 55; display: flex; align-items: center; gap: 12px;
+  background: var(--ink); color: var(--bg);
+  padding: 9px 10px 9px 16px; border-radius: 999px;
+  font-weight: 700; font-size: 14px; white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  animation: fb-rise .3s cubic-bezier(.22, 1, .36, 1) both;
+}
+.update-toast__btn {
+  border: none; border-radius: 999px; padding: 8px 15px;
+  font-weight: 800; font-size: 13.5px; background: var(--green); color: #fff;
+}
+.update-toast__btn:active { transform: scale(.96); }
+
 /* word of the day */
 .wotd-card { display: flex; align-items: center; gap: 14px; }
 .roadmap-hero { gap: 8px; }
@@ -1235,19 +1254,11 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .prof-av { width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--line); background: var(--card); font-size: 22px; }
 .prof-av--sel { border-color: var(--green); background: color-mix(in srgb, var(--green) 12%, transparent); }
 
-/* ---------- weekly leaderboard ---------- */
-.leaderboard { display: grid; gap: 6px; }
-.lb-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 12px; background: var(--card); box-shadow: var(--shadow); }
-.lb-rank { width: 28px; text-align: center; font-weight: 800; font-size: 15px; color: var(--muted); flex: 0 0 auto; }
-.lb-name { flex: 1; font-weight: 700; }
-.lb-xp { font-weight: 800; color: var(--green); font-size: 14px; white-space: nowrap; }
-.lb-row--you { border: 2px solid var(--green); background: color-mix(in srgb, var(--green) 10%, var(--card)); }
-.lb-row--up .lb-rank { color: var(--green); }
-.lb-row--down .lb-rank { color: var(--red); }
-.lb-line { display: flex; align-items: center; justify-content: center; margin: 6px 0 2px; }
-.lb-line span { font-size: 11px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; padding: 3px 12px; border-radius: 999px; }
-.lb-line--up span { color: var(--green-dark); background: color-mix(in srgb, var(--green) 18%, transparent); }
-.lb-line--down span { color: var(--red); background: color-mix(in srgb, var(--red) 16%, transparent); }
+/* ---------- weekly league (you vs your own best week) ---------- */
+.lgp { display: grid; gap: 8px; }
+.lgp__xp { font-size: 26px; letter-spacing: -.4px; color: var(--green); }
+.lgp__msg { margin: 0; font-size: 14px; }
+.lgp__msg b { color: var(--green); }
 .lb-banner { font-weight: 800; font-size: 14px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--gold) 18%, transparent); color: #8a5a00; }
 .lb-banner--up { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green-dark); }
 .lb-banner--down { background: color-mix(in srgb, var(--red) 14%, transparent); color: var(--red); }

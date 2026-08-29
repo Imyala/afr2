@@ -77,23 +77,41 @@ store.lang().lastStudyDay = new Date(Date.now() - 2 * 86400000).toISOString().sl
 G.ensureDaily(store);
 ok(G.questDefs(store).some((q) => q.id === 'q_recovery'), 'recovery quest appears after a missed day');
 
-// --- living leaderboard ---
+// --- store: partial/older saves backfill newer setting defaults ---
+{
+  const key = store.profileId === 'default' ? 'mzansilingo.v1' : `mzansilingo.v1__${store.profileId}`;
+  localStorage.setItem(key, JSON.stringify({ version: 1, settings: { onboarded: true } }));
+  const merged = store.load();
+  ok(merged.settings.onboarded === true, 'saved settings survive the merge');
+  ok(merged.settings.dailyGoalXP === 30 && merged.settings.desiredRetention === 0.9, 'missing settings backfill from fresh defaults');
+  store.reset();
+}
+
+// --- honest weekly league (you vs your own best week, no fake rivals) ---
 store.reset();
 store.setActiveLang('zu');
 G.ensureWeek(store);
-const board = G.leagueStandings(store);
-ok(board.length === G.LEAGUE_SIZE, 'leaderboard has a full cohort');
-ok(board.filter((r) => r.you).length === 1, 'exactly one "you" in the standings');
-ok(board.every((r, i) => r.rank === i + 1), 'standings are ranked 1..N in order');
-ok(board[0].xp >= board[board.length - 1].xp, 'standings sorted by XP descending');
-// a big XP haul should rank the learner near the top
-store.lang().league.weeklyXp = 99999;
-const top = G.leagueRank(store);
-ok(top.rank === 1 && top.zone === 'up', 'huge weekly XP puts you first, in the promotion zone');
-// no XP at all should leave you in the pack, not crash
-store.lang().league.weeklyXp = 0;
-const r2 = G.leagueRank(store);
-ok(r2.rank >= 1 && r2.rank <= G.LEAGUE_SIZE, 'rank stays within the cohort with zero XP');
+const p0 = G.leagueProgress(store);
+ok(p0.tier === 0 && p0.name === 'Bronze', 'starts in Bronze');
+ok(p0.target === G.leagueTarget(0) && p0.pct === 0 && p0.toGo === p0.target, 'fresh week: zero progress toward the Bronze target');
+ok(p0.holdFloor === 0, 'Bronze has no hold floor (cannot drop below the first league)');
+store.lang().league.weeklyXp = G.leagueTarget(0);
+ok(G.leagueProgress(store).pct === 100 && G.leagueProgress(store).toGo === 0, 'hitting the target reads as 100%');
+
+// demotion: a quiet week under the hold floor drops one league (never below Bronze)
+store.lang().league.tier = 2;
+store.lang().league.weeklyXp = 1;
+store.lang().league.weekKey = '2000-W02';
+G.ensureWeek(store);
+ok(store.lang().league.tier === 1, 'league drops one tier after a week under the hold floor');
+ok(store.lang().league.lastOutcome === 'down' && store.lang().league.lastWeekXp === 1, 'settle records last week honestly');
+
+// a middling week holds the league, and the best week is remembered as the record
+store.lang().league.weeklyXp = G.leagueHoldFloor(1) + 5;
+store.lang().league.weekKey = '2000-W03';
+G.ensureWeek(store);
+ok(store.lang().league.tier === 1 && store.lang().league.lastOutcome === 'held', 'a week above the floor but under the target holds the league');
+ok(store.lang().league.bestWeekXp >= G.leagueHoldFloor(1) + 5, 'best week XP is tracked as the personal record');
 
 // --- learner profiles (shared device) ---
 store.reset();

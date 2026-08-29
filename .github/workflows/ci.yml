@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    name: Logic & content tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Pure-Node suites: SRS engine + content integrity, gamification,
+      # shop, and auth. No dependencies to install.
+      - run: node tests/run.mjs
+      - run: node tests/gamify.mjs
+      - run: node tests/shop.mjs
+      - run: node tests/auth.mjs
+
+  smoke:
+    name: Browser smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: |
+          npm init -y > /dev/null
+          npm install playwright@1.49.0
+          npx playwright install --with-deps chromium
+      - name: Boot the app and walk the core paths
+        run: node tests/smoke.mjs

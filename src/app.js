@@ -568,8 +568,7 @@ function renderHome() {
       </div>`;
   }).join('');
 
-  const lg = L.league;
-  const lgRank = G.leagueRank(store);
+  const lgp = G.leagueProgress(store);
   const hasReading = (course.reading || []).length > 0;
   const buddy = currentBuddy();
   const greetSeed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
@@ -643,8 +642,8 @@ function renderHome() {
               <span class="qbar"><span style="width:${Math.round((questsDone / quests.length) * 100)}%"></span></span>
             </button>
             <button class="mini" id="leagueBtn">
-              <span class="mini__top">${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} <b>#${lgRank.rank}</b></span>
-              <span class="qbar qbar--gold"><span style="width:${Math.round(((G.LEAGUE_SIZE - lgRank.rank + 1) / G.LEAGUE_SIZE) * 100)}%"></span></span>
+              <span class="mini__top">${lgp.icon} ${esc(lgp.name)} <b>${lgp.weeklyXp}/${lgp.target}</b></span>
+              <span class="qbar qbar--gold"><span style="width:${lgp.pct}%"></span></span>
             </button>
           </div>
           ${wotd ? `<button class="wotd-strip" id="wotdBtn">
@@ -3769,50 +3768,50 @@ function renderAchievements() {
 function renderLeague() {
   G.ensureWeek(store);
   const L = store.lang();
-  const lg = L.league;
-  const standings = G.leagueStandings(store);
-  const me = standings.find((r) => r.you);
-  const nextLeague = G.LEAGUES[Math.min(G.LEAGUES.length - 1, lg.tier + 1)];
-  const N = standings.length;
-
-  const rows = standings.map((r, i) => {
-    let divider = '';
-    if (i === G.PROMOTE_ZONE) divider = `<div class="lb-line lb-line--up"><span>Promotion to ${esc(nextLeague)} ▲</span></div>`;
-    if (i === N - G.DEMOTE_ZONE) divider = `<div class="lb-line lb-line--down"><span>▼ Demotion zone</span></div>`;
-    const medal = r.rank <= 3 ? ['🥇', '🥈', '🥉'][r.rank - 1] : r.rank;
-    return `${divider}
-      <div class="lb-row ${r.you ? 'lb-row--you' : ''} lb-row--${r.zone}">
-        <span class="lb-rank">${medal}</span>
-        <span class="lb-name">${r.you ? '<b>You</b>' : esc(r.name)}</span>
-        <span class="lb-xp">${r.xp} XP</span>
-      </div>`;
-  }).join('');
+  const p = G.leagueProgress(store);
+  const next = G.LEAGUES[Math.min(G.LEAGUES.length - 1, p.tier + 1)];
 
   // last week's result, if we just settled one
-  const settled = (lg.lastRank && lg.lastTier !== undefined)
-    ? (lg.tier > lg.lastTier
-        ? `<div class="lb-banner lb-banner--up">⬆ Promoted! You finished #${lg.lastRank} last week.</div>`
-        : lg.tier < lg.lastTier
-          ? `<div class="lb-banner lb-banner--down">You finished #${lg.lastRank} and dropped a league. Climb back!</div>`
-          : `<div class="lb-banner">You finished #${lg.lastRank} last week — held your league.</div>`)
+  const settled = p.lastOutcome
+    ? (p.lastOutcome === 'up'
+        ? `<div class="lb-banner lb-banner--up">⬆ Promoted! ${p.lastWeekXp} XP last week hit the target.</div>`
+        : p.lastOutcome === 'down'
+          ? `<div class="lb-banner lb-banner--down">A quiet week (${p.lastWeekXp} XP) — you dropped a league. Climb back!</div>`
+          : `<div class="lb-banner">Last week: ${p.lastWeekXp} XP — league held.</div>`)
     : '';
 
-  const zoneMsg = me.zone === 'up'
-    ? `🔥 You're in the promotion zone at #${me.rank}! Keep it up to reach ${esc(nextLeague)}.`
-    : me.zone === 'down'
-      ? `⚠️ You're in the demotion zone at #${me.rank}. Earn XP to climb out!`
-      : `You're #${me.rank} of ${N}. Earn XP to break into the top ${G.PROMOTE_ZONE}.`;
+  const statusMsg = p.pct >= 100
+    ? (p.atTop ? '🏆 Target smashed — the top league stays yours when the week ends!' : `🔥 Target hit! ${esc(next)} is yours when the week ends.`)
+    : `Earn <b>${p.toGo} XP</b> more this week to ${p.atTop ? 'defend your place at the top' : `reach ${esc(next)}`}.`;
+  const record = p.bestWeekXp
+    ? (p.weeklyXp > p.bestWeekXp
+        ? `Best week: <b>${p.bestWeekXp} XP</b> — you're beating it right now! 🎉`
+        : `Best week: <b>${p.bestWeekXp} XP</b> — can you beat it?`)
+    : 'No record yet — this week sets your first one.';
+
+  const ladder = G.LEAGUES.map((name, i) => `
+    <div class="tier ${i === p.tier ? 'tier--cur' : ''} ${i < p.tier ? 'tier--past' : ''}">
+      <span>${G.leagueIcon(name)}</span><span>${esc(name)}</span>
+      <span class="muted">${i === p.tier ? 'you are here' : `${G.leagueTarget(i)} XP/wk`}</span>
+    </div>`).join('');
 
   const node = h(`
     <div class="screen">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>League</strong><span class="stat">💎 ${G.gems(store)}</span></header>
       <section class="card">
-        <div class="card__head"><strong>${G.leagueIcon(G.LEAGUES[lg.tier])} ${esc(G.LEAGUES[lg.tier])} League</strong><span class="muted">${esc(weekDaysLeft())} left</span></div>
+        <div class="card__head"><strong>${p.icon} ${esc(p.name)} League</strong><span class="muted">${esc(weekDaysLeft())} left</span></div>
         ${settled}
-        <p class="muted">${zoneMsg}</p>
+        <div class="lgp">
+          <div><b class="lgp__xp">${p.weeklyXp}</b><span class="muted"> / ${p.target} XP this week</span></div>
+          <div class="qbar qbar--gold"><span style="width:${p.pct}%"></span></div>
+          <p class="muted lgp__msg">${statusMsg}</p>
+          ${p.tier > 0 ? `<small class="muted">Stay above ${p.holdFloor} XP to hold ${esc(p.name)}.</small>` : ''}
+        </div>
+        <p class="muted">${record}</p>
       </section>
-      <div class="leaderboard">${rows}</div>
-      <p class="footnote">Top ${G.PROMOTE_ZONE} advance · bottom ${G.DEMOTE_ZONE} drop a league · resets every Monday.</p>
+      <h3 class="sec">League ladder</h3>
+      <div class="tiers">${ladder}</div>
+      <p class="footnote">Hit the weekly XP target to move up a league · the week resets every Monday.</p>
       <h3 class="sec">Streak protection</h3>
       <section class="card">
         <p>🔥 Current streak: <strong>${L.streak}</strong> · ❄️ Streak freezes: <strong>${L.streakFreezes || 0}</strong></p>
@@ -3901,8 +3900,29 @@ function renderShop() {
 }
 
 // ---------- service worker ----------
+// A persistent "update ready" banner: the worker activates new versions
+// immediately (skipWaiting + clients.claim in sw.js), but the open page keeps
+// running the old code until a reload — so when a new worker takes control we
+// offer a one-tap refresh instead of making the learner close and reopen.
+function showUpdateToast() {
+  if (document.querySelector('.update-toast')) return;
+  const el = h(`<div class="update-toast" role="status">
+      <span>✨ A new version is ready</span>
+      <button class="update-toast__btn" id="updateNow">Refresh</button>
+    </div>`);
+  el.querySelector('#updateNow').addEventListener('click', () => window.location.reload());
+  document.body.appendChild(el);
+}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  // controllerchange fires when an UPDATED worker claims the page (on first
+  // install there was no controller before, so no banner on a fresh visit)
+  let hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (hadController) showUpdateToast();
+    hadController = true;
+  });
 }
 
 boot();

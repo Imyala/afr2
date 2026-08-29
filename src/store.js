@@ -109,10 +109,15 @@ class Store {
     try {
       const raw = localStorage.getItem(keyFor(this.profileId));
       if (raw) {
-        const base = freshState();
-        const state = Object.assign(base, JSON.parse(raw));
-        state.settings = Object.assign(base.settings, state.settings || {});
-        state.onboarding = Object.assign(base.onboarding, state.onboarding || {});
+        // Merge saved state over fresh defaults. The nested objects must merge
+        // against the ORIGINAL defaults (not base.settings, which the outer
+        // assign has already replaced with the saved object) so that settings
+        // added in newer versions backfill into older saves.
+        const defaults = freshState();
+        const parsed = JSON.parse(raw);
+        const state = Object.assign({}, defaults, parsed);
+        state.settings = Object.assign({}, defaults.settings, parsed.settings || {});
+        state.onboarding = Object.assign({}, defaults.onboarding, parsed.onboarding || {});
         state.progressSnapshots = state.progressSnapshots || {};
         return state;
       }

@@ -1,4 +1,5 @@
+# The app itself is dependency-free; node_modules only appears when installing
+# Playwright for tests/smoke.mjs (see .github/workflows/ci.yml).
 node_modules/
-.DS_Store
-*.log
-/tmp/
+package.json
+package-lock.json
