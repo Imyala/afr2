@@ -397,10 +397,16 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 /* each node is a free-standing circle nudged left/right by --zig (set inline) */
 .node {
   --acc-dark: color-mix(in srgb, var(--uacc, var(--green)) 62%, #000);
+  position: relative;
   display: grid; justify-items: center; gap: 7px; width: auto; padding: 0;
   background: none; border: none; box-shadow: none;
   transform: translateX(var(--zig, 0px));
 }
+/* the buddy mascot stands beside the learner's current stone */
+.node__buddy { position: absolute; bottom: 24px; pointer-events: none; }
+.node__buddy .mascot-img { max-width: 62px; }
+.node__buddy--l { right: calc(50% + 44px); }
+.node__buddy--r { left: calc(50% + 44px); }
 .node__icon {
   width: 60px; height: 60px; border-radius: 50%;
   background: linear-gradient(180deg, color-mix(in srgb, var(--uacc, var(--green)) 78%, #fff), var(--uacc, var(--green)));
@@ -451,6 +457,33 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 /* locked = quiet gray stones further down the trail */
 .node--locked .node__icon { background: var(--bg-2); color: var(--muted-2); box-shadow: 0 4px 0 var(--line-2); font-size: 17px; }
 .node--locked .node__title { color: var(--muted-2); font-weight: 600; }
+
+/* halfway treasure chest — locked gray, then glowing and wiggling once the
+   first half of the unit is done, then opened & spent */
+.node-chest .node__icon {
+  font-size: 27px;
+  background: linear-gradient(180deg, #ffe9a8, #f2c94c);
+  box-shadow: 0 5px 0 #c9a02f, var(--shadow-sm);
+}
+.chest--locked .node__icon {
+  background: var(--bg-2); box-shadow: 0 4px 0 var(--line-2);
+  filter: grayscale(1) opacity(.65);
+}
+.chest--locked .node__title { color: var(--muted-2); font-weight: 600; }
+.chest--ready .node__icon {
+  box-shadow: 0 5px 0 #c9a02f, 0 0 0 6px color-mix(in srgb, var(--gold) 26%, transparent);
+  animation: chestWiggle 1.6s ease-in-out infinite;
+}
+.chest--ready .node__title { color: var(--gold-dark); font-weight: 800; }
+@keyframes chestWiggle {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  40% { transform: translateY(-5px) rotate(-4deg); }
+  60% { transform: translateY(-5px) rotate(4deg); }
+}
+@media (prefers-reduced-motion: reduce) { .chest--ready .node__icon { animation: none; } }
+.chest--open .node__icon { filter: saturate(.55) opacity(.8); }
+.chest--open .node__title { color: var(--muted-2); }
+[data-theme="dark"] .chest--ready .node__title { color: var(--gold); }
 
 /* ---------- bottom nav ---------- */
 .bottombar {

@@ -710,6 +710,7 @@ function renderHome() {
   on('#wotdBtn', renderWotd);
   on('#roadmapBtn', renderFluencyRoadmap);
   on('#allUnitsBtn', renderUnitsMap);
+  wireChests(node, renderHome);
   wireKeyActivation(node);
   mount(node);
   celebrateStoneIn(node);
@@ -725,13 +726,20 @@ function renderHome() {
 // the current step). Returned per unit so home can show just the current one
 // and the Units screen can list them all.
 const UNIT_ACCENTS = ['#2f8f74', '#3c6fba', '#8b5cf6', '#e8823a', '#0ea5c8', '#e85a9a'];
+// gems inside each unit's halfway treasure chest
+const CHEST_GEMS = 10;
 function unitTrails() {
   const L = store.lang();
   const lessons = allLessons(course);
   const lessonsDone = L.completedLessons.length;
+  const buddy = currentBuddy();
   // which units are already fully complete (so we only offer "test out" on the rest)
   const unitComplete = {};
-  for (const u of course.units) unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
+  const unitSize = {};
+  for (const u of course.units) {
+    unitComplete[u.id] = u.lessons.length > 0 && u.lessons.every((l) => store.isLessonComplete(l.id));
+    unitSize[u.id] = u.lessons.length;
+  }
   // Step 0: a no-pressure warm-up before Lesson 1 for absolute beginners.
   // Shown until the first lesson is complete; while it's pending it is the
   // highlighted next step (Lesson 1 stays open for those who want to dive in).
@@ -772,16 +780,20 @@ function unitTrails() {
         id: l.unitId, idx, accent, level: l.level,
         title: l.unitTitle.replace(/^Unit \d+:\s*/i, ''),
         testable: !unitComplete[l.unitId] && lessonsDone >= 1,
-        parts: [], hasActive: false, reached: false, done: 0, total: 0,
+        parts: [], hasActive: false, reached: false, done: 0, total: 0, allDoneSoFar: true,
       };
       units.push(cur);
     }
+    // the buddy mascot stands beside the learner's current stone — "you are
+    // here" — on the opposite side of the stone's zigzag offset
+    const buddyHtml = (z) => `<span class="node__buddy ${z >= 0 ? 'node__buddy--l' : 'node__buddy--r'}" aria-hidden="true">${mascotImg(buddy, { size: 60, className: 'mascot-img--bob' })}</span>`;
     if (i === 0 && showWarmup) {
       const wState = L.warmupDone ? 'done' : 'active';
       const wz = step(wState, cur.accent);
       if (warmupPending) cur.hasActive = true;
       cur.parts.push(`<button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup style="--zig:${wz}px;--uacc:${cur.accent}">
         ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
+        ${warmupPending ? buddyHtml(wz) : ''}
         <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
         <span class="node__title">Warm-up</span>
       </button>`);
@@ -794,14 +806,29 @@ function unitTrails() {
     // a unit is "reached" once any of its lessons is playable or complete —
     // test-out and full banner colour are reserved for reached units
     if (done || !locked) cur.reached = true;
+    cur.allDoneSoFar = cur.allDoneSoFar && done;
     const starHtml = done ? `<span class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</span>` : '';
     const cta = active ? '<span class="node__cta">START</span>' : '';
     cur.parts.push(`<button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''} style="--zig:${z}px;--uacc:${cur.accent}">
         ${cta}
+        ${active && !warmupPending ? buddyHtml(z) : ''}
         <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
         <span class="node__title">${esc(l.title)}</span>
         ${starHtml}
       </button>`);
+    // halfway treasure chest: units of 4+ lessons hide a gem chest after the
+    // midpoint — it unlocks once every lesson before it is done, and opens once
+    const size = unitSize[l.unitId] || 0;
+    if (size >= 4 && cur.total === Math.ceil(size / 2)) {
+      const claimed = !!(L.unitChests || {})[l.unitId];
+      const ready = !claimed && cur.allDoneSoFar;
+      const cz = step(claimed ? 'done' : ready ? 'active' : 'todo', cur.accent);
+      cur.parts.push(`<button class="node node-chest ${claimed ? 'chest--open' : ready ? 'chest--ready' : 'chest--locked'}" data-chest="${esc(l.unitId)}" ${ready ? '' : 'disabled'} style="--zig:${cz}px;--uacc:${cur.accent}">
+        ${ready ? '<span class="node__cta">OPEN ME</span>' : ''}
+        <span class="node__icon">🎁</span>
+        <span class="node__title">${claimed ? 'Collected' : 'Treasure'}</span>
+      </button>`);
+    }
   });
   return units.map((u) => ({
     ...u,
@@ -843,6 +870,7 @@ function renderUnitsMap() {
   node.querySelectorAll('[data-testout]').forEach((b) =>
     b.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); confirmTestOut(b.dataset.testout); }));
   node.querySelector('#back').addEventListener('click', renderHome);
+  wireChests(node, renderUnitsMap);
   mount(node);
   celebrateStoneIn(node);
 }
@@ -1557,6 +1585,34 @@ function celebrateStoneIn(root) {
       haptic([12, 40, 12]);
     }, 480);
   }, 300);
+}
+
+// Opening a halfway treasure chest: gems, confetti from the chest, and an
+// in-place reveal before the screen refreshes with the new gem count.
+function wireChests(root, rerender) {
+  root.querySelectorAll('[data-chest]').forEach((b) => b.addEventListener('click', (e) => {
+    e.preventDefault(); e.stopPropagation();
+    const L = store.lang();
+    L.unitChests = L.unitChests || {};
+    if (L.unitChests[b.dataset.chest]) return;
+    L.unitChests[b.dataset.chest] = todayStr();
+    store.state.gems = (store.state.gems || 0) + CHEST_GEMS;
+    store.save();
+    G.checkAchievements(store);
+    const icon = b.querySelector('.node__icon');
+    const r = (icon || b).getBoundingClientRect();
+    confetti({ count: 60, duration: 1200, x: r.left + r.width / 2, y: r.top + r.height / 2 });
+    sound.reward(); haptic([12, 30, 12]);
+    b.classList.remove('chest--ready');
+    b.classList.add('chest--open');
+    b.disabled = true;
+    const cta = b.querySelector('.node__cta');
+    if (cta) cta.remove();
+    const t = b.querySelector('.node__title');
+    if (t) t.textContent = `+${CHEST_GEMS} 💎`;
+    if (icon) pop(icon, 1.3);
+    setTimeout(rerender, 1500);
+  }));
 }
 // Where to go when a finished activity's "Continue" is tapped: back to the plan
 // if it was part of today's loop, otherwise home.
