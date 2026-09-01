@@ -626,6 +626,26 @@ function nextBestAction(L, due, nextLesson) {
   return { id: 'resumeSpeak', icon: '🎤', title: 'Keep your fluency warm', sub: 'Do a quick speaking practice', action: startSpeaking };
 }
 
+// A tool whose pool is empty used to just re-render Home. No toast, no reason,
+// no state change — indistinguishable from a broken button, so a learner taps
+// it a few more times and then writes the tool off for good. Every empty pool
+// now gets a real screen that says why and offers the way forward.
+function renderToolEmpty({ icon = '🌱', title, body, ctaLabel = 'Go to my lessons', ctaFn = renderHome }) {
+  const node = h(`
+    <div class="screen screen--center">
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 120, className: 'mascot-img--bob' })}</div>
+      <h1 class="onb__title">${icon} ${esc(title)}</h1>
+      <p class="onb__body">${esc(body)}</p>
+      <div class="onb__actions">
+        <button class="btn btn--primary" id="toolCta">${esc(ctaLabel)}</button>
+        <button class="btn btn--ghost" id="toolBack">Back home</button>
+      </div>
+    </div>`);
+  node.querySelector('#toolCta').addEventListener('click', () => { sound.tap(); ctaFn(); });
+  node.querySelector('#toolBack').addEventListener('click', renderHome);
+  mount(node);
+}
+
 // ---------- bottom navigation ----------
 // One definition, rendered on every top-level screen. It used to exist only on
 // home, so the four destinations it leads to were dead ends you could only
@@ -1166,7 +1186,10 @@ async function tryHear(text, lang) {
 
 function renderWotd() {
   const w = wordOfTheDay();
-  if (!w) return renderHome();
+  if (!w) {
+    return renderToolEmpty({ icon: '🗓️', title: 'No word of the day yet',
+      body: 'Start a lesson and a word from your course will show up here each day.' });
+  }
   const L = store.lang();
   const already = L.wotd && L.wotd.day === todayStr() && L.wotd.learned;
   const node = h(`
@@ -1387,7 +1410,10 @@ let speakSession = null;
 
 function startSpeaking() {
   speakSession = { items: speakingItems(), idx: 0, done: 0 };
-  if (!speakSession.items.length) return renderHome();
+  if (!speakSession.items.length) {
+    return renderToolEmpty({ icon: '🎤', title: 'Speaking is nearly ready',
+      body: 'Speaking practice uses words you have already met. Finish a lesson and it opens up.' });
+  }
   renderSpeaking();
 }
 
@@ -1519,7 +1545,10 @@ function listeningItems() {
 let listenSession = null;
 function startListening() {
   listenSession = { items: listeningItems(), idx: 0, done: 0 };
-  if (!listenSession.items.length) return renderHome();
+  if (!listenSession.items.length) {
+    return renderToolEmpty({ icon: '👂', title: 'Listening is nearly ready',
+      body: 'Listening practice uses words you have already met. Finish a lesson and it opens up.' });
+  }
   renderListening();
 }
 
@@ -2376,7 +2405,10 @@ function startReview() {
   if (store.lang().hearts <= 0) return renderHeartsModal();
   const L = store.lang();
   const due = store.dueItems();
-  if (!due.length) return renderHome();
+  if (!due.length) {
+    return renderToolEmpty({ icon: '✅', title: 'Nothing due right now',
+      body: 'Your reviews are all caught up. Come back when a word is ready, or carry on with the next lesson.' });
+  }
   const repairMode = missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr();
   const queue = withExplainPrompt(buildReviewSession(course, due, 15, {
     recentTypes: L.recentExerciseTypes || [],
@@ -2561,7 +2593,10 @@ function labCompose(m, st) {
 
 function renderSentenceLab() {
   const m = labMeta();
-  if (!m) return renderHome();
+  if (!m) {
+    return renderToolEmpty({ icon: '🧪', title: 'Sentence Lab',
+      body: 'The Lab is not available for this language yet. Everything else still works.' });
+  }
   if (!labState) labState = { subjIdx: 0, verbIdx: 0, tense: 'present', objIdx: null };
   const st = labState;
   // keep the chosen object valid for the chosen verb
@@ -2664,7 +2699,10 @@ function renderSentenceLab() {
 function startSentences() {
   const lvl = Math.max(1, sentenceLevel());
   const builds = genBuildExercises(course, 8, lvl);
-  if (!builds.length) return renderHome();
+  if (!builds.length) {
+    return renderToolEmpty({ icon: '🗣️', title: 'Build your own sentences',
+      body: 'Finish your first lesson and you can start building sentences of your own.' });
+  }
   // every third build becomes a SPEAK exercise of a generated sentence — say
   // a novel sentence out loud, not just arrange its tiles
   const queue = builds.map((ex, i) => (i % 3 === 2
@@ -3588,16 +3626,38 @@ function renderProgress() {
 
 function renderTestResult(result) {
   const pct = Math.round((result.score / result.total) * 100);
+  const L = store.lang();
+  const isRetest = session.mode === 'retest';
+  // The learner just spent a minute re-testing to find out ONE thing: did they
+  // improve? That number used to live behind a button and a ~2,200px scroll on
+  // another screen. It is the payoff for a month of study; show it here.
+  const base = isRetest && L.baseline ? Math.round((L.baseline.score / L.baseline.total) * 100) : null;
+  const delta = base === null ? null : pct - base;
+  const comparison = delta === null ? '' : `
+    <div class="proof">
+      <h3>Measured against your baseline</h3>
+      <div class="proof__bars">
+        <div><span>Baseline (${esc(L.baseline.date)})</span><div class="pbar"><div style="width:${base}%"></div></div><b>${base}%</b></div>
+        <div><span>Today</span><div class="pbar pbar--green"><div style="width:${pct}%"></div></div><b>${pct}%</b></div>
+      </div>
+      <div class="${delta >= 0 ? 'gain' : 'muted'} retest-delta" id="deltaKpi">${delta >= 0 ? `▲ +${delta}%` : `▼ ${delta}%`}</div>
+      <p class="muted">${delta > 0
+    ? 'Measured on the same anchor items — this is real, not noise.'
+    : delta === 0 ? 'Level with your baseline. Keep the daily reviews going and the next one will move.'
+      : 'Below your baseline today. That happens; the daily reviews are what pull it back up.'}</p>
+    </div>`;
   const node = h(`
     <div class="screen screen--center result">
-      <div class="result__emoji">📋</div>
-      <h1>${session.mode === 'retest' ? 'Re-test' : 'Baseline'} recorded</h1>
+      <div class="result__emoji">${delta !== null && delta > 0 ? '📈' : '📋'}</div>
+      <h1>${isRetest ? 'Re-test' : 'Baseline'} recorded</h1>
       <div class="result__row"><div class="kpi"><span class="kpi__v">${result.score}/${result.total}</span><span class="kpi__k">Score</span></div><div class="kpi"><span class="kpi__v">${pct}%</span><span class="kpi__k">Accuracy</span></div></div>
-      <p class="muted">${session.mode === 'baseline' ? 'This is your starting point. Practise daily, then re-test in about a month.' : 'Check your Progress page to see your improvement over your baseline.'}</p>
-      <button class="btn btn--primary" id="toProgress">See progress</button>
+      ${comparison}
+      <p class="muted">${session.mode === 'baseline' ? 'This is your starting point. Practise daily, then re-test in about a month.' : ''}</p>
+      <button class="btn ${delta === null ? 'btn--primary' : 'btn--ghost'}" id="toProgress">See full progress</button>
     </div>`);
   node.querySelector('#toProgress').addEventListener('click', renderProgress);
   mount(node);
+  if (delta !== null && delta > 0) { sound.reward(); confetti({ count: 140, duration: 1400 }); }
 }
 
 // ---------- premium / paywall ----------

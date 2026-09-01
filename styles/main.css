@@ -1146,6 +1146,8 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .pbar > div { height: 100%; background: var(--info); }
 .pbar--green > div { background: var(--brand); }
 .gain { color: var(--brand-ink); font-weight: var(--w-bold); }
+/* the one number a re-test exists to produce */
+.retest-delta { font-size: var(--fs-700); font-weight: var(--w-display); line-height: var(--lh-tight); text-align: center; }
 
 /* The bars used to render at an identical 12px each: a percentage height has
    no basis inside an auto-height grid row, so every value collapsed to the
