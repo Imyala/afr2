@@ -103,6 +103,7 @@
   --focus: var(--c-ocean);
 
   /* ---- 4. DEPTH ---------------------------------------------------------- */
+  --gloss: rgba(255,255,255,.9);   /* lit top edge on a raised surface */
   --e1: 0 1px 2px rgba(74,58,42,.07), 0 0 0 1px rgba(74,58,42,.05);
   --e2: 0 4px 14px rgba(74,58,42,.09), 0 1px 3px rgba(74,58,42,.06);
   --e3: 0 12px 34px rgba(74,58,42,.15), 0 2px 8px rgba(74,58,42,.08);
@@ -373,9 +374,9 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 /* Each stat is a real tap target with a tinted well behind it, so streak,
    gems and hearts read as three collectible counters rather than loose text. */
 .stat {
-  display: inline-flex; align-items: center; gap: 3px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
   font-weight: var(--w-bold); font-size: var(--fs-200); white-space: nowrap;
-  min-height: var(--tap); padding: 0 var(--sp-2); border-radius: var(--r-pill);
+  min-height: var(--tap); min-width: var(--tap); padding: 0 var(--sp-2); border-radius: var(--r-pill);
   background: none; border: none; color: var(--muted);
   transition: background var(--dur-1) var(--ease-out);
 }
@@ -407,11 +408,11 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 /* home hero — mascot, greeting, goal ring and the ONE primary action in a
    single warm card; everything else on home stays visually quiet */
 .home-hero {
-  display: grid; gap: 14px;
-  background: linear-gradient(150deg, color-mix(in srgb, var(--green) 11%, var(--card)), var(--card) 70%);
-  border: 1px solid var(--line); border-radius: var(--radius-lg);
-  border-top: 1px solid rgba(255,255,255,.9);
-  padding: 16px; box-shadow: var(--shadow-md);
+  display: grid; gap: var(--sp-3);
+  background: linear-gradient(150deg, color-mix(in srgb, var(--brand) 11%, var(--card)), var(--card) 70%);
+  border: 1px solid var(--line); border-radius: var(--r-4);
+  border-top: 1px solid var(--gloss);
+  padding: var(--sp-4); box-shadow: var(--e2);
 }
 .home-hero__row { display: flex; align-items: center; gap: var(--sp-3); }
 .home-hero__mascot { flex: 0 0 auto; display: grid; place-items: end center; }
@@ -522,8 +523,10 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .roadmap-card__text { margin: 0; font-size: 13px; color: var(--muted); }
 .roadmap-card small { color: var(--muted); font-size: 12px; }
 
-/* home "Practice" tools — one horizontally scrolling rail of round tiles,
-   so eight activities take a single row instead of a wall of cards */
+/* Home "Practice" tools. A single scrolling row hid three of the eight tiles
+   off-screen with no affordance at all — the word list was tile 8 and
+   effectively undiscoverable. A wrapping four-column grid shows every tool at
+   once and still costs only two rows. */
 .sec--home { margin: 6px 4px -4px; }
 /* The trail follows straight on from the hero; the unit signboard supplies its
    own top margin, so the section must not add a second one. */
@@ -532,32 +535,36 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 /* the buddy's greeting is a sentence, not a headline — let it balance too */
 .home-hero__greet { text-wrap: balance; }
 .rail {
-  display: flex; gap: 6px; overflow-x: auto; padding: 6px 2px 8px;
-  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-2) var(--sp-1); padding: var(--sp-2) 0;
 }
-.rail::-webkit-scrollbar { display: none; }
 .tool {
-  flex: 0 0 auto; width: 74px; display: grid; gap: 6px; justify-items: center;
-  background: none; border: none; padding: 2px 0;
+  display: grid; gap: var(--sp-1); justify-items: center;
+  background: none; border: none; padding: 2px 0; min-width: 0;
 }
 .tool__ic {
-  width: 54px; height: 54px; border-radius: 18px; font-size: 25px;
+  width: 52px; height: 52px; border-radius: var(--r-3); font-size: var(--ic-2);
   display: grid; place-items: center;
-  background: color-mix(in srgb, var(--acc) 15%, var(--card));
-  border: 1px solid color-mix(in srgb, var(--acc) 30%, var(--line));
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition);
+  background: var(--acc-tint);
+  border: 1px solid color-mix(in srgb, var(--acc) 32%, var(--line));
+  box-shadow: 0 var(--lip-1) 0 color-mix(in srgb, var(--acc) 24%, var(--line-2));
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
 }
-.tool:active .tool__ic { transform: scale(.9); }
-.tool small { font-size: 11.5px; font-weight: 700; color: var(--ink-2); white-space: nowrap; }
-.tool--grammar { --acc: var(--green); }
-.tool--convo   { --acc: var(--blue); }
-.tool--speak   { --acc: #e8823a; }
-.tool--listen  { --acc: #8b5cf6; }
-.tool--blitz   { --acc: var(--gold); }
-.tool--words   { --acc: #14a08f; }
-.tool--write   { --acc: #e85a9a; }
-.tool--say     { --acc: #0ea5c8; }
+.tool:active .tool__ic { transform: translateY(2px); box-shadow: 0 1px 0 color-mix(in srgb, var(--acc) 24%, var(--line-2)); }
+.tool small {
+  font-size: var(--fs-100); font-weight: var(--w-med); color: var(--ink-2);
+  line-height: var(--lh-tight); text-align: center;
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis;
+}
+/* one hue per tool, from the same eight-hue ring the units use */
+.tool--grammar { --acc: var(--c-aloe);      --acc-tint: var(--c-aloe-tint); }
+.tool--convo   { --acc: var(--c-ocean);     --acc-tint: var(--c-ocean-tint); }
+.tool--speak   { --acc: var(--c-sunset);    --acc-tint: var(--c-sunset-tint); }
+.tool--listen  { --acc: var(--c-jacaranda); --acc-tint: var(--c-jacaranda-tint); }
+.tool--blitz   { --acc: var(--c-marula);    --acc-tint: var(--c-marula-tint); }
+.tool--words   { --acc: var(--c-lagoon);    --acc-tint: var(--c-lagoon-tint); }
+.tool--write   { --acc: var(--c-protea);    --acc-tint: var(--c-protea-tint); }
+.tool--say     { --acc: var(--c-coral);     --acc-tint: var(--c-coral-tint); }
 
 .quest__prog { font-size: 11px; }
 
@@ -629,7 +636,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .all-units:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line-2), var(--e1); }
 .all-units b { font-weight: var(--w-bold); }
 .all-units small { color: var(--muted); font-weight: 700; }
-.all-units span { color: var(--muted-2); font-size: 20px; line-height: 1; }
+.all-units span { color: var(--muted); font-size: var(--fs-400); line-height: 1; }
 /* the Units screen: every unit banner is a collapsible level */
 .units-list { display: grid; gap: 12px; padding-bottom: 12px; }
 .unit-acc summary { list-style: none; cursor: pointer; }
@@ -839,7 +846,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
   z-index: var(--z-nav);
   background: color-mix(in srgb, var(--card) 92%, var(--bg));
   border: 1px solid var(--line);
-  border-top: 1px solid rgba(255,255,255,.72);
+  border-top: 1px solid var(--gloss);
   border-radius: var(--r-4);
   backdrop-filter: blur(18px) saturate(1.5);
   -webkit-backdrop-filter: blur(18px) saturate(1.5);
@@ -848,7 +855,6 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
   box-shadow: var(--shadow-up);
 }
 @supports not (backdrop-filter: blur(1px)) { .bottombar { background: var(--card); } }
-:root[data-theme="dark"] .bottombar { border-top-color: rgba(255,255,255,.08); }
 /* Icon above label, and the icon carries the state: grey when you are
    elsewhere, full colour where you are. One signal, not three. */
 .navbtn {
@@ -1076,7 +1082,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 }
 @media (prefers-reduced-motion: reduce) { .result__stars span { animation: none; } }
 .result__row { display: flex; gap: 14px; }
-.kpi { background: var(--card); border-radius: 14px; padding: 14px 18px; box-shadow: var(--shadow); display: grid; border-top: 1px solid rgba(255,255,255,.9); }
+.kpi { background: var(--card); border-radius: 14px; padding: 14px 18px; box-shadow: var(--shadow); display: grid; border-top: 1px solid var(--gloss); }
 .kpi__v { font-size: 24px; font-weight: 800; color: var(--green); }
 .kpi__k { font-size: 12px; color: var(--muted); }
 
@@ -1164,7 +1170,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .plan--best { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(240,179,35,.25); }
 
 /* ---------- gamification ---------- */
-.stat--gems { color: #7c3aed; }
+.stat--gems { color: var(--gem-ink); }
 .card { background: var(--card); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); display: grid; gap: 10px; text-align: left; width: 100%; border: none; }
 .card__head { display: flex; justify-content: space-between; align-items: baseline; }
 .sec {
@@ -1177,7 +1183,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .quest__icon { font-size: 22px; flex: 0 0 auto; }
 .quest__body { flex: 1; display: grid; gap: 6px; }
 .quest__text { font-size: 14px; font-weight: 600; }
-.quest__reward { font-weight: 800; font-size: 13px; color: #7c3aed; white-space: nowrap; }
+.quest__reward { font-weight: var(--w-bold); font-size: var(--fs-200); color: var(--gem-ink); white-space: nowrap; }
 .quest--done { opacity: .6; }
 .qbar { display: block; height: 9px; background: var(--line-2); border-radius: var(--r-pill); overflow: hidden; box-shadow: var(--deboss); }
 .qbar > div, .qbar > span { display: block; height: 100%; background: var(--brand); border-radius: var(--r-pill); transition: width var(--dur-2) var(--ease-out); }
@@ -1188,11 +1194,11 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .league-card__body { flex: 1; display: grid; gap: 6px; }
 .league-card__chev { font-size: 26px; color: var(--muted); }
 
-.reward-list { background: #f3eefe; border-radius: 12px; padding: 12px; display: grid; gap: 6px; width: 100%; }
+.reward-list { background: var(--c-jacaranda-tint); border-radius: var(--r-2); padding: var(--sp-3); display: grid; gap: 6px; width: 100%; }
 .reward-list--ach { background: #fff6e0; }
 .reward-row { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; }
-.reward-row span { color: #7c3aed; }
-.chest { font-size: 44px; font-weight: 800; color: #7c3aed; background: #f3eefe; border-radius: var(--radius); padding: 24px 40px; }
+.reward-row span { color: var(--gem-ink); }
+.chest { font-size: var(--fs-700); font-weight: var(--w-display); color: var(--gem-ink); background: var(--c-jacaranda-tint); border-radius: var(--r-3); padding: var(--sp-6) var(--sp-8); }
 
 /* stories / reading */
 .stories, .books { display: grid; gap: 10px; }
@@ -1324,8 +1330,8 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .wotd-big__tr { font-size: var(--fs-300); font-weight: var(--w-med); color: var(--muted); }
 
 /* xp boost */
-.boost-badge { background: #fff0d4; color: #8a5a00; font-weight: 800; padding: 8px 14px; border-radius: 999px; }
-.boost-chip { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 800; color: #8a5a00; background: #fff0d4; padding: 3px 8px; border-radius: 999px; }
+.boost-badge { background: var(--c-marula-tint); color: var(--c-marula-ink); font-weight: var(--w-bold); padding: var(--sp-2) var(--sp-3); border-radius: var(--r-pill); }
+.boost-chip { display: inline-block; margin-top: 4px; font-size: var(--fs-100); font-weight: var(--w-bold); color: var(--c-marula-ink); background: var(--c-marula-tint); padding: 3px var(--sp-2); border-radius: var(--r-pill); }
 
 /* shop */
 .shop-list { display: grid; gap: var(--sp-2); }
@@ -1411,6 +1417,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
   --focus: var(--c-ocean);
 
   /* Shadows barely read on #141110, so each elevation carries a hairline ring. */
+  --gloss: rgba(255,255,255,.07);
   --e1: 0 1px 3px rgba(0,0,0,.45), 0 0 0 1px rgba(242,236,227,.055);
   --e2: 0 4px 16px rgba(0,0,0,.5),  0 0 0 1px rgba(242,236,227,.07);
   --e3: 0 12px 36px rgba(0,0,0,.6), 0 0 0 1px rgba(242,236,227,.08);
@@ -1526,6 +1533,31 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .onb__feature small { color: var(--muted); }
 .onb__feats { display: grid; gap: 10px; }
 
+/* ---------- setup questions — tappable choices, not dropdowns ---------- */
+.onb--form { justify-content: flex-start; padding-top: var(--sp-5); text-align: left; }
+.onb--form .onb__title, .onb--form .onb__body { text-align: center; }
+.qgroup { border: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); width: 100%; max-width: 360px; }
+.qgroup__q { padding: 0; font-size: var(--fs-300); font-weight: var(--w-bold); color: var(--ink); }
+.qgroup__hint { margin: -6px 0 0; font-size: var(--fs-200); color: var(--muted); }
+.qgroup__opts { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
+.qopt {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-3); min-height: var(--tap);
+  border: 2px solid var(--line-3); border-radius: var(--r-2);
+  background: var(--card); color: var(--ink);
+  font-size: var(--fs-200); font-weight: var(--w-med); text-align: left;
+  box-shadow: 0 var(--lip-1) 0 var(--line-2);
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out), background var(--dur-1) var(--ease-out);
+}
+.qopt:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line-2); }
+.qopt__ic { font-size: var(--ic-1); line-height: 1; flex: 0 0 auto; }
+.qopt--on {
+  border-color: var(--brand); background: var(--brand-tint); color: var(--brand-ink);
+  font-weight: var(--w-bold);
+  box-shadow: 0 var(--lip-1) 0 var(--brand), 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+}
+
 /* first-win celebration chips */
 .win-words { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .win-word { background: color-mix(in srgb, var(--green) 14%, transparent); color: var(--green-dark); border-radius: 999px; padding: 8px 14px; font-weight: 800; font-size: 15px; }
@@ -1594,7 +1626,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
   padding: 10px 14px; border-radius: var(--radius); font-size: 15px;
   background: color-mix(in srgb, var(--green) 10%, var(--card)); color: var(--ink);
 }
-.act--say { --acc: #d64583; }
+.act--say { --acc: var(--c-protea); }
 
 /* ---------- sentence anatomy ("why the structure") ---------- */
 .anatomy { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
@@ -1609,10 +1641,10 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .anat--subj { --acc: var(--green); }
 .anat--tense { --acc: var(--gold); }
 .anat--verb { --acc: var(--blue); }
-.anat--obj { --acc: #8b5cf6; }
-.anat--time { --acc: #14a08f; }
+.anat--obj { --acc: var(--c-jacaranda); }
+.anat--time { --acc: var(--c-lagoon); }
 .anat--neg { --acc: var(--red); }
-.anat--q { --acc: #d64583; }
+.anat--q { --acc: var(--c-protea); }
 
 /* ---------- Sentence Lab ---------- */
 .lab { gap: 12px; }
@@ -1639,8 +1671,8 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .lab-out__actions { display: grid; gap: 8px; }
 .lab-quiz { display: grid; gap: 8px; }
 .btn--lab {
-  background: color-mix(in srgb, #8b5cf6 14%, var(--card)); color: var(--ink);
-  border: 2px solid color-mix(in srgb, #8b5cf6 45%, transparent); box-shadow: none;
+  background: var(--c-jacaranda-tint); color: var(--ink);
+  border: 2px solid color-mix(in srgb, var(--c-jacaranda) 45%, transparent); box-shadow: none;
 }
 
 /* ---------- polish pass ----------
@@ -1676,8 +1708,8 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .cando__text { font-size: var(--fs-200); font-weight: var(--w-med); }
 .cando__meta { flex: 0 0 auto; font-size: var(--fs-100); font-weight: var(--w-bold); color: var(--muted); }
 .cando .qbar > span { background: var(--acc, var(--brand)); }
-.cando--untouched { border-left-color: var(--line-2); }
-.cando--untouched .cando__icon { filter: grayscale(.9); opacity: .6; }
+.cando--untouched { border-left-color: color-mix(in srgb, var(--acc) 45%, var(--line-2)); }
+.cando--untouched .cando__icon { opacity: .75; }
 .cando--done { border-color: var(--ok); background: var(--ok-tint); }
 .cando--done .cando__text { color: var(--ok-ink); font-weight: var(--w-bold); }
 .cando--done .cando__meta { color: var(--ok-ink); }
@@ -1725,7 +1757,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .pstep--review .pstep__go { color: #3a2c00; }
 .pstep--lesson { --acc: var(--green); }
 .pstep--input  { --acc: var(--blue); }
-.pstep--output { --acc: #e8823a; }
+.pstep--output { --acc: var(--c-sunset); }
 .pstep--done {
   --acc: var(--green);
   border-color: color-mix(in srgb, var(--green) 45%, var(--line));
@@ -1775,7 +1807,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .gloss-tr { font-size: 14px; color: var(--ink); flex: 1; }
 .gloss-pill { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
 .gloss-pill--new { background: var(--line); color: var(--muted); }
-.gloss-pill--learning { background: color-mix(in srgb, var(--gold) 22%, transparent); color: #8a5a00; }
+.gloss-pill--learning { background: var(--c-marula-tint); color: var(--c-marula-ink); }
 .gloss-pill--mastered { background: color-mix(in srgb, var(--green) 18%, transparent); color: var(--green-dark); }
 .gloss-row--hard { border-color: color-mix(in srgb, var(--red) 40%, var(--line)); }
 .gloss-acc { font-size: 13px; font-weight: 800; color: var(--red); white-space: nowrap; }
@@ -1804,7 +1836,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .lgp__xp { font-size: 26px; letter-spacing: -.4px; color: var(--green); }
 .lgp__msg { margin: 0; font-size: 14px; }
 .lgp__msg b { color: var(--green); }
-.lb-banner { font-weight: 800; font-size: 14px; padding: 10px 12px; border-radius: 12px; background: color-mix(in srgb, var(--gold) 18%, transparent); color: #8a5a00; }
+.lb-banner { font-weight: var(--w-bold); font-size: var(--fs-200); padding: var(--sp-2) var(--sp-3); border-radius: var(--r-2); background: var(--c-marula-tint); color: var(--c-marula-ink); }
 .lb-banner--up { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green-dark); }
 .lb-banner--down { background: color-mix(in srgb, var(--red) 14%, transparent); color: var(--red); }
 [data-theme="dark"] .lb-banner { color: var(--gold); }
@@ -1991,7 +2023,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 }
 .wlab__hero {
   background: linear-gradient(135deg,
-    color-mix(in srgb, #e85a9a 8%, var(--card)),
+    color-mix(in srgb, var(--c-protea) 8%, var(--card)),
     color-mix(in srgb, var(--blue) 6%, var(--card)));
   border: 1px solid var(--line); border-radius: var(--radius-lg);
   padding: 20px; text-align: center; box-shadow: var(--shadow-md);
@@ -2001,7 +2033,7 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
 .wlab__hero p { color: var(--muted); margin: 0; font-size: 14px; }
 .wlab__score {
   display: inline-flex; align-items: center; gap: 6px;
-  background: color-mix(in srgb, #e85a9a 14%, transparent);
+  background: color-mix(in srgb, var(--c-protea) 14%, transparent);
   color: #c43a7a; border-radius: 999px; padding: 5px 14px;
   font-size: 14px; font-weight: 800; margin-top: 10px;
 }
@@ -2033,17 +2065,17 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
   outline: none;
 }
 .wlab__textarea:focus {
-  border-color: #e85a9a;
-  box-shadow: 0 0 0 3px color-mix(in srgb, #e85a9a 20%, transparent);
+  border-color: var(--c-protea);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-protea) 20%, transparent);
 }
 .wlab__btn-check {
   border: none; border-radius: var(--radius-sm); padding: 14px 18px;
   font-size: 16px; font-weight: 800; width: 100%; cursor: pointer; font-family: inherit;
-  background: linear-gradient(160deg, #f06cb0, #e85a9a);
-  color: #fff; box-shadow: 0 4px 0 #b83472, 0 8px 24px rgba(232,90,154,.25);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c-protea) 82%, #fff), var(--c-protea));
+  color: var(--on-fill); box-shadow: 0 var(--lip-3) 0 var(--c-protea-edge), var(--e2);
   transition: transform var(--transition), box-shadow var(--transition);
 }
-.wlab__btn-check:active { transform: translateY(3px); box-shadow: 0 1px 0 #b83472; }
+.wlab__btn-check:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--c-protea-edge); }
 .wlab__btn-check:disabled { opacity: .5; cursor: default; }
 
 .wlab__result {

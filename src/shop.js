@@ -111,7 +111,14 @@ export function inventory(store) {
   return inv;
 }
 
-export function owns(store, id) { return !!inventory(store).owned[id]; }
+export function owns(store, id) {
+  // Anything free is owned by definition — otherwise a zero-cost cosmetic
+  // (the "Surprise me" buddy, the starter theme on a fresh save) renders a
+  // "buy for 0 gems" button instead of an Equip button.
+  const item = findItem(id);
+  if (item && !item.cost && !POWERUPS.some((p) => p.id === id)) return true;
+  return !!inventory(store).owned[id];
+}
 
 // Attempt a purchase. Returns { ok, reason }.
 export function buy(store, id) {

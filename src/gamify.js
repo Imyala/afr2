@@ -248,7 +248,18 @@ export function checkAchievements(store) {
 // ---------- daily login reward ----------
 export function dailyRewardStatus(store) {
   const dr = store.state.dailyReward || (store.state.dailyReward = { lastClaim: null, streak: 0 });
-  return { canClaim: dr.lastClaim !== todayKey(), nextGems: DAILY_REWARD[Math.min(dr.streak, DAILY_REWARD.length - 1)], streak: dr.streak };
+  // Project the streak the claim will ACTUALLY produce. This used to read the
+  // next rung of the ladder unconditionally, so a learner who broke their
+  // chain was shown "30 gems" and then paid 5 — claimDailyReward resets the
+  // streak to 1 when yesterday was missed.
+  const yest = todayKey(new Date(Date.now() - 86400000));
+  const nextStreak = dr.lastClaim === yest ? dr.streak + 1 : 1;
+  return {
+    canClaim: dr.lastClaim !== todayKey(),
+    nextGems: DAILY_REWARD[Math.min(nextStreak - 1, DAILY_REWARD.length - 1)],
+    nextStreak,
+    streak: dr.streak,
+  };
 }
 
 export function claimDailyReward(store) {

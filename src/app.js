@@ -174,9 +174,15 @@ function applyColorScheme() {
   const dark = pref === 'dark'
     || (pref === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-  // keep the browser chrome (address bar) matching the scheme
+  // Keep the browser chrome (address bar) matching the page. These used to be
+  // two frozen literals — a green that no longer exists in the palette and a
+  // near-black that did not match the dark ground either — so read the real
+  // --bg back off the document instead.
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = dark ? '#0e1611' : '#1b7a43';
+  if (meta) {
+    const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    meta.content = bg || (dark ? '#141110' : '#f7f4ee');
+  }
 }
 
 // ---------- boot ----------
@@ -483,42 +489,53 @@ function renderFirstRunChoice() {
 
 function renderSetupQuestions() {
   const cur = learnerProfile();
-  const node = h(`
-    <div class="screen onb">
-      <div class="onb__art">${mascotImg(currentBuddy(), { size: 126 })}</div>
-      <h1 class="onb__title">Nice first win! One quick setup</h1>
-      <p class="onb__body">Answer three tiny questions and I’ll tune your daily plan to fit you better.</p>
-      <div class="set-list">
-        <div class="set-row">
-          <div class="set-row__label"><b>What’s your main goal?</b><small>We’ll bias your plan around this</small></div>
-          <select id="goalSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
-            ${[['school', 'School'], ['travel', 'Travel'], ['conversation', 'Conversation'], ['general', 'General']].map(([v, label]) => `<option value="${v}" ${cur.goal === v ? 'selected' : ''}>${label}</option>`).join('')}
-          </select>
-        </div>
-        <div class="set-row">
-          <div class="set-row__label"><b>How much time do you usually have?</b><small>Just a rough daily target</small></div>
-          <select id="timeSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
-            ${[['5', '5 min'], ['10', '10 min'], ['20', '20 min'], ['30', '30+ min']].map(([v, label]) => `<option value="${v}" ${cur.dailyTime === v ? 'selected' : ''}>${label}</option>`).join('')}
-          </select>
-        </div>
-        <div class="set-row">
-          <div class="set-row__label"><b>How confident do you feel?</b><small>This helps set the tone</small></div>
-          <select id="confSel" class="btn btn--ghost" style="width:auto;padding:8px 12px">
-            ${[['new', 'Brand new'], ['rusty', 'Rusty but returning'], ['steady', 'Fairly confident']].map(([v, label]) => `<option value="${v}" ${cur.confidence === v ? 'selected' : ''}>${label}</option>`).join('')}
-          </select>
-        </div>
+  // Three <select> dropdowns styled as ghost buttons gave this screen three
+  // different control widths and a wall of centred, wrapping labels. Tappable
+  // choice chips are one shape, readable at a glance, and a single tap each.
+  const group = (name, label, hint, opts, current) => `
+    <fieldset class="qgroup">
+      <legend class="qgroup__q">${label}</legend>
+      <p class="qgroup__hint">${hint}</p>
+      <div class="qgroup__opts" role="radiogroup" aria-label="${esc(label)}">
+        ${opts.map(([v, text, ic]) => `
+          <button type="button" class="qopt ${String(current) === v ? 'qopt--on' : ''}"
+            role="radio" aria-checked="${String(current) === v}" data-group="${name}" data-val="${v}">
+            <span class="qopt__ic" aria-hidden="true">${ic}</span><span>${text}</span>
+          </button>`).join('')}
       </div>
+    </fieldset>`;
+  const node = h(`
+    <div class="screen onb onb--form">
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 110, className: 'mascot-img--bob' })}</div>
+      <h1 class="onb__title">Nice first win!</h1>
+      <p class="onb__body">Three quick taps and I'll tune your daily plan to fit you.</p>
+      ${group('goal', 'What are you learning for?', "We'll bias your plan around this.", [
+    ['conversation', 'Talking to people', '💬'], ['travel', 'Travel', '🧳'],
+    ['school', 'School', '🎒'], ['general', 'Just curious', '✨'],
+  ], cur.goal)}
+      ${group('dailyTime', 'How much time on a normal day?', 'A rough target — you can change it later.', [
+    ['5', '5 min', '🌱'], ['10', '10 min', '🌿'], ['20', '20 min', '🌳'], ['30', '30+ min', '🔥'],
+  ], cur.dailyTime)}
+      ${group('confidence', 'How does the language feel right now?', 'This sets the tone, nothing else.', [
+    ['new', 'Brand new', '🐣'], ['rusty', 'Rusty', '🔧'], ['steady', 'Fairly confident', '💪'],
+  ], cur.confidence)}
       <div class="onb__actions">
         <button class="btn btn--primary" id="save">Save my setup</button>
       </div>
     </div>`);
+  const picked = { goal: cur.goal, dailyTime: cur.dailyTime, confidence: cur.confidence };
+  node.querySelectorAll('.qopt').forEach((b) => b.addEventListener('click', () => {
+    const g = b.dataset.group;
+    picked[g] = b.dataset.val;
+    sound.tap();
+    node.querySelectorAll(`.qopt[data-group="${g}"]`).forEach((x) => {
+      const on = x === b;
+      x.classList.toggle('qopt--on', on);
+      x.setAttribute('aria-checked', String(on));
+    });
+  }));
   node.querySelector('#save').addEventListener('click', () => {
-    store.state.learnerProfile = {
-      goal: node.querySelector('#goalSel').value,
-      dailyTime: node.querySelector('#timeSel').value,
-      confidence: node.querySelector('#confSel').value,
-      date: todayStr(),
-    };
+    store.state.learnerProfile = { ...picked, date: todayStr() };
     store.state.onboarding = { ...(store.state.onboarding || {}), setupDone: true };
     store.save();
     sound.reward();
@@ -740,14 +757,14 @@ function renderHome() {
       ${showPractice ? `<section aria-label="Practice tools">
         <h2 class="sec-title">Practice</h2>
         <div class="rail">
-          ${supportsSentences(course.code) ? '<button class="tool tool--say" id="sayBtn"><span class="tool__ic">🗣️</span><small>Say it</small></button>' : ''}
+          ${supportsSentences(course.code) ? '<button class="tool tool--say" id="sayBtn"><span class="tool__ic">🗣️</span><small>Build</small></button>' : ''}
           ${(course.grammar || []).length ? '<button class="tool tool--grammar" id="grammarBtn"><span class="tool__ic">🧩</span><small>Grammar</small></button>' : ''}
           ${(course.dialogues || []).length ? '<button class="tool tool--convo" id="dialogueBtn"><span class="tool__ic">💬</span><small>Chats</small></button>' : ''}
-          <button class="tool tool--write" id="writingLabBtn"><span class="tool__ic">✍️</span><small>Writing</small></button>
-          <button class="tool tool--speak" id="speakBtn"><span class="tool__ic">🎤</span><small>Speaking</small></button>
-          <button class="tool tool--listen" id="listenBtn"><span class="tool__ic">👂</span><small>Listening</small></button>
+          <button class="tool tool--write" id="writingLabBtn"><span class="tool__ic">✍️</span><small>Write</small></button>
+          <button class="tool tool--speak" id="speakBtn"><span class="tool__ic">🎤</span><small>Speak</small></button>
+          <button class="tool tool--listen" id="listenBtn"><span class="tool__ic">👂</span><small>Listen</small></button>
           <button class="tool tool--blitz" id="blitzBtn"><span class="tool__ic">⚡</span><small>Lightning</small></button>
-          <button class="tool tool--words" id="glossaryBtn"><span class="tool__ic">📒</span><small>Words</small></button>
+          <button class="tool tool--words" id="glossaryBtn"><span class="tool__ic">📒</span><small>Word list</small></button>
         </div>
       </section>` : ''}
 
@@ -2401,8 +2418,22 @@ function renderSentenceStudio() {
 // translation. checkTyped grades it with typo tolerance.
 function renderWritingLab() {
   const pool = sentencePool(course);
+  // An empty pool used to fire a native alert() and drop the learner wherever
+  // they happened to be. Show a real empty state on a real screen instead.
   if (!pool.length) {
-    alert('No sentences available yet. Complete some lessons first!');
+    const empty = h(`
+      <div class="screen screen--center">
+        <div class="onb__art">${mascotImg(currentBuddy(), { size: 130, className: 'mascot-img--bob' })}</div>
+        <h1 class="onb__title">Writing Lab</h1>
+        <p class="onb__body">There are no sentences to write yet. Finish a lesson or two and this fills up with everything you have met.</p>
+        <div class="onb__actions">
+          <button class="btn btn--primary" id="goLesson">Go to my lessons</button>
+          <button class="btn btn--ghost" id="backHome">Back home</button>
+        </div>
+      </div>`);
+    empty.querySelector('#goLesson').addEventListener('click', () => { sound.tap(); renderHome(); });
+    empty.querySelector('#backHome').addEventListener('click', renderHome);
+    mount(empty);
     return;
   }
 
@@ -3420,7 +3451,7 @@ function renderProgress() {
     // it is, so the list reads as a set of distinct destinations.
     const hue = ['aloe', 'ocean', 'jacaranda', 'sunset', 'lagoon', 'protea', 'marula', 'coral'][idx % 8];
     return `<div class="cando ${achieved ? 'cando--done' : ''} ${done ? '' : 'cando--untouched'}" style="--acc: var(--c-${hue})">
-        <span class="cando__icon">${achieved ? '🏆' : lessonGlyph(u.title || '')}</span>
+        <span class="cando__icon">${achieved ? '🏆' : lessonGlyph(`${u.canDo} ${u.title || ''}`)}</span>
         <div class="cando__body">
           <span class="cando__text">${esc(u.canDo)}</span>
           <span class="qbar"><span style="width:${pct}%"></span></span>
