@@ -1,88 +1,238 @@
 /* MzansiLingo — mobile-first styles. Calm, modern SA-inspired palette. */
+
+/* ---------- typography: self-hosted Nunito ----------
+   Nunito is warm, round and has a tall x-height — it stays legible for young
+   learners at small sizes and turns genuinely chunky and playful at weight 900,
+   so one variable family covers both body text and the celebratory headings.
+   Self-hosted (SIL OFL) rather than fetched from a CDN: the app's whole point
+   is that it keeps working offline, and both files sit in the SW precache.
+   74 KB total for the full 400–900 weight range. */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('../assets/fonts/nunito-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('../assets/fonts/nunito-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* ============================================================================
+   UMBALA WARM — the design system.
+   "Umbala" is isiZulu for colour. Eight hues sit on warm, sunlit ground.
+
+   THE LAW, in three lines, because every colour bug in this app came from
+   breaking it:
+     --c-X        is a FILL     (a surface you put --on-fill text on)
+     --c-X-ink    is TEXT       (safe on --bg, --card and --c-X-tint)
+     --c-X-tint   is a SURFACE  (a quiet wash you put --c-X-ink text on)
+     --c-X-edge   is a LIP      (the pressable bottom ledge, or a text stroke)
+   Never cross them. Every hue is generated at the same lightness, so colour
+   reads as MEANING (which unit, which tool, which reward) and never as
+   emphasis — that uniformity is what keeps eight hues calm instead of loud.
+
+   Every ratio in the comments is a computed WCAG 2.x contrast, not an estimate.
+   ========================================================================== */
 :root {
-  /* Core palette — refined teal-green, warm gold, soft blue */
-  --green: #2f8f74;
-  --green-dark: #1f6d58;
-  --green-light: #d9f0e8;
-  --gold: #d79a35;
-  --gold-dark: #9b6b1f;
-  --blue: #3c6fba;
-  --blue-light: #dfeafb;
-  --red: #c93c3c;
-  --red-light: #fee2e2;
-  --purple: #7c3aed;
+  color-scheme: light;
 
-  /* Neutrals — warm white, soft gray */
-  --ink: #18231e;
-  --ink-2: #2e3e38;
-  --bg: #f7f9f8;
-  --bg-2: #ecf2ef;
-  --card: #fefefe;
-  --muted: #5a6860;
-  --muted-2: #8a9a90;
-  --line: #e0eae5;
-  --line-2: #d4e0d9;
+  /* ---- 1. GROUND — warm sand. No pure white, no cool grey. --------------- */
+  --bg:      #f7f4ee;   /* page */
+  --bg-2:    #efeae0;   /* recessed wells, sticky ground, "can't afford" chips */
+  --card:    #fffcf7;   /* raised surface */
+  --card-2:  #ffffff;   /* modal / top surface only */
 
-  /* Semantic */
-  --bottombar-offset: 116px;
-  --badge-new-bg: color-mix(in srgb, var(--green) 14%, transparent);
-  --badge-new-ink: var(--green-dark);
-  --badge-learning-bg: #fef6e4;
-  --badge-learning-ink: #8a5a00;
-  --badge-mastered-bg: color-mix(in srgb, var(--purple) 14%, transparent);
-  --badge-mastered-ink: #6b21a8;
+  --ink:     #1d1913;   /* 15.9:1 on --bg · 17.1:1 on --card */
+  --ink-2:   #3e3730;   /* 10.7:1 on --bg */
+  --muted:   #5c534a;   /*  6.9:1 on --bg ·  7.4:1 on --card */
+  --muted-2: #6e6459;   /*  5.3:1 on --bg — replaces #8a9a90, which was 2.8:1 */
 
-  /* Geometry */
-  --radius: 20px;
-  --radius-sm: 14px;
-  --radius-lg: 28px;
+  --line:    #e6dfd3;   /* decorative hairline inside a card */
+  --line-2:  #d8cfc0;   /* every progress TRACK and inset well */
+  --line-3:  #877c6f;   /* MEANINGFUL control boundary — 3.7:1, passes 1.4.11 */
 
-  /* Shadows — layered for depth */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.03);
-  --shadow: 0 2px 8px rgba(0,0,0,.05), 0 0 0 1px rgba(0,0,0,.03);
-  --shadow-md: 0 4px 18px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
-  --shadow-up: 0 -2px 18px rgba(0,0,0,.07), 0 0 0 1px rgba(0,0,0,.03);
+  /* ---- 2. THE EIGHT HUES ------------------------------------------------- */
+  /* Each lands 5.6-5.9:1 on --bg and carries white at 6.1-6.4:1. */
+  --c-aloe:       #0b7139;  --c-aloe-ink:       #0b7139;
+  --c-aloe-tint:  #e7eee4;  --c-aloe-edge:      #054b27;
 
+  --c-lagoon:      #0b6c6a; --c-lagoon-ink:     #0b6c6a;
+  --c-lagoon-tint: #e7eee9; --c-lagoon-edge:    #054846;
+
+  --c-ocean:       #0a66a2; --c-ocean-ink:      #0a66a2;
+  --c-ocean-tint:  #e6edee; --c-ocean-edge:     #04456e;
+
+  --c-jacaranda:      #7245c4; --c-jacaranda-ink:  #7245c4;
+  --c-jacaranda-tint: #f1eaf2; --c-jacaranda-edge: #4a2596;
+
+  --c-protea:      #a82a7e; --c-protea-ink:     #a82a7e;
+  --c-protea-tint: #f6e7eb; --c-protea-edge:    #71104f;
+
+  --c-coral:      #b72232;  --c-coral-ink:      #b72232;  /* hearts + destructive ONLY */
+  --c-coral-tint: #f8e6e3;  --c-coral-edge:     #7b0c18;
+
+  --c-sunset:      #a1470a; --c-sunset-ink:     #a1470a;
+  --c-sunset-tint: #f6eadf; --c-sunset-edge:    #6b2c04;
+
+  --c-marula:      #7f5709; --c-marula-ink:     #7f5709;  /* the only gold safe as TEXT */
+  --c-marula-tint: #f2ecdf; --c-marula-edge:    #553903;
+  /* Celebratory gold FILL — stars, flames, chests, won banners. It is only
+     1.9:1 on --bg, so as a bare glyph it must carry the stroke below. */
+  --c-marula-glow: #e9a71c;
+
+  /* Text colour that sits on any --c-* fill. Light theme: white. */
+  --on-fill: #ffffff;
+
+  /* ---- 3. SEMANTIC LAYER — components name these, never a raw hue. ------- */
+  --brand: var(--c-aloe);          --brand-ink:  var(--c-aloe-ink);
+  --brand-tint: var(--c-aloe-tint); --brand-edge: var(--c-aloe-edge);
+  --ok:    var(--c-aloe);          --ok-ink:     var(--c-aloe-ink);    --ok-tint:    var(--c-aloe-tint);
+  --learn: var(--c-marula);        --learn-ink:  var(--c-marula-ink);  --learn-tint: var(--c-marula-tint);
+  --info:  var(--c-ocean);         --info-ink:   var(--c-ocean-ink);   --info-tint:  var(--c-ocean-tint);
+  --gem:   var(--c-jacaranda);     --gem-ink:    var(--c-jacaranda-ink);
+  --focus: var(--c-ocean);
+
+  /* ---- 4. DEPTH ---------------------------------------------------------- */
+  --e1: 0 1px 2px rgba(74,58,42,.07), 0 0 0 1px rgba(74,58,42,.05);
+  --e2: 0 4px 14px rgba(74,58,42,.09), 0 1px 3px rgba(74,58,42,.06);
+  --e3: 0 12px 34px rgba(74,58,42,.15), 0 2px 8px rgba(74,58,42,.08);
+  --deboss: inset 0 2px 4px rgba(74,58,42,.14), inset 0 0 0 1px rgba(74,58,42,.06);
+  /* the pressable bottom ledge that gives every control its physicality */
+  --lip-1: 3px; --lip-2: 5px; --lip-3: 7px;
+  --lip-c: color-mix(in srgb, var(--fill, var(--line-2)) 68%, #000);
+
+  /* ---- 5. GEOMETRY ------------------------------------------------------- */
+  --r-1: 8px; --r-2: 12px; --r-3: 18px; --r-4: 26px; --r-pill: 999px;
+  --sp-hair: 2px; --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px;
+  --screen-pad: 16px;
+  --tap: 44px;
+  --nav-h: 56px; --nav-gap: 10px;
+  --nav-clear: calc(var(--nav-h) + var(--nav-gap) + env(safe-area-inset-bottom));
   --maxw: 520px;
 
-  /* Motion */
-  --transition: .15s cubic-bezier(.2,.7,.3,1);
-  --transition-slow: .32s cubic-bezier(.2,.7,.3,1);
+  /* ---- 6. TYPE — a 1.2 modular scale in rem, so browser text-size works --- */
+  --font-ui: 'Nunito', ui-rounded, 'SF Pro Rounded', 'Hiragino Maru Gothic ProN',
+    system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-100: .6875rem; --fs-200: .8125rem; --fs-300: 1rem;    --fs-400: 1.2rem;
+  --fs-500: 1.44rem;  --fs-600: 1.728rem; --fs-700: 2.074rem;
+  --fs-800: 2.488rem; --fs-900: 2.986rem;
+  --lh-body: 1.55; --lh-normal: 1.4; --lh-snug: 1.25; --lh-tight: 1.1;
+  --ls-eyebrow: .08em; --ls-tight: -.02em;
+  /* four weights, each with exactly one job */
+  --w-body: 400;      /* prose, glosses, inactive titles      */
+  --w-med: 600;       /* DEFAULT UI — buttons, options, rows  */
+  --w-bold: 800;      /* eyebrows, numerals, next-step titles */
+  --w-display: 900;   /* celebration only                     */
+  --ic-1: 20px; --ic-2: 26px; --ic-3: 34px; --ic-4: 44px; --ic-5: 56px; --ic-6: 76px;
+
+  /* ---- 7. MOTION --------------------------------------------------------- */
+  --dur-1: 120ms; --dur-2: 200ms; --dur-3: 320ms; --dur-4: 620ms;
+  --ease-out: cubic-bezier(.2,.7,.3,1);
+  --ease-decel: cubic-bezier(.22,1,.36,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+  --loop-calm: 3.4s; --loop-nudge: 1.6s;
+
+  /* ---- 8. LAYERS — nothing above 50 ------------------------------------- */
+  --z-raised: 1; --z-sticky: 10; --z-nav: 20; --z-overlay: 30; --z-fx: 40; --z-toast: 50;
+
+  /* ---- 9. AMBIENT — one static warm wash, pushed off the top edge -------- */
+  --wash:
+    radial-gradient(ellipse 120% 60% at 50% -22%, color-mix(in srgb, var(--c-sunset) 6%, transparent), transparent 62%),
+    radial-gradient(ellipse 70% 40% at 94% 4%, color-mix(in srgb, var(--c-marula) 5%, transparent), transparent 58%);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain-opacity: .05;
+
+  /* ---- 10. LEGACY ALIASES ------------------------------------------------
+     The stylesheet and the shop's theme engine both still speak in --green /
+     --gold / --blue. Pointing them at the hue system means one definition
+     feeds both, and a bought theme repaints the WHOLE app instead of four
+     tokens. Keep these. */
+  --green:       var(--c-aloe);
+  --green-dark:  var(--c-aloe-edge);   /* the text-safe green: 9.4:1 on --bg */
+  --green-light: var(--c-aloe-tint);
+  --gold:        var(--c-marula-glow); /* FILL — text must use --gold-dark */
+  --gold-dark:   var(--c-marula-ink);  /* 5.9:1 on --bg */
+  --blue:        var(--c-ocean);
+  --blue-light:  var(--c-ocean-tint);
+  --red:         var(--c-coral);
+  --red-light:   var(--c-coral-tint);
+  --purple:      var(--c-jacaranda);
+  --radius:      var(--r-3);
+  --radius-sm:   var(--r-2);
+  --radius-lg:   var(--r-4);
+  --shadow-sm:   var(--e1);
+  --shadow:      var(--e1);
+  --shadow-md:   var(--e2);
+  --shadow-up:   0 -12px 34px rgba(74,58,42,.15), 0 0 0 1px rgba(74,58,42,.05);
+  --transition:      var(--dur-1) var(--ease-out);
+  --transition-slow: var(--dur-3) var(--ease-out);
+  --bottombar-offset: calc(var(--nav-clear) + var(--sp-4));
+  --badge-new-bg:      var(--c-aloe-tint);      --badge-new-ink:      var(--c-aloe-ink);
+  --badge-learning-bg: var(--c-marula-tint);    --badge-learning-ink: var(--c-marula-ink);
+  --badge-mastered-bg: var(--c-jacaranda-tint); --badge-mastered-ink: var(--c-jacaranda-ink);
 }
+@media (min-width: 768px) { :root { --screen-pad: 24px; } }
+/* an escape hatch for very low-end classroom tablets */
+html[data-lowfx] { --grain-opacity: 0; --wash: none; }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body {
-  /* Rounded system stack: Nunito first (warm, round, great for SA learners),
-     then SF Pro Rounded on Apple, graceful sans fallback elsewhere —
-     needs no font download so the offline cache stays lean. */
-  font-family: "Nunito", ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN",
-    system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-ui);
   background: var(--bg);
-  background-image:
-    radial-gradient(ellipse 110% 55% at 50% -8%, color-mix(in srgb, var(--green) 9%, transparent), transparent 60%),
-    radial-gradient(ellipse 70% 35% at 92% 8%, color-mix(in srgb, var(--gold) 6%, transparent), transparent 55%);
-  background-attachment: fixed;
   color: var(--ink);
   -webkit-tap-highlight-color: transparent;
-  line-height: 1.55;
+  line-height: var(--lh-body);
+  /* counters and scores stop jittering as digits change width */
+  font-variant-numeric: tabular-nums;
 }
-h1, h2, h3, .brand__name, .node__title, .dcard__v, .kpi__v { letter-spacing: -.3px; }
-h1 { font-size: 26px; margin: 0; line-height: 1.2; }
-h2 { margin: 0; line-height: 1.25; }
-button { font-family: inherit; cursor: pointer; color: inherit; }
+/* The warm wash and the paper grain ride on a fixed pseudo-element rather than
+   on `background-attachment: fixed`, which forces a full repaint on every
+   scroll frame on the low-end Android tablets this app targets. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--wash);
+}
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: var(--grain);
+  opacity: var(--grain-opacity);
+  mix-blend-mode: multiply;
+}
+:root[data-theme="dark"] body::after { mix-blend-mode: soft-light; }
+
+/* Form controls do NOT inherit font-size from `font-family` alone, so every
+   <button> built as a card was silently pinned to the UA's 13.33px. */
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+h1, h2, h3 { text-wrap: balance; letter-spacing: var(--ls-tight); }
+h1 { font-size: var(--fs-500); margin: 0; line-height: var(--lh-snug); }
+h2 { margin: 0; line-height: var(--lh-snug); }
+p { text-wrap: pretty; }
 .app { min-height: 100dvh; display: flex; justify-content: center; }
 .screen {
   width: 100%; max-width: var(--maxw);
-  padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
-  margin: 0 auto; display: flex; flex-direction: column; gap: 16px;
+  padding: var(--sp-4) var(--screen-pad) calc(var(--sp-4) + env(safe-area-inset-bottom));
+  margin: 0 auto; display: flex; flex-direction: column; gap: var(--sp-4);
   animation: screenIn var(--transition-slow) both;
 }
 @keyframes screenIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .screen { animation: none; } }
 .screen--center { min-height: 100dvh; justify-content: center; align-items: center; text-align: center; }
 .muted { color: var(--muted); }
-.footnote { color: var(--muted); font-size: 13px; text-align: center; margin-top: 8px; }
+.footnote { color: var(--muted); font-size: var(--fs-200); text-align: center; margin-top: var(--sp-2); }
 
 /* ---------- accessibility ---------- */
 .sr-only {
@@ -90,41 +240,76 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 /* visible focus ring for keyboard users (tap highlight is suppressed) */
-:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 8px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: var(--r-1); }
 /* programmatic focus on a heading shouldn't show a ring */
 [tabindex="-1"]:focus { outline: none; }
+/* Long words in three languages plus 320px screens — never let text escape. */
+h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywhere; }
+
+/* ---------- the pressable slab ----------
+   One physical idea carries the whole app: anything you can press is a slab
+   resting on a coloured bottom lip, and the lip compresses under your thumb.
+   Anything that is NOT pressable never gets a lip. Set --fill (and optionally
+   --acc) and the lip colour derives itself. */
+.slab {
+  border: none; border-radius: var(--r-3); background: var(--fill, var(--card));
+  box-shadow: 0 var(--lip-2) 0 var(--lip-c), var(--e1);
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
+}
+.slab:active:not(:disabled) {
+  transform: translateY(calc(var(--lip-2) - 1px));
+  box-shadow: 0 1px 0 var(--lip-c), var(--e1);
+}
 
 /* ---------- buttons ---------- */
 .btn {
-  border: none; border-radius: var(--radius-sm); padding: 14px 18px; font-size: 16px; font-weight: 700;
-  background: var(--card); color: var(--ink); box-shadow: var(--shadow); width: 100%;
-  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+  --acc: var(--brand); --acc-edge: var(--brand-edge); --acc-ink: var(--brand-ink);
+  border: none; border-radius: var(--r-3);
+  padding: var(--sp-3) var(--sp-5); min-height: var(--tap);
+  font-size: var(--fs-300); font-weight: var(--w-med);
+  background: var(--card); color: var(--ink); box-shadow: var(--e1); width: 100%;
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out), opacity var(--dur-1) var(--ease-out);
 }
 .btn:active:not(:disabled):not(.btn--primary):not(.btn--review) { transform: scale(.98); }
+/* the one primary action on a screen — the tallest lip in the app */
 .btn--primary {
-  background: linear-gradient(160deg, color-mix(in srgb, var(--green) 86%, #fff), var(--green-dark));
-  color: #fff;
-  box-shadow: 0 4px 0 var(--green-dark), 0 8px 24px color-mix(in srgb, var(--green) 25%, transparent);
-  /* subtle inner glassy highlight at top */
+  --fill: var(--acc);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--acc) 92%, #fff) 0%, var(--acc) 55%, var(--acc-edge) 100%);
+  color: var(--on-fill); font-weight: var(--w-bold);
+  box-shadow: 0 var(--lip-3) 0 var(--acc-edge), var(--e2);
   border-top: 1px solid rgba(255,255,255,.25);
 }
-.btn--primary:hover:not(:disabled) { box-shadow: 0 6px 0 var(--green-dark), 0 10px 28px color-mix(in srgb, var(--green) 30%, transparent); }
-.btn--primary:active { transform: translateY(3px) scale(.99); box-shadow: 0 1px 0 var(--green-dark); }
+.btn--primary:hover:not(:disabled) { filter: brightness(1.04); }
+.btn--primary:active:not(:disabled) { transform: translateY(calc(var(--lip-3) - 1px)); box-shadow: 0 1px 0 var(--acc-edge), var(--e1); }
+/* secondary: reads as a real control, not a tinted whisper.
+   --acc-edge instead of --acc lifts this from 3.75:1 to 9.4:1. */
 .btn--ghost {
-  background: color-mix(in srgb, var(--green) 4%, transparent);
-  box-shadow: none; color: var(--green); border: 1.5px solid var(--line-2);
+  background: var(--card); color: var(--acc-ink, var(--brand-ink)); font-weight: var(--w-bold);
+  border: 2px solid color-mix(in srgb, var(--acc) 30%, var(--line-3));
+  box-shadow: 0 var(--lip-1) 0 color-mix(in srgb, var(--acc) 22%, var(--line-2));
 }
-.btn--ghost:hover:not(:disabled) { background: var(--green-light); border-color: var(--green); }
+.btn--ghost:hover:not(:disabled) { background: var(--acc-tint, var(--brand-tint)); border-color: var(--acc); }
+.btn--ghost:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 color-mix(in srgb, var(--acc) 22%, var(--line-2)); }
 .btn--review {
-  background: linear-gradient(160deg, color-mix(in srgb, var(--gold) 86%, #fff), var(--gold-dark));
-  color: #3a2200;
-  box-shadow: 0 4px 0 var(--gold-dark), 0 8px 24px color-mix(in srgb, var(--gold) 25%, transparent);
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  border-top: 1px solid rgba(255,255,255,.22);
+  --acc: var(--c-marula); --acc-edge: var(--c-marula-edge);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c-marula-glow) 96%, #fff) 0%, var(--c-marula-glow) 55%, var(--c-marula) 100%);
+  color: #2b1d02;
+  box-shadow: 0 var(--lip-3) 0 var(--c-marula-edge), var(--e2);
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  font-weight: var(--w-bold);
+  border-top: 1px solid rgba(255,255,255,.28);
 }
-.btn--review:active { transform: translateY(3px) scale(.99); box-shadow: 0 1px 0 var(--gold-dark); }
+.btn--review:active:not(:disabled) { transform: translateY(calc(var(--lip-3) - 1px)); box-shadow: 0 1px 0 var(--c-marula-edge), var(--e1); }
 .btn:disabled { opacity: .5; cursor: default; }
-.badge { background: rgba(0,0,0,.15); border-radius: 999px; padding: 2px 8px; font-size: 13px; }
+.badge { background: rgba(0,0,0,.15); border-radius: var(--r-pill); padding: 2px var(--sp-2); font-size: var(--fs-200); }
+/* Celebratory gold is a FILL, not a text colour — on the warm ground it is
+   only 1.9:1. Stroking the glyph brings it to 9.7:1 at any size, so stars and
+   flames can stay properly golden without becoming unreadable. */
+.gold-glyph {
+  color: var(--c-marula-glow);
+  -webkit-text-stroke: 1.5px var(--c-marula-edge);
+  paint-order: stroke fill;
+}
 
 /* ---------- brand / onboarding ---------- */
 .brand { text-align: center; padding-top: 8px; }
@@ -166,29 +351,58 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 
 /* ---------- topbar / stats — full-bleed app header, no card box ---------- */
 .topbar {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  position: sticky; top: 0; z-index: 8;
-  margin: -16px -16px 0; padding: 10px 16px 8px;
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2);
+  position: sticky; top: 0; z-index: var(--z-sticky);
+  margin: calc(-1 * var(--sp-4)) calc(-1 * var(--screen-pad)) 0;
+  padding: var(--sp-2) var(--screen-pad);
+  min-height: 52px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
 }
-.topbar__lang { background: none; border: none; font-size: 17px; font-weight: 800; color: var(--green); padding: 0; }
-.topbar__stats { display: flex; gap: 12px; align-items: center; }
-.stat { font-weight: 700; font-size: 15px; white-space: nowrap; }
-.stat--hearts { color: var(--red); }
+@supports not (backdrop-filter: blur(1px)) { .topbar { background: var(--bg); } }
+.topbar__lang {
+  background: none; border: none; padding: var(--sp-2) 0;
+  font-size: var(--fs-300); font-weight: var(--w-bold); color: var(--brand-ink);
+  min-height: var(--tap); display: flex; align-items: center;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.topbar > strong { font-size: var(--fs-300); }
+.topbar__count { font-size: var(--fs-200); font-weight: var(--w-bold); color: var(--muted); }
+.topbar__stats { display: flex; gap: var(--sp-1); align-items: center; flex: 0 0 auto; }
+/* Each stat is a real tap target with a tinted well behind it, so streak,
+   gems and hearts read as three collectible counters rather than loose text. */
+.stat {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-weight: var(--w-bold); font-size: var(--fs-200); white-space: nowrap;
+  min-height: var(--tap); padding: 0 var(--sp-2); border-radius: var(--r-pill);
+  background: none; border: none; color: var(--muted);
+  transition: background var(--dur-1) var(--ease-out);
+}
+.stat:active { background: var(--bg-2); }
+/* zero is a target, not a shame — grey until the learner is on the board */
+.stat--on { color: var(--c-marula-ink); }
+.stat--gems.stat--on { color: var(--gem-ink); }
+.stat--hearts { color: var(--c-coral-ink); }
+.stat__ic { font-size: var(--ic-1); line-height: 1; }
+.stat--off .stat__ic { filter: grayscale(1); opacity: .5; }
 
-/* ---------- daily goal ---------- */
-.goal { display: flex; align-items: center; gap: 14px; background: var(--card); border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); }
+/* ---------- daily goal ring — "the sun" ---------- */
+.goal { display: flex; align-items: center; gap: var(--sp-3); background: var(--card); border-radius: var(--r-3); padding: var(--sp-3); box-shadow: var(--e1); }
 .goal__ring {
   --pct: 0; width: 60px; height: 60px; border-radius: 50%; flex: 0 0 auto;
-  background: conic-gradient(var(--gold) calc(var(--pct) * 1%), var(--line) 0);
+  /* the untravelled arc is a visible tinted track, never a dead grey ring */
+  background: conic-gradient(var(--c-marula-glow) calc(var(--pct) * 1%),
+    color-mix(in srgb, var(--c-marula-glow) 20%, var(--line-2)) 0);
   display: grid; place-items: center; position: relative;
 }
-.goal__ring::after { content: ""; position: absolute; inset: 7px; background: var(--card); border-radius: 50%; }
-.goal__ring span { position: relative; z-index: 1; font-weight: 800; font-size: 12px; }
-.goal__text strong { font-size: 16px; }
-.goal__text p { margin: 2px 0 0; font-size: 13px; }
+.goal__ring::after { content: ""; position: absolute; inset: 6px; background: var(--card); border-radius: 50%; }
+.goal__ring b, .goal__ring small { position: relative; z-index: 1; line-height: 1; }
+.goal__ring b { font-size: var(--fs-300); font-weight: var(--w-display); }
+.goal__ring small { font-size: var(--fs-100); color: var(--muted); font-weight: var(--w-bold); }
+.goal__ring span { position: relative; z-index: 1; font-weight: var(--w-bold); font-size: var(--fs-100); }
+.goal__text strong { font-size: var(--fs-300); }
+.goal__text p { margin: 2px 0 0; font-size: var(--fs-200); }
 
 /* home hero — mascot, greeting, goal ring and the ONE primary action in a
    single warm card; everything else on home stays visually quiet */
@@ -199,33 +413,41 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   border-top: 1px solid rgba(255,255,255,.9);
   padding: 16px; box-shadow: var(--shadow-md);
 }
-.home-hero__row { display: flex; align-items: center; gap: 12px; }
+.home-hero__row { display: flex; align-items: center; gap: var(--sp-3); }
 .home-hero__mascot { flex: 0 0 auto; display: grid; place-items: end center; }
 .home-hero__text { flex: 1; min-width: 0; }
 .hero-cta {
-  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
-  border: none; border-radius: 18px; padding: 13px 16px;
-  background: linear-gradient(160deg, color-mix(in srgb, var(--green) 86%, #fff), var(--green-dark));
-  color: #fff;
+  --acc: var(--brand); --acc-edge: var(--brand-edge);
+  display: flex; align-items: center; gap: var(--sp-3); width: 100%; text-align: left;
+  border: none; border-radius: var(--r-3); padding: var(--sp-3) var(--sp-4);
+  min-height: 60px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--acc) 92%, #fff) 0%, var(--acc) 55%, var(--acc-edge) 100%);
+  color: var(--on-fill);
   border-top: 1px solid rgba(255,255,255,.25);
-  box-shadow: 0 4px 0 var(--green-dark), 0 8px 22px color-mix(in srgb, var(--green) 26%, transparent);
-  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 var(--lip-3) 0 var(--acc-edge), var(--e2);
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
 }
-.hero-cta:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--green-dark); }
-.hero-cta__ic { font-size: 24px; flex: 0 0 auto; }
-.hero-cta__l { flex: 1; min-width: 0; display: grid; line-height: 1.25; }
-.hero-cta__l b { font-size: 16.5px; letter-spacing: -.2px; }
-.hero-cta__l small { font-size: 12.5px; opacity: .92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hero-cta__go { font-size: 24px; opacity: .85; flex: 0 0 auto; }
+.hero-cta:active { transform: translateY(calc(var(--lip-3) - 1px)); box-shadow: 0 1px 0 var(--acc-edge), var(--e1); }
+.hero-cta__ic { font-size: var(--ic-2); flex: 0 0 auto; }
+.hero-cta__l { flex: 1; min-width: 0; display: grid; line-height: var(--lh-snug); }
+.hero-cta__l b { font-size: var(--fs-400); font-weight: var(--w-bold); letter-spacing: var(--ls-tight); }
+.hero-cta__l small { font-size: var(--fs-200); opacity: .94; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hero-cta__go { font-size: var(--ic-2); opacity: .85; flex: 0 0 auto; }
 /* secondary actions ride inside the hero as slim text links — no extra boxes */
-.hero-links { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: -4px 2px 0; }
+.hero-links { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-2); margin: -2px 2px 0; }
 .hero-link {
-  background: none; border: none; padding: 2px 4px;
-  font-size: 12.5px; font-weight: 800; color: var(--green-dark);
+  background: none; border: none; padding: var(--sp-1);
+  font-size: var(--fs-200); font-weight: var(--w-bold); color: var(--brand-ink);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  min-height: 36px;
 }
 /* illustrated companion cast — height drives size, width follows the character */
-.mascot-img { width: auto; max-width: min(70vw, 240px); object-fit: contain; display: block; filter: drop-shadow(0 3px 5px rgba(0,0,0,.28)); }
+.mascot-img {
+  width: auto; max-width: min(70vw, 240px); object-fit: contain; display: block;
+  /* a soft ambient shadow, not the hard photographic one that made the
+     illustrations read as cutouts pasted onto the page */
+  filter: drop-shadow(0 6px 12px rgba(45, 35, 25, .18));
+}
 .home-hero .mascot-img { max-width: 104px; }
 /* moods for the illustrated cast: gentle idle float, a celebratory pop, and a
    washed-out "oops" look for wrong answers (the art itself is a single pose) */
@@ -233,8 +455,8 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .mascot-img--cheer { animation: mascotCheer .6s cubic-bezier(.2,.7,.3,1) both; }
 .mascot-img--sad { filter: grayscale(.6) opacity(.85) drop-shadow(0 3px 5px rgba(0,0,0,.28)); }
 @media (prefers-reduced-motion: reduce) { .mascot-img--bob, .mascot-img--cheer { animation: none; } }
-.home-hero__greet { font-size: 17px; line-height: 1.2; display: block; }
-.home-hero__sub { margin: 3px 0 0; font-size: 13px; }
+.home-hero__greet { font-size: var(--fs-400); font-weight: var(--w-bold); line-height: var(--lh-snug); display: block; letter-spacing: var(--ls-tight); }
+.home-hero__sub { margin: 3px 0 0; font-size: var(--fs-200); }
 .home-hero__sub--urgent {
   display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
   padding: 5px 10px; border-radius: 999px;
@@ -252,8 +474,8 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 
 /* small uppercase section labels keep the page scannable without heavy cards */
 .sec-title {
-  margin: 2px 2px -8px; font-size: 11px; font-weight: 800;
-  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted-2);
+  margin: 2px 2px -8px; font-size: var(--fs-100); font-weight: var(--w-bold);
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: var(--muted);
 }
 
 /* extras live behind one borderless text disclosure — no extra card chrome */
@@ -303,6 +525,12 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 /* home "Practice" tools — one horizontally scrolling rail of round tiles,
    so eight activities take a single row instead of a wall of cards */
 .sec--home { margin: 6px 4px -4px; }
+/* The trail follows straight on from the hero; the unit signboard supplies its
+   own top margin, so the section must not add a second one. */
+.screen--home > section[aria-label="Lesson path"] { margin-top: calc(-1 * var(--sp-3)); }
+.path > .unit-banner:first-child { margin-top: 0; }
+/* the buddy's greeting is a sentence, not a headline — let it balance too */
+.home-hero__greet { text-wrap: balance; }
 .rail {
   display: flex; gap: 6px; overflow-x: auto; padding: 6px 2px 8px;
   scrollbar-width: none; -webkit-overflow-scrolling: touch;
@@ -336,48 +564,70 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 /* ---------- lesson path — a winding trail of round stepping stones ---------- */
 .screen--home { padding-bottom: calc(var(--bottombar-offset) + env(safe-area-inset-bottom)); }
 .path {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 10px 0 0;
+  display: flex; flex-direction: column; align-items: center; gap: var(--sp-1);
+  padding: var(--sp-2) 0 0;
 }
-/* each unit opens with a colourful level banner — its accent (--uacc, set
-   inline) also colours that unit's stones and road */
+/* Each unit opens with a signboard. Its accent (--uacc, set inline) also
+   colours that unit's stones and road, so a unit reads as one coloured
+   stretch of the journey. The sign doubles as that unit's progress meter. */
 .unit-banner {
+  position: relative; overflow: hidden;
   align-self: stretch; display: flex; justify-content: space-between; align-items: center;
-  gap: 12px; margin: 22px 0 14px; padding: 13px 16px; border-radius: 18px; color: #fff;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--uacc) 82%, #fff), color-mix(in srgb, var(--uacc) 78%, #000));
-  box-shadow: 0 4px 0 color-mix(in srgb, var(--uacc) 55%, #000), var(--shadow-sm);
+  gap: var(--sp-3); margin: var(--sp-4) 0 var(--sp-3);
+  padding: var(--sp-3) var(--sp-4); border-radius: var(--r-3);
+  color: var(--on-fill);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--uacc) 88%, #fff), color-mix(in srgb, var(--uacc) 84%, #000));
+  box-shadow: 0 var(--lip-2) 0 color-mix(in srgb, var(--uacc) 62%, #000), var(--e1);
 }
+/* the fill line along the bottom edge: this unit's completion */
+.unit-banner::after {
+  content: ""; position: absolute; left: 0; bottom: 0; height: 4px;
+  width: calc(var(--upct, 0) * 1%);
+  background: rgba(255,255,255,.78);
+  transition: width var(--dur-2) var(--ease-out);
+}
+:root[data-theme="dark"] .unit-banner::after { background: color-mix(in srgb, var(--on-fill) 70%, transparent); }
 .unit-banner__l { display: grid; gap: 1px; min-width: 0; }
-.unit-banner__l small { font-size: 10.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; opacity: .85; }
-.unit-banner__l strong { font-size: 16.5px; letter-spacing: -.2px; line-height: 1.2; }
+.unit-banner__l small { font-size: var(--fs-100); font-weight: var(--w-bold); letter-spacing: var(--ls-eyebrow); text-transform: uppercase; opacity: .9; }
+.unit-banner__l strong { font-size: var(--fs-400); letter-spacing: var(--ls-tight); line-height: var(--lh-snug); }
 .testout-btn {
-  flex: 0 0 auto; font-size: 12px; font-weight: 800; color: #fff;
-  background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.35);
-  padding: 5px 12px; border-radius: 999px;
+  flex: 0 0 auto; font-size: var(--fs-200); font-weight: var(--w-bold); color: var(--on-fill);
+  background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.4);
+  padding: var(--sp-2) var(--sp-3); border-radius: var(--r-pill);
+  min-height: 36px;
 }
-/* dotted road segment between stones: three dots interpolated between the
-   previous stone's offset (--a) and the next one's (--b) */
-.trail-seg { position: relative; align-self: stretch; height: 26px; margin: 2px 0; }
+:root[data-theme="dark"] .testout-btn { background: rgba(0,0,0,.18); border-color: rgba(0,0,0,.3); }
+/* The road between stones: five dots interpolated between the previous stone's
+   offset (--a) and the next one's (--b). Three faint specks read as nothing —
+   five dots at real contrast read as a continuous rope, which is the whole
+   "journey" metaphor the trail is built on. */
+.trail-seg { position: relative; align-self: stretch; height: 36px; margin: 0; }
 .trail-seg i {
-  position: absolute; width: 9px; height: 9px; border-radius: 50%;
-  background: var(--line-2); transform: translateX(-50%);
+  position: absolute; width: 11px; height: 11px; border-radius: 50%;
+  background: color-mix(in srgb, var(--uacc, var(--brand)) 30%, var(--line-2));
+  transform: translateX(-50%);
 }
-.trail-seg i:nth-child(1) { top: 0;    left: calc(50% + (var(--a) * .75) + (var(--b) * .25)); }
-.trail-seg i:nth-child(2) { top: 9px;  left: calc(50% + (var(--a) * .5)  + (var(--b) * .5)); }
-.trail-seg i:nth-child(3) { top: 18px; left: calc(50% + (var(--a) * .25) + (var(--b) * .75)); }
-.trail-seg--done i { background: color-mix(in srgb, var(--gold) 62%, var(--line-2)); }
-.trail-seg--live i { background: color-mix(in srgb, var(--uacc, var(--green)) 55%, var(--line-2)); }
-.trail-finish { font-size: 34px; margin-top: 4px; text-align: center; filter: drop-shadow(0 2px 2px rgba(0,0,0,.18)); }
+.trail-seg i:nth-child(1) { top: 0;  left: calc(50% + (var(--a) * .833) + (var(--b) * .167)); }
+.trail-seg i:nth-child(2) { top: 7px;  left: calc(50% + (var(--a) * .667) + (var(--b) * .333)); }
+.trail-seg i:nth-child(3) { top: 14px; left: calc(50% + (var(--a) * .5)   + (var(--b) * .5)); }
+.trail-seg i:nth-child(4) { top: 21px; left: calc(50% + (var(--a) * .333) + (var(--b) * .667)); }
+.trail-seg i:nth-child(5) { top: 28px; left: calc(50% + (var(--a) * .167) + (var(--b) * .833)); }
+/* road already travelled turns gold; the live stretch wears the unit's hue */
+.trail-seg--done i { background: color-mix(in srgb, var(--c-marula-glow) 85%, #fff); }
+.trail-seg--live i { background: color-mix(in srgb, var(--uacc, var(--brand)) 62%, var(--line-2)); }
+.trail-finish { font-size: var(--ic-3); margin-top: var(--sp-1); text-align: center; filter: drop-shadow(0 2px 2px rgba(0,0,0,.18)); }
 /* home shows one unit's road; this leads to the full level map */
 .all-units {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  align-self: stretch; margin-top: 20px; padding: 14px 16px;
-  background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-  box-shadow: var(--shadow); font-size: 15px;
-  transition: transform var(--transition), box-shadow var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  align-self: stretch; margin-top: var(--sp-5); padding: var(--sp-3) var(--sp-4);
+  min-height: var(--tap);
+  background: var(--card); border: 2px solid var(--line);
+  border-radius: var(--r-3);
+  box-shadow: 0 var(--lip-1) 0 var(--line-2), var(--e1); font-size: var(--fs-300);
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
 }
-.all-units:active { transform: scale(.98); box-shadow: var(--shadow-sm); }
-.all-units b { font-weight: 800; }
+.all-units:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line-2), var(--e1); }
+.all-units b { font-weight: var(--w-bold); }
 .all-units small { color: var(--muted); font-weight: 700; }
 .all-units span { color: var(--muted-2); font-size: 20px; line-height: 1; }
 /* the Units screen: every unit banner is a collapsible level */
@@ -391,21 +641,34 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 }
 .unit-banner__chev { display: inline-block; transition: transform var(--transition); }
 .unit-acc[open] .unit-banner__chev { transform: rotate(180deg); }
-/* units the learner hasn't reached yet sit muted until the road gets there */
-.unit-banner--locked { filter: saturate(.25); opacity: .75; }
+/* Units the road has not reached yet. `filter: saturate(.25)` turned 28 of 29
+   signboards into a wall of muddy brown with unreadable white labels; a pale
+   tint of the unit's own hue keeps each one a distinct, legible landmark that
+   still reads clearly as "not yet". */
+.unit-banner--locked {
+  filter: none; opacity: 1;
+  background: color-mix(in srgb, var(--uacc) 12%, var(--card));
+  color: var(--ink);
+  border: 1.5px dashed color-mix(in srgb, var(--uacc) 45%, transparent);
+  box-shadow: none;
+}
+.unit-banner--locked .unit-banner__l small { color: var(--muted); opacity: 1; }
+.unit-banner--locked .unit-banner__meta { color: var(--muted); }
+.unit-banner--locked::after { display: none; }
 /* fully completed units wear gold and a trophy */
 .unit-banner--won {
   background: linear-gradient(135deg, #f7cd55, #d99920);
-  box-shadow: 0 4px 0 #a17010, var(--shadow-sm);
+  box-shadow: 0 var(--lip-2) 0 #a17010, var(--e1);
   color: #3d2a00;
 }
+.unit-banner--won::after { background: rgba(61,42,0,.5); }
 .unit-banner--won .testout-btn { color: #3d2a00; border-color: rgba(61,42,0,.3); background: rgba(255,255,255,.3); }
-.unit-banner__trophy { flex: 0 0 auto; font-size: 24px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.2)); }
+.unit-banner__trophy { flex: 0 0 auto; font-size: var(--ic-2); filter: drop-shadow(0 2px 2px rgba(0,0,0,.2)); }
 
 /* unit-complete celebration — trophy overlay over the road */
 .unit-win {
-  position: fixed; inset: 0; z-index: 60; display: grid; place-items: center;
-  padding: 24px; background: rgba(8, 18, 13, .45);
+  position: fixed; inset: 0; z-index: var(--z-overlay); display: grid; place-items: center;
+  padding: var(--sp-6); background: rgba(8, 18, 13, .45);
   backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
   animation: winFade .25s ease both;
 }
@@ -451,22 +714,36 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .node__buddy--l { right: calc(50% + 44px); }
 .node__buddy--r { left: calc(50% + 44px); }
 .node__icon {
-  width: 60px; height: 60px; border-radius: 50%;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--uacc, var(--green)) 78%, #fff), var(--uacc, var(--green)));
-  color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 20px;
-  box-shadow: 0 5px 0 var(--acc-dark), var(--shadow-sm);
-  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--uacc, var(--brand)) 82%, #fff), var(--uacc, var(--brand)));
+  color: var(--on-fill); display: grid; place-items: center;
+  font-weight: var(--w-bold); font-size: var(--ic-2);
+  box-shadow: 0 var(--lip-2) 0 var(--acc-dark), var(--e1);
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
 }
-.node:active:not(:disabled) .node__icon { transform: translateY(3px); box-shadow: 0 2px 0 var(--acc-dark); }
+.node:active:not(:disabled) .node__icon { transform: translateY(4px); box-shadow: 0 1px 0 var(--acc-dark), var(--e1); }
+/* the lesson number rides as a corner chip so the stone itself can carry a
+   glyph — a numbered disc says "item 7 of a list", a pictogram says "place" */
+.node__num {
+  position: absolute; top: -3px; right: -3px;
+  min-width: 22px; height: 22px; padding: 0 5px; border-radius: var(--r-pill);
+  background: var(--card); border: 2px solid var(--uacc, var(--brand));
+  color: var(--uacc, var(--brand-ink));
+  font-size: var(--fs-100); font-weight: var(--w-bold);
+  display: grid; place-items: center; line-height: 1;
+}
 .node__title {
-  font-size: 11.5px; font-weight: 700; color: var(--muted);
-  max-width: 130px; text-align: center; line-height: 1.25;
+  font-size: var(--fs-200); font-weight: var(--w-med); color: var(--muted);
+  max-width: 140px; text-align: center; line-height: var(--lh-snug);
 }
 .node--done .node__icon {
-  background: linear-gradient(180deg, #ffd977, var(--gold));
-  color: #5a3c00; box-shadow: 0 5px 0 var(--gold-dark), var(--shadow-sm);
+  background: linear-gradient(180deg, #ffd977, var(--c-marula-glow));
+  color: #4a3100; box-shadow: 0 var(--lip-2) 0 #a17010, var(--e1);
 }
-.stars { color: var(--gold); font-size: 12px; letter-spacing: 2px; margin-top: -4px; }
+.node--done .node__num { border-color: var(--c-marula-edge); color: var(--c-marula-ink); }
+.stars { color: var(--c-marula-glow); font-size: var(--fs-200); letter-spacing: 2px; margin-top: -4px;
+  -webkit-text-stroke: 1px var(--c-marula-edge); paint-order: stroke fill; }
 
 /* a stone that just turned gold pops with a bright flash while confetti falls */
 .node--celebrate .node__icon { animation: stoneGold .65s cubic-bezier(.34, 1.56, .64, 1) both; }
@@ -477,47 +754,69 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 }
 @media (prefers-reduced-motion: reduce) { .node--celebrate .node__icon { animation: none; } }
 
-/* the learner's next step — bigger stone, pulsing halo, bobbing START bubble */
+/* THE NEXT STEP — the single loudest object on the trail.
+   The old halo was 22% of the accent over the page: about 1.1:1, i.e. not
+   perceivable, and it pulsed between invisible and more invisible. A white
+   collar is what actually separates the ring from the ground, and the pulse
+   now animates the ring's SIZE rather than its alpha. */
 .node--active .node__icon {
-  width: 70px; height: 70px; font-size: 25px;
-  box-shadow: 0 5px 0 var(--acc-dark), 0 0 0 6px color-mix(in srgb, var(--uacc, var(--green)) 22%, transparent);
-  animation: nodePulse 2.2s ease-in-out infinite;
+  width: 84px; height: 84px; font-size: var(--ic-3);
+  box-shadow:
+    0 var(--lip-3) 0 var(--acc-dark),
+    0 0 0 5px var(--bg),
+    0 0 0 12px color-mix(in srgb, var(--uacc, var(--brand)) 48%, transparent);
+  animation: nodePulse 2.4s var(--ease-out) infinite;
 }
-.node--active .node__title { color: var(--ink); font-weight: 800; font-size: 12.5px; }
+.node--active .node__num { top: 0; right: 0; }
+.node--active .node__title { color: var(--ink); font-weight: var(--w-bold); font-size: var(--fs-300); }
+/* every other reachable stone is damped, so "next" is unmistakable */
+.node:not(.node--active):not(.node--done):not(.node--locked):not(.node-chest) .node__icon {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--uacc, var(--brand)) 44%, var(--card)), color-mix(in srgb, var(--uacc, var(--brand)) 62%, var(--card)));
+  color: var(--uacc, var(--brand-ink));
+  box-shadow: 0 var(--lip-1) 0 color-mix(in srgb, var(--uacc, var(--brand)) 40%, var(--line-2)), var(--e1);
+}
 .node__cta {
-  font-size: 11px; font-weight: 800; letter-spacing: .8px; color: var(--uacc, var(--green));
-  background: var(--card); border: 2px solid var(--line); border-radius: 999px;
-  padding: 4px 13px; box-shadow: var(--shadow-sm);
-  animation: ctaBob 1.5s ease-in-out infinite;
+  font-size: var(--fs-100); font-weight: var(--w-bold); letter-spacing: var(--ls-eyebrow);
+  color: var(--on-fill); background: var(--uacc, var(--brand));
+  border: none; border-radius: var(--r-pill);
+  padding: var(--sp-1) var(--sp-3); box-shadow: var(--e2);
+  animation: ctaBob var(--loop-nudge) ease-in-out infinite;
 }
 @keyframes ctaBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes nodePulse {
-  0%, 100% { box-shadow: 0 5px 0 var(--acc-dark), 0 0 0 6px color-mix(in srgb, var(--uacc, var(--green)) 22%, transparent); }
-  50% { box-shadow: 0 5px 0 var(--acc-dark), 0 0 0 12px color-mix(in srgb, var(--uacc, var(--green)) 9%, transparent); }
+  0%, 100% { box-shadow: 0 var(--lip-3) 0 var(--acc-dark), 0 0 0 5px var(--bg), 0 0 0 12px color-mix(in srgb, var(--uacc, var(--brand)) 48%, transparent); }
+  50%      { box-shadow: 0 var(--lip-3) 0 var(--acc-dark), 0 0 0 5px var(--bg), 0 0 0 20px color-mix(in srgb, var(--uacc, var(--brand)) 0%, transparent); }
 }
 @media (prefers-reduced-motion: reduce) { .node--active .node__icon, .node__cta { animation: none; } }
 
-/* locked = quiet gray stones further down the trail */
-.node--locked .node__icon { background: var(--bg-2); color: var(--muted-2); box-shadow: 0 4px 0 var(--line-2); font-size: 17px; }
-.node--locked .node__title { color: var(--muted-2); font-weight: 600; }
+/* Locked = a quiet well with the lesson's own glyph faded inside it. A row of
+   full-colour 🔒 emoji made "you can't have this" the brightest thing on the
+   trail; a faded preview of the real glyph says "this is coming" instead.
+   (Flattening the glyph to a silhouette is not an option — multi-colour emoji
+   collapse into an unreadable dark blob.) */
+.node--locked .node__icon {
+  background: var(--bg-2); box-shadow: var(--deboss); font-size: var(--ic-2);
+  filter: grayscale(.9); opacity: .62;
+}
+.node--locked .node__title { color: var(--muted); font-weight: var(--w-body); }
+.node--locked .node__num { border-color: var(--line-2); color: var(--muted-2); background: var(--bg-2); }
 
-/* halfway treasure chest — locked gray, then glowing and wiggling once the
-   first half of the unit is done, then opened & spent */
+/* halfway treasure chest — a shadowed outline until earned, then full gold */
 .node-chest .node__icon {
-  font-size: 27px;
-  background: linear-gradient(180deg, #ffe9a8, #f2c94c);
-  box-shadow: 0 5px 0 #c9a02f, var(--shadow-sm);
+  font-size: var(--ic-3);
+  background: linear-gradient(180deg, #ffe9a8, var(--c-marula-glow));
+  box-shadow: 0 var(--lip-2) 0 var(--c-marula-edge), var(--e1);
 }
 .chest--locked .node__icon {
-  background: var(--bg-2); box-shadow: 0 4px 0 var(--line-2);
-  filter: grayscale(1) opacity(.65);
+  background: var(--bg-2); box-shadow: var(--deboss);
+  filter: grayscale(.9); opacity: .62;
 }
-.chest--locked .node__title { color: var(--muted-2); font-weight: 600; }
+.chest--locked .node__title { color: var(--muted); font-weight: var(--w-body); }
 .chest--ready .node__icon {
-  box-shadow: 0 5px 0 #c9a02f, 0 0 0 6px color-mix(in srgb, var(--gold) 26%, transparent);
-  animation: chestWiggle 1.6s ease-in-out infinite;
+  box-shadow: 0 var(--lip-2) 0 var(--c-marula-edge), 0 0 0 5px var(--bg), 0 0 0 12px color-mix(in srgb, var(--c-marula-glow) 55%, transparent);
+  animation: chestWiggle var(--loop-nudge) ease-in-out infinite;
 }
-.chest--ready .node__title { color: var(--gold-dark); font-weight: 800; }
+.chest--ready .node__title { color: var(--c-marula-ink); font-weight: var(--w-bold); }
 @keyframes chestWiggle {
   0%, 100% { transform: translateY(0) rotate(0); }
   40% { transform: translateY(-5px) rotate(-4deg); }
@@ -529,70 +828,97 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 [data-theme="dark"] .chest--ready .node__title { color: var(--gold); }
 
 /* ---------- bottom nav ---------- */
+/* every screen that carries the nav must reserve room for it */
+.screen--nav { padding-bottom: calc(var(--bottombar-offset) + env(safe-area-inset-bottom)); }
 .bottombar {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: calc(10px + env(safe-area-inset-bottom));
+  bottom: calc(var(--nav-gap) + env(safe-area-inset-bottom));
   width: min(calc(100% - 20px), var(--maxw));
-  z-index: 30;
+  z-index: var(--z-nav);
   background: color-mix(in srgb, var(--card) 92%, var(--bg));
   border: 1px solid var(--line);
-  /* glassy top-edge highlight */
   border-top: 1px solid rgba(255,255,255,.72);
-  border-radius: 26px;
+  border-radius: var(--r-4);
   backdrop-filter: blur(18px) saturate(1.5);
   -webkit-backdrop-filter: blur(18px) saturate(1.5);
   display: flex; justify-content: space-around; gap: 2px;
-  padding: 10px;
+  padding: var(--sp-2) var(--sp-1);
   box-shadow: var(--shadow-up);
 }
+@supports not (backdrop-filter: blur(1px)) { .bottombar { background: var(--card); } }
+:root[data-theme="dark"] .bottombar { border-top-color: rgba(255,255,255,.08); }
+/* Icon above label, and the icon carries the state: grey when you are
+   elsewhere, full colour where you are. One signal, not three. */
 .navbtn {
-  background: none; border: none; font-size: 11.5px; font-weight: 700; color: var(--muted-2);
-  padding: 7px 6px 9px; border-radius: 14px; min-width: 0; flex: 1;
-  transition: color var(--transition), background var(--transition), transform var(--transition);
-  position: relative;
+  display: grid; gap: 2px; justify-items: center; align-content: center;
+  background: none; border: none;
+  font-size: var(--fs-100); font-weight: var(--w-med); color: var(--muted);
+  padding: var(--sp-1) 2px; border-radius: var(--r-2);
+  min-width: 0; min-height: var(--tap); flex: 1;
+  line-height: var(--lh-tight);
+  transition: color var(--dur-1) var(--ease-out), background var(--dur-1) var(--ease-out), transform var(--dur-1) var(--ease-out);
 }
-.navbtn:active { transform: scale(.93); }
+.navbtn > span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.navbtn__ic {
+  font-size: var(--ic-1); line-height: 1;
+  filter: grayscale(1); opacity: .5;
+  transition: filter var(--dur-2) var(--ease-out), opacity var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-spring);
+}
+.navbtn:active:not(:disabled) { transform: scale(.93); }
 .navbtn--active {
-  color: var(--green);
-  background: color-mix(in srgb, var(--green) 14%, transparent);
+  color: var(--brand-ink); font-weight: var(--w-bold);
+  background: var(--brand-tint);
 }
-/* active dot indicator below label */
-.navbtn--active::after {
-  content: '';
-  display: block;
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--green);
-  margin: 3px auto 0;
-}
+.navbtn--active .navbtn__ic { filter: none; opacity: 1; transform: translateY(-1px) scale(1.08); }
+.navbtn:disabled { opacity: .4; cursor: default; }
+.navbtn:disabled:active { transform: none; }
+@media (prefers-reduced-motion: reduce) { .navbtn__ic { transition: none; } }
+@media (max-width: 359px) { .navbtn { font-size: 10px; } }
 
 /* ---------- exercises ---------- */
-.ex { gap: 18px; min-height: 100dvh; }
-.ex__top { display: flex; align-items: center; gap: 12px; }
-.ex__quit { background: none; border: none; font-size: 22px; color: var(--muted); }
-.ex__bar { flex: 1; height: 16px; background: #e3e9e4; border-radius: 999px; overflow: hidden; }
-.ex__bar-fill { height: 100%; background: linear-gradient(90deg, var(--green), #2ab89a); border-radius: 999px; transition: width .25s; }
-.ex__hearts { letter-spacing: -3px; font-size: 14px; }
-.ex__body { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+.ex { gap: var(--sp-4); min-height: 100dvh; }
+.ex__top { display: flex; align-items: center; gap: var(--sp-3); }
+.ex__quit {
+  background: none; border: none; font-size: var(--ic-1); color: var(--muted);
+  width: var(--tap); height: var(--tap); margin-left: calc(-1 * var(--sp-3));
+  border-radius: var(--r-pill); display: grid; place-items: center; flex: 0 0 auto;
+}
+.ex__quit:active { background: var(--bg-2); }
+/* the track is tokenised, so it can never again be a near-white slab glaring
+   across the top of every question in dark mode */
+.ex__bar { flex: 1; height: 14px; background: var(--line-2); border-radius: var(--r-pill); overflow: hidden; box-shadow: var(--deboss); }
+.ex__bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--brand), color-mix(in srgb, var(--c-lagoon) 70%, var(--brand)));
+  border-radius: var(--r-pill); transition: width var(--dur-2) var(--ease-out);
+}
+/* the lesson intro is the same journey as the questions, in a cooler colour */
+.ex__bar-fill--intro { background: linear-gradient(90deg, var(--c-ocean), color-mix(in srgb, var(--c-lagoon) 60%, var(--c-ocean))); }
+.ex__count { font-size: var(--fs-200); font-weight: var(--w-bold); color: var(--muted); flex: 0 0 auto; }
+.ex__hearts { letter-spacing: -3px; font-size: var(--fs-200); flex: 0 0 auto; }
+/* Optically centre the question instead of letting flex:1 dump ~420px of dead
+   air between the last option and the feedback sheet. */
+.ex__body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: var(--sp-4); padding-block: var(--sp-2); }
 .ex__srs-badge {
-  align-self: flex-start; margin-top: -6px; padding: 6px 12px; border-radius: 999px;
-  font-size: 12px; font-weight: 800;
+  align-self: flex-start; margin-top: 0; padding: var(--sp-1) var(--sp-3); border-radius: var(--r-pill);
+  font-size: var(--fs-100); font-weight: var(--w-bold);
 }
 .ex__srs-badge--new { background: var(--badge-new-bg); color: var(--badge-new-ink); }
 .ex__srs-badge--learning { background: var(--badge-learning-bg); color: var(--badge-learning-ink); }
 .ex__srs-badge--mastered { background: var(--badge-mastered-bg); color: var(--badge-mastered-ink); }
-.ex__q { font-size: 21px; }
-.ex__prompt-big { font-size: 26px; font-weight: 800; color: var(--green); }
+.ex__q { font-size: var(--fs-400); font-weight: var(--w-med); }
+.ex__prompt-big { font-size: var(--fs-600); font-weight: var(--w-display); color: var(--brand-ink); line-height: var(--lh-tight); }
 .ex__phon { margin: 0; }
-.ex__sentence { font-size: 22px; font-weight: 700; }
-.blank { color: var(--gold); }
+.ex__sentence { font-size: var(--fs-500); font-weight: var(--w-bold); }
+.blank { color: var(--c-marula-ink); }
 .ex__input {
-  width: 100%; padding: 16px; font-size: 18px; border: 2px solid var(--line); border-radius: 14px;
+  width: 100%; padding: var(--sp-4); font-size: var(--fs-400);
+  border: 2px solid var(--line-3); border-radius: var(--r-2);
   background: var(--card); color: var(--ink); outline: none;
+  min-height: var(--tap);
 }
-.ex__input:focus { border-color: var(--green); }
+.ex__input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent); }
 .ex__textarea { resize: vertical; font-family: inherit; margin-bottom: 12px; }
 .explain-rate { display: grid; gap: 8px; margin-top: 12px; }
 
@@ -602,72 +928,128 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   display: flex; justify-content: space-between; gap: 10px; font-size: 15px;
 }
 
-.opts { display: grid; gap: 10px; }
+.opts { display: grid; gap: var(--sp-2); }
+/* The answers must be the most obviously pressable things on the screen. They
+   used to be the flattest: a near-white card on a near-white page with a 4%
+   shadow, while the button below them had a 4px hard ledge. */
 .opt {
-  padding: 17px 18px; border-radius: 16px; border: 2px solid var(--line); background: var(--card);
-  font-size: 17px; font-weight: 600; box-shadow: 0 2px 0 rgba(0,0,0,.04); text-align: center;
-  transition: transform var(--transition), border-color var(--transition), background var(--transition);
+  padding: var(--sp-4); border-radius: var(--r-3);
+  border: 2px solid var(--line-3); background: var(--card);
+  font-size: var(--fs-400); font-weight: var(--w-med); text-align: center;
+  min-height: var(--tap);
+  box-shadow: 0 var(--lip-2) 0 var(--line-2);
+  transition: transform var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out), background var(--dur-1) var(--ease-out);
 }
-.opt:active { transform: translateY(1px); }
-.opt--ok { border-color: var(--green); background: #e7f6ec; color: var(--green-dark); }
-/* a missed pick is a "look here" cue, not an error — warm amber, never red */
-.opt--bad { border-color: var(--gold); background: #fff6e0; color: #8a5a00; }
-[data-theme="dark"] .opt--ok { background: color-mix(in srgb, var(--green) 18%, var(--bg)); color: var(--green); }
-[data-theme="dark"] .opt--bad { background: color-mix(in srgb, var(--gold) 16%, var(--bg)); color: var(--gold); }
+.opt:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 var(--line-2); }
+/* The right answer is celebrated ON the thing that was tapped — a tick, a pop
+   and a ring. Previously the only payoff was a 6% mint tint 400px from a
+   mascot, so four correct answers in five got no feedback at all where the
+   learner was actually looking. */
+.opt--ok {
+  border-color: var(--ok); background: var(--ok-tint); color: var(--ok-ink);
+  box-shadow: 0 var(--lip-2) 0 var(--ok), 0 0 0 4px color-mix(in srgb, var(--ok) 22%, transparent);
+  animation: optPop var(--dur-3) var(--ease-spring);
+}
+.opt--ok::after { content: ' ✓'; font-weight: var(--w-display); }
+@keyframes optPop { 0% { transform: scale(1); } 45% { transform: scale(1.04); } 100% { transform: scale(1); } }
+/* A missed pick is a "look here" cue, not an error — warm amber, never red,
+   and marked by shape (a dashed edge) as well as colour. */
+.opt--bad {
+  border-color: var(--learn); border-style: dashed; background: var(--learn-tint); color: var(--learn-ink);
+  box-shadow: none;
+}
+.opt--bad::before { content: '↳ '; }
+@media (prefers-reduced-motion: reduce) { .opt--ok { animation: none; } }
 
-.match { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.match__col { display: grid; gap: 10px; align-content: start; }
-.match-opt--sel { border-color: var(--blue); background: #e8f1fb; }
-[data-theme="dark"] .match-opt--sel { background: color-mix(in srgb, var(--blue) 18%, var(--bg)); }
+.match { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
+.match__col { display: grid; gap: var(--sp-2); align-content: start; }
+.match-opt--sel { border-color: var(--info); background: var(--info-tint); color: var(--info-ink); }
 .match-opt--done { opacity: .35; }
-.match-opt--wrong { border-color: var(--gold); background: #fff6e0; animation: wiggle .3s ease-in-out; }
-[data-theme="dark"] .match-opt--wrong { background: color-mix(in srgb, var(--gold) 16%, var(--bg)); }
+.match-opt--wrong { border-color: var(--learn); background: var(--learn-tint); animation: wiggle .3s ease-in-out; }
+.match-opt--ok::after, .match-opt--bad::before { content: none; }
 @keyframes wiggle { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-3px); } 60% { transform: translateX(3px); } }
 @media (prefers-reduced-motion: reduce) { .match-opt--wrong { animation: none; } }
 
+/* Audio is a peer of the content, not a rogue: it used to be the only
+   left-aligned, saturated-blue control in the lesson, dragging the eye away
+   from the word it was there to support. */
 .play-btn {
-  align-self: flex-start; background: var(--blue); color: #fff; border: none; border-radius: 14px;
-  padding: 14px 22px; font-size: 18px; font-weight: 700; box-shadow: 0 4px 0 #155a96;
+  align-self: stretch; width: 100%;
+  background: var(--info-tint); color: var(--info-ink);
+  border: 2px solid color-mix(in srgb, var(--info) 40%, transparent);
+  border-radius: var(--r-3);
+  padding: var(--sp-3) var(--sp-5); min-height: var(--tap);
+  font-size: var(--fs-300); font-weight: var(--w-bold);
+  box-shadow: 0 var(--lip-1) 0 color-mix(in srgb, var(--info) 32%, transparent);
+  display: flex; align-items: center; justify-content: center; gap: var(--sp-2);
 }
+.play-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 color-mix(in srgb, var(--info) 32%, transparent); }
 .speak-controls { display: grid; gap: 10px; }
 .speak-status { min-height: 20px; }
 
 /* feedback footer — a correct answer celebrates in green; a miss becomes a
    warm amber LEARNING moment (never red, never a ✗) */
-.ex__foot { display: grid; gap: 12px; padding: 16px 0 calc(16px + env(safe-area-inset-bottom)); }
+/* The sheet sticks to the thumb so the reward lands right under the option
+   that was tapped, instead of erupting at the bottom of an 850px column. */
+.ex__foot {
+  display: grid; gap: var(--sp-3);
+  position: sticky; bottom: 0; z-index: var(--z-raised);
+  padding: var(--sp-4) 0 calc(var(--sp-4) + env(safe-area-inset-bottom));
+  background: var(--bg);
+}
 .ex__foot--ok, .ex__foot--learn {
-  margin: 0 -16px; padding: 18px 16px calc(16px + env(safe-area-inset-bottom));
-  border-radius: 22px 22px 0 0;
-  animation: fb-rise .3s cubic-bezier(.22, 1, .36, 1) both;
+  /* the gutter is tokenised, so the sheet still bleeds edge-to-edge at the
+     ≥768px breakpoint where --screen-pad grows to 24px */
+  margin: 0 calc(-1 * var(--screen-pad));
+  padding: var(--sp-5) var(--screen-pad) calc(var(--sp-4) + env(safe-area-inset-bottom));
+  border-radius: var(--r-4) var(--r-4) 0 0;
+  animation: fb-rise var(--dur-3) var(--ease-decel) both;
 }
 .ex__foot--ok {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--green) 16%, #fff), #e7f6ec);
-  box-shadow: inset 0 3px 0 var(--green);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ok) 22%, var(--card)), var(--ok-tint));
+  box-shadow: inset 0 4px 0 var(--ok), 0 -10px 30px rgba(74,58,42,.10);
 }
 .ex__foot--learn {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--gold) 22%, #fff), #fff3d6);
-  box-shadow: inset 0 3px 0 var(--gold);
-}
-[data-theme="dark"] .ex__foot--ok {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--green) 26%, var(--bg)), color-mix(in srgb, var(--green) 14%, var(--bg)));
-}
-[data-theme="dark"] .ex__foot--learn {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--gold) 24%, var(--bg)), color-mix(in srgb, var(--gold) 12%, var(--bg)));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--learn) 26%, var(--card)), var(--learn-tint));
+  box-shadow: inset 0 4px 0 var(--learn), 0 -10px 30px rgba(74,58,42,.10);
 }
 @keyframes fb-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-.ex__foot--ok .fb__mascot { animation: fb-pop .42s cubic-bezier(.34, 1.56, .64, 1) .06s both; }
+.ex__foot--ok .fb__mascot { animation: fb-pop .42s var(--ease-spring) .06s both; }
 @keyframes fb-pop { 0% { transform: scale(.4) rotate(-8deg); } 60% { transform: scale(1.12) rotate(3deg); } 100% { transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-  .ex__foot--ok, .ex__foot--learn, .ex__foot--ok .fb__mascot { animation: none; }
+  .ex__foot--ok, .ex__foot--learn, .ex__foot--ok .fb__mascot,
+  .update-toast, .wlab__result { animation: none; }
+  .plan-hero__fill, .qbar > div, .qbar > span, .ex__bar-fill, .mastery-bar__fill,
+  .figure__bar i, .unit-banner::after { transition: none; }
 }
-.fb__title { font-size: 19px; font-weight: 800; letter-spacing: -.2px; }
-.ex__foot--ok .fb__title { color: var(--green-dark); }
-.ex__foot--learn .fb__title { color: #8a5a00; }
-[data-theme="dark"] .ex__foot--ok .fb__title { color: var(--green); }
-[data-theme="dark"] .ex__foot--learn .fb__title { color: var(--gold); }
-.fb__answer { margin-top: 4px; }
-.fb__meaning { margin-top: 4px; color: var(--muted); font-style: italic; }
-.fb__again { margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--muted); }
+/* On the win sheet the CTA used to be a green glow on a green ground. A solid
+   flat fill keeps it sitting clearly on top of its own panel. Light mode wants
+   the deep edge green under white; dark mode wants the bright green under the
+   near-black --on-fill, which is why this is stated per theme. */
+.ex__foot--ok .btn--primary {
+  background: var(--brand-edge);
+  box-shadow: 0 var(--lip-3) 0 color-mix(in srgb, var(--brand-edge) 68%, #000), var(--e1);
+}
+:root[data-theme="dark"] .ex__foot--ok .btn--primary {
+  background: var(--brand);
+  box-shadow: 0 var(--lip-3) 0 var(--brand-edge), var(--e1);
+}
+.fb__title { font-size: var(--fs-400); font-weight: var(--w-display); letter-spacing: var(--ls-tight); }
+.ex__foot--ok .fb__title { color: var(--ok-ink); }
+.ex__foot--learn .fb__title { color: var(--learn-ink); }
+.fb__answer { margin-top: var(--sp-1); }
+.fb__meaning { margin-top: var(--sp-1); color: var(--muted); font-style: italic; }
+.fb__again { margin-top: 6px; font-size: var(--fs-200); font-weight: var(--w-med); color: var(--muted); }
+/* the buddy actually speaks to you, rather than standing beside a text label */
+.fb__text {
+  position: relative; background: var(--card); border-radius: var(--r-2);
+  padding: var(--sp-2) var(--sp-3); box-shadow: var(--e1);
+}
+.fb__text::before {
+  content: ""; position: absolute; left: -8px; top: 22px;
+  border: 7px solid transparent; border-right-color: var(--card);
+}
 
 /* ---------- results ---------- */
 .result { gap: 18px; }
@@ -699,44 +1081,77 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .kpi__k { font-size: 12px; color: var(--muted); }
 
 /* ---------- progress dashboard ---------- */
-.dash { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.dcard {
-  background: var(--card); border-radius: 14px; padding: 14px 10px; box-shadow: var(--shadow); text-align: center; display: grid; gap: 2px;
-  border-top: 1px solid rgba(255,255,255,.88);
+/* ONE figure primitive carries every number on this screen — impossible to
+   render wrong, and correct at zero. */
+.dash { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-2); }
+.figure {
+  display: grid; gap: 3px; align-content: start;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-3); padding: var(--sp-3) var(--sp-4);
+  box-shadow: var(--e1);
   animation: dCardIn var(--transition-slow) both;
 }
+.figure__v {
+  font-size: var(--fs-600); font-weight: var(--w-display); color: var(--ink);
+  line-height: var(--lh-tight); letter-spacing: var(--ls-tight);
+}
+.figure__cap { font-size: var(--fs-200); font-weight: var(--w-bold); color: var(--ink-2); }
+.figure__sub { font-size: var(--fs-100); color: var(--muted); }
+.figure__bar { display: block; height: 4px; margin-top: var(--sp-1); background: var(--line-2); border-radius: var(--r-pill); }
+.figure__bar i { display: block; height: 100%; width: calc(var(--pct) * 1%); background: var(--acc); border-radius: inherit; transition: width var(--dur-2) var(--ease-out); }
+/* A zero is not an achievement. Seven big bold green zeros read as a scoreboard
+   the learner had somehow already lost. */
+.figure--zero .figure__v { color: var(--muted-2); }
+.figure--zero .figure__bar i { background: var(--line-2); }
+.figure:nth-child(1) { animation-delay: .03s; } .figure:nth-child(2) { animation-delay: .06s; }
+.figure:nth-child(3) { animation-delay: .09s; } .figure:nth-child(4) { animation-delay: .12s; }
+.figure:nth-child(5) { animation-delay: .15s; } .figure:nth-child(6) { animation-delay: .18s; }
+.figure:nth-child(7) { animation-delay: .21s; }
 @keyframes dCardIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .dcard { animation: none; } }
-/* stagger each stat card so they flow in like a wave */
-.dcard:nth-child(1) { animation-delay: .04s; }
-.dcard:nth-child(2) { animation-delay: .08s; }
-.dcard:nth-child(3) { animation-delay: .12s; }
-.dcard:nth-child(4) { animation-delay: .16s; }
-.dcard:nth-child(5) { animation-delay: .20s; }
-.dcard:nth-child(6) { animation-delay: .24s; }
-.dcard:nth-child(7) { animation-delay: .28s; }
-.dcard__v { font-size: 22px; font-weight: 800; color: var(--green); }
-.dcard__k { font-size: 12px; font-weight: 700; }
-.dcard__sub { font-size: 11px; color: var(--muted); }
-.mastery-bar { position: relative; height: 30px; background: #e3e9e4; border-radius: 999px; overflow: hidden; display: grid; place-items: center; }
-.mastery-bar__fill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, var(--green), var(--gold)); }
-.mastery-bar span { position: relative; z-index: 1; font-size: 13px; font-weight: 800; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.4); }
-.proof { background: var(--card); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); display: grid; gap: 12px; }
-.proof h3 { margin: 0; font-size: 15.5px; }
-.proof__bars { display: grid; gap: 12px; }
-.proof__bars > div { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; }
-.proof__bars span { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
-.pbar { height: 16px; background: #e3e9e4; border-radius: 999px; overflow: hidden; }
-.pbar > div { height: 100%; background: var(--blue); }
-.pbar--green > div { background: var(--green); }
-.gain { color: var(--green-dark); font-weight: 800; }
-.trend-bars { display: grid; grid-template-columns: repeat(auto-fit, minmax(28px, 1fr)); gap: 8px; align-items: end; min-height: 110px; }
-.trend-bar { display: grid; gap: 6px; justify-items: center; align-items: end; }
-.trend-bar span { display: block; width: 100%; min-height: 12px; border-radius: 999px 999px 8px 8px; background: linear-gradient(180deg, var(--blue), var(--green)); }
-.trend-bar small { font-size: 10px; color: var(--muted); }
-.skill-split { display: grid; gap: 10px; }
-.skill-row { display: grid; grid-template-columns: 90px 1fr auto; align-items: center; gap: 10px; font-size: 13px; }
-.skill-row b { font-size: 12px; }
+@media (prefers-reduced-motion: reduce) { .figure { animation: none; } }
+/* an odd last card spans the row instead of leaving a hole */
+.figure:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* The label was white on a light track: 1.2:1, i.e. invisible until the bar
+   had filled underneath it. It now sits on the track, in ink. */
+.mastery-bar {
+  position: relative; height: 34px; background: var(--line-2); border-radius: var(--r-pill);
+  overflow: hidden; display: grid; place-items: center; box-shadow: var(--deboss);
+}
+.mastery-bar__fill {
+  position: absolute; inset: 0 auto 0 0; border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--brand), var(--c-marula-glow));
+  transition: width var(--dur-3) var(--ease-out);
+}
+.mastery-bar span {
+  position: relative; z-index: 1; font-size: var(--fs-200); font-weight: var(--w-bold);
+  color: var(--ink); text-shadow: 0 1px 0 color-mix(in srgb, var(--card) 65%, transparent);
+}
+.proof { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-3); padding: var(--sp-4); box-shadow: var(--e1); display: grid; gap: var(--sp-3); }
+.proof h3 { margin: 0; font-size: var(--fs-300); }
+.proof__bars { display: grid; gap: var(--sp-3); }
+.proof__bars > div { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--sp-2); }
+.proof__bars span { grid-column: 1 / -1; font-size: var(--fs-200); color: var(--muted); }
+.pbar { height: 14px; background: var(--line-2); border-radius: var(--r-pill); overflow: hidden; box-shadow: var(--deboss); }
+.pbar > div { height: 100%; background: var(--info); }
+.pbar--green > div { background: var(--brand); }
+.gain { color: var(--brand-ink); font-weight: var(--w-bold); }
+
+/* The bars used to render at an identical 12px each: a percentage height has
+   no basis inside an auto-height grid row, so every value collapsed to the
+   min-height. The track is now a fixed-height flex column. */
+.trend-bars { display: flex; gap: var(--sp-2); align-items: stretch; height: 132px; }
+.trend-bar { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: var(--sp-1); }
+.trend-bar b { font-size: var(--fs-100); font-weight: var(--w-bold); color: var(--muted); }
+.trend-bar span {
+  display: block; width: 100%; height: var(--h, 4%); min-height: 4px;
+  border-radius: var(--r-1) var(--r-1) 2px 2px;
+  background: linear-gradient(180deg, var(--c-ocean), var(--brand));
+}
+.trend-bar small { font-size: var(--fs-100); color: var(--muted); }
+.skill-split { display: grid; gap: var(--sp-2); }
+.skill-row { display: grid; grid-template-columns: 92px 1fr auto; align-items: center; gap: var(--sp-2); font-size: var(--fs-200); }
+.skill-row b { font-size: var(--fs-200); }
 
 /* ---------- premium ---------- */
 .pay { display: grid; gap: 16px; }
@@ -753,8 +1168,8 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .card { background: var(--card); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); display: grid; gap: 10px; text-align: left; width: 100%; border: none; }
 .card__head { display: flex; justify-content: space-between; align-items: baseline; }
 .sec {
-  margin: 8px 4px -4px; font-size: 11px; font-weight: 800;
-  letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted-2);
+  margin: var(--sp-3) var(--sp-1) calc(-1 * var(--sp-1)); font-size: var(--fs-100); font-weight: var(--w-bold);
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: var(--muted);
 }
 
 .quests-card { gap: 12px; }
@@ -764,9 +1179,9 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .quest__text { font-size: 14px; font-weight: 600; }
 .quest__reward { font-weight: 800; font-size: 13px; color: #7c3aed; white-space: nowrap; }
 .quest--done { opacity: .6; }
-.qbar { display: block; height: 9px; background: var(--line); border-radius: 999px; overflow: hidden; }
-.qbar > div, .qbar > span { display: block; height: 100%; background: var(--green); border-radius: 999px; transition: width .3s; }
-.qbar--gold > div, .qbar--gold > span { background: var(--gold); }
+.qbar { display: block; height: 9px; background: var(--line-2); border-radius: var(--r-pill); overflow: hidden; box-shadow: var(--deboss); }
+.qbar > div, .qbar > span { display: block; height: 100%; background: var(--brand); border-radius: var(--r-pill); transition: width var(--dur-2) var(--ease-out); }
+.qbar--gold > div, .qbar--gold > span { background: var(--c-marula-glow); }
 
 .league-card { display: flex; align-items: center; gap: 14px; }
 .league-card__icon { font-size: 34px; flex: 0 0 auto; }
@@ -794,13 +1209,58 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .rline__en { font-size: 13px; }
 
 /* badges */
-.badge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.badge-card { background: var(--card); border-radius: var(--radius); padding: 16px 12px; box-shadow: var(--shadow); display: grid; gap: 4px; text-align: center; justify-items: center; }
-.badge-card__icon { font-size: 34px; }
-.badge-card strong { font-size: 14px; }
-.badge-card .muted { font-size: 12px; }
-.badge-card--locked { opacity: .55; filter: grayscale(.5); }
-.badge-card__date { font-size: 10px; color: var(--blue); }
+/* Badges as die-cut stickers on a shelf. Seventeen identical padlocks had no
+   progress, no reward and no aspiration; every card now shows its REAL art —
+   dimmed while locked — inside a ring that fills as the learner closes in. */
+.badge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-2); }
+.badge-card {
+  background: var(--card); border: 3px solid var(--card-2); border-radius: var(--r-3);
+  padding: var(--sp-4) var(--sp-3); box-shadow: var(--e2);
+  display: grid; gap: var(--sp-1); text-align: center; justify-items: center;
+}
+.badge-card--won { transform: rotate(-1.2deg); }
+.badge-card--won:nth-child(even) { transform: rotate(1.5deg); }
+.badge-card__medal { position: relative; display: grid; place-items: center; width: 68px; height: 68px; }
+.badge-card__icon { font-size: var(--ic-3); line-height: 1; }
+.badge-card__ring { position: absolute; inset: 0; width: 68px; height: 68px; transform: rotate(-90deg); }
+.badge-card__ring-bg { fill: none; stroke: var(--line-2); stroke-width: 3; }
+.badge-card__ring-fg {
+  fill: none; stroke: var(--c-marula-glow); stroke-width: 3; stroke-linecap: round;
+  stroke-dasharray: 125.6; stroke-dashoffset: calc(125.6 - (125.6 * var(--pct)) / 100);
+  transition: stroke-dashoffset var(--dur-3) var(--ease-out);
+}
+.badge-card strong { font-size: var(--fs-200); }
+.badge-card .muted { font-size: var(--fs-100); }
+/* locked keeps the real glyph, just quiet — an anonymous padlock invited nothing */
+.badge-card--locked .badge-card__icon { filter: grayscale(1); opacity: .45; }
+.badge-card--locked strong { color: var(--muted); }
+.badge-card__prog { font-size: var(--fs-100); font-weight: var(--w-bold); color: var(--muted); }
+.badge-card__date {
+  font-size: var(--fs-100); font-weight: var(--w-bold); color: var(--c-marula-ink);
+  background: var(--c-marula-tint); padding: 2px var(--sp-2); border-radius: var(--r-pill);
+}
+/* an odd final card spans the row rather than leaving a half-empty shelf */
+.badge-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* the badge screen's own hero: how much of the set is collected */
+.badge-hero {
+  display: flex; align-items: center; gap: var(--sp-4);
+  background: linear-gradient(150deg, color-mix(in srgb, var(--c-marula-glow) 16%, var(--card)), var(--card) 70%);
+  border: 1px solid var(--line); border-radius: var(--r-4); padding: var(--sp-4); box-shadow: var(--e2);
+}
+.badge-hero__ring {
+  --pct: 0; flex: 0 0 auto; width: 74px; height: 74px; border-radius: 50%;
+  background: conic-gradient(var(--c-marula-glow) calc(var(--pct) * 1%), var(--line-2) 0);
+  display: grid; place-items: center; position: relative; line-height: 1.1;
+}
+.badge-hero__ring::after { content: ""; position: absolute; inset: 7px; background: var(--card); border-radius: 50%; }
+.badge-hero__ring b, .badge-hero__ring small { position: relative; z-index: 1; }
+.badge-hero__ring b { font-size: var(--fs-500); font-weight: var(--w-display); }
+.badge-hero__ring small { font-size: var(--fs-100); color: var(--muted); }
+.badge-hero__text { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.badge-hero__text strong { font-size: var(--fs-400); }
+.badge-hero__text p { margin: 0; font-size: var(--fs-200); }
+.badge-hero__text b { color: var(--c-marula-ink); }
 
 /* league tiers */
 .tiers { display: grid; gap: 8px; }
@@ -846,60 +1306,126 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .wotd__label { font-size: 11px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: .5px; }
 .wotd__term { font-size: 19px; color: var(--green); }
 .wotd__play { font-size: 22px; }
-.wotd-big { display: grid; gap: 4px; justify-items: center; background: var(--card); border-radius: var(--radius); padding: 22px 28px; box-shadow: var(--shadow); }
-.wotd-big strong { font-size: 30px; color: var(--green); }
-.wotd-big__tr { font-size: 18px; font-weight: 700; }
+/* A fixed frame with the text swapping inside it — which is also the right
+   mental model (a flashcard being turned). It used to shrink-wrap its longest
+   line, so the card jumped 120px in width between consecutive words and the
+   page appeared to shudder rather than advance. */
+.wotd-big {
+  display: grid; gap: var(--sp-2); justify-items: center; align-content: center;
+  width: 100%; max-width: 340px; min-height: 170px;
+  background: var(--card); border-radius: var(--r-4);
+  padding: var(--sp-5) var(--sp-6); box-shadow: var(--e2);
+  border: 1px solid var(--line);
+}
+/* The target word leads; the pronunciation is what lets you SAY it, so it is
+   tied to the audio colour; the English gloss steps back. */
+.wotd-big strong { font-size: var(--fs-600); font-weight: var(--w-display); color: var(--brand-ink); line-height: var(--lh-tight); }
+.wotd-big__phon { font-size: var(--fs-300); letter-spacing: .3px; color: var(--info-ink); font-weight: var(--w-med); }
+.wotd-big__tr { font-size: var(--fs-300); font-weight: var(--w-med); color: var(--muted); }
 
 /* xp boost */
 .boost-badge { background: #fff0d4; color: #8a5a00; font-weight: 800; padding: 8px 14px; border-radius: 999px; }
 .boost-chip { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 800; color: #8a5a00; background: #fff0d4; padding: 3px 8px; border-radius: 999px; }
 
 /* shop */
-.shop-list { display: grid; gap: 10px; }
-.shop-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
-.shop-item--eq { border-color: var(--green); }
-.shop-item__icon { font-size: 30px; flex: 0 0 auto; }
-.shop-item__body { flex: 1; display: grid; gap: 1px; }
-.shop-item__body .muted { font-size: 13px; }
-.shop-buy { border: none; border-radius: 12px; padding: 10px 14px; font-weight: 800; background: var(--gold); color: #3a2c00; box-shadow: 0 3px 0 #c79412; white-space: nowrap; }
-.shop-buy:active { transform: translateY(2px); box-shadow: 0 1px 0 #c79412; }
-.shop-buy--equip { background: var(--green); color: #fff; box-shadow: 0 3px 0 var(--green-dark); }
-.shop-buy--off { opacity: .5; }
-.shop-eq { font-weight: 800; color: var(--green); font-size: 13px; white-space: nowrap; }
+.shop-list { display: grid; gap: var(--sp-2); }
+.shop-item { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3); border-radius: var(--r-3); background: var(--card); border: 1px solid var(--line); box-shadow: var(--e1); }
+.shop-item--eq { border-color: var(--ok); background: var(--ok-tint); }
+.shop-item__icon { font-size: var(--ic-3); flex: 0 0 auto; }
+.shop-item__body { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.shop-item__body .muted { font-size: var(--fs-200); }
+.shop-buy {
+  border: none; border-radius: var(--r-2); padding: var(--sp-2) var(--sp-3);
+  min-height: var(--tap); font-weight: var(--w-bold); font-size: var(--fs-200);
+  background: var(--c-marula-glow); color: #2b1d02;
+  box-shadow: 0 var(--lip-1) 0 var(--c-marula-edge); white-space: nowrap;
+}
+.shop-buy:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 var(--c-marula-edge); }
+.shop-buy--equip { background: var(--brand); color: var(--on-fill); box-shadow: 0 var(--lip-1) 0 var(--brand-edge); }
+/* "can't afford yet" is a WELL, not a faded gold button — a .5 opacity gold
+   pill left dark-brown text on a dark card at 1.1:1 in the dark theme. */
+.shop-buy--off {
+  opacity: 1; background: var(--bg-2); color: var(--muted);
+  box-shadow: var(--deboss); cursor: default;
+}
+.shop-eq { font-weight: var(--w-bold); color: var(--ok-ink); font-size: var(--fs-200); white-space: nowrap; }
 
 /* Dark palette — applied ONLY when <html data-theme="dark"> is stamped by the
    app (Settings → Appearance). The app defaults to light; "Match device" is an
    explicit opt-in, so no bare prefers-color-scheme rules here. */
-:root { color-scheme: light; }
-:root[data-theme="dark"] { color-scheme: dark; }
+/* ============================================================================
+   UMBALA WARM — dark ("firelight"). A warm brown-black, never neutral grey.
+   Applied only when <html data-theme="dark"> is stamped by the app
+   (Settings → Appearance). The app defaults to light; "Match device" is an
+   explicit opt-in, so there are no bare prefers-color-scheme rules here.
+
+   Only tokens that CHANGE are listed — every geometry, type, motion and
+   z-index token carries through from :root and re-resolves automatically.
+   ========================================================================== */
 :root[data-theme="dark"] {
-    --bg: #0e1613;
-    --bg-2: #192519;
-    --card: #1c2b22;        /* clearly lighter than bg so cards separate */
-    --ink: #f0f7f3;         /* near-white body text */
-    --ink-2: #d0e0d8;
-    --muted: #aac0b4;       /* legible secondary text */
-    --muted-2: #7a9488;
-    --line: #2c3e32;
-    --line-2: #344a3a;
-    --green: #2ecc82;       /* bright green: readable as text AND as button fill */
-    --green-dark: #1a9960;
-    --green-light: #0d3020;
-    --gold: #f0c83a;
-    --gold-dark: #c9a020;
-    --blue: #5baaec;        /* bright blue for links/regions */
-    --blue-light: #1a2e45;
-    --red: #f06060;
-    --red-light: #3a1010;
-    --purple: #b794f6;      /* bright purple for gems/rewards on dark */
-    --badge-learning-bg: color-mix(in srgb, var(--gold) 16%, var(--bg));
-    --badge-learning-ink: var(--gold);
-    --badge-mastered-bg: color-mix(in srgb, var(--purple) 16%, var(--bg));
-    --badge-mastered-ink: var(--purple);
-    --shadow-sm: 0 1px 4px rgba(0,0,0,.3);
-    --shadow: 0 2px 10px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.03);
-    --shadow-md: 0 4px 20px rgba(0,0,0,.35), 0 1px 6px rgba(0,0,0,.2);
-    --shadow-up: 0 -2px 20px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.03);
+  color-scheme: dark;
+
+  --bg:      #141110;
+  --bg-2:    #1b1714;
+  --card:    #201b17;
+  --card-2:  #29231e;
+
+  --ink:     #f2ece3;   /* 16.0:1 on --bg */
+  --ink-2:   #cfc6b9;   /* 11.1:1 on --bg */
+  --muted:   #aca193;   /*  7.4:1 on --bg */
+  --muted-2: #8b8073;   /*  4.9:1 on --bg */
+  --line:    #2e2822;
+  --line-2:  #40382f;   /* every progress track — kills the old #e3e9e4 glare */
+  --line-3:  #776c60;   /* 3.7:1, passes 1.4.11 */
+
+  /* Bright fills; the ink that sits on them flips to near-black below. */
+  --c-aloe:       #3ed584;  --c-aloe-ink:       #3ed584;
+  --c-aloe-tint:  #253928;  --c-aloe-edge:      #12844f;
+
+  --c-lagoon:      #2acfcb; --c-lagoon-ink:     #2acfcb;
+  --c-lagoon-tint: #223834; --c-lagoon-edge:    #0e807d;
+
+  --c-ocean:       #6fbcfd; --c-ocean-ink:      #6fbcfd;
+  --c-ocean-tint:  #2d353c; --c-ocean-edge:     #1a70ae;
+
+  --c-jacaranda:      #bba4fd; --c-jacaranda-ink:  #bba4fd;
+  --c-jacaranda-tint: #39313c; --c-jacaranda-edge: #6d4fc0;
+
+  --c-protea:      #fd86ce; --c-protea-ink:     #fd86ce;
+  --c-protea-tint: #432c34; --c-protea-edge:    #b04188;
+
+  --c-coral:      #fd9290;  --c-coral-ink:      #fd9290;
+  --c-coral-tint: #432e2a;  --c-coral-edge:     #b04a49;
+
+  --c-sunset:      #fd9860; --c-sunset-ink:     #fd9860;
+  --c-sunset-tint: #432f23; --c-sunset-edge:    #b25626;
+
+  --c-marula:      #e9aa22; --c-marula-ink:     #e9aa22;
+  --c-marula-tint: #403219; --c-marula-edge:    #9a6c0c;
+  --c-marula-glow: #f2be44;
+
+  /* THE ONE FLIP: dark ink on every bright fill, never white.
+     White on the dark --c-aloe measures 2.0:1; --on-fill measures 9.9:1. */
+  --on-fill: #16110a;
+
+  --focus: var(--c-ocean);
+
+  /* Shadows barely read on #141110, so each elevation carries a hairline ring. */
+  --e1: 0 1px 3px rgba(0,0,0,.45), 0 0 0 1px rgba(242,236,227,.055);
+  --e2: 0 4px 16px rgba(0,0,0,.5),  0 0 0 1px rgba(242,236,227,.07);
+  --e3: 0 12px 36px rgba(0,0,0,.6), 0 0 0 1px rgba(242,236,227,.08);
+  --deboss: inset 0 2px 6px rgba(0,0,0,.55), inset 0 0 0 1px rgba(242,236,227,.05);
+  --shadow-up: 0 -12px 36px rgba(0,0,0,.6), 0 0 0 1px rgba(242,236,227,.08);
+  --lip-c: color-mix(in srgb, var(--fill, var(--line-2)) 72%, #000);
+
+  --wash:
+    radial-gradient(ellipse 120% 60% at 50% -22%, color-mix(in srgb, var(--c-sunset) 11%, transparent), transparent 62%),
+    radial-gradient(ellipse 70% 40% at 94% 4%, color-mix(in srgb, var(--c-marula) 6%, transparent), transparent 58%);
+  --grain-opacity: .075;
+
+  /* Dark mode wants the BRIGHT green as text (9.9:1); the light theme's
+     --c-aloe-edge would only manage 4.0:1 here. */
+  --green-dark: var(--c-aloe);
 }
 [data-theme="dark"] .opt { box-shadow: 0 2px 0 rgba(0,0,0,.3); }
 [data-theme="dark"] :is(.lang-card, .card, .story, .book, .shop-item, .tier, .kpi, .dcard, .rline) {
@@ -962,7 +1488,16 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .fb__text { flex: 1; }
 
 /* ---------- onboarding ---------- */
-.onb { min-height: 100dvh; justify-content: center; align-items: center; text-align: center; gap: 20px; }
+/* Centre the CONTENT, not the container. `align-items: center` shrink-wrapped
+   every child, which is what made the word card change width on every tap and
+   forced three render functions to hand-patch their header with an inline
+   `align-self: stretch`. */
+.onb { min-height: 100dvh; justify-content: center; align-items: stretch; text-align: center; gap: var(--sp-4); }
+.onb > * { margin-inline: auto; }
+.onb .ex__top { margin-inline: 0; }
+/* the phase label under the meter — a caption, not a header */
+.ex__phase { margin: calc(-1 * var(--sp-2)) 0 0; font-size: var(--fs-200); font-weight: var(--w-bold);
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase; }
 .onb__art {
   display: grid; place-items: center;
   position: relative;
@@ -1108,34 +1643,44 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
   border: 2px solid color-mix(in srgb, #8b5cf6 45%, transparent); box-shadow: none;
 }
 
-/* ---------- polish pass ---------- */
-.btn--primary {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--green) 88%, #fff), var(--green));
-}
-.home-hero {
-  background: linear-gradient(135deg, color-mix(in srgb, var(--green) 10%, var(--card)), var(--card) 58%);
-}
+/* ---------- polish pass ----------
+   The .btn--primary, .home-hero and .play-btn overrides that used to sit here
+   silently flattened the real rules defined earlier in the file (they removed
+   the pressable lip and the third gradient stop). They are gone; edit the
+   canonical rules in the component sections instead. */
 .act { transition: transform .08s ease, box-shadow .12s ease; }
 .act:hover { box-shadow: 0 4px 14px color-mix(in srgb, var(--acc) 22%, transparent); }
-.lab-chip:not(:disabled):hover, .wb-tok:not(:disabled):hover { border-color: color-mix(in srgb, var(--green) 55%, var(--line)); }
-.play-btn { box-shadow: 0 4px 0 color-mix(in srgb, var(--blue) 55%, #000); }
+.lab-chip:not(:disabled):hover, .wb-tok:not(:disabled):hover { border-color: color-mix(in srgb, var(--brand) 55%, var(--line)); }
 
 /* ---------- CEFR level + can-do goals ---------- */
 .level-card {
-  display: grid; gap: 2px; padding: 14px 16px; border-radius: 18px;
-  background: linear-gradient(135deg, var(--green), var(--blue)); color: #fff;
-  box-shadow: 0 4px 0 color-mix(in srgb, var(--blue) 55%, #000), var(--shadow-sm);
+  display: grid; gap: 2px; padding: var(--sp-4); border-radius: var(--r-3);
+  /* --on-fill is exactly this: white over the deep light-theme hues, near-black
+     over the bright dark-theme ones. */
+  background: linear-gradient(135deg, var(--brand), var(--c-ocean)); color: var(--on-fill);
+  box-shadow: 0 var(--lip-2) 0 color-mix(in srgb, var(--c-ocean) 68%, #000), var(--e1);
 }
-.level-card__tag { font-size: 22px; font-weight: 800; letter-spacing: -.3px; }
-.level-card__sub { font-size: 13px; opacity: .92; }
-.cando-list { display: grid; gap: 8px; }
-.cando { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
-.cando__icon { font-size: 22px; flex: 0 0 auto; }
-.cando__body { flex: 1; display: grid; gap: 6px; }
-.cando__text { font-size: 14px; font-weight: 600; }
-.cando--done { border-color: var(--green); }
-.cando--done .cando__text { color: var(--green-dark); }
-[data-theme="dark"] .cando--done .cando__text { color: var(--green); }
+.level-card__tag { font-size: var(--fs-500); font-weight: var(--w-display); letter-spacing: var(--ls-tight); }
+.level-card__sub { font-size: var(--fs-200); opacity: .95; }
+.cando-list { display: grid; gap: var(--sp-2); }
+/* each goal wears its unit's hue on a left rail, so the list reads as a set of
+   distinct destinations rather than seven copies of the same row */
+.cando {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3); border-radius: var(--r-2);
+  background: var(--card); border: 1px solid var(--line);
+  border-left: 4px solid var(--acc, var(--line-2)); box-shadow: var(--e1);
+}
+.cando__icon { font-size: var(--ic-2); flex: 0 0 auto; }
+.cando__body { flex: 1; min-width: 0; display: grid; gap: 6px; }
+.cando__text { font-size: var(--fs-200); font-weight: var(--w-med); }
+.cando__meta { flex: 0 0 auto; font-size: var(--fs-100); font-weight: var(--w-bold); color: var(--muted); }
+.cando .qbar > span { background: var(--acc, var(--brand)); }
+.cando--untouched { border-left-color: var(--line-2); }
+.cando--untouched .cando__icon { filter: grayscale(.9); opacity: .6; }
+.cando--done { border-color: var(--ok); background: var(--ok-tint); }
+.cando--done .cando__text { color: var(--ok-ink); font-weight: var(--w-bold); }
+.cando--done .cando__meta { color: var(--ok-ink); }
 
 .lst-reveal { text-align: center; font-size: 18px; font-weight: 700; }
 .lst-reveal strong { color: var(--green); }
@@ -1275,7 +1820,7 @@ button { font-family: inherit; cursor: pointer; color: inherit; }
 .story__cov--ok { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green-dark); }
 .story__cov--mid { background: color-mix(in srgb, var(--gold) 24%, transparent); color: #8a6400; }
 .story__cov--low { background: color-mix(in srgb, var(--muted) 14%, transparent); color: var(--muted); }
-.story__rec { font-size: 12px; font-weight: 800; color: var(--gold); }
+.story__rec { font-size: var(--fs-200); font-weight: var(--w-bold); color: var(--c-marula-ink); }
 /* new-word highlight in story text (visualises comprehensible input) */
 .rword--new { background: color-mix(in srgb, var(--gold) 24%, transparent); border-radius: 5px; padding: 0 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .reading-legend { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }

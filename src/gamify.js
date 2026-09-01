@@ -37,25 +37,50 @@ export const QUEST_POOL = [
   { id: 'q_say', text: 'Build 5 sentences of your own', goal: 5, event: 'sentence', gems: 14, icon: '🗣️' },
 ];
 
-export const ACHIEVEMENTS = [
-  { id: 'first_lesson', name: 'First Steps', icon: '👣', desc: 'Complete your first lesson', test: (c) => c.lang.completedLessons.length >= 1 },
-  { id: 'streak_3', name: 'On a Roll', icon: '🔥', desc: '3-day streak', test: (c) => c.lang.bestStreak >= 3 },
-  { id: 'streak_7', name: 'Week Warrior', icon: '🔥', desc: '7-day streak', test: (c) => c.lang.bestStreak >= 7 },
-  { id: 'streak_30', name: 'Unstoppable', icon: '🏆', desc: '30-day streak', test: (c) => c.lang.bestStreak >= 30 },
-  { id: 'words_25', name: 'Word Collector', icon: '🧠', desc: 'Master 25 words', test: (c) => c.metrics.mastered >= 25 },
-  { id: 'words_50', name: 'Vocabulary Builder', icon: '🧠', desc: 'Master 50 words', test: (c) => c.metrics.mastered >= 50 },
-  { id: 'perfect_5', name: 'Sharpshooter', icon: '🎯', desc: '5 perfect lessons', test: (c) => (c.lang.perfectLessons || 0) >= 5 },
-  { id: 'reader', name: 'Bookworm', icon: '📖', desc: 'Read your first story', test: (c) => (c.lang.readingsCompleted || 0) >= 1 },
-  { id: 'reader_5', name: 'Storyteller', icon: '📚', desc: 'Read 5 stories', test: (c) => (c.lang.readingsCompleted || 0) >= 5 },
-  { id: 'unit_1', name: 'Basics Complete', icon: '🧩', desc: 'Finish your first full unit', test: (c) => (c.lang.completedUnits || []).length >= 1 },
-  { id: 'unit_2', name: 'Conversation Ready', icon: '💬', desc: 'Finish two full units', test: (c) => (c.lang.completedUnits || []).length >= 2 },
-  { id: 'unit_3', name: 'Everyday Explorer', icon: '🗺️', desc: 'Finish three full units', test: (c) => (c.lang.completedUnits || []).length >= 3 },
-  { id: 'polyglot', name: 'Polyglot', icon: '🌍', desc: 'Study 2 languages', test: (c) => (c.state.studiedLangs || []).length >= 2 },
-  { id: 'xp_500', name: 'Rising Star', icon: '⭐', desc: 'Earn 500 XP', test: (c) => c.lang.xp >= 500 },
-  { id: 'xp_1000', name: 'Superstar', icon: '🌟', desc: 'Earn 1000 XP', test: (c) => c.lang.xp >= 1000 },
-  { id: 'sentences_25', name: 'Sentence Smith', icon: '🗣️', desc: 'Build 25 sentences of your own', test: (c) => (c.lang.sentencesBuilt || 0) >= 25 },
-  { id: 'sentences_100', name: 'Freestyler', icon: '🎙️', desc: 'Build 100 sentences of your own', test: (c) => (c.lang.sentencesBuilt || 0) >= 100 },
+// Every badge carries `at` (how far the learner is now) and `goal` (what it
+// takes), so a LOCKED badge can show its real art plus "12 / 25" instead of an
+// anonymous padlock. `test` is derived from the pair — there is no second
+// source of truth to drift.
+const ACH_DEFS = [
+  { id: 'first_lesson', name: 'First Steps', icon: '👣', hue: 'grass', desc: 'Complete your first lesson', goal: 1, at: (c) => c.lang.completedLessons.length },
+  { id: 'streak_3', name: 'On a Roll', icon: '🔥', hue: 'flame', desc: '3-day streak', goal: 3, at: (c) => c.lang.bestStreak },
+  { id: 'streak_7', name: 'Week Warrior', icon: '🔥', hue: 'flame', desc: '7-day streak', goal: 7, at: (c) => c.lang.bestStreak },
+  { id: 'streak_30', name: 'Unstoppable', icon: '🏆', hue: 'sun', desc: '30-day streak', goal: 30, at: (c) => c.lang.bestStreak },
+  { id: 'words_25', name: 'Word Collector', icon: '🧠', hue: 'grape', desc: 'Master 25 words', goal: 25, at: (c) => c.metrics.mastered },
+  { id: 'words_50', name: 'Vocabulary Builder', icon: '🧠', hue: 'grape', desc: 'Master 50 words', goal: 50, at: (c) => c.metrics.mastered },
+  { id: 'perfect_5', name: 'Sharpshooter', icon: '🎯', hue: 'berry', desc: '5 perfect lessons', goal: 5, at: (c) => c.lang.perfectLessons || 0 },
+  { id: 'reader', name: 'Bookworm', icon: '📖', hue: 'sky', desc: 'Read your first story', goal: 1, at: (c) => c.lang.readingsCompleted || 0 },
+  { id: 'reader_5', name: 'Storyteller', icon: '📚', hue: 'sky', desc: 'Read 5 stories', goal: 5, at: (c) => c.lang.readingsCompleted || 0 },
+  { id: 'unit_1', name: 'Basics Complete', icon: '🧩', hue: 'grass', desc: 'Finish your first full unit', goal: 1, at: (c) => (c.lang.completedUnits || []).length },
+  { id: 'unit_2', name: 'Conversation Ready', icon: '💬', hue: 'ocean', desc: 'Finish two full units', goal: 2, at: (c) => (c.lang.completedUnits || []).length },
+  { id: 'unit_3', name: 'Everyday Explorer', icon: '🗺️', hue: 'ocean', desc: 'Finish three full units', goal: 3, at: (c) => (c.lang.completedUnits || []).length },
+  { id: 'polyglot', name: 'Polyglot', icon: '🌍', hue: 'teal', desc: 'Study 2 languages', goal: 2, at: (c) => (c.state.studiedLangs || []).length },
+  { id: 'xp_500', name: 'Rising Star', icon: '⭐', hue: 'sun', desc: 'Earn 500 XP', goal: 500, at: (c) => c.lang.xp },
+  { id: 'xp_1000', name: 'Superstar', icon: '🌟', hue: 'sun', desc: 'Earn 1000 XP', goal: 1000, at: (c) => c.lang.xp },
+  { id: 'sentences_25', name: 'Sentence Smith', icon: '🗣️', hue: 'berry', desc: 'Build 25 sentences of your own', goal: 25, at: (c) => c.lang.sentencesBuilt || 0 },
+  { id: 'sentences_100', name: 'Freestyler', icon: '🎙️', hue: 'berry', desc: 'Build 100 sentences of your own', goal: 100, at: (c) => c.lang.sentencesBuilt || 0 },
 ];
+
+export const ACHIEVEMENTS = ACH_DEFS.map((a) => ({ ...a, test: (c) => a.at(c) >= a.goal }));
+
+// How close the learner is to every badge they have not earned yet — the
+// Badges screen uses this to show real progress instead of a wall of locks.
+export function achievementProgress(store) {
+  const ctx = { metrics: store.metrics(), lang: store.lang(), state: store.state };
+  const unlocked = store.state.achievements || {};
+  return ACHIEVEMENTS.map((a) => {
+    let at = 0;
+    try { at = Number(a.at(ctx)) || 0; } catch (e) { at = 0; }
+    const got = !!unlocked[a.id];
+    return {
+      ...a,
+      got,
+      date: unlocked[a.id] || null,
+      at: Math.min(at, a.goal),
+      pct: got ? 100 : Math.max(0, Math.min(100, Math.round((at / a.goal) * 100))),
+    };
+  });
+}
 
 export const LEAGUES = ['Bronze', 'Silver', 'Gold', 'Sapphire', 'Ruby', 'Diamond'];
 const LEAGUE_ICON = { Bronze: '🥉', Silver: '🥈', Gold: '🥇', Sapphire: '🔷', Ruby: '♦️', Diamond: '💎' };

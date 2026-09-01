@@ -10,32 +10,85 @@ export const POWERUPS = [
 ];
 
 // Cosmetic buddies — buy once, then equip. Shown cheering you on at home.
+// Buddies you can equip. Every entry is a real member of the illustrated cast
+// in src/mascots.js with art in assets/mascots/ — the catalogue used to list a
+// springbok and a penguin that had no artwork and could never be shown.
+// "Surprise me" keeps the daily-rotating cast for learners who like the
+// variety; anything else pins that buddy everywhere in the app.
 export const MASCOTS = [
-  { id: 'zebra', name: 'Zee the Zebra', icon: '🦓', cost: 0, desc: 'Your starter buddy.' },
+  { id: 'zebra', name: 'Ziba the Zebra', icon: '🦓', cost: 0, desc: 'Your starter buddy.' },
+  { id: 'random', name: 'Surprise me', icon: '🎲', cost: 0, desc: 'A different buddy each day.' },
+  { id: 'meerkat', name: 'Themba the Meerkat', icon: '🦫', cost: 80, desc: 'Always keeping watch.' },
   { id: 'lion', name: 'Leo the Lion', icon: '🦁', cost: 150, desc: 'King of the savanna.' },
-  { id: 'elephant', name: 'Ellie the Elephant', icon: '🐘', cost: 200, desc: 'Never forgets a word.' },
-  { id: 'springbok', name: 'Bok the Springbok', icon: '🦌', cost: 250, desc: 'Fast and proudly SA.' },
-  { id: 'penguin', name: 'Pip the Penguin', icon: '🐧', cost: 300, desc: 'A real African penguin.' },
-  { id: 'rhino', name: 'Riri the Rhino', icon: '🦏', cost: 400, desc: 'Tough and rare.' },
+  { id: 'giraffe', name: 'Gigi the Giraffe', icon: '🦒', cost: 170, desc: 'Sees how it all connects.' },
+  { id: 'elephant', name: 'Zola the Elephant', icon: '🐘', cost: 200, desc: 'Never forgets a word.' },
+  { id: 'antelope', name: 'Ayanda the Antelope', icon: '🦌', cost: 220, desc: 'Quick and proudly SA.' },
+  { id: 'cheetah', name: 'Chipo the Cheetah', icon: '🐆', cost: 240, desc: 'Fastest learner alive.' },
+  { id: 'hippo', name: 'Hodi the Hippo', icon: '🦛', cost: 260, desc: 'Steady wins the day.' },
+  { id: 'crocodile', name: 'Kroko the Crocodile', icon: '🐊', cost: 280, desc: 'Patient, then decisive.' },
+  { id: 'leopard', name: 'Lebo the Leopard', icon: '🐅', cost: 300, desc: 'Quiet and precise.' },
+  { id: 'gorilla', name: 'Gugu the Gorilla', icon: '🦍', cost: 330, desc: 'Gentle and strong.' },
+  { id: 'buffalo', name: 'Bheki the Buffalo', icon: '🐃', cost: 360, desc: 'Never studies alone.' },
+  { id: 'mandrill', name: 'Mandla the Mandrill', icon: '🐒', cost: 380, desc: 'Bold and colourful.' },
+  { id: 'rhino', name: 'Rendani the Rhino', icon: '🦏', cost: 400, desc: 'Tough and rare.' },
 ];
 
 // Colour themes — buy once, then equip. Overrides the accent palette.
 // `vars` are tuned for light backgrounds; `darkVars` are brightened so the
 // same accents stay readable on the dark theme (the app reads one or the
 // other based on the OS colour scheme — see applyTheme).
+// Colour themes — buy once, then equip. A theme repaints the HUE TOKENS the
+// whole stylesheet is built on (see "UMBALA WARM" in styles/main.css), not a
+// handful of legacy aliases, so buying one recolours every screen instead of
+// four elements. Each entry supplies a fill / ink / tint / edge quartet for the
+// two hues that carry the brand, plus the accent used for links and info.
+// `darkVars` are the brightened equivalents for the dark theme, where the fill
+// must be light enough to carry near-black --on-fill text.
 export const THEMES = [
   { id: 'savanna', name: 'Savanna', icon: '🌳', cost: 0,
-    vars: { '--green': '#1b7a43', '--green-dark': '#0f5e33', '--gold': '#f0b323', '--blue': '#1d6fb8' },
-    darkVars: { '--green': '#38c46e', '--green-dark': '#1f8048', '--gold': '#f5c33b', '--blue': '#5cabec' } },
+    vars: {
+      '--c-aloe': '#0b7139', '--c-aloe-ink': '#0b7139', '--c-aloe-tint': '#e7eee4', '--c-aloe-edge': '#054b27',
+      '--c-marula': '#7f5709', '--c-marula-ink': '#7f5709', '--c-marula-tint': '#f2ecdf', '--c-marula-edge': '#553903', '--c-marula-glow': '#e9a71c',
+      '--c-ocean': '#0a66a2', '--c-ocean-ink': '#0a66a2', '--c-ocean-tint': '#e6edee', '--c-ocean-edge': '#04456e',
+    },
+    darkVars: {
+      '--c-aloe': '#3ed584', '--c-aloe-ink': '#3ed584', '--c-aloe-tint': '#253928', '--c-aloe-edge': '#12844f',
+      '--c-marula': '#e9aa22', '--c-marula-ink': '#e9aa22', '--c-marula-tint': '#403219', '--c-marula-edge': '#9a6c0c', '--c-marula-glow': '#f2be44',
+      '--c-ocean': '#6fbcfd', '--c-ocean-ink': '#6fbcfd', '--c-ocean-tint': '#2d353c', '--c-ocean-edge': '#1a70ae',
+    } },
   { id: 'ocean', name: 'Two Oceans', icon: '🌊', cost: 120,
-    vars: { '--green': '#1d6fb8', '--green-dark': '#155a96', '--gold': '#00a3a3', '--blue': '#1b7a43' },
-    darkVars: { '--green': '#5cabec', '--green-dark': '#2f7fc4', '--gold': '#2bd4d4', '--blue': '#38c46e' } },
+    vars: {
+      '--c-aloe': '#0a66a2', '--c-aloe-ink': '#0a66a2', '--c-aloe-tint': '#e6edee', '--c-aloe-edge': '#04456e',
+      '--c-marula': '#0b6c6a', '--c-marula-ink': '#0b6c6a', '--c-marula-tint': '#e7eee9', '--c-marula-edge': '#054846', '--c-marula-glow': '#17b3b0',
+      '--c-ocean': '#0b7139', '--c-ocean-ink': '#0b7139', '--c-ocean-tint': '#e7eee4', '--c-ocean-edge': '#054b27',
+    },
+    darkVars: {
+      '--c-aloe': '#6fbcfd', '--c-aloe-ink': '#6fbcfd', '--c-aloe-tint': '#2d353c', '--c-aloe-edge': '#1a70ae',
+      '--c-marula': '#2acfcb', '--c-marula-ink': '#2acfcb', '--c-marula-tint': '#223834', '--c-marula-edge': '#0e807d', '--c-marula-glow': '#4fdedb',
+      '--c-ocean': '#3ed584', '--c-ocean-ink': '#3ed584', '--c-ocean-tint': '#253928', '--c-ocean-edge': '#12844f',
+    } },
   { id: 'sunset', name: 'Kalahari Sunset', icon: '🌅', cost: 150,
-    vars: { '--green': '#e2711d', '--green-dark': '#b85a14', '--gold': '#f0b323', '--blue': '#d64545' },
-    darkVars: { '--green': '#f6953f', '--green-dark': '#d4742a', '--gold': '#f5c33b', '--blue': '#f07a7a' } },
+    vars: {
+      '--c-aloe': '#a1470a', '--c-aloe-ink': '#a1470a', '--c-aloe-tint': '#f6eadf', '--c-aloe-edge': '#6b2c04',
+      '--c-marula': '#7f5709', '--c-marula-ink': '#7f5709', '--c-marula-tint': '#f2ecdf', '--c-marula-edge': '#553903', '--c-marula-glow': '#e9a71c',
+      '--c-ocean': '#b72232', '--c-ocean-ink': '#b72232', '--c-ocean-tint': '#f8e6e3', '--c-ocean-edge': '#7b0c18',
+    },
+    darkVars: {
+      '--c-aloe': '#fd9860', '--c-aloe-ink': '#fd9860', '--c-aloe-tint': '#432f23', '--c-aloe-edge': '#b25626',
+      '--c-marula': '#e9aa22', '--c-marula-ink': '#e9aa22', '--c-marula-tint': '#403219', '--c-marula-edge': '#9a6c0c', '--c-marula-glow': '#f2be44',
+      '--c-ocean': '#fd9290', '--c-ocean-ink': '#fd9290', '--c-ocean-tint': '#432e2a', '--c-ocean-edge': '#b04a49',
+    } },
   { id: 'protea', name: 'Protea Pink', icon: '🌸', cost: 150,
-    vars: { '--green': '#c0397b', '--green-dark': '#97275f', '--gold': '#f0b323', '--blue': '#1d6fb8' },
-    darkVars: { '--green': '#e86aa6', '--green-dark': '#c2548a', '--gold': '#f5c33b', '--blue': '#5cabec' } },
+    vars: {
+      '--c-aloe': '#a82a7e', '--c-aloe-ink': '#a82a7e', '--c-aloe-tint': '#f6e7eb', '--c-aloe-edge': '#71104f',
+      '--c-marula': '#7f5709', '--c-marula-ink': '#7f5709', '--c-marula-tint': '#f2ecdf', '--c-marula-edge': '#553903', '--c-marula-glow': '#e9a71c',
+      '--c-ocean': '#7245c4', '--c-ocean-ink': '#7245c4', '--c-ocean-tint': '#f1eaf2', '--c-ocean-edge': '#4a2596',
+    },
+    darkVars: {
+      '--c-aloe': '#fd86ce', '--c-aloe-ink': '#fd86ce', '--c-aloe-tint': '#432c34', '--c-aloe-edge': '#b04188',
+      '--c-marula': '#e9aa22', '--c-marula-ink': '#e9aa22', '--c-marula-tint': '#403219', '--c-marula-edge': '#9a6c0c', '--c-marula-glow': '#f2be44',
+      '--c-ocean': '#bba4fd', '--c-ocean-ink': '#bba4fd', '--c-ocean-tint': '#39313c', '--c-ocean-edge': '#6d4fc0',
+    } },
 ];
 
 export function findItem(id) {
@@ -115,6 +168,14 @@ export function applyTheme(store, doc = (typeof document !== 'undefined' ? docum
   const el = doc.documentElement;
   const dark = !!(el.dataset && el.dataset.theme === 'dark');
   const vars = (dark && theme.darkVars) ? theme.darkVars : theme.vars;
+  // Clear every property any theme could have set, so switching themes never
+  // leaves a stray hue behind from the one before it.
+  if (typeof el.style.removeProperty === 'function') {
+    for (const t of THEMES) {
+      for (const k of Object.keys(t.vars)) el.style.removeProperty(k);
+      for (const k of Object.keys(t.darkVars || {})) el.style.removeProperty(k);
+    }
+  }
   for (const [k, v] of Object.entries(vars)) el.style.setProperty(k, v);
 }
 

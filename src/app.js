@@ -26,6 +26,12 @@ let LIBRARY = null;   // library.json
 // the same animal on the same date. Never repeats yesterday's buddy.
 function currentBuddy() {
   const s = store.state;
+  // The buddy the learner equipped in the shop wins everywhere. This used to
+  // pick at random from the whole cast every day regardless, which meant a
+  // 400-gem purchase changed precisely nothing anywhere in the app.
+  const equipped = Shop.equippedMascot(store);
+  if (equipped && equipped.id !== 'random') return mascotById(equipped.id);
+  // "Surprise me" keeps the rotating cast: a different face each day.
   const day = todayStr();
   if (!s.buddy || s.buddy.day !== day) {
     let pick = MASCOT_CAST[Math.floor(Math.random() * MASCOT_CAST.length)];
@@ -43,10 +49,17 @@ let LANGS = null;     // languages.json
 let course = null;    // active course
 let session = null;   // active lesson/review session
 const courseVocabTotals = new WeakMap();
+// Short on screen, explained to assistive tech: at 12px/800 the long forms ran
+// 230-280px and re-read as a new sentence above every single question.
 const EXERCISE_STAGE_LABELS = {
-  new: '🌱 New — build the first strong memory',
-  learning: '🔁 Review — pull it back before it fades',
-  mastered: '⭐ Mastered — keep it fluent under pressure',
+  new: '🌱 New',
+  learning: '🔁 Review',
+  mastered: '⭐ Mastered',
+};
+const EXERCISE_STAGE_HINTS = {
+  new: 'New word — building the first strong memory',
+  learning: 'Review — pulling it back before it fades',
+  mastered: 'Mastered — keeping it fluent under pressure',
 };
 const LEARNING_PACE_OPTIONS = [['0.85', 'Relaxed'], ['0.9', 'Balanced'], ['0.95', 'Challenge']];
 const LEARNING_PACE_INFO = {
@@ -580,6 +593,12 @@ function toughestWordId() {
 }
 
 function nextBestAction(L, due, nextLesson) {
+  // Day one: the hero button, the status line and the trail's START HERE pill
+  // all used to point at different things, and the loudest of the three sent
+  // the learner past the warm-up it was telling them to take. The warm-up wins.
+  if (!L.completedLessons.length && !L.warmupDone) {
+    return { id: 'resumeWarmup', icon: '🌱', title: 'Start the warm-up', sub: 'About 2 minutes · nothing to get wrong', action: () => startWarmup() };
+  }
   const repairPending = due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr();
   if (repairPending) return { id: 'resumeReview', icon: '🌱', title: 'Ease back in', sub: `Start a shorter confidence-building review (${Math.min(due, 8)} due first)`, action: startReview };
   if (due > 0) return { id: 'resumeReview', icon: '🔁', title: 'Reviews ready', sub: `${due} review${due === 1 ? '' : 's'} due now`, action: startReview };
@@ -588,6 +607,34 @@ function nextBestAction(L, due, nextLesson) {
   const story = recommendedStory();
   if (story) return { id: 'resumeStory', icon: '📖', title: 'Best next story', sub: story.title, action: () => renderReadingIntro(story.id) };
   return { id: 'resumeSpeak', icon: '🎤', title: 'Keep your fluency warm', sub: 'Do a quick speaking practice', action: startSpeaking };
+}
+
+// ---------- bottom navigation ----------
+// One definition, rendered on every top-level screen. It used to exist only on
+// home, so the four destinations it leads to were dead ends you could only
+// leave by the back arrow.
+const NAV_ITEMS = [
+  { key: 'home',     ic: '🏠', label: 'Home',    go: () => renderHome() },
+  { key: 'stories',  ic: '📖', label: 'Stories', go: () => renderLibrary() },
+  { key: 'shop',     ic: '🛒', label: 'Shop',    go: () => renderShop() },
+  { key: 'badges',   ic: '🏅', label: 'Badges',  go: () => renderAchievements() },
+  { key: 'progress', ic: '📊', label: 'Stats',   go: () => renderProgress() },
+];
+function bottomNav(active) {
+  const hasReading = (course.reading || []).length > 0;
+  return `<nav class="bottombar" aria-label="Main">${NAV_ITEMS.map((n) => {
+    const on = n.key === active;
+    const off = n.key === 'stories' && !hasReading;
+    return `<button class="navbtn ${on ? 'navbtn--active' : ''}" data-nav="${n.key}"
+      ${on ? 'aria-current="page"' : ''} ${off ? 'disabled aria-disabled="true" title="Stories are coming soon for this language"' : ''}>
+      <span class="navbtn__ic" aria-hidden="true">${n.ic}</span><span>${n.label}</span></button>`;
+  }).join('')}</nav>`;
+}
+function wireNav(node) {
+  node.querySelectorAll('[data-nav]').forEach((b) => b.addEventListener('click', () => {
+    const item = NAV_ITEMS.find((n) => n.key === b.dataset.nav);
+    if (item && !b.disabled && !b.classList.contains('navbtn--active')) { sound.tap(); item.go(); }
+  }));
 }
 
 // ---------- home / lesson path ----------
@@ -641,7 +688,6 @@ function renderHome() {
   }).join('');
 
   const lgp = G.leagueProgress(store);
-  const hasReading = (course.reading || []).length > 0;
   const buddy = currentBuddy();
   const greetSeed = (L.xp || 0) + (L.streak || 0) + (L.reviewsDone || 0);
   const wotd = wordOfTheDay();
@@ -655,10 +701,10 @@ function renderHome() {
       <header class="topbar">
         <button class="topbar__lang" id="switchLang">${esc(meta.name)} ▾</button>
         <div class="topbar__stats">
-          ${showPlanReview ? `<span class="stat stat--streak" id="streakBtn" role="button" tabindex="0" aria-label="Day streak ${L.streak}. Open league.">🔥 ${L.streak}</span>
-          <span class="stat stat--gems" id="gemsBtn" role="button" tabindex="0" aria-label="${G.gems(store)} gems. Open shop.">💎 ${G.gems(store)}</span>` : ''}
-          <span class="stat stat--hearts" id="heartsBtn" role="button" tabindex="0" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}">${store.state.premium ? '❤️ ∞' : `${L.hearts > 0 ? '❤️' : '🤍'} ${L.hearts}`}</span>
-          <button class="stat" id="settingsBtn" aria-label="Settings" style="background:none;border:none;font-size:18px">⚙️</button>
+          <button class="stat stat--streak ${L.streak ? 'stat--on' : 'stat--off'}" id="streakBtn" aria-label="Day streak ${L.streak}. Open league."><span class="stat__ic" aria-hidden="true">🔥</span>${L.streak}</button>
+          <button class="stat stat--gems ${G.gems(store) ? 'stat--on' : 'stat--off'}" id="gemsBtn" aria-label="${G.gems(store)} gems. Open shop."><span class="stat__ic" aria-hidden="true">💎</span>${G.gems(store)}</button>
+          <button class="stat stat--hearts" id="heartsBtn" aria-label="${store.state.premium ? 'Unlimited hearts' : `${L.hearts} of ${MAX_HEARTS} hearts`}"><span class="stat__ic" aria-hidden="true">${store.state.premium || L.hearts > 0 ? '❤️' : '🤍'}</span>${store.state.premium ? '∞' : L.hearts}</button>
+          <button class="stat" id="settingsBtn" aria-label="Settings"><span class="stat__ic" aria-hidden="true">⚙️</span></button>
         </div>
       </header>
 
@@ -670,8 +716,8 @@ function renderHome() {
             <p class="${statusClass}">${esc(homeStatus(L, due, pct, goal))}</p>
             ${boostN ? `<span class="boost-chip">⚡ ${boostN} Double XP ready</span>` : ''}
           </div>
-          <div class="goal__ring goal__ring--hero" style="--pct:${pct}" aria-label="${L.xpToday} of ${goal} XP today">
-            <span>${L.xpToday}/${goal}</span>
+          <div class="goal__ring goal__ring--hero" style="--pct:${Math.max(4, pct)}" role="img" aria-label="${L.xpToday} of ${goal} XP today">
+            <b aria-hidden="true">${L.xpToday}</b><small aria-hidden="true">/${goal} XP</small>
           </div>
         </div>
         <button class="hero-cta" id="${nextAction.id}">
@@ -735,13 +781,7 @@ function renderHome() {
         <h2 class="sr-only">Lesson path</h2>
         <div class="path">${path}</div>
       </section>
-      <nav class="bottombar" aria-label="Main">
-        <button class="navbtn navbtn--active" aria-current="page">🏠 Home</button>
-        <button class="navbtn" id="storiesNav" ${hasReading ? '' : 'disabled'}>📖 Stories</button>
-        <button class="navbtn" id="shopNav">🛒 Shop</button>
-        <button class="navbtn" id="achBtn">🏅 Badges</button>
-        <button class="navbtn" id="progressBtn2">📊 Progress</button>
-      </nav>
+      ${bottomNav('home')}
     </div>`);
 
   node.querySelectorAll('[data-lesson]').forEach((b) =>
@@ -754,13 +794,13 @@ function renderHome() {
   const on = (sel, fn) => { const el = node.querySelector(sel); if (el) el.addEventListener('click', fn); };
   on('#switchLang', () => renderLanguageSelect(false));
   on('#reviewBtn', startReview);
+  on('#resumeWarmup', () => { sound.tap(); startWarmup(); });
   on('#resumeReview', startReview);
   on('#resumePlan', renderPlan);
   on('#resumeLesson', () => startLesson(nextLesson.id));
   on('#resumeStory', nextAction.action);
   on('#resumeSpeak', startSpeaking);
   on('#planBtn', renderPlan);
-  on('#storiesNav', renderLibrary);
   on('#glossaryBtn', () => renderGlossary());
   on('#sayBtn', renderSentenceStudio);
   on('#writingLabBtn', () => { sound.tap(); renderWritingLab(); });
@@ -769,11 +809,8 @@ function renderHome() {
   on('#blitzBtn', startBlitz);
   on('#grammarBtn', renderGrammar);
   on('#dialogueBtn', renderDialogues);
-  on('#shopNav', renderShop);
   on('#questsBtn', renderQuests);
   on('#leagueBtn', renderLeague);
-  on('#achBtn', renderAchievements);
-  on('#progressBtn2', renderProgress);
   on('#gemsBtn', renderShop);
   on('#streakBtn', renderLeague);
   on('#heartsBtn', () => { if (store.lang().hearts < MAX_HEARTS) renderHeartsModal(); });
@@ -782,6 +819,7 @@ function renderHome() {
   on('#roadmapBtn', renderFluencyRoadmap);
   on('#allUnitsBtn', renderUnitsMap);
   wireChests(node, renderHome);
+  wireNav(node);
   wireKeyActivation(node);
   mount(node);
   celebrateStoneIn(node);
@@ -797,7 +835,34 @@ function renderHome() {
 // stones joined by dotted segments (gold where travelled, unit-coloured into
 // the current step). Returned per unit so home can show just the current one
 // and the Units screen can list them all.
-const UNIT_ACCENTS = ['#2f8f74', '#3c6fba', '#8b5cf6', '#e8823a', '#0ea5c8', '#e85a9a'];
+// The eight-hue ring from the Umbala design system (see styles/main.css).
+// Reading a var() here rather than a hex means a bought theme repaints the
+// trail along with everything else.
+const UNIT_ACCENTS = [
+  'var(--c-aloe)', 'var(--c-ocean)', 'var(--c-jacaranda)', 'var(--c-sunset)',
+  'var(--c-lagoon)', 'var(--c-protea)', 'var(--c-marula)', 'var(--c-coral)',
+];
+// A stone with a picture on it reads as a PLACE; a numbered disc reads as
+// "item 7 of a list". The ordinal moves to a corner chip and the face of the
+// stone gets a glyph matched to what the lesson is actually about.
+const LESSON_GLYPHS = [
+  [/greet|hallo|sawubona|molo/i, '👋'], [/polite|thank|please|yes.*no/i, '🙏'],
+  [/family|famil/i, '👨‍👩‍👧'], [/number|count|getal/i, '🔢'],
+  [/food|drink|eat|kos|kitchen/i, '🍲'], [/direction|way|around|town|place/i, '🧭'],
+  [/colour|color|kleur/i, '🎨'], [/weather|season|reën/i, '🌦️'],
+  [/time|day|week|month|clock/i, '🕐'], [/animal|dier/i, '🦁'],
+  [/body|health|sick|doctor/i, '💪'], [/cloth|wear|dress/i, '👕'],
+  [/home|house|room|huis/i, '🏠'], [/school|learn|educat|study/i, '🎒'],
+  [/work|job|office/i, '💼'], [/travel|transport|car|bus|train/i, '🚌'],
+  [/shop|money|buy|price/i, '🛒'], [/feel|emotion|happy|sad/i, '😊'],
+  [/sport|hobby|play|game/i, '⚽'], [/talk|say|speak|convers|question/i, '💬'],
+  [/verb|grammar|tense/i, '🧩'], [/nature|环境|environment|plant|tree/i, '🌿'],
+  [/tech|phone|comput|communicat/i, '📱'], [/describ|adject|thing/i, '🔍'],
+];
+function lessonGlyph(title) {
+  for (const [re, g] of LESSON_GLYPHS) if (re.test(title)) return g;
+  return '⭐';
+}
 // gems inside a unit's halfway treasure chest scale with the unit's
 // difficulty tier, so deeper roads hide richer treasure
 const CHEST_TIER_GEMS = { Beginner: 10, 'Basic Conversation': 12, Travel: 15, Family: 20, Work: 25 };
@@ -832,7 +897,7 @@ function unitTrails() {
     const z = ZIG[zigStep++ % ZIG.length];
     if (prevZig !== null) {
       const segCls = state === 'done' ? ' trail-seg--done' : state === 'active' ? ' trail-seg--live' : '';
-      cur.parts.push(`<span class="trail-seg${segCls}" style="--a:${prevZig}px;--b:${z}px;--uacc:${accent}" aria-hidden="true"><i></i><i></i><i></i></span>`);
+      cur.parts.push(`<span class="trail-seg${segCls}" style="--a:${prevZig}px;--b:${z}px;--uacc:${accent}" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>`);
     }
     prevZig = z;
     return z;
@@ -866,7 +931,7 @@ function unitTrails() {
       const wz = step(wState, cur.accent);
       if (warmupPending) cur.hasActive = true;
       cur.parts.push(`<button class="node ${L.warmupDone ? 'node--done' : 'node--active'}" data-warmup style="--zig:${wz}px;--uacc:${cur.accent}">
-        ${L.warmupDone ? '' : '<span class="node__cta">START HERE</span>'}
+        ${L.warmupDone ? '' : '<span class="node__cta">2 MIN</span>'}
         ${warmupPending ? buddyHtml(wz) : ''}
         <span class="node__icon">${L.warmupDone ? '✓' : '🌱'}</span>
         <span class="node__title">Warm-up</span>
@@ -886,7 +951,7 @@ function unitTrails() {
     cur.parts.push(`<button class="node ${done ? 'node--done' : ''} ${locked ? 'node--locked' : ''} ${active ? 'node--active' : ''}" data-lesson="${l.id}" ${locked ? 'disabled' : ''} style="--zig:${z}px;--uacc:${cur.accent}">
         ${cta}
         ${active && !warmupPending ? buddyHtml(z) : ''}
-        <span class="node__icon">${done ? '✓' : locked ? '🔒' : i + 1}</span>
+        <span class="node__icon">${done ? '✓' : lessonGlyph(l.title)}<span class="node__num">${i + 1}</span></span>
         <span class="node__title">${esc(l.title)}</span>
         ${starHtml}
       </button>`);
@@ -912,10 +977,11 @@ function unitTrails() {
       won,
       canTestOut: u.testable && u.reached,
       stones: u.parts.join(''),
-      banner: `<div class="unit-banner ${won ? 'unit-banner--won' : ''}" style="--uacc:${u.accent}">
+      upct: u.total ? Math.round((u.done / u.total) * 100) : 0,
+      banner: `<div class="unit-banner ${won ? 'unit-banner--won' : ''} ${u.reached ? '' : 'unit-banner--locked'}" style="--uacc:${u.accent};--upct:${u.total ? Math.round((u.done / u.total) * 100) : 0}">
         <div class="unit-banner__l"><small>Unit ${u.idx + 1} · ${esc(u.level)}</small><strong>${esc(u.title)}</strong></div>
         ${u.testable && u.reached ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
-        ${won ? '<span class="unit-banner__trophy" aria-label="Unit complete">🏆</span>' : ''}
+        <span class="unit-banner__meta">${won ? '🏆' : `${u.done}/${u.total}`}</span>
       </div>`,
     };
   });
@@ -932,10 +998,10 @@ function renderUnitsMap() {
         ${trails.map((u) => `
         <details class="unit-acc" ${u.hasActive ? 'open' : ''}>
           <summary>
-            <div class="unit-banner unit-banner--sum ${u.won ? 'unit-banner--won' : ''} ${u.reached ? '' : 'unit-banner--locked'}" style="--uacc:${u.accent}">
+            <div class="unit-banner unit-banner--sum ${u.won ? 'unit-banner--won' : ''} ${u.reached ? '' : 'unit-banner--locked'}" style="--uacc:${u.accent};--upct:${u.upct}">
               <div class="unit-banner__l"><small>Unit ${u.idx + 1} · ${esc(u.level)}</small><strong>${esc(u.title)}</strong></div>
               ${u.canTestOut ? `<button class="testout-btn" data-testout="${esc(u.id)}">Test out</button>` : ''}
-              <span class="unit-banner__meta">${!u.reached ? '🔒' : u.won ? '🏆' : `${u.done}/${u.total}`} <span class="unit-banner__chev" aria-hidden="true">▾</span></span>
+              <span class="unit-banner__meta">${u.won ? '🏆' : `${u.done}/${u.total}`} <span class="unit-banner__chev" aria-hidden="true">▾</span></span>
             </div>
           </summary>
           <div class="path path--unit">${u.stones}</div>
@@ -962,8 +1028,10 @@ function renderUnitsMap() {
 function homeStatus(L, due, pct, goal) {
   const profile = learnerProfile();
   // brand-new learner: one clear pointer, no jargon about streaks or reviews
+  // The hero button directly beneath already names the next step, so this line
+  // sets the tone instead of repeating the instruction.
   if (!L.completedLessons.length) {
-    return L.warmupDone ? 'Your first lesson is ready below 👇' : 'Start with the warm-up below 👇';
+    return L.warmupDone ? 'Nice — the first lesson is next.' : 'No pressure, no wrong answers.';
   }
   if (pct >= 100) return 'Done for today — well played! 🎉';
   if (due > 0 && missedDaysSince(L.lastStudyDay, todayStr()) >= 2 && L.lastRepairDay !== todayStr()) return 'Welcome back — start with a short confidence reset 🌱';
@@ -1051,7 +1119,7 @@ function exerciseStage(ex) {
     if (item.mastered) tone = 'mastered';
     else if (item.seen > 0 || item.encountered) tone = 'learning';
   }
-  return { label: EXERCISE_STAGE_LABELS[tone], tone };
+  return { label: EXERCISE_STAGE_LABELS[tone], hint: EXERCISE_STAGE_HINTS[tone], tone };
 }
 
 function learningPaceInfo(retention = store.state.settings.desiredRetention || 0.9) {
@@ -2105,14 +2173,16 @@ function renderWarmupStep(w) {
     : 'Just meet the word — try saying it out loud once.';
   const node = h(`
     <div class="screen onb">
-      <header class="ex__top" style="align-self:stretch">
+      <header class="ex__top">
         <button class="ex__quit" id="quitBtn" aria-label="Quit warm-up">✕</button>
-        <span class="muted">${w.firstRun ? 'Your first words' : 'Warm-up'} · ${i + 1} of ${words.length}</span>
+        <div class="ex__bar"><div class="ex__bar-fill ex__bar-fill--intro" style="width:${Math.round(((i + 1) / words.length) * 100)}%"></div></div>
+        <span class="ex__count">${i + 1}/${words.length}</span>
       </header>
-      <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
+      <p class="ex__phase muted">${w.firstRun ? 'Your first words' : 'Warm-up'}</p>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 120, className: 'mascot-img--bob' })}</div>
       <div class="wotd-big">
         <strong>${esc(word.term)}</strong>
-        <span class="wotd-big__phon muted">${esc(word.phonetic || '')}</span>
+        <span class="wotd-big__phon">${esc(word.phonetic || '')}</span>
         <span class="wotd-big__tr">${esc(word.translation)}</span>
       </div>
       <button class="play-btn" id="hear">🔊 Hear it</button>
@@ -2133,10 +2203,12 @@ function renderWarmupCheck(w) {
   const options = shuffle([word.translation, ...others]);
   const node = h(`
     <div class="screen onb">
-      <header class="ex__top" style="align-self:stretch">
+      <header class="ex__top">
         <button class="ex__quit" id="quitBtn" aria-label="Quit warm-up">✕</button>
-        <span class="muted">${w.firstRun ? 'Your first words' : 'Warm-up'} · ${i + 1} of ${words.length}</span>
+        <div class="ex__bar"><div class="ex__bar-fill ex__bar-fill--intro" style="width:${Math.round(((i + 1) / words.length) * 100)}%"></div></div>
+        <span class="ex__count">${i + 1}/${words.length}</span>
       </header>
+      <p class="ex__phase muted">${w.firstRun ? 'Your first words' : 'Warm-up'}</p>
       <h2 class="ex__q">Quick tap — what does “${esc(word.term)}” mean?</h2>
       <div class="opts" style="width:100%">${options.map((o) => `<button class="opt" data-val="${esc(o)}">${esc(o)}</button>`).join('')}</div>
       <p class="onb__body" id="gentle" hidden></p>
@@ -2242,14 +2314,16 @@ function renderLessonIntro(lesson, words, i) {
   const w = words[i];
   const node = h(`
     <div class="screen onb">
-      <header class="ex__top" style="align-self:stretch">
+      <header class="ex__top">
         <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
-        <span class="muted">New words · ${i + 1} of ${words.length}</span>
+        <div class="ex__bar"><div class="ex__bar-fill ex__bar-fill--intro" style="width:${Math.round(((i + 1) / words.length) * 100)}%"></div></div>
+        <span class="ex__count">${i + 1}/${words.length}</span>
       </header>
-      <div class="onb__art">${mascotImg(currentBuddy(), { size: 96 })}</div>
+      <p class="ex__phase muted">New words</p>
+      <div class="onb__art">${mascotImg(currentBuddy(), { size: 120, className: 'mascot-img--bob' })}</div>
       <div class="wotd-big">
         <strong>${esc(w.term)}</strong>
-        <span class="wotd-big__phon muted">${esc(w.phonetic || '')}</span>
+        <span class="wotd-big__phon">${esc(w.phonetic || '')}</span>
         <span class="wotd-big__tr">${esc(w.translation)}</span>
         ${w.note ? `<span class="muted">(${esc(w.note)})</span>` : ''}
       </div>
@@ -2813,18 +2887,30 @@ function advance(wasCorrect, ex) {
 
 // ---------- exercise rendering ----------
 function progressBar() {
-  const pct = Math.round((session.idx / session.queue.length) * 100);
+  // The denominator is frozen at session start: a missed item is requeued, and
+  // letting queue.length grow made the bar visibly decelerate right after the
+  // learner already felt bad. Requeues now extend the tail instead of
+  // rescaling everything they had already earned.
+  const total = Math.max(1, session.barTotal || session.queue.length);
+  // never start at a completely empty track — question one should already show
+  // a nub of progress, not "you have done nothing"
+  const pct = Math.min(100, Math.round(((session.idx + 0.35) / total) * 100));
   const L = store.lang();
   const hearts = HEART_MODES.includes(session.mode)
     ? `<span class="ex__hearts">${store.state.premium ? '❤️∞' : `${'❤️'.repeat(L.hearts)}${'🤍'.repeat(MAX_HEARTS - L.hearts)}`}</span>` : '';
   return `<header class="ex__top">
       <button class="ex__quit" id="quitBtn" aria-label="Quit">✕</button>
       <div class="ex__bar"><div class="ex__bar-fill" style="width:${pct}%"></div></div>
+      <span class="ex__count">${Math.min(session.idx + 1, total)}/${total}</span>
       ${hearts}
     </header>`;
 }
 
 function renderExercise() {
+  // Freeze the progress denominator on the first render of a session. A miss
+  // requeues its item, and letting the denominator grow made the bar visibly
+  // decelerate right after the learner already felt bad about the miss.
+  if (session && !session.barTotal) session.barTotal = session.queue.length;
   const ex = session.queue[session.idx];
   const stage = exerciseStage(ex);
   let body = '';
@@ -2840,7 +2926,7 @@ function renderExercise() {
     case 'explain': body = renderExplain(ex); break;
     default: body = '<p>Unknown exercise</p>';
   }
-  const node = h(`<div class="screen ex">${progressBar()}<div class="ex__srs-badge ex__srs-badge--${stage.tone}">${esc(stage.label)}</div><div class="ex__body">${body}</div><div class="ex__foot" id="foot"></div></div>`);
+  const node = h(`<div class="screen ex">${progressBar()}<div class="ex__srs-badge ex__srs-badge--${stage.tone}" title="${esc(stage.hint)}" aria-label="${esc(stage.hint)}">${esc(stage.label)}</div><div class="ex__body">${body}</div><div class="ex__foot" id="foot"></div></div>`);
   mount(node);
   node.querySelector('#quitBtn').addEventListener('click', () => { if (confirm('Quit this session? Progress in this session is lost.')) renderHome(); });
   wireExercise(ex, node);
@@ -2903,7 +2989,7 @@ function showFeedback(node, ok, ex, correctText, typoNote = '') {
   const delay = feedbackDelay(instant ? 1100 : ok ? 1800 : 2800, `${title} ${correctText || ''} ${ex.meaning || ''}`);
   foot.innerHTML = `
     <div class="fb">
-      <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 52 })}</span>
+      <span class="fb__mascot">${mascotImg(currentBuddy(), { size: 64, className: ok ? 'mascot-img--cheer' : 'mascot-img--sad' })}</span>
       <div class="fb__text">
         <div class="fb__title">${title}${comboChip}</div>
         ${answer}
@@ -3322,19 +3408,24 @@ function renderProgress() {
 
   // CEFR-style "can-do" goals, one per unit, achieved when its lessons are done
   let unitsDone = 0;
-  const canDoRows = course.units.map((u) => {
+  const canDoRows = course.units.map((u, idx) => {
     const ls = u.lessons || [];
     const done = ls.filter((l) => store.isLessonComplete(l.id)).length;
     const pct = ls.length ? Math.round((done / ls.length) * 100) : 0;
     const achieved = ls.length > 0 && done === ls.length;
     if (achieved) unitsDone += 1;
     if (!u.canDo) return '';
-    return `<div class="cando ${achieved ? 'cando--done' : ''}">
-        <span class="cando__icon">${achieved ? '✅' : '🎯'}</span>
+    // Seven identical 🎯 rows with seven empty tracks told the learner nothing.
+    // Each goal now wears its own unit's hue and glyph and states how far along
+    // it is, so the list reads as a set of distinct destinations.
+    const hue = ['aloe', 'ocean', 'jacaranda', 'sunset', 'lagoon', 'protea', 'marula', 'coral'][idx % 8];
+    return `<div class="cando ${achieved ? 'cando--done' : ''} ${done ? '' : 'cando--untouched'}" style="--acc: var(--c-${hue})">
+        <span class="cando__icon">${achieved ? '🏆' : lessonGlyph(u.title || '')}</span>
         <div class="cando__body">
           <span class="cando__text">${esc(u.canDo)}</span>
-          <div class="qbar"><div style="width:${pct}%"></div></div>
+          <span class="qbar"><span style="width:${pct}%"></span></span>
         </div>
+        <span class="cando__meta">${achieved ? 'Done' : `${done}/${ls.length}`}</span>
       </div>`;
   }).join('');
   const level = unitsDone === 0 ? { tag: 'Starter', sub: 'just getting going' }
@@ -3372,13 +3463,17 @@ function renderProgress() {
     </div>`;
   }
 
-  const trend = snaps.length ? `
+  // The heading used to say "Retention trend" while plotting mastered-word
+  // counts, and every bar rendered at the same height because a percentage
+  // height had no basis to resolve against. Two weeks of data is the minimum
+  // that can show a trend at all, so one snapshot no longer draws a "chart".
+  const trend = snaps.length >= 2 ? `
     <div class="proof">
-      <h3>Retention trend</h3>
-      <div class="trend-bars" aria-label="Last ${snaps.length} weekly snapshots">
-        ${snaps.map((s) => `<div class="trend-bar"><span style="height:${Math.max(12, Math.round((s.mastered / trendMax) * 100))}%"></span><small>${esc(s.week.slice(5))}</small></div>`).join('')}
+      <h3>Words mastered over time</h3>
+      <div class="trend-bars" role="img" aria-label="Weekly mastered-word counts: ${snaps.map((s) => `${s.week.slice(5)} ${s.mastered}`).join(', ')}">
+        ${snaps.map((s) => `<div class="trend-bar"><b>${s.mastered}</b><span style="--h:${Math.max(4, Math.round((s.mastered / trendMax) * 100))}%"></span><small>${esc(s.week.slice(5))}</small></div>`).join('')}
       </div>
-      <p class="muted">Weekly snapshots of mastered words over the last ${snaps.length} week${snaps.length === 1 ? '' : 's'}.</p>
+      <p class="muted">Weekly snapshots over the last ${snaps.length} weeks.</p>
     </div>` : '';
 
   const skillHtml = `
@@ -3388,6 +3483,28 @@ function renderProgress() {
         ${skillRows.map(([label, stat]) => `<div class="skill-row"><span>${label}</span><div class="qbar"><div style="width:${Math.round(stat.accuracy * 100)}%"></div></div><b>${stat.seen ? `${Math.round(stat.accuracy * 100)}%` : '&mdash;'}</b></div>`).join('')}
       </div>
     </div>`;
+
+  // One primitive for every number on this screen. A brand-new learner used to
+  // be shown seven big bold green zeros presented as if they were achievements
+  // — including a flatly wrong "0% Retention". Zeros now render neutral-grey,
+  // and a statistic with no data behind it shows an em dash instead of a lie.
+  const figure = ({ v, cap, sub = '', pct = null, hue = 'aloe', zero = false }) => `
+    <div class="figure ${zero ? 'figure--zero' : ''}" style="--acc: var(--c-${hue})">
+      <span class="figure__v">${v}</span>
+      <span class="figure__cap">${cap}</span>
+      ${sub ? `<span class="figure__sub">${sub}</span>` : ''}
+      ${pct === null ? '' : `<span class="figure__bar"><i style="--pct:${pct}"></i></span>`}
+    </div>`;
+  const stats = [
+    figure({ v: m.mastered, cap: 'Words mastered', sub: `of ${totalVocab}`, pct: masteredPct, hue: 'aloe', zero: !m.mastered }),
+    figure({ v: m.learning, cap: 'Still learning', hue: 'ocean', zero: !m.learning }),
+    figure({ v: m.introduced ? `${retPct}%` : '—', cap: 'Retention', sub: m.introduced ? 'recall accuracy' : 'after your first review', hue: 'lagoon', zero: !m.introduced }),
+    figure({ v: m.lessonsCompleted, cap: 'Lessons done', hue: 'jacaranda', zero: !m.lessonsCompleted }),
+    figure({ v: m.streak, cap: 'Day streak', sub: `best ${m.bestStreak}`, hue: 'sunset', zero: !m.streak }),
+    figure({ v: m.xp, cap: 'Total XP', hue: 'marula', zero: !m.xp }),
+    // a phrase-chunk count is noise until the learner has actually met one
+    m.phrases.introduced ? figure({ v: m.phrases.mastered, cap: 'Phrase chunks', sub: `of ${m.phrases.introduced} practised`, hue: 'protea' }) : '',
+  ].filter(Boolean).join('');
 
   const nextUnit = course.units.find((u) => !(u.lessons || []).every((l) => store.isLessonComplete(l.id)));
   const milestone = (() => {
@@ -3399,7 +3516,7 @@ function renderProgress() {
   })();
 
   const node = h(`
-    <div class="screen">
+    <div class="screen screen--nav">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Progress</strong><span></span></header>
 
       <div class="level-card">
@@ -3407,19 +3524,11 @@ function renderProgress() {
         <span class="level-card__sub">Your level · ${esc(level.sub)} · ${unitsDone}/${course.units.length} units mastered</span>
       </div>
 
-      <div class="dash">
-        <div class="dcard"><span class="dcard__v">${m.mastered}</span><span class="dcard__k">Words mastered</span><div class="dcard__sub">of ${totalVocab} (${masteredPct}%)</div></div>
-        <div class="dcard"><span class="dcard__v">${m.learning}</span><span class="dcard__k">Still learning</span></div>
-        <div class="dcard"><span class="dcard__v">${m.phrases.mastered}</span><span class="dcard__k">Phrase chunks</span><div class="dcard__sub">of ${m.phrases.introduced} practised</div></div>
-        <div class="dcard"><span class="dcard__v">${retPct}%</span><span class="dcard__k">Retention</span><div class="dcard__sub">recall accuracy</div></div>
-        <div class="dcard"><span class="dcard__v">${m.lessonsCompleted}</span><span class="dcard__k">Lessons done</span></div>
-        <div class="dcard"><span class="dcard__v">🔥 ${m.streak}</span><span class="dcard__k">Day streak</span><div class="dcard__sub">best ${m.bestStreak}</div></div>
-        <div class="dcard"><span class="dcard__v">⭐ ${m.xp}</span><span class="dcard__k">Total XP</span></div>
-      </div>
+      <div class="dash">${stats}</div>
 
-      <div class="mastery-bar">
+      <div class="mastery-bar" role="img" aria-label="${m.mastered} of ${totalVocab} words mastered">
         <div class="mastery-bar__fill" style="width:${masteredPct}%"></div>
-        <span>${m.mastered} / ${totalVocab} words mastered</span>
+        <span aria-hidden="true">${m.mastered} / ${totalVocab} words mastered</span>
       </div>
 
       <div class="proof">
@@ -3436,10 +3545,12 @@ function renderProgress() {
       ${compare}
 
       <p class="footnote">Mastered = recalled correctly in <em>production</em> (typing/speaking) and survived a spaced review. That's real retention, not just taps.</p>
+      ${bottomNav('progress')}
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
   const bb = node.querySelector('#baselineBtn'); if (bb) bb.addEventListener('click', () => startBaseline(false));
   const rb = node.querySelector('#retestBtn'); if (rb) rb.addEventListener('click', () => startBaseline(true));
+  wireNav(node);
   mount(node);
 }
 
@@ -3760,7 +3871,7 @@ async function renderLibrary() {
       <span class="book__lic">${esc(s.by)} · ${esc(s.license)}</span>
     </a>`).join('');
   const node = h(`
-    <div class="screen">
+    <div class="screen screen--nav">
       <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Stories</strong><span></span></header>
       <h3 class="sec">Read in ${esc(course.name)}</h3>
       <p class="muted">Read the story, tap a line to hear it, then answer a few questions. The % shows how many of the words you already know — around 90%+ is the sweet spot where reading teaches best.</p>
@@ -3768,9 +3879,11 @@ async function renderLibrary() {
       <h3 class="sec">Free book libraries</h3>
       <p class="muted">Thousands more children's books in ${esc(course.name)} — all free and openly licensed. Best with internet.</p>
       <div class="books">${books}</div>
+      ${bottomNav('stories')}
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
   node.querySelectorAll('[data-read]').forEach((b) => b.addEventListener('click', () => renderReadingIntro(b.dataset.read)));
+  wireNav(node);
   mount(node);
 }
 
@@ -3829,23 +3942,45 @@ function renderReadingIntro(readId) {
 // ---------- achievements / badges ----------
 function renderAchievements() {
   G.checkAchievements(store);
-  const unlocked = store.state.achievements || {};
-  const grid = G.ACHIEVEMENTS.map((a) => {
-    const got = unlocked[a.id];
-    return `<div class="badge-card ${got ? '' : 'badge-card--locked'}">
-        <span class="badge-card__icon">${got ? a.icon : '🔒'}</span>
-        <strong>${esc(a.name)}</strong>
-        <span class="muted">${esc(a.desc)}</span>
-        ${got ? `<span class="badge-card__date">${esc(got)}</span>` : ''}
-      </div>`;
-  }).join('');
-  const count = Object.keys(unlocked).length;
+  const all = G.achievementProgress(store);
+  const earned = all.filter((a) => a.got);
+  const locked = all.filter((a) => !a.got);
+  // A locked badge shows its REAL art, dimmed, with how far the learner has
+  // come — a wall of anonymous padlocks told them nothing and invited nothing.
+  // The nearest-to-earned come first so the next win is always at the top.
+  const nearest = locked.slice().sort((a, b) => b.pct - a.pct);
+  const card = (a) => `<div class="badge-card ${a.got ? 'badge-card--won' : 'badge-card--locked'}" data-hue="${a.hue}">
+      <span class="badge-card__medal">
+        <span class="badge-card__icon">${a.icon}</span>
+        ${a.got ? '' : `<svg class="badge-card__ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="badge-card__ring-bg" cx="22" cy="22" r="20"/><circle class="badge-card__ring-fg" cx="22" cy="22" r="20" style="--pct:${a.pct}"/></svg>`}
+      </span>
+      <strong>${esc(a.name)}</strong>
+      <span class="muted">${esc(a.desc)}</span>
+      ${a.got
+        ? `<span class="badge-card__date">Earned ${esc(a.date)}</span>`
+        : `<span class="badge-card__prog">${a.at.toLocaleString()} / ${a.goal.toLocaleString()}</span>`}
+    </div>`;
+  const count = earned.length;
+  const pct = Math.round((count / all.length) * 100);
+  const closest = nearest[0];
   const node = h(`
-    <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Badges</strong><span>${count}/${G.ACHIEVEMENTS.length}</span></header>
-      <div class="badge-grid">${grid}</div>
+    <div class="screen screen--nav">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Badges</strong><span class="topbar__count">${count}/${all.length}</span></header>
+      <section class="badge-hero">
+        <div class="badge-hero__ring" style="--pct:${pct}"><b>${count}</b><small>of ${all.length}</small></div>
+        <div class="badge-hero__text">
+          <strong>${count === 0 ? 'Your trophy shelf is waiting' : count === all.length ? 'Every badge earned!' : `${count} badge${count === 1 ? '' : 's'} earned`}</strong>
+          <p class="muted">${closest
+            ? `Closest: <b>${esc(closest.name)}</b> — ${closest.at.toLocaleString()} of ${closest.goal.toLocaleString()}.`
+            : 'You have collected the whole set. Remarkable.'}</p>
+        </div>
+      </section>
+      ${earned.length ? `<h3 class="sec">Earned</h3><div class="badge-grid">${earned.map(card).join('')}</div>` : ''}
+      ${nearest.length ? `<h3 class="sec">${earned.length ? 'Still to earn' : 'Up next'}</h3><div class="badge-grid">${nearest.map(card).join('')}</div>` : ''}
+      ${bottomNav('badges')}
     </div>`);
   node.querySelector('#back').addEventListener('click', renderHome);
+  wireNav(node);
   mount(node);
 }
 
@@ -3948,8 +4083,8 @@ function renderShop() {
   };
 
   const node = h(`
-    <div class="screen">
-      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Shop</strong><span class="stat stat--gems">💎 ${gems}</span></header>
+    <div class="screen screen--nav">
+      <header class="topbar"><button class="topbar__lang" id="back">← Home</button><strong>Shop</strong><span class="stat stat--gems stat--on"><span class="stat__ic" aria-hidden="true">💎</span>${gems}</span></header>
       <p class="muted">Earn 💎 gems from quests, badges, daily logins and finishing lessons — then spend them here.</p>
 
       <h3 class="sec">⚡ Power-ups</h3>
@@ -3966,6 +4101,7 @@ function renderShop() {
         <strong>Unlock everything with Premium</strong>
         <span class="muted">All languages, unlimited hearts, offline book packs and more.</span>
       </button>
+      ${bottomNav('shop')}
     </div>`);
 
   node.querySelector('#back').addEventListener('click', renderHome);
@@ -3981,6 +4117,7 @@ function renderShop() {
     flashToast('Equipped!');
     renderShop();
   }));
+  wireNav(node);
   mount(node);
 }
 

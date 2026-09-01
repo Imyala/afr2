@@ -1,7 +1,7 @@
 // sw.js — offline-first service worker.
 // Offline use is MzansiLingo's core feature: after the first visit the whole
 // app (shell, code, lesson content, icons) is cached and works with no network.
-const CACHE = 'mzansilingo-v39';
+const CACHE = 'mzansilingo-v40';
 
 const MASCOTS = ['lion', 'elephant', 'zebra', 'giraffe', 'hippo', 'crocodile', 'cheetah',
   'leopard', 'gorilla', 'antelope', 'meerkat', 'mandrill', 'rhino', 'buffalo']
@@ -30,6 +30,8 @@ const ASSETS = [
   './data/courses/zu.json',
   './data/courses/xh.json',
   './data/courses/af.json',
+  './assets/fonts/nunito-latin.woff2',
+  './assets/fonts/nunito-latin-ext.woff2',
   './assets/icons/icon.svg',
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',

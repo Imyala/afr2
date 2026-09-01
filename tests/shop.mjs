@@ -45,7 +45,14 @@ const docStub = { documentElement: { style: { _v: {}, setProperty(k, v) { this._
 ok(Shop.buy(store, 'ocean').ok, 'can buy the ocean theme');
 Shop.equip(store, 'ocean');
 Shop.applyTheme(store, docStub);
-ok(docStub.documentElement.style._v['--green'] === '#1d6fb8', 'applying ocean theme overrides the primary colour');
+// A theme now repaints the HUE TOKENS the whole stylesheet derives from
+// (--c-aloe and friends), not just the legacy --green/--gold/--blue aliases,
+// so equipping one recolours every screen rather than four elements.
+ok(docStub.documentElement.style._v['--c-aloe'] === '#0a66a2', 'applying ocean theme overrides the primary hue');
+ok(docStub.documentElement.style._v['--c-aloe-ink'] === '#0a66a2', 'theme sets the matching ink');
+ok(docStub.documentElement.style._v['--c-aloe-tint'] === '#e6edee', 'theme sets the matching tint');
+ok(docStub.documentElement.style._v['--c-aloe-edge'] === '#04456e', 'theme sets the matching edge');
+ok(Object.keys(docStub.documentElement.style._v).length >= 11, 'a theme repaints the whole hue family, not a token or two');
 
 // gems never go negative
 ok((store.state.gems || 0) >= 0, 'gems never negative after purchases');

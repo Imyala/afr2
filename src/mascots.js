@@ -217,12 +217,14 @@ export function mascotById(id) {
 export function mascotGreeting(idOrMascot, seed = 0, { tone = 'default' } = {}) {
   const m = typeof idOrMascot === 'string' ? mascotById(idOrMascot) : (idOrMascot || MASCOT_CAST[0]);
   if (tone === 'gentle') {
+    // Short enough to sit on two lines beside the buddy and the XP ring —
+    // longer lines pushed the home hero to three and unbalanced the row.
     const lines = [
-      `${m.name} is with you — one calm step at a time.`,
-      `You’re doing well. Let’s take the next small step together.`,
-      `No pressure, just progress. I’ll guide you through this.`,
-      `Every try helps your brain grow — keep going.`,
-      `You belong here. Let’s make today’s practice feel easy.`,
+      `${m.name} here. One calm step at a time.`,
+      `Nice to see you. Let's take the next small step.`,
+      `No pressure — just progress.`,
+      `Every try grows your brain a little.`,
+      `You belong here. Let's make today easy.`,
     ];
     return lines[Math.abs(seed | 0) % lines.length];
   }
