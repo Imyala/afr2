@@ -3351,7 +3351,8 @@ function renderSessionComplete(stars, correct, total, rewards = { quests: [], ac
     <div class="screen screen--center result">
       <div class="onb__art">${mascotImg(currentBuddy(), { size: 120, className: 'mascot-img--cheer' })}</div>
       <h1>${title}</h1>
-      <div class="result__stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
+      <div class="result__stars" role="img" aria-label="${stars} of 3 stars">${
+  [0, 1, 2].map((i) => `<span>${i < stars ? '★' : '☆'}</span>`).join('')}</div>
       ${session.xpBoosted ? '<div class="boost-badge">⚡ Double XP applied!</div>' : ''}
       <div class="result__row">
         <div class="kpi"><span class="kpi__v">${correct}/${total}</span><span class="kpi__k">Correct</span></div>

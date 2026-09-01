@@ -1070,7 +1070,10 @@ h1, h2, h3, p, strong, b, small, span, li, td, .btn, .opt { overflow-wrap: anywh
   100% { transform: none; opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .result__emoji { animation: none; } }
-.result__stars { font-size: var(--fs-800); color: var(--gold); letter-spacing: 6px; }
+.result__stars {
+  font-size: var(--fs-800); color: var(--c-marula-glow); letter-spacing: 6px;
+  -webkit-text-stroke: 2px var(--c-marula-edge); paint-order: stroke fill;
+}
 .result__stars span {
   display: inline-block;
   animation: starPop .35s cubic-bezier(.34,1.56,.64,1) both;
