@@ -3883,8 +3883,12 @@ async function renderLibrary() {
   const rec = unread.sort((a, b) => cov[b.id].pct - cov[a.id].pct)[0];
   const covChip = (r) => {
     const pct = Math.round(cov[r.id].pct * 100);
+    // Before the first lesson EVERY story reads 0%, so a "tough for now" chip
+    // on all seven is the first thing a new learner sees on this screen. Until
+    // there is real vocabulary to measure against, say what the story is for.
+    if (!known.size) return `<span class="story__cov story__cov--new">Read along with the audio</span>`;
     const band = pct >= 90 ? 'ok' : pct >= 60 ? 'mid' : 'low';
-    const label = pct >= 90 ? 'just right' : pct >= 60 ? 'a stretch' : 'tough for now';
+    const label = pct >= 90 ? 'just right' : pct >= 60 ? 'a stretch' : 'building up to it';
     return `<span class="story__cov story__cov--${band}">${pct}% known · ${label}</span>`;
   };
   const cards = readings.map((r) => {
